@@ -43,8 +43,8 @@ public class Admin1Controller {
 	}
 
 	@RequestMapping("modify")
-	public String modify(String id, Model model, Member_detailDTO dto) {
-		int result = service.up_mem_info(dto);
+	public String modify(String id, Model model, Member_detailDTO dto, Member_basicDTO mb) {
+		int result = service.up_mem_info(dto, mb);
 		model.addAttribute("check", result);
 		model.addAttribute("id", id);
 		return "admin/modify";

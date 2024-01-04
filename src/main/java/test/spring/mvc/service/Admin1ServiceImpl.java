@@ -79,8 +79,9 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public int up_mem_info(Member_detailDTO dto) {
-		int result = mapper.up_mem_info(dto);
-		return result;
+	public int up_mem_info(Member_detailDTO dto ,Member_basicDTO mb) {
+		int result1 = mapper.up_mem_info(dto);
+		int result2 = adminJPA.up_mem_basic(mb);
+		return result1 + result2;
 	}
 }
