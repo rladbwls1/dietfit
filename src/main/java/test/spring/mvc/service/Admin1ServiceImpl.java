@@ -84,4 +84,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 		int result2 = adminJPA.up_mem_basic(mb);
 		return result1 + result2;
 	}
+
+	@Override
+	public int NicCheck(String nic) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 }

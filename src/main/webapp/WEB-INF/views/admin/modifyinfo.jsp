@@ -7,7 +7,25 @@
 <head>
 <meta charset="UTF-8">
 <title>modify_info</title>
+<script src="/resources/js/jquery-3.7.1.min.js"></script> 
 </head>
+<script>
+	$(function(){
+		$("#btn").click(function(){
+		$.ajax({
+			url: "/admin/NicCheck",
+			data: {id: $("#nic").val()},
+			success: function(e){
+				if(e == 'success'){
+					$("div").text(e).css("color", "green");
+				}else{
+					$("div").text(e).css("color", "red");
+				}
+			}
+		});			
+	});
+});
+</script>
 <body>
 		<h2>회원 기본 정보</h2>
 		<form method="post" action="/admin/modify">
@@ -54,10 +72,10 @@
 			<tr>
 				<th>전화번호</th>
 				<td><input type="text" value="${mem_info.phone}" name="phone"></td>
-			</tr>
+			</tr> 
 			<tr>
 				<th>닉네임</th>
-				<td><input type="text" value="${info.nic}" name="nic"></td>
+				<td><input type="text" value="${info.nic}" id="nic" name="nic"><button type="button" id="btn"></button></td>
 			</tr>
 			<tr>
 				<th>생년월일</th>

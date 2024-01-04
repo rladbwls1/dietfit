@@ -11,4 +11,5 @@ public interface Admin1Service{
 	public Member_basicDTO info(String id);
 	public Member_detailDTO mem_info(String id);
 	public int up_mem_info(Member_detailDTO dto, Member_basicDTO mb);
+	public int NicCheck(String nic);
 }

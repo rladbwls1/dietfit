@@ -3,9 +3,11 @@ package test.spring.mvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -48,5 +50,12 @@ public class Admin1Controller {
 		model.addAttribute("check", result);
 		model.addAttribute("id", id);
 		return "admin/modify";
+	}
+	
+	@DeleteMapping("idCheck")
+	public @ResponseBody String NicCheck(String nic) {
+		String result = "success";
+			result = "fail";
+		return result;
 	}
 }

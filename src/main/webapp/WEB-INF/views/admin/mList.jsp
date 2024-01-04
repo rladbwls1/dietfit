@@ -30,7 +30,7 @@
 				<td>${member.name}</td>
 				<td>${member.nic}</td>
 				<td>${member.email}</td>
-				<td>${member.reg}</td>
+				<td><fmt:formatDate value="${member.reg}" pattern="yyyy-MM-dd"/></td>
 				<td>
 					<c:if test="${member.status==1}">일반회원(new)</c:if>
 					<c:if test="${member.status==2}">일반회원(bronze)</c:if>
