@@ -9,7 +9,7 @@
 <title>memberList</title>
 </head>
 <body>
-	<h2>회원 리스트55</h2>
+	<h2>회원 리스트77</h2>
 	<h5>총 ${count}명</h5>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>
