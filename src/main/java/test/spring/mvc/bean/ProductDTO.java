@@ -1,0 +1,24 @@
+package test.spring.mvc.bean;
+
+import java.util.Date;
+
+import lombok.Data;
+
+@Data
+public class ProductDTO {
+	private String num; 		// 번호
+	private String boardname;	// 게시글명
+	private String companyid;	// 업체ID
+	private String category;	// 카테고리 소분류 
+	private String category2;	// 임의번호 2자리
+	private String flavor;		// 맛 분류
+	private String detail;		// 상세설명
+	private int isfile;			// 파일 갯수
+	private String delvery;		// 배송정보
+	private Date reg;			// 등록날짜
+	private int count;			// 조회수
+	private String product;		// 상품명
+	private int stock;			// 재고수
+	private Date expiry;		// 유통기한
+	private String price;		// 가겨
+}
