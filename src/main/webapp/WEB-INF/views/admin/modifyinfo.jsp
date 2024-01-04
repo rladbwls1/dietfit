@@ -11,6 +11,7 @@
 <body>
 		<h2>회원 기본 정보</h2>
 		<form method="post" action="/admin/modify">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="hidden" name="id" value="${info.id}">
 		<table border="1" style="border-collapse:collapse;">
 			<tr> 

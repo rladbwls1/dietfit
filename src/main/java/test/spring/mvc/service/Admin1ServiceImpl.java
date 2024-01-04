@@ -79,8 +79,8 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public void up_mem_info(Member_detailDTO dto) {
-		System.out.println("aaaaaaaaa");
-		mapper.up_mem_info(dto);
+	public int up_mem_info(Member_detailDTO dto) {
+		int result = mapper.up_mem_info(dto);
+		return result;
 	}
 }

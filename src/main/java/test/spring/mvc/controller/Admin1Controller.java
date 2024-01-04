@@ -43,8 +43,10 @@ public class Admin1Controller {
 	}
 
 	@RequestMapping("modify")
-	public String modify(String id, Model model, @ModelAttribute Member_detailDTO dto) {
-		service.up_mem_info(dto);
-		return "redirect:/admin/management?id="+id;
+	public String modify(String id, Model model, Member_detailDTO dto) {
+		int result = service.up_mem_info(dto);
+		model.addAttribute("check", result);
+		model.addAttribute("id", id);
+		return "admin/modify";
 	}
 }
