@@ -1,6 +1,7 @@
 package test.spring.mvc.bean;
-
 import java.util.Date;
+import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -14,11 +15,16 @@ public class ProductDTO {
 	private String flavor;		// 맛 분류
 	private String detail;		// 상세설명
 	private int isfile;			// 파일 갯수
-	private String delvery;		// 배송정보
+	private String delivery;		// 배송정보
 	private Date reg;			// 등록날짜
 	private int count;			// 조회수
 	private String product;		// 상품명
 	private int stock;			// 재고수
+	
+	@DateTimeFormat(pattern = "yy-MM-dd")
 	private Date expiry;		// 유통기한
-	private String price;		// 가겨
+	private String price;		// 가격
+	private List<ProductimgDTO> images; // 이미지 리스트
+	
+	
 }
