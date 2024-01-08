@@ -12,9 +12,6 @@
 	
 
 	<security:http>
-		<security:intercept-url pattern="/member/all" access="permitAll"/>
-		<security:intercept-url pattern="/member/seller" access="hasAnyRole('888,999')"/>
-		<security:intercept-url pattern="/member/admin" access="hasRole('999')"/>
 		<!-- 로그인 폼 페이지 설정 -->
 		<security:form-login login-page="/member/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
 		<!-- 로그아웃 -->
