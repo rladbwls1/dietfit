@@ -20,7 +20,7 @@ public class MemberController {
 	}
 	@RequestMapping("seller")
 	public String doMember() {
-		return "member/member";
+		return "member/seller";
 	}
 	@RequestMapping("admin")
 	public String doAdmin() {
@@ -38,11 +38,7 @@ public class MemberController {
 	public String doLogin() {
 		return "member/login";
 	}
-	//·Î±×¾Æ¿ô
-	@RequestMapping("customLogout")
-	public String doLogout() {
-		return "redirect:/member/all";
-	}
+
 	//È¸¿ø°¡ÀÔ Æû
 	@RequestMapping("registerForm")
 	public String register() {

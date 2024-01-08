@@ -22,11 +22,11 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler{
 		auth.getAuthorities().forEach(au->{
 			roleNames.add(au.getAuthority());
 		});
-		String rdir="/mvc/member/all";
-		if(roleNames.contains("999")){
-			rdir="/mvc/member/admin";
-		}else if(roleNames.contains("888")) {
-			rdir="/mvc/member/seller";
+		String rdir="/member/all";
+		if(roleNames.contains("ROLE_999")){
+			rdir="/member/admin";
+		}else if(roleNames.contains("ROLE_888")) {
+			rdir="/member/seller";
 		}
 		response.sendRedirect(rdir);
 	}
