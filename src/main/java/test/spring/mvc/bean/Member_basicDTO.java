@@ -3,11 +3,15 @@ package test.spring.mvc.bean;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import test.spring.mvc.entity.Member_basicEntity;
 
 @Data
+@NoArgsConstructor
 public class Member_basicDTO {
 	private int num;
 	private String id;
@@ -15,6 +19,7 @@ public class Member_basicDTO {
 	private String name;
 	private String nic;
 	private String email;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date reg;
 	private List<AuthDTO> authList;
 	private int status;
