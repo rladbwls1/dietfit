@@ -10,5 +10,6 @@ public interface Admin1Service{
 	public void MemberList(int pageNum, Model model);
 	public Member_basicDTO info(String id);
 	public Member_detailDTO mem_info(String id);
-	public void up_mem_info(Member_detailDTO detail);
+	public int up_mem_info(Member_detailDTO dto, Member_basicDTO mb);
+	public int NicCheck(String nic);
 }
