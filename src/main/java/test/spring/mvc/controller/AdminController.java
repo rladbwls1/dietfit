@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.service.AdminService;
 
@@ -22,12 +23,21 @@ public class AdminController {
 		return "admin/company/list";
 	}
 	@RequestMapping("companyDetail")
-	public String companyDetail(Model model, String id) {
+	public String companyDetail(String id, Model model) {
 		Member_detailDTO companyDetail = service.companyDetail(id);
         model.addAttribute("companyDetail", companyDetail);
-        model.addAttribute("id", id);
         return "admin/company/detailList";
 	}
-	
+	@RequestMapping("companyStatus")
+	public String companyStatus(String id, Model model) {
+		Member_basicDTO companyBasic = service.companyBasic(id);
+		model.addAttribute("companyBasic", companyBasic);
+		return "admin/company/companyStatus";
+	}
+	@RequestMapping("companyStatusChange")
+	public String companyStatusChange(String id, String status) {
+		service.companyStatus(id, status);
+		return "admin/company/statusChange";
+	}
 
 }

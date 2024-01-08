@@ -10,8 +10,15 @@
 	<select id="companyList" resultType="test.spring.mvc.bean.Member_basicDTO">
 		select * from member_basic where status = 888 or status = 800 order by reg desc
 	</select>
+	<select id="companyBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
+		select * from member_basic where id=#{id}
+	</select>
 	<select id="companyDetail" resultType="test.spring.mvc.bean.Member_detailDTO">
 		select * from member_detail where id=#{id}
 	</select>
+	
+	<update id="companyStatus" parameterType="String">
+		update member_basic set status=#{status} where id=#{id}
+	</update>
 	
 </mapper>

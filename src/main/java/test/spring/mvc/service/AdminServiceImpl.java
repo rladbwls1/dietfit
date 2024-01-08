@@ -33,8 +33,18 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
+	public Member_basicDTO companyBasic(String id) {
+		return mapper.companyBasic(id);
+	}
+
+	@Override
 	public Member_detailDTO companyDetail(String id) {
 		return mapper.companyDetail(id);
+	}
+
+	@Override
+	public void companyStatus(String id, String status) {
+		mapper.companyStatus(id, status);
 	}
 
 	
