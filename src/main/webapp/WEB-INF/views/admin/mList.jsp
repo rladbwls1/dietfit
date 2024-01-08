@@ -9,7 +9,11 @@
 <title>memberList</title>
 </head>
 <body>
+<<<<<<< HEAD
 	<h2>회원 리스트</h2>
+=======
+	<h2>회원 리스트99</h2>
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	<h5>총 ${count}명</h5>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>

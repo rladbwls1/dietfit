@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <h1>회원가입하기</h1>
 <form action="/member/registerPro" method="post">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	id: <input type="text" name="id"/> <br/>
 	pw: <input type="password" name="pw"/> <br/>
 	name: <input type="text" name="name"/> <br/>

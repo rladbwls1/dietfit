@@ -19,7 +19,7 @@ public class Member_basicDTO {
 	private String name;
 	private String nic;
 	private String email;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date reg;
 	private List<AuthDTO> authList;
 	private int status;

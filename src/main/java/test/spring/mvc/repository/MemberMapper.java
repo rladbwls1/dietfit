@@ -4,4 +4,5 @@ import test.spring.mvc.bean.Member_basicDTO;
 
 public interface MemberMapper {
 	public void newMember(Member_basicDTO dto);
+	public void newMemberstatus(String id);
 }
