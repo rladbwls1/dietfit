@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 
 @Service
@@ -47,5 +48,13 @@ public class AdminServiceImpl implements AdminService{
 		mapper.companyStatus(id, status);
 	}
 
+	@Override
+	public void productList(Model model, String companyid) {
+		List<ProductDTO> productList = Collections.EMPTY_LIST;
+		productList = mapper.productList(companyid);
+		model.addAttribute("productList", productList);
+	}
+
+	
 	
 }
