@@ -15,7 +15,11 @@ public interface AdminJPARepository extends JpaRepository<Member_basicEntity, St
 	@Query(value="update member_basic set "
 			+ "name=:#{#mb.name},"
 			+ "email=:#{#mb.email},"
-			+ "status=:#{#mb.status} "
+			+ "status=:#{#mb.status}, "
+			+ "nic=:#{#mb.nic} "
 			+ " where id=:#{#mb.id} ",nativeQuery=true)
 	public int up_mem_basic(@Param("mb") Member_basicDTO mb);
+	
+	@Query(value="SELECT COUNT(*) FROM member_basic WHERE nic = :nic", nativeQuery=true)
+	public int NicCheck(@Param("nic")String nic);
 }

@@ -3,8 +3,6 @@ package test.spring.mvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,10 +50,14 @@ public class Admin1Controller {
 		return "admin/modify";
 	}
 	
-	@DeleteMapping("idCheck")
-	public @ResponseBody String NicCheck(String nic) {
-		String result = "success";
-			result = "fail";
+	@RequestMapping("NicCheck")
+	public @ResponseBody String NicCheck(String id, String nic) {
+		int check = service.NicCheck(nic);
+		String result = "0";
+		if(check == 1) {
+			result = "1";
+		}
+		System.out.println("aaaaaaaaaaaaaaaaaa : "+result);
 		return result;
 	}
 }

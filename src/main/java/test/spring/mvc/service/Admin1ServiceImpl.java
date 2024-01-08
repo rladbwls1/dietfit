@@ -87,8 +87,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 
 	@Override
 	public int NicCheck(String nic) {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println(nic);
+		int check = adminJPA.NicCheck(nic);
+		
+		System.out.println("bbbbbbbbbbbbbbbbbbbbbb " + check);
+		return check;
 	}
 	
 }
