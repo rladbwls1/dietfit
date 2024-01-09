@@ -5,11 +5,11 @@
 
 <mapper namespace="test.spring.mvc.repository.SellerMapper">
     <select id="findallproductbycompanyid" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
-        select * from ${companyid}_product
+        select * from all_product
     </select>
 
     <select id="findthumimg" parameterType="java.util.Map" resultType="test.spring.mvc.bean.ProductimgDTO">
-	    select * from ${companyid}_productimg where
+	    select * from all_productimg where
 	    companyid = #{companyid}
 	    AND category = #{category}
 	    AND category2 = #{category2}
@@ -19,7 +19,7 @@
 
 
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
-        SELECT * FROM ${companyid}_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
+        SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
     
     <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
