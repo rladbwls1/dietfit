@@ -2,6 +2,7 @@ package test.spring.mvc.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,15 +39,15 @@ public class SellerServiceImpl implements SellerService{
         if (couponDTO.getAdmincheck() == 0) {
             couponDTO.setAdmincheck(0);
         }
-
+        String uuid = UUID.randomUUID().toString();
+        couponDTO.setCouponid(uuid);
         // 쿠폰 발행 요청을 저장하고, 관리자에게 알림 (예: DB에 저장)
         mapper.addCoupon(couponDTO);
     }
 
 	@Override
 	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.findproductdetail(companyid, category, category2, flavor);
 	}
 	
 	

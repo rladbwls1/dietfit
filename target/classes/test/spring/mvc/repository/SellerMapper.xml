@@ -9,22 +9,23 @@
     </select>
 
     <select id="findthumimg" parameterType="java.util.Map" resultType="test.spring.mvc.bean.ProductimgDTO">
-        select * from ${companyid}_productimg where
-          companyid = #{companyid}
-          AND category = #{category}
-          AND category2 = #{category2}
-          AND flavor = #{flavor}
-          AND thum = 1
-    </select>
+	    select * from ${companyid}_productimg where
+	    companyid = #{companyid}
+	    AND category = #{category}
+	    AND category2 = #{category2}
+	    AND flavor = #{flavor}
+	    AND thum = 1
+	</select>
+
 
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         SELECT * FROM ${companyid}_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
     
     <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
-        INSERT INTO coupon_table
-        (coupon, couponid, createdate, deletedate, company, download, discount, boardnums, admincheck)
+        INSERT INTO allcoupon
+        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck)
         VALUES
-        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{company}, #{download}, #{discount}, #{boardnums}, #{admincheck})
+        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck})
     </insert>
 </mapper>
