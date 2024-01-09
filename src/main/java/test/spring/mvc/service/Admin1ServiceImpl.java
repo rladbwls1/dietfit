@@ -79,8 +79,19 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public void up_mem_info(Member_detailDTO dto) {
-		System.out.println("aaaaaaaaa");
-		mapper.up_mem_info(dto);
+	public int up_mem_info(Member_detailDTO dto ,Member_basicDTO mb) {
+		int result1 = mapper.up_mem_info(dto);
+		int result2 = adminJPA.up_mem_basic(mb);
+		return result1 + result2;
 	}
+
+	@Override
+	public int NicCheck(String nic) {
+		System.out.println(nic);
+		int check = adminJPA.NicCheck(nic);
+		
+		System.out.println("bbbbbbbbbbbbbbbbbbbbbb " + check);
+		return check;
+	}
+	
 }
