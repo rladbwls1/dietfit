@@ -19,6 +19,7 @@ public class MemberServiceImpl implements MemberService{
 	public void newMember(Member_basicDTO dto) {
 		dto.setPw(encoder.encode(dto.getPw()));
 		mapper.newMember(dto);
+		mapper.newMemberstatus(dto.getId());
 	}
 
 }

@@ -47,6 +47,7 @@ public class SellerServiceImpl implements SellerService{
 
 	@Override
 	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
+
 		return mapper.findproductdetail(companyid, category, category2, flavor);
 	}
 	

@@ -23,9 +23,9 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler{
 			roleNames.add(au.getAuthority());
 		});
 		String rdir="/member/all";
-		if(roleNames.contains("999")){
+		if(roleNames.contains("ROLE_999")){
 			rdir="/member/admin";
-		}else if(roleNames.contains("888")) {
+		}else if(roleNames.contains("ROLE_888")) {
 			rdir="/member/seller";
 		}
 		response.sendRedirect(rdir);

@@ -3,9 +3,9 @@ package test.spring.mvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -43,8 +43,21 @@ public class Admin1Controller {
 	}
 
 	@RequestMapping("modify")
-	public String modify(String id, Model model, @ModelAttribute Member_detailDTO dto) {
-		service.up_mem_info(dto);
-		return "redirect:/admin/management?id="+id;
+	public String modify(String id, Model model, Member_detailDTO dto, Member_basicDTO mb) {
+		int result = service.up_mem_info(dto, mb);
+		model.addAttribute("check", result);
+		model.addAttribute("id", id);
+		return "admin/modify";
+	}
+	
+	@RequestMapping("NicCheck")
+	public @ResponseBody String NicCheck(String id, String nic) {
+		int check = service.NicCheck(nic);
+		String result = "0";
+		if(check == 1) {
+			result = "1";
+		}
+		System.out.println("aaaaaaaaaaaaaaaaaa : "+result);
+		return result;
 	}
 }

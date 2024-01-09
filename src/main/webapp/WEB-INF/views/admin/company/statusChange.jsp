@@ -7,6 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h2>김은진</h2>
+ <script>
+        // 팝업을 닫고 부모 창을 새로 고침
+        window.close();
+        window.opener.location.reload();
+    </script>
 </body>
 </html>
