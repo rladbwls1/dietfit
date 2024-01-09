@@ -47,10 +47,7 @@ public class SellerServiceImpl implements SellerService{
 
 	@Override
 	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
-<<<<<<< HEAD
-=======
-		// TODO Auto-generated method stub
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+
 		return mapper.findproductdetail(companyid, category, category2, flavor);
 	}
 	
