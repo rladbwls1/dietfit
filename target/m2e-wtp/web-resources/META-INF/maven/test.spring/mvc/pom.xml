@@ -243,6 +243,19 @@
          <version>${org.springframework-version}</version>
       </dependency>
       
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+		    <artifactId>jackson-jaxrs-json-provider</artifactId>
+		    <version>2.9.4</version>
+		</dependency>
+      
+=======
+<<<<<<< HEAD
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 	<dependency>
 	    <groupId>javax.mail</groupId>
@@ -256,6 +269,11 @@
 		    <artifactId>jackson-jaxrs-json-provider</artifactId>
 		    <version>2.9.4</version>
 		</dependency>
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/ysjin2
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
    </dependencies>
     <build>
         <plugins>

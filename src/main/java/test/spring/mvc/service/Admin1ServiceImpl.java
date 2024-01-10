@@ -11,8 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.SaleDTO;
 import test.spring.mvc.entity.Member_basicEntity;
 import test.spring.mvc.repository.Admin1Mapper;
 import test.spring.mvc.repository.AdminJPARepository;
@@ -89,9 +91,56 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public int NicCheck(String nic) {
 		System.out.println(nic);
 		int check = adminJPA.NicCheck(nic);
-		
-		System.out.println("bbbbbbbbbbbbbbbbbbbbbb " + check);
 		return check;
 	}
-	
+
+	@Override
+	public List<SaleDTO> best() {
+		return mapper.best();
+	}
+
+	@Override
+	public void allcoupon(int pageNum, Model model) {
+		int pageSize = 10;
+		int count = mapper.allcoupon_count();
+		//page
+		int startRow = (pageNum - 1) * pageSize + 1;
+		int endRow = pageNum * pageSize;
+	    int pageCount = count / pageSize + ( count % pageSize == 0 ? 0 : 1);
+		 
+        int startPage = (int)(pageNum/10)*10+1;
+		int pageBlock=10;
+        int endPage = startPage + pageBlock-1;
+        if (endPage > pageCount) {
+			endPage = pageCount;
+        }				
+		List<AllcouponDTO> list = Collections.EMPTY_LIST;
+		if(count > 0) {
+			list = mapper.allcoupon(startRow, endRow);
+		}
+		model.addAttribute("couponlist", list);
+		model.addAttribute("count",count);
+	    model.addAttribute("pageNum",pageNum);
+	    model.addAttribute("pageSize",pageSize);
+	    
+        model.addAttribute("pageCount",pageCount);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("pageBlock",pageBlock);
+        model.addAttribute("endPage",endPage);
+	}
+
+	@Override
+	public int adminCheck(String couponid) {
+		return mapper.adminCheck(couponid);
+	}
+
+	@Override
+	public int adminCheck2(String couponid) {
+		return mapper.adminCheck2(couponid);
+	}
+
+	@Override
+	public int alram() {
+		return mapper.alram();
+	}
 }

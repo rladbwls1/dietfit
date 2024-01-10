@@ -6,23 +6,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>member_management</title>
+<title>쿠폰 요청</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
 <body>
-<div>${info.id}(${info.name}) 님의 회원정보입니다.</div>
+	<div>${info.id}(${info.name}) 님의 회원정보입니다.</div>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/admin/management?id=${info.id}">회원정보</a>
+    <a class="nav-link" aria-current="page" href="/admin/management?id=${info.id}">회원정보</a>
   </li>
-  <c:if test="${info.status==888}">
 	  <li class="nav-item">
-	    <a class="nav-link" href="/admin/coupon?id=${info.id}">쿠폰요청</a>
+	    <a class="nav-link active" href="/admin/coupon?id=${info.id}">쿠폰요청</a>
 	  </li>
-  </c:if>
 </ul>
-<h2>회원 기본 정보</h2>
+<h2>쿠폰 승인</h2>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>아이디</th>
@@ -54,51 +52,6 @@
 			<td><fmt:formatDate value="${info.reg}" pattern="yyyy-MM-dd HH:ss"/></td>
 		</tr>
 	</table>
-	<button type="button" onclick="modify_info('${info.id}')">정보 수정</button>
-	
-<h2>사이트 가입 정보</h2>
-	<table border="1" style="border-collapse:collapse;">
-		<tr>
-			<th>주소</th>
-			<td>${mem_info.addr1} ${mem_info.addr2}</td>
-		</tr>
-		<tr>
-			<th>전화번호</th>
-			<td>${mem_info.phone}</td>
-		</tr>
-		<tr>
-			<th>닉네임</th>
-			<td>${info.nic}</td>
-		</tr>
-		<tr>
-			<th>생년월일</th>
-			<td><fmt:formatDate value="${mem_info.birth}" pattern="yyyy-MM-dd"/></td>
-		</tr>
-		<tr>
-			<th>성별</th>
-			<td>
-				<c:if test="${mem_info.gender == 0}">선택 안함</c:if>
-				<c:if test="${mem_info.gender == 1}">남자</c:if>
-				<c:if test="${mem_info.gender == 2}">여자</c:if>
-			</td>
-		</tr>
-	</table>	
 </body>
-<script>
-function modify_info(id){
-	var width = 650;
-    var height = 650;
-
-    var screenWidth = window.innerWidth;
-    var screenHeight = window.innerHeight;
-
-    var left = (screenWidth - width) / 2;
-    var top = (screenHeight - height) / 2;
-
-    var popOption = "width=" + width + "px, height=" + height + "px, top=" + top + "px, left=" + left + "px, scrollbars=yes";
-    var openUrl = '/admin/modifyinfo?id='+id;
-
-    window.open(openUrl, 'pop', popOption);
-}
-</script>
+</body>
 </html>
