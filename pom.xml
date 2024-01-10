@@ -243,7 +243,6 @@
          <version>${org.springframework-version}</version>
       </dependency>
       
-<<<<<<< HEAD
       <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
@@ -251,10 +250,6 @@
 		    <version>2.9.4</version>
 		</dependency>
 
-=======
-      
-      
->>>>>>> refs/remotes/origin/ksj010404
 	<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 	<dependency>
 	    <groupId>javax.mail</groupId>
