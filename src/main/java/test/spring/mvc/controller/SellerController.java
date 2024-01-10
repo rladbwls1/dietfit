@@ -25,45 +25,6 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
-	@RequestMapping("/store/{companyid}")
-	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
-	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
-	    if (products != null) {
-	        for (ProductDTO product : products) {
-	            List<ProductimgDTO> thumImages = service.findthumimg(
-	                    companyid, product.getCategory(),
-	                    product.getCategory2(), product.getFlavor());
-	            product.setImages(thumImages);
-	        }
-	        model.addAttribute("products", products);
-	    }
-	    return "seller2/productList";
-	}
-	
-	@RequestMapping("/store/home")
-	public String main() {
-		return "seller2/home";
-	}
-	
-//	@GetMapping("/{companyid}/{category}/{category2}/{flavor}/{num}/{ext}/{thum}")
-//	public String getImageUrl(@PathVariable String companyid,
-//	                          @PathVariable String category,
-//	                          @PathVariable String category2,
-//	                          @PathVariable String flavor,
-//	                          @PathVariable String num,
-//	                          @PathVariable String ext,
-//	                          @PathVariable String thum) {
-//	    // 이미지 파일이 저장된 디렉토리 경로 설정 (예: 바탕화면-식단파일)
-//	    String directoryPath = "C:\\Users\\y\\Desktop\\dietfitfile";
-//
-//	    // 이미지 파일의 전체 경로 생성
-//	    String filename = companyid + category + category2 + flavor + num + ext;
-//	    String imagePath = Paths.get(directoryPath, filename).toString();
-//
-//	    // 이미지 파일의 URL로 변환하여 반환
-//	    return "file:" + imagePath;
-//	}
-	
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Model model) {
         model.addAttribute("couponRequest", new AllcouponDTO());
@@ -79,7 +40,7 @@ public class SellerController {
 
 	@RequestMapping("/chat")
     public String chat() {
-        return "/seller2/chat";
+        return "/seller2/chat";	
     }
 	@RequestMapping("/contact")
 	public String contact(@RequestParam("productId") String productId, Model model) {
