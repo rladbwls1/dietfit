@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <form action="/seller/contact" method="post">
+                <form action="/seller/chat" method="post">
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="productId" value="${product.product}">
                     <input type="hidden" name="productId" value="${product.companyid}">

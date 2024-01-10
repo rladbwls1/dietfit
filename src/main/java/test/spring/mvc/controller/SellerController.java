@@ -45,25 +45,6 @@ public class SellerController {
 		return "seller2/home";
 	}
 	
-//	@GetMapping("/{companyid}/{category}/{category2}/{flavor}/{num}/{ext}/{thum}")
-//	public String getImageUrl(@PathVariable String companyid,
-//	                          @PathVariable String category,
-//	                          @PathVariable String category2,
-//	                          @PathVariable String flavor,
-//	                          @PathVariable String num,
-//	                          @PathVariable String ext,
-//	                          @PathVariable String thum) {
-//	    // 이미지 파일이 저장된 디렉토리 경로 설정 (예: 바탕화면-식단파일)
-//	    String directoryPath = "C:\\Users\\y\\Desktop\\dietfitfile";
-//
-//	    // 이미지 파일의 전체 경로 생성
-//	    String filename = companyid + category + category2 + flavor + num + ext;
-//	    String imagePath = Paths.get(directoryPath, filename).toString();
-//
-//	    // 이미지 파일의 URL로 변환하여 반환
-//	    return "file:" + imagePath;
-//	}
-	
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Model model) {
         model.addAttribute("couponRequest", new AllcouponDTO());
@@ -78,16 +59,32 @@ public class SellerController {
 	}
 
 	@RequestMapping("/chat")
-    public String chat() {
+    public String chat(@RequestParam("productId") String productId,Model model) {
+		model.addAttribute("productId", productId);
         return "/seller2/chat";
     }
-	@RequestMapping("/contact")
-	public String contact(@RequestParam("productId") String productId, Model model) {
-		model.addAttribute("productId", productId);
-		return "/seller2/contactForm";
-	}
 
 	
+	@RequestMapping("/modify")
+    public String modify() {
+        return "/seller2/sellermodifyform";
+    }
+	@RequestMapping("/modifyPro")
+	public String modifyPro() {
+		return "";
+	}
+	@RequestMapping("/withdrawpro")
+	public String withdrawpro() {
+		return "";
+	}
+	@RequestMapping("/mypage")
+	public String mypage() {
+		return "/seller2/mypage";
+	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount() {
+		return "/seller2/productdiscount";
+	}
 	
 }
 
