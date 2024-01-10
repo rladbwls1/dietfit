@@ -16,5 +16,14 @@ public interface AdminService {
 		
 		public void companyStatus(String id, String status);
 		
+		public int productcount();
+		public void allProduct(Model model);
 		public void productList(Model model, String companyid);
+		
+		public void checkStock();
+		
+		public void getProductName(String companyid, String category, String category2, String flavor, Model model);
+		public void getProductStock(String product);
+		public String getCompanyEmail(String companyid);
+
 }

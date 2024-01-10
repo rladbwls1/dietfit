@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,9 @@
                     <td>${product.price}</td>
                     <td>${product.count}</td>
                     <td>${product.stock}</td>
-                    <td>${product.expiry}</td>
+                    <td>
+                    	<fmt:formatDate value= "${product.expiry}" pattern="yyyy-MM-dd"/>
+                    </td>
                 </tr>
             </c:forEach>
         </tbody>
