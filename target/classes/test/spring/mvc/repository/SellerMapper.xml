@@ -4,27 +4,42 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="test.spring.mvc.repository.SellerMapper">
+
     <select id="findallproductbycompanyid" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
-        select * from ${companyid}_product
+        select * from all_product
     </select>
 
     <select id="findthumimg" parameterType="java.util.Map" resultType="test.spring.mvc.bean.ProductimgDTO">
-        select * from ${companyid}_productimg where
-          companyid = #{companyid}
-          AND category = #{category}
-          AND category2 = #{category2}
-          AND flavor = #{flavor}
-          AND thum = 1
-    </select>
+	    select * from all_productimg where
+	    companyid = #{companyid}
+	    AND category = #{category}
+	    AND category2 = #{category2}
+	    AND flavor = #{flavor}
+	    AND thum = 1
+	</select>
+
 
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
-        SELECT * FROM ${companyid}_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
+        SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
     
     <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
-        INSERT INTO coupon_table
-        (coupon, couponid, createdate, deletedate, company, download, discount, boardnums, admincheck)
+        INSERT INTO allcoupon
+        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck, minprice, content)
         VALUES
-        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{company}, #{download}, #{discount}, #{boardnums}, #{admincheck})
+        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
     </insert>
+    <select id="sellermodifyselect" parameterType="string" resultType="test.spring.mvc.bean.Member_basicDTO">
+    	select * from member_basic where id=#{id} and pw=#{pw}
+    </select>
+    <update id="sellermodifyupdate" parameterType="test.spring.mvc.bean.Member_basicDTO">
+    	update member_basic
+    	<set>
+    		<if test = "pw != null and pw != '' ">pw=#{pw}, </if> 
+			<if test = "name != null and name != '' ">name=#{name}, </if> 
+			<if test = "email != null and email != '' ">email=#{email}, </if> 
+			<if test = "nic != null and nic != '' "> nic=#{nic}</if> 
+    	</set>
+    	where id=#{id}
+    </update>
 </mapper>

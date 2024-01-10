@@ -7,9 +7,21 @@
 <head>
 <meta charset="UTF-8">
 <title>member_management</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
 <body>
 <div>${info.id}(${info.name}) 님의 회원정보입니다.</div>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/admin/management?id=${info.id}">회원정보</a>
+  </li>
+  <c:if test="${info.status==888}">
+	  <li class="nav-item">
+	    <a class="nav-link" href="/admin/coupon?id=${info.id}">쿠폰요청</a>
+	  </li>
+  </c:if>
+</ul>
 <h2>회원 기본 정보</h2>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>

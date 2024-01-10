@@ -3,15 +3,14 @@ package test.spring.mvc.controller;
 import java.nio.file.Paths;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -26,6 +25,8 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
+<<<<<<< HEAD
+=======
 	@RequestMapping("/store/{companyid}")
 	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
@@ -46,37 +47,52 @@ public class SellerController {
 		return "seller2/home";
 	}
 	
-	@GetMapping("/{companyid}/{category}/{category2}/{flavor}/{num}/{ext}/{thum}")
-	public String getImageUrl(@PathVariable String companyid,
-	                          @PathVariable String category,
-	                          @PathVariable String category2,
-	                          @PathVariable String flavor,
-	                          @PathVariable String num,
-	                          @PathVariable String ext,
-	                          @PathVariable String thum) {
-	    // 이미지 파일이 저장된 디렉토리 경로 설정 (예: 바탕화면-식단파일)
-	    String directoryPath = "C:\\Users\\y\\Desktop\\dietfitfile";
-
-	    // 이미지 파일의 전체 경로 생성
-	    String filename = companyid + category + category2 + flavor + num + ext;
-	    String imagePath = Paths.get(directoryPath, filename).toString();
-
-	    // 이미지 파일의 URL로 변환하여 반환
-	    return "file:" + imagePath;
-	}
-	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Model model) {
         model.addAttribute("couponRequest", new AllcouponDTO());
         return "/seller2/couponrequestForm";
     }
 
-	@PostMapping("/coupon/request")
-    public String handleCouponRequest(@ModelAttribute("couponRequest") AllcouponDTO couponRequest, Model model) {
-        // 쿠폰 발행 요청을 서비스로 전달
-        service.addCoupon(couponRequest);
-        return "/seller2/couponrequestresult";
-   	}
+	@RequestMapping("/coupon/requestPro")
+	public String requestPro(@ModelAttribute("couponRequest") AllcouponDTO couponRequest, Model model) {
+	    // 쿠폰 발행 요청을 서비스로 전달
+	    service.addCoupon(couponRequest);
+	    return "/seller2/couponrequestresult";
+	}
 
+	@RequestMapping("/chat")
+<<<<<<< HEAD
+    public String chat() {
+        return "/seller2/chat";	
+=======
+    public String chat(@RequestParam("productId") String productId,Model model) {
+		model.addAttribute("productId", productId);
+        return "/seller2/chat";
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+    }
+
+	
+	@RequestMapping("/modify")
+    public String modify() {
+        return "/seller2/sellermodifyform";
+    }
+	@RequestMapping("/modifyPro")
+	public String modifyPro() {
+		return "";
+	}
+	@RequestMapping("/withdrawpro")
+	public String withdrawpro() {
+		return "";
+	}
+	@RequestMapping("/mypage")
+	public String mypage() {
+		return "/seller2/mypage";
+	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount() {
+		return "/seller2/productdiscount";
+	}
+	
 }
 
