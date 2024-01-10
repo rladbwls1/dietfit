@@ -10,4 +10,18 @@
 	<insert id="newMemberstatus" >
 		insert into authorities values(#{id}, 'ROLE_1')
 	</insert>
+	<insert id="newMember2" parameterType="test.spring.mvc.bean.Member_detailDTO">
+		insert into Member_detail (id,path) values(#{id},#{path})
+	</insert>
+	<select id="registerEmailCheck" resultType="int">
+		select count(*) from member_basic where email=#{email}
+	</select>
+	<select id="registerIdCheck" resultType="int">
+		select count(*) from member_basic where id=#{id}
+	</select>
+	<select id="loginKakao" resultType="test.spring.mvc.bean.Member_basicDTO">
+		select id,pw from member_basic where email=#{email}
+	</select>
+
+	
 </mapper>
