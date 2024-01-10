@@ -20,4 +20,6 @@ public class AllcouponDTO {
 	private int discount;
 	private String boardnums;
 	private int admincheck;
+	private int minprice;
+	private String content;
 }
