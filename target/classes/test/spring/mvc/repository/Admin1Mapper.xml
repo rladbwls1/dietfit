@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="test.spring.mvc.repository.Admin1Mapper">
+    	<select id="mem_info" resultType="member_detail">
+    		select * from member_detail where id=#{id}
+    	</select>
+    	<update id="up_mem_info" parameterType="member_detail">
+    		update member_detail
+    		<set>
+    			<if test="birth != null">birth=#{birth},</if>
+    			<if test="phone != null">phone=#{phone},</if>
+    			<if test="gender != null">gender=#{gender},</if>
+    			<if test="addr1 != null">addr1=#{addr1},</if>
+    			<if test="addr2 != null">addr2=#{addr2}</if>
+    		</set>
+    		where id=#{id}
+    	</update>
+    	<select id="best" resultType="sale">
+    		<![CDATA[ 
+    		SELECT productid FROM (
+			    SELECT * FROM sale ORDER BY quantity DESC
+			) WHERE ROWNUM <= 2
+			]]>
+    	</select>
+    	<select id="allcoupon" resultType="allcoupon">
+    		<![CDATA[ 
+    		select * from (select b.* , rownum r from
+			    (select * from allcoupon) b)
+				where r >=#{start} and r <=#{end} 
+			]]>	
+    	</select>
+    	<select id="allcoupon_count">
+    		select count(*) from allcoupon
+    	</select>
+    	<update id="adminCheck">
+    		update allcoupon set admincheck = 1 where couponid=#{couponid}
+    	</update>
+    	<update id="adminCheck2">
+    		update allcoupon set admincheck = 2 where couponid=#{couponid}
+    	</update>
+    	<select id="alram">
+    		select count(*) from allcoupon where admincheck = 0
+    	</select>
+    </mapper>
