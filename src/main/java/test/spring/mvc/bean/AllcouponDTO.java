@@ -10,9 +10,11 @@ public class AllcouponDTO {
 	private String couponid;
 	private Date createdate;
 	private Date deletedate;
-	private String company;
+	private String companyid;
 	private int download;
 	private int discount;
 	private String boardnums;
 	private int admincheck;
+	private int minprice;
+	private String content;
 }

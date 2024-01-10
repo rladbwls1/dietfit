@@ -242,6 +242,14 @@
          <artifactId>spring-security-taglibs</artifactId>
          <version>${org.springframework-version}</version>
       </dependency>
+      
+      <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+		    <artifactId>jackson-jaxrs-json-provider</artifactId>
+		    <version>2.9.4</version>
+		</dependency>
+      
    </dependencies>
     <build>
         <plugins>

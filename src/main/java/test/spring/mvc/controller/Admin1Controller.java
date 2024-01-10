@@ -1,5 +1,9 @@
 package test.spring.mvc.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.SaleDTO;
 import test.spring.mvc.service.Admin1ServiceImpl;
 
 @Controller
@@ -57,7 +62,53 @@ public class Admin1Controller {
 		if(check == 1) {
 			result = "1";
 		}
-		System.out.println("aaaaaaaaaaaaaaaaaa : "+result);
 		return result;
+	}
+	
+	@RequestMapping("best")
+	public String best(String id, Model model) {
+		List<SaleDTO> dto = service.best();
+		model.addAttribute("best", dto);
+		return "admin/best";
+	}
+	
+	@RequestMapping("allcoupon")
+	public String allcoupon(Model model, @RequestParam(value="pageNum", defaultValue="1") int pageNum) {
+		service.allcoupon(pageNum, model);
+		int alram = service.alram();
+		model.addAttribute("alram", alram);
+		return "admin/allcoupon";
+	}
+	
+	@RequestMapping("adminCheck")
+	public @ResponseBody Map<String, Object> adminCheck(String couponId) {
+		Map<String, Object> chk = new HashMap<>();
+		int check = service.adminCheck(couponId);
+		int alram = service.alram();
+		if(check == 1) {
+			chk.put("result", check);
+			chk.put("msg", alram);
+		}else {
+			chk.put("result", check);
+			chk.put("msg", 0);
+		}
+		return chk;
+	}
+	@RequestMapping("adminCheck2")
+	public @ResponseBody String adminCheck2(String couponId) {
+		int check = service.adminCheck2(couponId);
+		int alram = service.alram();
+		String result = "0";
+		if(check == 1) {
+			result = "1";
+		}
+		return result;
+	}
+	
+	@RequestMapping("coupon")
+	public String coupon(String id, Model model) {
+		Member_basicDTO dto = service.info(id);
+		model.addAttribute("info", dto);
+		return "/admin/coupon";
 	}
 }
