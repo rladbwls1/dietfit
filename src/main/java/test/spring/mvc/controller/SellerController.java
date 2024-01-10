@@ -25,6 +25,29 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
+<<<<<<< HEAD
+=======
+	@RequestMapping("/store/{companyid}")
+	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
+	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
+	    if (products != null) {
+	        for (ProductDTO product : products) {
+	            List<ProductimgDTO> thumImages = service.findthumimg(
+	                    companyid, product.getCategory(),
+	                    product.getCategory2(), product.getFlavor());
+	            product.setImages(thumImages);
+	        }
+	        model.addAttribute("products", products);
+	    }
+	    return "seller2/productList";
+	}
+	
+	@RequestMapping("/store/home")
+	public String main() {
+		return "seller2/home";
+	}
+	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Model model) {
         model.addAttribute("couponRequest", new AllcouponDTO());
@@ -39,16 +62,37 @@ public class SellerController {
 	}
 
 	@RequestMapping("/chat")
+<<<<<<< HEAD
     public String chat() {
         return "/seller2/chat";	
-    }
-	@RequestMapping("/contact")
-	public String contact(@RequestParam("productId") String productId, Model model) {
+=======
+    public String chat(@RequestParam("productId") String productId,Model model) {
 		model.addAttribute("productId", productId);
-		return "/seller2/contactForm";
-	}
+        return "/seller2/chat";
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+    }
 
 	
+	@RequestMapping("/modify")
+    public String modify() {
+        return "/seller2/sellermodifyform";
+    }
+	@RequestMapping("/modifyPro")
+	public String modifyPro() {
+		return "";
+	}
+	@RequestMapping("/withdrawpro")
+	public String withdrawpro() {
+		return "";
+	}
+	@RequestMapping("/mypage")
+	public String mypage() {
+		return "/seller2/mypage";
+	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount() {
+		return "/seller2/productdiscount";
+	}
 	
 }
 

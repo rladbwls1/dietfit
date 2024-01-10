@@ -3,10 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Product Inquiry Form</title>
+    <title>상품문의</title>
 </head>
 <body>
-    <h2>Product Inquiry Form</h2>
+    <h2>상품문의</h2>
     <form action="/seller/submitInquiry" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="productId" value="${productId}"/>
