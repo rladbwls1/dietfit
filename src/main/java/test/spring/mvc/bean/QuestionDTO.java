@@ -7,7 +7,9 @@ import lombok.Data;
 @Data
 public class QuestionDTO {
 	private int num;
-	private String productid;
+	private String category;
+	private String random;
+	private String flavor;
 	private String id;
 	private int inquire;
 	private String content;
