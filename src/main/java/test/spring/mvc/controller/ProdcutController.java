@@ -24,7 +24,6 @@ public class ProdcutController {
                          @PathVariable ("category2") String category2,
                          @PathVariable ("flavor") String flavor,
                          Model model) {
-    	System.out.println(companyid);
         // 여기에서 필요한 로직을 수행하고, 필요한 데이터를 모델에 추가하세요
         ProductDTO product = sellerService.findproductdetail(companyid, category, category2, flavor);
         model.addAttribute("product", product);
