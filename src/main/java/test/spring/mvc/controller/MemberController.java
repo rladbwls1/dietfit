@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
@@ -62,7 +63,9 @@ public class MemberController {
 	}
 	//·Î±×ÀÎ
 	@RequestMapping("customLogin")
-	public String doLogin() {
+	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
+			Model model) {
+		model.addAttribute("exception",exception);
 		return "member/login";
 	}
 
@@ -95,14 +98,7 @@ public class MemberController {
 		}
 		return check;
 	}
-	@RequestMapping("loginCheck")
-	public @ResponseBody boolean loginCheck(String username,HttpSession session) {
-		boolean check=false;
-		if(service.registerIdCheck(username)==1) {
-			check=true;
-		}
-		return check;
-	}
+	
 	
 	
 }
