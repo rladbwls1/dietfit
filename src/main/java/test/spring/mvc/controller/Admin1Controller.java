@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
-import test.spring.mvc.bean.SaleDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.service.Admin1ServiceImpl;
 
 @Controller
@@ -66,8 +68,20 @@ public class Admin1Controller {
 	}
 	
 	@RequestMapping("best")
-	public String best(String id, Model model) {
-		List<SaleDTO> dto = service.best();
+	public String best(Model model) {
+		List<ProductDTO> dto = service.best();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = service.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
 		model.addAttribute("best", dto);
 		return "admin/best";
 	}
@@ -108,7 +122,29 @@ public class Admin1Controller {
 	@RequestMapping("coupon")
 	public String coupon(String id, Model model) {
 		Member_basicDTO dto = service.info(id);
+		List<AllcouponDTO> list = service.coupon(id);
 		model.addAttribute("info", dto);
+		model.addAttribute("coupon", list);
 		return "/admin/coupon";
 	}
+
+	@RequestMapping("best2")
+	public String best2(Model model) {
+		List<ProductDTO> dto = service.best2();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = service.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "/admin/best2";
+	}
+	
 }

@@ -24,6 +24,7 @@ public class ProductDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiry;		// 유통기한
 	private String price;		// 가격
+	private String imagePath;   // 이미지 경로 
 	private List<ProductimgDTO> images; // 이미지 리스트
 	
 	

@@ -7,5 +7,7 @@
 		<typeAlias type="test.spring.mvc.bean.Member_detailDTO" alias="member_detail"/>
 		<typeAlias type="test.spring.mvc.bean.SaleDTO" alias="sale"/>
 		<typeAlias type="test.spring.mvc.bean.AllcouponDTO" alias="allcoupon"/>
+		<typeAlias type="test.spring.mvc.bean.ProductDTO" alias="product"/>
+		<typeAlias type="test.spring.mvc.bean.ProductimgDTO" alias="pimg"/>
 	</typeAliases>
 </configuration>
