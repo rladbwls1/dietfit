@@ -159,4 +159,10 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<ProductDTO> best2() {
 		return mapper.best2();
 	}
+	
+	@Override
+	public List<ProductDTO> discount() {
+		return mapper.discount();
+	}
+	
 }

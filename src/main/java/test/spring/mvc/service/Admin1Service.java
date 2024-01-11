@@ -26,5 +26,6 @@ public interface Admin1Service{
 	public int alram();
 	public List<AllcouponDTO> coupon(String id);
 	public ProductimgDTO pro_img(String companyid, String category, String category2);
+	public List<ProductDTO> discount();
 
 }

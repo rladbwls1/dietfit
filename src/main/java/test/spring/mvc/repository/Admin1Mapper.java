@@ -22,4 +22,5 @@ public interface Admin1Mapper {
 	public List<AllcouponDTO> coupon(String id);
 	public ProductimgDTO pro_img(@Param("companyid")String companyid, @Param("category")String category,
 			@Param("category2")String category2);
+	public List<ProductDTO> discount();
 }
