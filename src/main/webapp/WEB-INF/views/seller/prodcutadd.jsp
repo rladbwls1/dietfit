@@ -29,7 +29,7 @@
 						    <option value="24">분식,만두</option>
 						    <option value="25">식재료</option>
 						    <option value="26">계란</option>
-						    <option value="00">기타</option>
+						    <option value="29">기타</option>
 	                    </select>`;
 	            } else if (selectedBigCategory === "간식") {
 	            	smallCategoryOptions = `
@@ -62,7 +62,6 @@
 	
 	        function fileRemove() {
 	        	
-	        	
 	        }
 	    </script>
 	    
@@ -70,7 +69,7 @@
 	<body>
 	    <h2>상품 등록</h2>
 	    <form action="/seller/productaddPro" method="post" enctype="multipart/form-data">
-	    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}";>
+	    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	    	<input type="hidden" name="companyid" value="${companyid}">
 	    	
 	    	큰 카테고리:

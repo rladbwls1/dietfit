@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="test.spring.mvc.repository.SecurityMapper">
+
+	<resultMap id="authMap" type="test.spring.mvc.bean.AuthDTO" >
+		<result property="username" column="username"/>
+		<result property="authority" column="authority"/>
+	</resultMap>
+	<resultMap id="memberMap" type="test.spring.mvc.bean.Member_basicDTO" >
+		<result property="id" column="id"/>
+		<result property="pw" column="pw"/>
+		<result property="name" column="name"/>
+		<result property="reg" column="reg"/>
+		<result property="nic" column="nic"/>
+		<result property="email" column="email" />
+		<result property="status" column="status" />
+		<collection property="authList" resultMap="authMap" />
+	</resultMap>
+	
+	<select id="read" resultMap="memberMap">
+		select * from member_basic s left outer join authorities auth 
+			on s.id=auth.username
+<<<<<<< HEAD
+			where s.id=#{userid} and s.status!=0 and s.status!=99
+=======
+			where s.id=#{userid}
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+	</select>
+	
+</mapper>
