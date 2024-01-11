@@ -18,8 +18,6 @@
     		</set>
     		where id=#{id}
     	</update>
-<<<<<<< HEAD
-=======
     	<select id="best" resultType="sale">
     		<![CDATA[ 
     		SELECT productid FROM (
@@ -46,5 +44,4 @@
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
     	</select>
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     </mapper>

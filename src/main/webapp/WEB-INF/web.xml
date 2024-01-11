@@ -11,7 +11,7 @@
 			/WEB-INF/spring/aop-context.xml
 			/WEB-INF/spring/security-context.xml
 		</param-value>
-	</context-param>
+	</context-param> 
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -33,7 +33,7 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+	 
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
