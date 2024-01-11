@@ -1,42 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쿠폰요청</title>
 </head>
 <body>
     <h2>쿠폰요청</h2>
-    <form action="#" th:action="@{/coupon/request}" th:object="${couponRequest}" method="post">
+    <form action="/seller/coupon/requestPro" method="post">
+    
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <label for="coupon">쿠폰이름</label>
-        <input type="text" id="coupon" th:field="*{coupon}" required>
+        <input type="text" id="coupon" name="coupon" required>
         <br>
-        <label for="description">쿠폰id:</label>
-        <textarea id="description" th:field="*{description}" required></textarea>
-        <br>
-        <!-- 나머지 필드들 추가 -->
-        <label for="createdate">생성일:</label>
-        <input type="date" id="createdate" th:field="*{createdate}" required>
+        <label for="createdate">사용시작일:</label>
+        <input type="date" id="createdate" name="createdate" required>
         <br>
         <label for="deletedate">만료일:</label>
-        <input type="date" id="deletedate" th:field="*{deletedate}" required>
+        <input type="date" id="deletedate" name="deletedate" required>
         <br>
-        <label for="company">회사id:</label>
-        <input type="text" id="company" th:field="*{company}" required>
+        <label for="companyid">회사id:</label>
+        <input type="text" id="companyid" name="companyid" value="${companyId}" readonly>
         <br>
-        <label for="download">다운로드횟수:</label>
-        <input type="number" id="download" th:field="*{download}" required>
+        <label for="download">총다운로드횟수:</label>
+        <input type="number" id="download" name="download" required>
+        <br>
+        <label for="minprice">최소주문금액:</label>
+        <input type="number" id="minprice" name="minprice" required>
         <br>
         <label for="discount">할인율:</label>
-        <input type="number" id="discount" th:field="*{discount}" required>
+        <input type="number" id="discount" name="discount" required>
         <br>
         <label for="boardnums">적용가능상품:</label>
-        <input type="text" id="boardnums" th:field="*{boardnums}" required>
+        <select id="boardnums" name="boardnums" required>
+        	<optgroup label="전체 상품">
+		        <option value="all">전체 상품</option>
+		    </optgroup>
+            <optgroup label="식사">
+                <option value="11">도시락</option>
+                <option value="12">밥</option>
+                <option value="13">죽</option>
+                <option value="14">면</option>
+                <option value="15">밀키트</option>
+            </optgroup>
+            <optgroup label="식사대용">
+	            <option value="21">샐러드</option>
+	            <option value="22">닭가슴살</option>
+	            <option value="23">가공품(핫바/소시지/핫도그)</option>
+	            <option value="24">분식,만두</option>
+	            <option value="25">식재료</option>
+	            <option value="26">계란</option>
+	            <option value="29">기타</option>
+            </optgroup>
+            <optgroup label="간식">
+	            <option value="31">쿠키,칩등</option>
+	            <option value="32">초콜릿</option>
+	            <option value="33">떡</option>
+	            <option value="34">빵</option>
+	            <option value="35">고구마</option>
+	            <option value="36">프로틴바 등 견과류(오트밀)</option>
+	            <option value="39">기타</option>
+            </optgroup>
+            <optgroup label="음료">
+	            <option value="41">쉐이크</option>
+	            <option value="42">주스</option>
+	            <option value="43">티종류</option>
+	            <option value="44">탄산수</option>
+	            <option value="49">기타</option>
+            </optgroup>
+        </select>
         <br>
-
-        <button type="submit">신청하기</button>
+        <label for="content">상세설명</label>
+        <textarea id="content" name="content" required></textarea>
+        <br>
+        <input type='submit' value='신청하기'> 
     </form>
 </body>
 </html>

@@ -9,13 +9,12 @@
 <title>memberList</title>
 </head>
 <body>
-	<h2>회원 리스트99</h2>
+	<h2>회원 리스트</h2>
 	<h5>총 ${count}명</h5>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>번호</th>
 			<th>아이디</th>
-			<th>비밀번호</th>
 			<th>사용자 이름</th>
 			<th>닉네임</th>
 			<th>이메일</th>
@@ -26,11 +25,10 @@
 			<tr>
 				<td>${member.num}</td>
 				<td>${member.id}</td>
-				<td>${member.pw}</td>
 				<td>${member.name}</td>
 				<td>${member.nic}</td>
 				<td>${member.email}</td>
-				<td>${member.reg}</td>
+				<td><fmt:formatDate value="${member.reg}" pattern="yyyy-MM-dd"/></td>
 				<td>
 					<c:if test="${member.status==1}">일반회원(new)</c:if>
 					<c:if test="${member.status==2}">일반회원(bronze)</c:if>

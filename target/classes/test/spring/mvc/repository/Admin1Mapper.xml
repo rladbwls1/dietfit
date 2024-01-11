@@ -18,4 +18,33 @@
     		</set>
     		where id=#{id}
     	</update>
+<<<<<<< HEAD
+=======
+    	<select id="best" resultType="sale">
+    		<![CDATA[ 
+    		SELECT productid FROM (
+			    SELECT * FROM sale ORDER BY quantity DESC
+			) WHERE ROWNUM <= 2
+			]]>
+    	</select>
+    	<select id="allcoupon" resultType="allcoupon">
+    		<![CDATA[ 
+    		select * from (select b.* , rownum r from
+			    (select * from allcoupon) b)
+				where r >=#{start} and r <=#{end} 
+			]]>	
+    	</select>
+    	<select id="allcoupon_count">
+    		select count(*) from allcoupon
+    	</select>
+    	<update id="adminCheck">
+    		update allcoupon set admincheck = 1 where couponid=#{couponid}
+    	</update>
+    	<update id="adminCheck2">
+    		update allcoupon set admincheck = 2 where couponid=#{couponid}
+    	</update>
+    	<select id="alram">
+    		select count(*) from allcoupon where admincheck = 0
+    	</select>
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     </mapper>

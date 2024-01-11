@@ -20,11 +20,8 @@ public class ProductDTO {
 	private int count;			// 조회수
 	private String product;		// 상품명
 	private int stock;			// 재고수
-	
-	@DateTimeFormat(pattern = "yy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiry;		// 유통기한
 	private String price;		// 가격
-	private List<ProductimgDTO> images; // 이미지 리스트
-	
-	
+	private String imagePath;   // 이미지 경로 
 }

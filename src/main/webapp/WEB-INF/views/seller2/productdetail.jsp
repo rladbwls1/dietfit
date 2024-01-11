@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <title>Product Details</title>
@@ -29,7 +30,18 @@
         </tr>
         <tr>
             <td>유통기한:</td>
-            <td>${product.expiry}</td>
+            <td>
+            	<fmt:formatDate value="${product.expiry}" pattern="yyyy-MM-dd"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <form action="/sellerchat/chat" method="post">
+                    <input type="hidden" name="productId" value="${product.product}">
+                    <input type="hidden" name="companyid" value="${product.companyid}">
+                    <button type="submit">상품 문의</button>
+                </form>
+            </td>
         </tr>
     </table>
 </body>

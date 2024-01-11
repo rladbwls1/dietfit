@@ -23,7 +23,11 @@
 	<select id="read" resultMap="memberMap">
 		select * from member_basic s left outer join authorities auth 
 			on s.id=auth.username
+<<<<<<< HEAD
+			where s.id=#{userid} and s.status!=0 and s.status!=99
+=======
 			where s.id=#{userid}
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	</select>
 	
 </mapper>
