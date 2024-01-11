@@ -22,6 +22,8 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
+<<<<<<< HEAD
+=======
 	@RequestMapping("/store/{companyid}")
 	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
@@ -42,6 +44,7 @@ public class SellerController {
 		return "seller2/home";
 	}
 	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Principal pri, Model model) {
 		String id = pri.getName();
@@ -58,6 +61,21 @@ public class SellerController {
 	    return "/seller2/couponrequestresult";
 	}
 
+<<<<<<< HEAD
+=======
+	@RequestMapping("/chat")
+<<<<<<< HEAD
+    public String chat() {
+        return "/seller2/chat";	
+=======
+    public String chat(@RequestParam("productId") String productId,Model model) {
+		model.addAttribute("productId", productId);
+        return "/seller2/chat";
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+    }
+
+	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/modify")
     public String modify(Principal pri, Model model) {
 		String id = pri.getName();

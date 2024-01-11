@@ -1,17 +1,15 @@
 package test.spring.mvc.service;
 
-import java.util.List;
 
 import test.spring.mvc.bean.AllcouponDTO;
+<<<<<<< HEAD
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
 public interface SellerService {
-    
-    List<ProductDTO> findallproductbycompanyid(String companyid);
-    List<ProductimgDTO> findthumimg(String companyid, String category, String category2, String flavor);
-    ProductDTO findproductdetail(String companyid, String category, String category2, String flavor);
     
     void addCoupon(AllcouponDTO couponDTO);
     public String findcompanyid(String id);
