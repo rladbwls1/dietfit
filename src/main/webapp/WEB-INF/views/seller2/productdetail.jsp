@@ -36,10 +36,9 @@
         </tr>
         <tr>
             <td colspan="2">
-                <form action="/seller/contact" method="post">
-                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <form action="/sellerchat/chat" method="post">
                     <input type="hidden" name="productId" value="${product.product}">
-                    <input type="hidden" name="productId" value="${product.companyid}">
+                    <input type="hidden" name="companyid" value="${product.companyid}">
                     <button type="submit">상품 문의</button>
                 </form>
             </td>
