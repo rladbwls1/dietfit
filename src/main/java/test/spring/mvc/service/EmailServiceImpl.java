@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import test.spring.mvc.bean.ProductDTO; // ProductDTO¸¦ import Ãß°¡
+import test.spring.mvc.bean.ProductDTO; // ProductDTOë¥¼ import ì¶”ê°€
 import test.spring.mvc.repository.AdminMapper;
 
 @Service
@@ -30,37 +30,55 @@ public class EmailServiceImpl implements EmailService {
         String from = "dietfitdie@gmail.com";
         String password = "mbeoyyanzgsppied";
 
-        // SMTP ÇÁ·ÎÅäÄİ ¼³Á¤
+        // SMTP í”„ë¡œí† ì½œ ì„¤ì •
         Properties props = new Properties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");
         props.setProperty("mail.smtp.port", "587");
         props.setProperty("mail.smtp.auth", "true");
         props.setProperty("mail.smtp.starttls.enable", "true");
 
-        // º¸³»´Â »ç¶÷ °èÁ¤ Á¤º¸ ¼³Á¤
+        // ë³´ë‚´ëŠ” ì‚¬ëŒ ê³„ì • ì •ë³´ ì„¤ì •
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(from, password);
             }
         });
 
-        // ¸ŞÀÏ ³»¿ë¿¡ ÇÊ¿äÇÑ companyemail, productName, stock
+        // ë©”ì¼ ë‚´ìš©ì— í•„ìš”í•œ companyemail, productName, stock
+        String companyName = mapper.getCompanyName(companyid);
         String companyemail = mapper.getCompanyEmail(companyid);
         String productName = mapper.getProductName(companyid, category, category2, flavor);
+        String productId = mapper.getProductId(productName);
         int stock = mapper.getProductStock(productName);
 
-        String subject = "DietfitÀÔ´Ï´Ù. Àç°í¼ö·® °ü·Ã ¸ŞÀÏ µå¸³´Ï´Ù.";
-        String text = "<h1>¾È³çÇÏ¼¼¿ä DietfitÀÔ´Ï´Ù<h1>"
-                + "<p>" + productName + "»óÇ° Àç°í¼ö " + stock + "°³ ¹Ì¸¸À¸·Î ¸ŞÀÏµå¸³´Ï´Ù</p>";
+        String subject = "Dietfitì…ë‹ˆë‹¤. ì¬ê³ ìˆ˜ëŸ‰ ê´€ë ¨ ë©”ì¼ ë“œë¦½ë‹ˆë‹¤.";
+        String text = "<div>"
+        	    + "<h1 style='color: #333366;'>ì•ˆë…•í•˜ì„¸ìš”. " + companyName+ "ë‹˜, Dietfitì…ë‹ˆë‹¤</h1>" 
+        		+ "<br /><p>"
+        		 + "<span style='background-color: #eae0ff; padding: 2px 5px;'>" + productName + 
+        		 "</span> ì¬ê³ ìˆ˜ê°€ 20ê°œ ë¯¸ë§Œì…ë‹ˆë‹¤ :) </p>"
+        	     + "<ul>"
+        		 +"<li>íšŒì‚¬ëª…:" + companyName +"</li>"
+        	     + "<li>ìƒí’ˆëª…: " + productName + "</li>"
+        	     + "<li>ìƒí’ˆID: " + productId + "</li>"
+        	     + "<li>ì¬ê³ ìˆ˜ëŸ‰: " + stock + "ê°œ</li>"
+        	     + "</ul>" 
+        	     + "</div>"
+		     + "<div>"
+	    	     + "<p style='color: #e74c3c;'>ë¹ ë¥´ê²Œ ì¡°ì¹˜ë¥¼ ì·¨í•´ì£¼ì‹œê¸° ë°”ëë‹ˆë‹¤!  " 
+	    	     + "ğŸ‘‰ğŸ»ğŸ‘‰ğŸ» <a href='http://192.168.219.163/seller/sellerstock'>ìƒí’ˆì¶”ê°€</a>"
+	    	     + "</p>"+
+	    	    "</div>";
 
-        // ¸ŞÀÏ ³»¿ë ÀÛ¼º
+
+        // ë©”ì¼ ë‚´ìš© ì‘ì„±
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(from));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(companyemail));
         msg.setSubject(subject);
-        msg.setContent(text, "text/html; charset=utf-8"); // html º¸³»±â À§ÇØ¼­
+        msg.setContent(text, "text/html; charset=utf-8"); // html ë³´ë‚´ê¸° ìœ„í•´ì„œ
 
-        // ¸ŞÀÏ º¸³»±â
+        // ë©”ì¼ ë³´ë‚´ê¸°
         Transport.send(msg);
     }
 

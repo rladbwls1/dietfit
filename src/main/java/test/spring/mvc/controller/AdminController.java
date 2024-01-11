@@ -32,8 +32,8 @@ public class AdminController {
 	private EmailService eservice;
 	
 	@RequestMapping("companylist")
-	public String companyList(Model model) {
-		service.companyList(model);
+	public String companyList(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
+		service.companyList(pageNum, model); //결과는 model에
 		return "admin/company/list";
 	}
 	@RequestMapping("companyDetail")
@@ -43,14 +43,15 @@ public class AdminController {
         return "admin/company/detailList";
 	}
 	@RequestMapping("allProduct")
-	public String allProduct(Model model) {
-		service.allProduct(model);
+	public String allProduct(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
+		service.allProduct(pageNum, model);
 		return "admin/company/allProduct";
 	}
 	
 	@RequestMapping("companyProduct")
-	public String companyProduct(String companyid, Model model) {
-		service.productList(model, companyid);
+	public String companyProduct(String companyid, Model model,
+			 @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
+		service.productList(pageNum, model, companyid);
 		return "admin/company/product";
 	}
 	@RequestMapping("companyStatus")
@@ -64,33 +65,12 @@ public class AdminController {
 		service.companyStatus(id, status);
 		return "admin/company/statusChange";
 	}
-	
-	@RequestMapping("/checkStock")
-	@ResponseBody
-	public String checkStock() {
-		try {
-	        // 서비스를 통해 stock이 20개 미만인 상품을 찾아서 이메일 보내기
-	        service.checkStock();
-	        return "이메일 전송 완료";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return "이메일 전송 실패: " + e.getMessage();
-	    }
+
+	@RequestMapping("checkStock")
+	public @ResponseBody String checkStock() {
+		service.checkStock();
+		return "stock check, mail Send!";
 	}
-	
-//	@RequestMapping(value = "sendMail", method = RequestMethod.GET)
-//	public void sendMail(
-//	        @RequestParam(name = "companyid") String companyid,
-//	        @RequestParam(name = "category") String category,
-//	        @RequestParam(name = "category2") String category2,
-//	        @RequestParam(name = "flavor") String flavor,
-//	        HttpServletRequest request, HttpServletResponse response) throws Exception {
-//	    request.setCharacterEncoding("utf-8");
-//	    response.setContentType("text/html;charset=utf-8");
-//	    PrintWriter out = response.getWriter();
-//	    eservice.sendMail(companyid, category, category2, flavor);
-//	    out.print("메일 전송 완료");
-//	}
 
-
+	  
 }

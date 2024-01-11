@@ -30,10 +30,25 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void companyList(Model model) {
+	public void companyList(int pageNum, Model model) {
 		int companycount = mapper.companycount();
 		List<Member_basicDTO> companyList = Collections.EMPTY_LIST;
 		companyList = mapper.companyList();
+		
+		int pageSize = 3;
+		int pageCount = companycount / pageSize + ( companycount % pageSize == 0 ? 0 : 1);
+		 
+        int startPage = (int)(pageNum/10)*10+1;
+		int pageBlock=3;
+        int endPage = startPage + pageBlock-1;
+        if (endPage > pageCount) {
+        	endPage = pageCount;
+        }
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("pageBlock", pageBlock);
+        model.addAttribute("endPage", endPage);
+        
 		model.addAttribute("companyList", companyList);
 		model.addAttribute("companycount", companycount);
 	}
@@ -54,28 +69,38 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public int productcount() {
-		return mapper.productcount();
+	public int allProductcount() {
+		return mapper.allProductcount();
 	}
 
 	@Override
-	public void allProduct(Model model) {
-		int productcount = mapper.productcount();
+	public void allProduct(int pageNum, Model model) {
+		int allProductcount = mapper.allProductcount();
 		List<ProductDTO> allProduct = Collections.EMPTY_LIST;
 		allProduct = mapper.allProduct();
+	
 		model.addAttribute("allProduct", allProduct);
-		model.addAttribute("productcount", productcount);
+		model.addAttribute("allProductcount", allProductcount);
 	}
 	
 	@Override
-	public void productList(Model model, String companyid) {
+	public int productcount() {
+		return mapper.productcount();
+	}
+	
+	@Override
+	public void productList(int pageNum, Model model, String companyid) {
+		int productcount = mapper.productcount();
 		List<ProductDTO> productList = Collections.EMPTY_LIST;
 		productList = mapper.productList(companyid);
+		
+        
 		model.addAttribute("productList", productList);
+		model.addAttribute("productcount", productcount);
 	}
 
 	@Override
-	@Scheduled(cron = "0 0 8 * * ?")
+	@Scheduled(cron = "0 0 10 * * ?")
 	public void checkStock() {
 		List<ProductDTO> allProduct = mapper.allProduct();
 		for(ProductDTO product : allProduct) {
@@ -97,10 +122,12 @@ public class AdminServiceImpl implements AdminService{
 		model.addAttribute("productName", productName);
 		model.addAttribute("companyid", companyid);
 	}
+	
 
 	@Override
-	public void getProductStock(String product) {
+	public void getProductStock(String product, Model model) {
 		int stock = mapper.getProductStock(product);
+		model.addAttribute("stock", stock);
 	}
 
 	@Override

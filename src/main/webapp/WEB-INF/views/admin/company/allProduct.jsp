@@ -7,15 +7,16 @@
 <head>
 <meta charset="UTF-8">
 <script src="/resources/js/jquery-3.7.1.min.js"></script>
-<title>Insert title here</title>
+<title>Dietfit - Allproduct</title>
 </head>
 <body>
-	<c:if test="${productcount == 0}">
+	<c:if test="${allProductcount == 0}">
 		<h5> 판매자가 없습니다. </h5>
 	</c:if>
-	<c:if test="${productcount > 0}">
+	<c:if test="${allProductcount > 0}">
 	<button type="button" id="checkStock">✔상품재고✔</button>
-
+	
+	<div id="result"></div>
 		<table>
 	        <thead>
 	            <tr>
@@ -43,24 +44,23 @@
 	        </tbody>
 	    </table>
     </c:if>
+    
+		
 </body>
 
 <script>
-    $(document).ready(function() {
-        $("#checkStock").on("click", function() {
-            // 서버로 AJAX 요청을 보냄
-            $.ajax({
-                url: "/admin/checkStock",
-                method: "POST",
-                success: function(response) {
-                    alert(response); // 서버에서 받은 응답을 처리하거나 알림창 등으로 표시
-                },
-                error: function(error) {
-                    console.error("Error occurred:", error);
-                }
-            });
-        });
-    });
+$(document).ready(function(){
+	$("#checkStock").on("click", function(){
+		$.ajax({
+			url:"/admin/checkStock",
+			success:function(a){
+				$("#result").html(a);
+			}
+		});
+	});
+});
+
+
 </script>
 
 </html>
