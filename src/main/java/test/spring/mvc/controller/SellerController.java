@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -22,29 +24,26 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
-<<<<<<< HEAD
-=======
-	@RequestMapping("/store/{companyid}")
-	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
-	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
-	    if (products != null) {
-	        for (ProductDTO product : products) {
-	            List<ProductimgDTO> thumImages = service.findthumimg(
-	                    companyid, product.getCategory(),
-	                    product.getCategory2(), product.getFlavor());
-	            product.setImages(thumImages);
-	        }
-	        model.addAttribute("products", products);
-	    }
-	    return "seller2/productList";
-	}
+//	@RequestMapping("/store/{companyid}")
+//	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
+//	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
+//	    if (products != null) {
+//	        for (ProductDTO product : products) {
+//	            List<ProductimgDTO> thumImages = service.findthumimg(
+//	                    companyid, product.getCategory(),
+//	                    product.getCategory2(), product.getFlavor());
+//	            product.setImages(thumImages);
+//	        }
+//	        model.addAttribute("products", products);
+//	    }
+//	    return "seller2/productList";
+//	}
 	
 	@RequestMapping("/store/home")
 	public String main() {
 		return "seller2/home";
 	}
 	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/coupon/request")
     public String showCouponRequestForm(Principal pri, Model model) {
 		String id = pri.getName();
@@ -61,21 +60,16 @@ public class SellerController {
 	    return "/seller2/couponrequestresult";
 	}
 
-<<<<<<< HEAD
-=======
 	@RequestMapping("/chat")
-<<<<<<< HEAD
     public String chat() {
         return "/seller2/chat";	
-=======
+	}
     public String chat(@RequestParam("productId") String productId,Model model) {
 		model.addAttribute("productId", productId);
         return "/seller2/chat";
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     }
 
 	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	@RequestMapping("/modify")
     public String modify(Principal pri, Model model) {
 		String id = pri.getName();

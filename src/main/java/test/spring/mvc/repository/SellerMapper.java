@@ -1,12 +1,11 @@
 package test.spring.mvc.repository;
 
+import org.apache.ibatis.annotations.Param;
+
 import test.spring.mvc.bean.AllcouponDTO;
-<<<<<<< HEAD
-=======
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
 public interface SellerMapper {
 	public void addCoupon(AllcouponDTO couponDTO);

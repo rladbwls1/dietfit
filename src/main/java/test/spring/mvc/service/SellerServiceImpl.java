@@ -34,7 +34,6 @@ public class SellerServiceImpl implements SellerService{
         // 쿠폰 발행 요청을 저장하고, 관리자에게 알림 (예: DB에 저장)
         mapper.addCoupon(couponDTO);
     }
-<<<<<<< HEAD
 
 	@Override
 	public void sellermodifyupdate(Member_basicDTO Member_basicDTO) {
@@ -44,11 +43,11 @@ public class SellerServiceImpl implements SellerService{
 		mapper.sellermodifyupdate(Member_basicDTO);
 	}
 	
-	@Override
-	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
-		
-		return mapper.findproductdetail(companyid, category, category2, flavor);
-	}
+//	@Override
+//	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
+//		
+//		return mapper.findproductdetail(companyid, category, category2, flavor);
+//	}
 
 	@Override
 	public String findcompanyid(String id) {
@@ -71,11 +70,4 @@ public class SellerServiceImpl implements SellerService{
 		return mapper.findstatus(id);
 	}
 
-	
-	
-	
-	
-	
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }
