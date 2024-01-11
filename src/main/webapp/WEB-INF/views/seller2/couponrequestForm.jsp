@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +21,7 @@
         <input type="date" id="deletedate" name="deletedate" required>
         <br>
         <label for="companyid">회사id:</label>
-        <input type="text" id="companyid" name="companyid" required>
+        <input type="text" id="companyid" name="companyid" value="${companyId}" readonly>
         <br>
         <label for="download">총다운로드횟수:</label>
         <input type="number" id="download" name="download" required>

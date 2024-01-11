@@ -5,9 +5,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.SellerMapper;
@@ -17,6 +19,9 @@ public class SellerServiceImpl implements SellerService{
 
 	@Autowired
 	private SellerMapper mapper;
+	
+	@Autowired
+	PasswordEncoder encoder;
 	
 	@Override
 	public List<ProductDTO> findallproductbycompanyid(String companyid) {
@@ -46,10 +51,41 @@ public class SellerServiceImpl implements SellerService{
     }
 
 	@Override
+	public void sellermodifyupdate(Member_basicDTO Member_basicDTO) {
+		if(Member_basicDTO.getPw() != null&&!Member_basicDTO.getPw().equals("")) {
+			Member_basicDTO.setPw(encoder.encode(Member_basicDTO.getPw()));
+		}
+		mapper.sellermodifyupdate(Member_basicDTO);
+	}
+	
+	@Override
 	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
-
+		
 		return mapper.findproductdetail(companyid, category, category2, flavor);
 	}
+
+	@Override
+	public String findcompanyid(String id) {
+		
+		return mapper.findcompanyid(id);
+	}
+
+	@Override
+	public Member_basicDTO sellermodifyselect(String id) {
+		return mapper.sellermodifyselect(id);
+	}
+
+	@Override
+	public void sellerwithdraw(String id) {
+		mapper.sellerwithdraw(id);
+	}
+
+	@Override
+	public int findstatus(String id) {
+		return mapper.findstatus(id);
+	}
+
+	
 	
 	
 	
