@@ -97,4 +97,9 @@
     	<select id="sale">
     		select sale from discount where num=#{num}
     	</select>
+    	<select id="reco" resultType="product">
+    		SELECT * FROM all_product
+			WHERE expiry BETWEEN SYSDATE AND ADD_MONTHS(SYSDATE, 2)
+			order by expiry asc
+    	</select>
     </mapper>

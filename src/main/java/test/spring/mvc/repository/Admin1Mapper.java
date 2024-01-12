@@ -24,4 +24,5 @@ public interface Admin1Mapper {
 			@Param("category2")String category2);
 	public List<ProductDTO> discount();
 	public int sale(int num);
+	public List<ProductDTO> reco();
 }

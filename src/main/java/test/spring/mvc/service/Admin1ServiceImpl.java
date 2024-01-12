@@ -169,6 +169,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public int sale(int num) {
 		return mapper.sale(num);
 	}
+
+	@Override
+	public List<ProductDTO> reco() {
+		return mapper.reco();
+	}
 	
 	
 	

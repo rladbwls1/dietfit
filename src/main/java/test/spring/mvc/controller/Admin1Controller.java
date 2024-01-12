@@ -168,4 +168,23 @@ public class Admin1Controller {
 		return "/admin/discount";
 	}
 	
+	@RequestMapping("product")
+	public String product(Model model) {
+		List<ProductDTO> dto = service.reco();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = service.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("reco", dto);
+		return "admin/product";
+	}
+	
 }
