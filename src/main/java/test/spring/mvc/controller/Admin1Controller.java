@@ -153,12 +153,14 @@ public class Admin1Controller {
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
 				ProductimgDTO img = service.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				int sale = service.sale(pd.getNum());
 				if (img != null) {
 	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
 	                                   img.getCategory() + img.getCategory2() +
 	                                   img.getFlavor() + "F" + img.getNum() +
 	                                   img.getExt();
 	               pd.setImagePath(imagePath);
+	               pd.setSale(sale);
 	            }
 			}
 		}

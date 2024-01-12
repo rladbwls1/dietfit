@@ -164,5 +164,12 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<ProductDTO> discount() {
 		return mapper.discount();
 	}
+
+	@Override
+	public int sale(int num) {
+		return mapper.sale(num);
+	}
+	
+	
 	
 }

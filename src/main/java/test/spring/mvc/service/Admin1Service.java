@@ -27,5 +27,5 @@ public interface Admin1Service{
 	public List<AllcouponDTO> coupon(String id);
 	public ProductimgDTO pro_img(String companyid, String category, String category2);
 	public List<ProductDTO> discount();
-
+	public int sale(int num);
 }

@@ -18,6 +18,12 @@
 	                <div><img style="width:200px; height:200px;" src="${discount.imagePath}"/></div>
 	                <div>${discount.companyid}</div>
 	                <div>${discount.boardname}</div>
+	                <div style="text-decoration: line-through;">
+	                	<fmt:formatNumber value="${discount.price}" type="number" pattern="#,###원"/>
+	                </div>
+	                <div>
+	                	<fmt:formatNumber value="${discount.price - (discount.price * (discount.sale / 100))}" type="number" pattern="#,###원"/>
+	                </div>	
 	            </li>
 	        </c:forEach>
 	    </ul>

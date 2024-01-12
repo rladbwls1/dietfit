@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class ProductDTO {
-	private String num; 		// 번호
+	private int num; 		// 번호
 	private String boardname;	// 게시글명
 	private String companyid;	// 업체ID
 	private String category;	// 카테고리 소분류 
@@ -24,7 +24,8 @@ public class ProductDTO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiry;		// 유통기한
 	private String price;		// 가격
-	private String imagePath;   // 이미지 경로 
+	private String imagePath;   // 이미지 경로
+	private int sale; // 할인율
 	private List<ProductimgDTO> images; // 이미지 리스트
 	
 	

@@ -79,8 +79,13 @@
 			    ORDER BY total_amount DESC
     	</select>
     	<select id="pro_img" resultType="pimg">
-    		select * from all_productimg where 
-    			companyid=#{companyid} and category=#{category} and category2=#{category2} and thum=1
+    		SELECT * FROM (
+			    	SELECT *
+			    FROM all_productimg
+			    WHERE companyid=#{companyid} and category=#{category} and category2=#{category2} and thum=1
+			    ORDER BY NUM ASC
+			)
+			WHERE ROWNUM = 1
     	</select>
     	<select id="discount" resultType="product">
     		SELECT all_product.*
@@ -88,5 +93,8 @@
 			JOIN discount ON all_product.num = discount.num
 			WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
 			ORDER BY discount.sale DESC
+    	</select>
+    	<select id="sale">
+    		select sale from discount where num=#{num}
     	</select>
     </mapper>
