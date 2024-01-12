@@ -61,8 +61,8 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int registerIdCheck(String id) {
+
 		return mapper.registerIdCheck(id);
 	}
-
 
 }

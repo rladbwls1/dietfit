@@ -23,7 +23,7 @@
 	<select id="read" resultMap="memberMap">
 		select * from member_basic s left outer join authorities auth 
 			on s.id=auth.username
-			where s.id=#{userid}
+			where s.id=#{userid} and s.status!=0 and s.status!=99
 	</select>
 	
 </mapper>

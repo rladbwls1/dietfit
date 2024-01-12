@@ -43,6 +43,6 @@ public class SellerChat extends DefaultEmbeddableVerticle{
 				});
 			}
 		});
-		server.listen(9999);
+		server.listen(7777);
 	}
 }
