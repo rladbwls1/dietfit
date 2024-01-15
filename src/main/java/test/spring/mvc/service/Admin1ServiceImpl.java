@@ -14,7 +14,8 @@ import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
-import test.spring.mvc.bean.SaleDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.entity.Member_basicEntity;
 import test.spring.mvc.repository.Admin1Mapper;
 import test.spring.mvc.repository.AdminJPARepository;
@@ -95,7 +96,7 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public List<SaleDTO> best() {
+	public List<ProductDTO> best() {
 		return mapper.best();
 	}
 
@@ -143,4 +144,37 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public int alram() {
 		return mapper.alram();
 	}
+
+	@Override
+	public List<AllcouponDTO> coupon(String id) {
+		return mapper.coupon(id);
+	}
+
+	@Override
+	public ProductimgDTO pro_img(String companyid, String category, String category2) {
+		return mapper.pro_img(companyid, category, category2);
+	}
+
+	@Override
+	public List<ProductDTO> best2() {
+		return mapper.best2();
+	}
+	
+	@Override
+	public List<ProductDTO> discount() {
+		return mapper.discount();
+	}
+
+	@Override
+	public int sale(int num) {
+		return mapper.sale(num);
+	}
+
+	@Override
+	public List<ProductDTO> reco() {
+		return mapper.reco();
+	}
+	
+	
+	
 }
