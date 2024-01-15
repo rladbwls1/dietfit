@@ -1,2 +1,6 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//src/main/java/test/spring/mvc/service/EmailServiceImpl.java=UTF-8
+=======
+encoding//src/main/java/test/spring/mvc/security/CustomAuthFailureHandler.java=UTF-8
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git

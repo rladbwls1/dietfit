@@ -17,7 +17,7 @@
 	    AND flavor = #{flavor}
 	    AND thum = 1
 	</select>
-
+	
 
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
@@ -29,8 +29,14 @@
         VALUES
         (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
     </insert>
+	<select id="findcompanyid">
+		select companyid from member_detail where id=#{id}
+	</select>
+	<select id="findstatus">
+		select status from member_basic where id=#{id}	
+	</select>
     <select id="sellermodifyselect" parameterType="string" resultType="test.spring.mvc.bean.Member_basicDTO">
-    	select * from member_basic where id=#{id} and pw=#{pw}
+    	select * from member_basic where id=#{id}
     </select>
     <update id="sellermodifyupdate" parameterType="test.spring.mvc.bean.Member_basicDTO">
     	update member_basic
@@ -41,5 +47,8 @@
 			<if test = "nic != null and nic != '' "> nic=#{nic}</if> 
     	</set>
     	where id=#{id}
+    </update>
+    <update id="sellerwithdraw">
+    	update member_basic set STATUS = 99 where id=#{id}
     </update>
 </mapper>

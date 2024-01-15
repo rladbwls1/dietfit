@@ -16,6 +16,7 @@ function checkId(){
 				$('#idd').val("true");
 			}else{
 				$('#id_check').text("이미 가입된 아이디입니다. 다른 아이디를 사용하세요.").css("color","red");
+				$('#idd').val("false");
 			}
 		}
 	});
@@ -32,21 +33,35 @@ function checkEmail(){
 				$('#emaill').val("true");
 			}else{
 				$('#email_check').text("이미 가입된 이메일입니다. 다른 이메일을 사용하세요.").css("color","red");
+				$('#emaill').val("false");
 			}
 		}
 	});
 }
 function register(){
-	console.log('====================register========');
-	console.log(''+$('#idd').val().equals("false"));
-	
-	if ($('#idd').val().equals("false")){
-		return false;
+	//회원가입 전, 아이디/이메일 중복확인, 이름/비밀번호 공란 확인
+	var result=true;
+	if($('#idd').val()=="false"){
+		result=false;
 	}
-	if ($('#emaill').val().equals("false")){
-		return false;
+	if($('#emaill').val()=="false"){
+		result=false;
 	}
-	return false;
+	if($('#name').val()==""){
+		$('#name_check').text("이름을 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#name').val()!=""){
+		$('#name_check').text("");
+	}
+	if($('#pw').val()==""){
+		$('#pw_check').text("비밀번호를 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#pw').val()!=""){
+		$('#pw_check').text("");
+	}
+	return result;
 	
 }
 
@@ -57,8 +72,10 @@ function register(){
 	<input type="hidden" name="emaill" id="emaill" value="false"/>
 	id: <input type="text" name="id" id="id" oninput="checkId()"/> 
 	<p id="id_check"></p><br/>
-	pw: <input type="password" name="pw"/> <br/>
-	name: <input type="text" name="name"/> <br/>
+	pw: <input type="password" name="pw" id="pw"/> <br/>
+	<p id="pw_check"></p><br/>
+	name: <input type="text" name="name" id="name"/> <br/>
+	<p id="name_check"></p><br/>
 	nic: <input type="text" name="nic"/> <br/>
 	email: <input type="text" name="email" id="email" oninput="checkEmail()"/> 
 	<p id="email_check"></p><br/>
