@@ -46,8 +46,6 @@
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
     	</select>
-<<<<<<< HEAD
-=======
     	<select id="coupon" resultType="allcoupon">
     		select * from allcoupon where companyid =
    			 (select companyid from member_detail where id=#{id})
@@ -104,5 +102,4 @@
 			WHERE expiry BETWEEN SYSDATE AND ADD_MONTHS(SYSDATE, 2)
 			order by expiry asc
     	</select>
->>>>>>> refs/remotes/origin/rladbwls1
     </mapper>

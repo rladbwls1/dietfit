@@ -1,110 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-<<<<<<< HEAD
-                            	
+                                	
     
     
     
     
-=======
-            	
->>>>>>> refs/remotes/origin/rladbwls1
+    
     
     
     <wb-module deploy-name="mvc-1.0.0-BUILD-SNAPSHOT">
-<<<<<<< HEAD
-                                                                
+                                                                        
         
         
         
         
-=======
-                                
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-<<<<<<< HEAD
-                                                        		
+                                                                		
         
         
         
         
-=======
-                        		
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-<<<<<<< HEAD
-                                                        		
+                                                                		
         
         
         
         
-=======
-                        		
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-<<<<<<< HEAD
-                                                        		
+                                                                		
         
         
         
         
-=======
-                        		
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-<<<<<<< HEAD
-                                                        		
+                                                                		
         
         
         
         
-=======
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-                        		
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <property name="java-output-path" value="target/classes"/>
-<<<<<<< HEAD
-                                                                
+                                                                        
         
         
         
         
-=======
-                                
->>>>>>> refs/remotes/origin/rladbwls1
+        
         
         
         <property name="context-root" value="mvc"/>
-<<<<<<< HEAD
-                                                        	
+                                                                	
     
     
     
     
-=======
-                        	
->>>>>>> refs/remotes/origin/rladbwls1
+    
     
     
     </wb-module>
-<<<<<<< HEAD
-                            
+                                
 
 
 
 
-=======
-            
->>>>>>> refs/remotes/origin/rladbwls1
+
 
 
 </project-modules>
