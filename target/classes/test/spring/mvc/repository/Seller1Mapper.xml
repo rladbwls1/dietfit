@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="test.spring.mvc.repository.Seller1Mapper">
+<<<<<<< HEAD
 	
 	<!-- 이미지 시퀀스 최대값 -->
 	<select id="selectMaxProductSeq" parameterType="String" resultType="int">
@@ -47,4 +48,22 @@
     	SELECT * FROM all_productimg WHERE companyid = #{companyid} AND category2 = #{category2} and thum = 0
     </select>
 
+=======
+
+	<select id="selectMaxProductSeq" parameterType="String" resultType="int">
+    	SELECT MAX(num) FROM #{companyid}_productimg
+	</select>
+
+	<insert id="insertProduct" parameterType="test.spring.mvc.bean.ProductDTO">
+    INSERT INTO all_product (num, boardname, companyid, category, category2, flavor, detail, isfile, 
+                                    delivery, reg, count, product, stock, expiry, price)
+	VALUES (${companyid}_PRODUCT_SEQ.nextval, #{boardname}, #{companyid}, #{category}, #{category2}, #{flavor}, #{detail}, #{isfile}, 
+	            #{delivery}, sysdate, #{count}, #{product}, #{stock}, #{expiry}, #{price})
+	</insert>
+	
+	<insert id="insertProductImage" parameterType="test.spring.mvc.bean.ProductimgDTO">
+	    INSERT INTO all_productimg (companyid, category, category2, flavor, num, ext, thum)
+	    VALUES (#{companyid}, #{category}, #{category2}, #{flavor}, ${companyid}_PRODUCTIMG_SEQ.nextval, #{ext}, #{thum})
+	</insert>
+>>>>>>> refs/remotes/origin/rladbwls1
 </mapper>
