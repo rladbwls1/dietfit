@@ -16,5 +16,18 @@ public interface AdminMapper {
 	public void companyStatus (@Param("id") String id, 
 			@Param("status") String status);
 	
+	public int allProductcount();
+	public List<ProductDTO> allProduct();
+	
+	public int productcount();
 	public List<ProductDTO> productList(String companyid);
+	
+	public String getCompanyName(String companyid);
+	public String getProductId(String product);
+	public String getProductName(@Param("companyid") String companyid,
+			@Param("category") String category, 
+			@Param("category2") String category2,
+			@Param("flavor") String flavor);
+	public int getProductStock(String product);
+	public String getCompanyEmail(String companyid);
 }

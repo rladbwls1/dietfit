@@ -26,7 +26,7 @@
 		</tr>
 	</table>
 	<div>
-		<button type="button" onclick="location.href='/admin/companyProduct?companyid=${companyDetail.companyid}'">판매목록 보기</button>
+		<button type="button" onclick="location.href='/admin/companyProduct?companyid=${companyDetail.companyid}?pageNum=1'">판매목록 보기</button>
 	</div>
 </body>
 </html>
