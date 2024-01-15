@@ -238,12 +238,6 @@
          <artifactId>spring-security-taglibs</artifactId>
          <version>${org.springframework-version}</version>
       </dependency>
-	<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-	<dependency>
-	    <groupId>javax.mail</groupId>
-	    <artifactId>javax.mail-api</artifactId>
-	    <version>1.6.2</version>
-	</dependency>
 	<dependency>
 	    <groupId>com.sun.mail</groupId>
 	    <artifactId>javax.mail</artifactId>
@@ -254,7 +248,12 @@
 	    <artifactId>spring-context-support</artifactId>
 	    <version>${org.springframework-version}</version>
 	</dependency>
-	
+      <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
       <!-- JSON -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider -->
 		<dependency>
