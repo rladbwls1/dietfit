@@ -6,7 +6,7 @@
     <title>Coupon Request Confirmation</title>
 </head>
 <body>
-    <h2>쿠폰발급이 요쳥되었습니다.</h2>
+    <h2>쿠폰발급이 요청되었습니다.</h2>
     <p>발급요청성공</p>
 </body>
 </html>

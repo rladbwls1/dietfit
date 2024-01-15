@@ -8,6 +8,16 @@
 <body>
     <h2>Product Details</h2>
     <table>
+    	<c:forEach var="product" items="${products}">
+		    <tr>
+		        <td><a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">${product.product}</a></td>
+		        <td>${product.price}</td>
+		        <td>
+		            <img src="/path/to/thumbnail/${service.findFirstThumImg(product.companyid, product.category2).imageUrl}" alt="${product.product}">
+		        </td>
+		    </tr>
+		</c:forEach>
+
         <tr>
             <td>상품이름:</td>
             <td>${product.product}</td>
@@ -36,9 +46,10 @@
         </tr>
         <tr>
             <td colspan="2">
-                <form action="/sellerchat/chat" method="post">
+                <form action="/seller/contact" method="post">
+                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="productId" value="${product.product}">
-                    <input type="hidden" name="companyid" value="${product.companyid}">
+                    <input type="hidden" name="productId" value="${product.companyid}">
                     <button type="submit">상품 문의</button>
                 </form>
             </td>
