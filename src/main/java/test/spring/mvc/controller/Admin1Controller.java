@@ -111,4 +111,6 @@ public class Admin1Controller {
 		model.addAttribute("info", dto);
 		return "/admin/coupon";
 	}
+	
 }
+
