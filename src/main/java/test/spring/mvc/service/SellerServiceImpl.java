@@ -90,5 +90,10 @@ public class SellerServiceImpl implements SellerService{
 		return mapper.sellerstockselect(productId);
 	}
 
+	@Override
+	public void sellerstockupdate(ProductDTO productdto) {
+		mapper.sellerstockupdate(productdto);
+	}
+
 
 }
