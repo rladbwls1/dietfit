@@ -52,7 +52,7 @@
         		and category2 = #{category2} and flavor= #{flavor}
     </select>
     <select id="getProductId" resultType="String">
-    	select companyid||category||category2||stock from all_product where product=#{product}
+    	select companyid||category||category2||flavor from all_product where product=#{product}
     </select>
     <select id="getProductStock" resultType="int">
     	select stock from all_product where product=#{product}
