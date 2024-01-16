@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
@@ -24,6 +25,7 @@ public class MemberController {
 		return "member/all";
 	}
 	
+	//카카오 로그인 
 	@RequestMapping("check")
 	public @ResponseBody Member_basicDTO doCheck(String email,Model model) {
 		Member_basicDTO dto=new Member_basicDTO();
@@ -60,18 +62,21 @@ public class MemberController {
 		System.out.println("access Denied===>>"+auth);
 		return "member/accessError";
 	}
-	//로그인
+	
+	//일반 로그인
 	@RequestMapping("customLogin")
-	public String doLogin() {
+	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
+			Model model) {
+		model.addAttribute("exception",exception);
 		return "member/login";
 	}
 
-	//회원가입 폼
+	//일반 회원가입 폼
 	@RequestMapping("registerForm")
 	public String register() {
 		return "member/registerForm";
 	}
-	//회원가입 
+	//일반 회원가입 
 	@RequestMapping("registerPro")
 	public String registerPro(Member_basicDTO dto) {
 		int path=99;
@@ -95,14 +100,7 @@ public class MemberController {
 		}
 		return check;
 	}
-	@RequestMapping("loginCheck")
-	public @ResponseBody boolean loginCheck(String username,HttpSession session) {
-		boolean check=false;
-		if(service.registerIdCheck(username)==1) {
-			check=true;
-		}
-		return check;
-	}
+	
 	
 	
 }

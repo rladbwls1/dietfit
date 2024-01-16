@@ -8,6 +8,13 @@
 		select count(*) from member_basic where status = 888 or status = 800
 	</select> 
 	<select id="companyList" resultType="test.spring.mvc.bean.Member_basicDTO">
+		<!--  
+		<![CDATA[ 
+		select * from (select b.* , rownum r from
+			    (select * from member_basic) b)
+				where status = 888 or status = 800 and r >=1 and r <=10 order by reg desc;
+		-->
+			 
 		select * from member_basic where status = 888 or status = 800 order by reg desc
 	</select>
 	<select id="companyBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
@@ -21,7 +28,39 @@
 		update member_basic set status=#{status} where id=#{id}
 	</update>
 	
-	<select id="productList" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from ${companyid}_PRODUCT
+	<select id="allProductcount" resultType="int">
+		select count(*) from all_product 
 	</select>
+	<select id="allProduct" resultType="test.spring.mvc.bean.ProductDTO">
+		select * from all_product
+	</select>
+	
+	<select id="productcount" resultType="int">
+		select count(*) from all_product companyid = #{companyid}
+	</select>
+	<select id="productList" resultType="test.spring.mvc.bean.ProductDTO">
+		select * from all_product where companyid = #{companyid}
+	</select>
+	
+	<select id="getCompanyName" resultType="String">
+		select company from member_detail where companyid=#{companyid}
+	</select>
+	
+	<select id="getProductName" parameterType="String" resultType="String">
+        select product from all_product 
+        	where companyid = #{companyid} and category = #{category} 
+        		and category2 = #{category2} and flavor= #{flavor}
+    </select>
+    <select id="getProductId" resultType="String">
+    	select companyid||category||category2||stock from all_product where product=#{product}
+    </select>
+    <select id="getProductStock" resultType="int">
+    	select stock from all_product where product=#{product}
+    </select>
+
+    <select id="getCompanyEmail" parameterType="String" resultType="String">
+    	select mb.email from member_basic mb, member_detail md 
+   			where mb.id = md.id and companyid= #{companyid}
+    </select>
+    
 </mapper>

@@ -29,40 +29,34 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/jackson-core-asl-1.7.7.jar">
+	<classpathentry kind="lib" path="C:/chat/jackson-core-asl-1.7.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/jackson-mapper-asl-1.7.7.jar">
+	<classpathentry kind="lib" path="C:/chat/jackson-mapper-asl-1.7.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/mod-socket-io-131.jar">
+	<classpathentry kind="lib" path="C:/chat/mod-socket-io-131.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/netty-3.5.9.Final.jar">
+	<classpathentry kind="lib" path="C:/chat/netty-3.5.9.Final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/vertx-core-1.3.1.final.jar">
+	<classpathentry kind="lib" path="C:/chat/vertx-core-1.3.1.final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/y/Downloads/drive-download-20231218T023139Z-001/vertx-platform-1.3.1.final.jar">
+	<classpathentry kind="lib" path="C:/chat/vertx-platform-1.3.1.final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
