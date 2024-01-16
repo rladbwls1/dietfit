@@ -8,16 +8,9 @@
 <body>
     <h2>Product Details</h2>
     <table>
-    	<c:forEach var="product" items="${products}">
-		    <tr>
-		        <td><a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">${product.product}</a></td>
-		        <td>${product.price}</td>
-		        <td>
-		            <img src="/path/to/thumbnail/${service.findFirstThumImg(product.companyid, product.category2).imageUrl}" alt="${product.product}">
-		        </td>
-		    </tr>
-		</c:forEach>
-
+    	<tr>
+    		<td> <img src="/resources/p_img/${img.fileName}"></td>
+    	</tr>	
         <tr>
             <td>상품이름:</td>
             <td>${product.product}</td>
@@ -29,6 +22,7 @@
         <tr>
             <td>상세설명:</td>
             <td>${product.detail}</td>
+            <td>${img.fileName}</td>
         </tr>
         <tr>
             <td>배송정보:</td>
@@ -55,5 +49,26 @@
             </td>
         </tr>
     </table>
+    
+    <!-- 상품 수정 버튼 -->
+    <form action="/seller/store/Update" method="post">
+	    <input type="hidden" name="companyid" value="${product.companyid}">
+	    <input type="hidden" name="num" value="${product.num}">
+	    <input type="hidden" name="isfile" value="${product.isfile}">
+	    <input type="hidden" name="category" value="${product.category}">
+        <input type="hidden" name="category2" value="${product.category2}">
+        <input type="hidden" name="flavor" value="${product.flavor}">
+	    <button type="submit">상품 수정</button>
+	</form>
+
+    <!-- 상품 삭제 버튼 -->
+    <form action="seller/store/Delete" method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="companyid" value="${product.companyid}">
+    	<input type="hidden" name="category" value="${product.category}">
+    	<input type="hidden" name="category2" value="${product.category2}">
+    	<input type="hidden" name="flavor" value="${product.flavor}">
+        <button type="submit" onclick="return confirm('상품을 삭제하시겠습니까?');">상품 삭제</button>
+    </form>
 </body>
 </html>
