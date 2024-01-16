@@ -26,37 +26,44 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/jackson-core-asl-1.7.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/jackson-mapper-asl-1.7.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/mod-socket-io-131.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/netty-3.5.9.Final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/vertx-core-1.3.1.final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/y/Downloads/chat-20231218T023201Z-001/chat/vertx-platform-1.3.1.final.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
