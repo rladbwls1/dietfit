@@ -61,14 +61,6 @@ public class SellerController {
         return "/seller2/chat";
     }
 
-	
-	
-	@RequestMapping("/modifyPro")
-	public String modifyPro(Member_basicDTO Member_basicDTO) {
-		service.sellermodifyupdate(Member_basicDTO);
-		return "/seller2/mypage";
-	}
-	
 	@RequestMapping("/withdrawpro")
 	public String withdrawpro(Member_basicDTO Member_basicDTO,Principal pri, Model model) {
 		String id = pri.getName();
@@ -81,12 +73,6 @@ public class SellerController {
 	public String mypage(Principal pri, Model model) {
 		model.addAttribute("id", pri.getName());
 		return "/seller2/mypage";
-	}
-	@RequestMapping("/productdiscount")
-	public String productdiscount(Model model,Principal pri) {
-		model.addAttribute("id", pri.getName());
-		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
-		return "/seller2/productdiscount";
 	}
 	
 	@RequestMapping("/SELLERCHAT")
@@ -139,16 +125,47 @@ public class SellerController {
 		model.addAttribute("email", member.getEmail());
 		return "/seller2/sellermodifyform";
 	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount(Model model,Principal pri) {
+		model.addAttribute("id", pri.getName());
+		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
+		return "/seller2/productdiscount";
+	}
 	@RequestMapping("/sellerstock")
 	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
-		model.addAttribute("productId", productId);
-		ProductDTO product = service.sellerstockselect(productId);
-		model.addAttribute("product",product.getProduct());
-		return "/seller2/sellerstock";
+	    model.addAttribute("productId", productId);
+	    if (productId != null && productId.length() >= 8) {
+	        // 앞에서부터 2글자씩 잘라내어 각 변수에 저장
+	        String companyid = productId.substring(0, 2).trim();
+	        String category = productId.substring(2, 4).trim();
+	        String category2 = productId.substring(4, 6).trim();
+	        String flavor = productId.substring(6, 8).trim();
+
+	        // 모델에 각각의 정보를 추가
+	        model.addAttribute("companyid", companyid);
+	        model.addAttribute("category", category);
+	        model.addAttribute("category2", category2);
+	        model.addAttribute("flavor", flavor);
+	        
+	        // 나머지 로직 수행
+	        ProductDTO product = service.sellerstockselect(productId);
+	        model.addAttribute("product", product.getProduct());
+
+	    }
+	    return "/seller2/sellerstock";
+	}
+
+	@RequestMapping("/modifyPro")
+	public String modifyPro(Member_basicDTO Member_basicDTO) {
+		service.sellermodifyupdate(Member_basicDTO);
+		return "/seller2/mypage";
 	}
 	@RequestMapping("/addStock")
-	public String addStock() {
-		return "/seller2/mypage";
+	public String addStock(ProductDTO productdto) {
+		System.out.println(productdto.getCompanyid());
+		
+		service.sellerstockupdate(productdto);
+		return "redirect:/seller/mypage";
 	}
 }
 

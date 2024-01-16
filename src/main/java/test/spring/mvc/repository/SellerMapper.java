@@ -25,4 +25,5 @@ public interface SellerMapper {
 	public void sellerwithdraw(String id);
 	public void updatediscount(DiscountDTO discountDTO);
 	public ProductDTO sellerstockselect(String productId);
+	public void sellerstockupdate(ProductDTO productdto);
 }
