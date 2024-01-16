@@ -66,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
         	     + "</div>"
 		     + "<div>"
 	    	     + "<p style='color: #e74c3c;'>빠르게 조치를 취해주시기 바랍니다!  " 
-	    	     + "👉🏻👉🏻 <a href='http://192.168.219.163/seller/sellerstock'>상품추가</a>"
+	    	     + "👉🏻👉🏻 <a href='http://localhost:8080/seller/sellerstock'>상품추가</a>"
 	    	     + "</p>"+
 	    	    "</div>";
 

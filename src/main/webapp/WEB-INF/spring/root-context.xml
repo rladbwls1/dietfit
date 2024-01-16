@@ -60,7 +60,6 @@
 	</bean>
 
 	<!-- mail -->
-	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
 	     	<property name="host" value="smtp.gmail.com" />
 	     	<!-- google SMTP 메일 서버 포트 -->
