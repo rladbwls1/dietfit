@@ -60,12 +60,12 @@
     	values
     	(#{num}, #{startr}, #{endr}, #{sale})
     </insert>
-    <select id="sellerstockselect" resultType="test.spring.mvc.bean.ProductDTO">
+   <select id="sellerstockselect" resultType="test.spring.mvc.bean.ProductDTO">
 	    SELECT *
 	    FROM all_product
-	    WHERE SUBSTRING(companyid, 1, 2) || SUBSTRING(category, 1, 2) || SUBSTRING(category2, 1, 2) || SUBSTRING(flavor, 1, 2) = #{productId}
+	    WHERE SUBSTR(companyid, 1, 2) || SUBSTR(category, 1, 2) || SUBSTR(category2, 1, 2) || SUBSTR(flavor, 1, 2) = #{productId}
 	</select>
-    
+
     <update id="sellerstock">
     	update all_product set stock = #{stock} where 
     </update>
