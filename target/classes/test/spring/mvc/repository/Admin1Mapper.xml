@@ -18,13 +18,15 @@
     		</set>
     		where id=#{id}
     	</update>
-    	<select id="best" resultType="sale">
+    	<!--
+    	  <select id="best" resultType="sale">
     		<![CDATA[ 
     		SELECT productid FROM (
 			    SELECT * FROM sale ORDER BY quantity DESC
 			) WHERE ROWNUM <= 2
 			]]>
     	</select>
+    	-->
     	<select id="allcoupon" resultType="allcoupon">
     		<![CDATA[ 
     		select * from (select b.* , rownum r from
@@ -43,5 +45,61 @@
     	</update>
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
+    	</select>
+    	<select id="coupon" resultType="allcoupon">
+    		select * from allcoupon where companyid =
+   			 (select companyid from member_detail where id=#{id})
+    	</select>
+    	<select id="best" resultType="product">
+    		SELECT ap.*
+				FROM all_product ap
+				JOIN (
+				  SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+				  FROM buyproduct
+				  WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM')
+				  GROUP BY companyid, category, category2, flavor
+				) bp ON ap.companyid = bp.companyid
+				    AND ap.category = bp.category
+				    AND ap.category2 = bp.category2
+				    AND ap.flavor = bp.flavor
+				ORDER BY bp.total_amount DESC
+    	</select>
+    	<select id="best2" resultType="product">
+    		SELECT ap.*
+			FROM all_product ap
+			    JOIN (
+			    SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+			    FROM buyproduct
+			    WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - INTERVAL '7' DAY, 'YYYY-MM-DD')
+			    GROUP BY companyid, category, category2, flavor
+			    ) bp ON ap.companyid = bp.companyid
+			    AND ap.category = bp.category
+			    AND ap.category2 = bp.category2
+			    AND ap.flavor = bp.flavor
+			    ORDER BY total_amount DESC
+    	</select>
+    	<select id="pro_img" resultType="pimg">
+    		SELECT * FROM (
+			    	SELECT *
+			    FROM all_productimg
+			    WHERE companyid=#{companyid} and category=#{category} and category2=#{category2} and thum=1
+			    ORDER BY NUM ASC
+			)
+			WHERE ROWNUM = 1
+    	</select>
+    	<select id="discount" resultType="product">
+    		SELECT all_product.*
+			FROM all_product
+			JOIN discount ON all_product.num = discount.num
+			WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
+			ORDER BY discount.sale DESC
+    	</select>
+    	<select id="sale">
+    		select sale from discount where num=#{num}
+    	</select>
+    	<select id="reco" resultType="product">
+    		SELECT * FROM all_product
+			WHERE expiry BETWEEN SYSDATE AND ADD_MONTHS(SYSDATE, 2)
+			order by expiry asc
     	</select>
     </mapper>

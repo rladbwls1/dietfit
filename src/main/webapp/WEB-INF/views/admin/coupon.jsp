@@ -23,35 +23,40 @@
 <h2>쿠폰 승인</h2>
 	<table border="1" style="border-collapse:collapse;">
 		<tr>
-			<th>아이디</th>
-			<td>${info.id}</td>
+			<th>쿠폰명</th>
+			<th>쿠폰 아이디</th>
+			<th>쿠폰 기간</th>
+			<th>최소 사용 금액</th>
+			<th>업체</th>
+			<th>다운로드 가능</th>
+			<th>발급 인원수</th>
+			<th>적용 가능 제품</th>
+			<th>승인 여부</th>
 		</tr>
-		<tr>
-			<th>이름</th>
-			<td>${info.name}</td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td>${info.email}</td>
-		</tr>
-		<tr>
-			<th>등급</th>
-			<td>
-				<c:if test="${info.status==1}">new</c:if>
-				<c:if test="${info.status==2}">bronze</c:if>
-				<c:if test="${info.status==3}">silver</c:if>
-				<c:if test="${info.status==4}">gold</c:if>
-				<c:if test="${info.status==0}">정지회원</c:if>
-				<c:if test="${info.status==99}">탈퇴회원</c:if>
-				<c:if test="${info.status==888}">판매자</c:if>
-				<c:if test="${info.status==999}">관리자</c:if>
-			</td>
-		</tr>
-		<tr>
-			<th>가입날짜</th>
-			<td><fmt:formatDate value="${info.reg}" pattern="yyyy-MM-dd HH:ss"/></td>
-		</tr>
-	</table>
+		<c:forEach var="coupon" items="${coupon}">
+			<tr>
+				<td>${coupon.coupon}</td>
+				<td>${coupon.couponid}</td>
+				<td><fmt:formatDate value="${coupon.createdate}" pattern="yyyy-MM-dd"/> ~ 
+					<fmt:formatDate value="${coupon.deletedate}" pattern="yyyy-MM-dd"/></td>
+				<td>${coupon.minprice}</td>
+				<td>${coupon.companyid}</td>
+				<td>${coupon.download}</td>
+				<td>${coupon.discount}</td>
+				<td>${coupon.boardnums}</td>
+				<td>
+					<div id="${coupon.couponid}">
+						<c:if test="${coupon.admincheck==1}">승인 완료</c:if>		
+						<c:if test="${coupon.admincheck==2}">승인 거부</c:if>		
+					</div>
+					<c:if test="${coupon.admincheck==0}">
+						<button type="button" id="${coupon.couponid}1" onclick="adminCheck('${coupon.couponid}');">승인</button>
+						<button type="button" id="${coupon.couponid}2" onclick="adminChk('${coupon.couponid}');">거부</button>
+					</c:if>
+				</td>
+			</tr>
+		</c:forEach>	
+	</table>	
 </body>
 </body>
 </html>
