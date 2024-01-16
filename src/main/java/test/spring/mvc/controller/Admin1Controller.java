@@ -185,9 +185,5 @@ public class Admin1Controller {
 		model.addAttribute("reco", dto);
 		return "admin/product";
 	}
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main
 }
 
