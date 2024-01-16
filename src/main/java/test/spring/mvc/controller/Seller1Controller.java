@@ -1,6 +1,5 @@
 package test.spring.mvc.controller;
 
-import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -62,6 +63,9 @@ public class Seller1Controller {
 	public String productAddPro(ProductDTO dto,
 	                            ProductimgDTO img,
 	                            @RequestParam("companyid") String companyid,
+	                            @RequestParam("category") String category, 
+	                            @RequestParam("category2") String category2,
+	                            @RequestParam("flavor") String flavor, 
 	                            @RequestParam("thumbnail") MultipartFile[] thumbnails,
 	                            @RequestParam("attachments") MultipartFile[] attachments,
 	                            HttpServletRequest request) {
@@ -79,13 +83,41 @@ public class Seller1Controller {
 
 	    // 파일 총 개수 저장
 	    dto.setIsfile(thumbnailCount + attachmentCount);
+	    
+	    // attachmentList 확장자 추출 및 DB에 저장
+	    for (MultipartFile attachment : attachmentList) {
+	        String originalFilename = attachment.getOriginalFilename();
+	        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+	        
+	        // 확장자 추출 후 DB에 저장 (여기에서는 예시로 thum 열에 0로 저장)
+	        img.setExt(ext);
+	        img.setThum(0);
+	        service.insertProductimg(img, companyid);
+	        service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), attachment);
+	        
+	        }
+	    
+	    // thumbnail 확장자 추출 및 DB에 저장
+	    for (MultipartFile thumbnail : thumbnailList) {
+	        String originalFilename = thumbnail.getOriginalFilename();
+	        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+	        
+	        // 확장자 추출 후 DB에 저장 (여기에서는 예시로 thum 열에 1로 저장)
+	        img.setExt(ext);
+	        img.setThum(1);
+	        service.insertProductimg(img, companyid);
+	        service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), thumbnail);
+	    }
+	    
+	    // img 객체에 필요한 필드를 설정
+	    img.setCategory(category);
+	    img.setCategory2(category2);
+	    img.setFlavor(flavor);
 
-	    // 데이터베이스에 Product 정보 저장
-	    service.insertProduct(dto, img, companyid);
-
-	    // selectMaxProductSeq 값 조회
-	    int maxProductSeq = service.selectMaxProductSeq(companyid);
-
+	    
+	    // 데이터베이스에 상품 저장
+	    service.insertProduct(dto, companyid);
+	    
 	    return "redirect:seller/store/home";
 	}
 
@@ -95,35 +127,88 @@ public class Seller1Controller {
     	return "seller/home";
     }
 	
-	@GetMapping("/{companyid}/{category}/{category2}/{flavor}/{num}/{ext}/{thum}")
-	public String getImageUrl(@PathVariable String companyid,
-	                          @PathVariable String category,
-	                          @PathVariable String category2,
-	                          @PathVariable String flavor,
-	                          @PathVariable String num,
-	                          @PathVariable String ext,
-	                          @PathVariable String thum) {
-	    // 이미지 파일이 저장된 디렉토리 경로 설정 (예: 바탕화면-식단파일)
-	    String directoryPath = "C:\\Users\\y\\Desktop\\dietfitfile";
+    @GetMapping("/details/{companyid}/{category}/{category2}/{flavor}")
+    public String detail(@PathVariable("companyid") String companyid,
+                         @PathVariable("category") String category,
+                         @PathVariable("category2") String category2,
+                         @PathVariable("flavor") String flavor,
+                         Model model) {
+        ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
 
-	    // 이미지 파일의 전체 경로 생성
-	    String filename = companyid + category + category2 + flavor + num + ext;
-	    String imagePath = Paths.get(directoryPath, filename).toString();
+        // 썸네일 이미지 정보를 가져옴
+        List<ProductimgDTO> thumbnails = service.findthumimg(companyid, category, category2);
 
-	    // 이미지 파일의 URL로 변환하여 반환
-	    return "file:" + imagePath;
-	}
-	
-	 @GetMapping("/details/{companyid}/{category}/{category2}/{flavor}")
-	    public String detail(@PathVariable ("companyid") String companyid,
-	                         @PathVariable ("category") String category,
-	                         @PathVariable ("category2") String category2,
-	                         @PathVariable ("flavor") String flavor,
+        // 대표 이미지 정보를 가져옴
+        List<ProductimgDTO> images = service.findimg(companyid, category, category2);
+
+        List<String> thumbnailPaths = new ArrayList<>();
+        List<String> imagePaths = new ArrayList<>();
+
+        // 썸네일 이미지 경로들을 생성
+        for (ProductimgDTO thumbnail : thumbnails) {
+            String path = "/resources/p_img/" + thumbnail.getCompanyid() +
+                          thumbnail.getCategory() + thumbnail.getCategory2() +
+                          thumbnail.getFlavor() + "F" + thumbnail.getNum() +
+                          thumbnail.getExt();
+            thumbnailPaths.add(path);
+        }
+
+        // 대표 이미지 경로들을 생성
+        for (ProductimgDTO image : images) {
+            String path = "/resources/p_img/" + image.getCompanyid() +
+                          image.getCategory() + image.getCategory2() +
+                          image.getFlavor() + "F" + image.getNum() +
+                          image.getExt();
+            imagePaths.add(path);
+        }
+
+        // 모델에 추가
+        model.addAttribute("product", product);
+        model.addAttribute("thumbnailPaths", thumbnailPaths);
+        model.addAttribute("imagePaths", imagePaths);
+
+        return "seller/productdetail";
+    }
+
+
+
+
+	 @RequestMapping("/store/Delete")
+	 public String deleteProduct(@RequestParam("companyid") String companyid,
+	                             @RequestParam("category") String category,
+	                             @RequestParam("category2") String category2,
+	                             @RequestParam("flavor") String flavor,
+	                             RedirectAttributes redirectAttributes) {
+	         // 상품 및 관련 이미지 삭제
+	         service.deleteProduct(companyid, category, category2, flavor);
+	         service.deleteProductimg(companyid, category, category2, flavor);
+	         service.fileDelete(companyid, category, category2, flavor);
+	         redirectAttributes.addFlashAttribute("successMessage", "상품이 성공적으로 삭제되었습니다.");
+
+	     return "redirect:/seller/store/home";
+	 }
+	 
+	 @RequestMapping("/store/Update")
+	 public String updateForm(Model model, 
+	                          @RequestParam("companyid") String companyid, 
+	                          @RequestParam("category") String category, 
+	                          @RequestParam("category2") String category2, 
+	                          @RequestParam("flavor") String flavor) {
+	     // 상품 정보 조회
+	     ProductDTO dto = service.findproductdetail(companyid, category, category2, flavor);
+	     List<ProductimgDTO> imgList = service.imgfindupdate(companyid, category, category2, flavor);
+
+	     // 모델에 상품 정보와 이미지 목록 추가
+	     model.addAttribute("product", dto);
+	     model.addAttribute("images", imgList);
+
+	     return "seller/updatefrom";
+	 }
+
+	 @RequestMapping("UpdatePro")
+	 public String UpdatePro(@ModelAttribute("productDTO") ProductDTO productDTO, 
 	                         Model model) {
-	        // 여기에서 필요한 로직을 수행하고, 필요한 데이터를 모델에 추가하세요
-	        ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
-	        model.addAttribute("product", product);
-
-	        return "seller2/productdetail";
-	    }
+	     service.updateProduct(productDTO);
+	     return "redirect:/seller/store/home";
+	 }
 }

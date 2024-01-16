@@ -35,16 +35,62 @@
     
     <!-- 상품 리스트 썸네일 -->
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
-    	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
+    	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
     </select>
     
     <!-- 상품 상세 썸네일 가져오기 -->
     <select id="findthumimg" resultType="test.spring.mvc.bean.ProductimgDTO">
-	    SELECT * FROM all_productimg WHERE companyid = #{companyid} AND category2 = #{category2} and thum = 1
+	    SELECT * FROM all_productimg WHERE companyid = #{companyid} and category = #{category} AND category2 = #{category2} and thum = 1
 	</select>
+	
     <!-- 상품 상세  이미지-->
-    <select id ="findimg" resultType="test.spring.mvc.bean.ProductimgDTO">
-    	SELECT * FROM all_productimg WHERE companyid = #{companyid} AND category2 = #{category2} and thum = 0
+    <select id="findimg" resultType="test.spring.mvc.bean.ProductimgDTO">
+	    SELECT * FROM all_productimg WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} and thum = 0
+	</select>
+    
+    <!-- 상품 삭제 -->
+    <delete id="deleteProduct" parameterType="test.spring.mvc.bean.ProductDTO">
+        DELETE FROM all_product WHERE companyid = #{companyid} and category = #{category} and category2 = #{category2} and flavor = #{flavor}
+    </delete>
+    
+    <!-- 상품 이미지 삭제 -->
+    <delete id ="deleteProductimg" parameterType="test.spring.mvc.bean.ProductimgDTO">
+    	DELETE FROM all_productimg WHERE companyid = #{companyid} and category = #{category} and category2 = #{category2} and flavor = #{flavor}
+    </delete>
+    
+    <!-- 상품 이미지 찾기 -->
+    <select id = "imgfindupdate">
+    	select * from all_productimg where companyid =#{companyid}  and category = #{category} and category2 = #{category2} and flavor = #{flavor}
     </select>
-
+    
+    <!-- 상품 정보 수정 -->
+    <update id="updateProduct" parameterType="test.spring.mvc.bean.ProductDTO">
+	    update all_product
+	    set
+	        boardname = #{boardname},
+	        product = #{product},
+	        price = #{price},
+	        detail = #{detail}, 
+	        category = #{category},
+	        category2 = #{category2},
+	        flavor = #{flavor},
+	        stock = #{stock},
+	        expiry = #{expiry},
+	        delivery = #{delivery}
+	    where
+	        num = #{num} 
+	</update>
+	
+	<update id = "updateProductimg" parameterType="test.spring.mvc.Productimg">
+		update all_productimg
+		set
+			companyid = #{companyid},
+			category = #{category},
+			category2 = #{category2},
+			flavor = #{flavor},
+			ext = #{ext},
+			thum = #{thum}
+		where
+			companyid = #{companyid}, category = #{category}, category2 = #{category2}, flavor = #{flavor}
+	</update>									
 </mapper>

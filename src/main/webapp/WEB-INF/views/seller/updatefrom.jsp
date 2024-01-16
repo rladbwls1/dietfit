@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 	<!DOCTYPE html>
 	<html>
 	<head>
 	    <meta charset="UTF-8">
-	    <title>상품 등록</title>
+	    <title>상품 수정</title>
 	    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	     <script>
 	        function showSmallCategory() {
@@ -56,28 +57,14 @@
 
 	            smallCategory.innerHTML = "작은 카테고리: " + smallCategoryOptions;
 	        }
-	
-	        function fileAdd(type, sectionId) {
-	            var fileInput = $('<input type="file" name="' + type + '" multiple>');
-	            fileInput.insertBefore(sectionId);
-	        }
-	
-	        function fileRemove(type) {
-	            $('input[name="' + type + '"]:last').remove();
-	            if (fileInputs.length > 1) {
-	                fileInputs.last().remove();
-	            } else {
-	                alert('첨부파일은 1개 이상있어야합니다.');
-	            }
-	        }
 	    </script>
 	    
 	</head>
 	<body>
-	    <h2>상품 등록</h2>
-	    <form action="/seller/productaddPro" method="post" enctype="multipart/form-data">
+	    <h2>상품 수정</h2>
+	    <form action="/seller/UpdatePro" method="post">
 	    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-	    	<input type="hidden" name="companyid" value="${companyid}">
+	    	<input type="hidden" name="num" value="${product.num}">
 	    	
 	    	큰 카테고리:
 		        <select id="bigCategory" onchange="showSmallCategory()">
@@ -142,23 +129,13 @@
 	        배송정보 : <select name="delivery" id ="delivery">
 	        			<option value="0">일반배송, 정기배송</option>
 	        			<option value="1">일반배송</option>
-	        		</select> <br>
-	        <div id="thumbnailSection">
-			    <label>썸네일:</label>
-			    <input type="file" name="thumbnail" multiple>
-			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('thumbnail', '#thumbnailSection')">
-			    <input type="button" class="fileRemove" value="-" onclick="fileRemove('thumbnail')">
-			</div>
+	        		</select>
 			<br>
-			
-			<div id="attachmentsSection">
-			    <label>파일 첨부:</label>
-			    <input type="file" name="attachments" multiple>
-			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('attachments', '#attachmentsSection')">
-			    <input type="button" class="fileRemove" value="-" onclick="fileRemove('attachments')">
-			</div>
-			<br>
-	        <input type="submit" value="등록">
+			<c:forEach items="${images}" var="image">
+			    <img src="/resources/p_img/${image.fileName}" />
+			</c:forEach>
+
+	        <input type="submit" value="수정">
 	    </form>
 	</body>
 	</html>

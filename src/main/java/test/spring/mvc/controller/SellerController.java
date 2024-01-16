@@ -47,7 +47,7 @@ public class SellerController {
 
 	@RequestMapping("/chat")
     public String chat() {
-        return "/seller2/chat";	
+        return "/seller2/chat";
 	}
 
     public String chat(@RequestParam("productId") String productId,Model model) {

@@ -27,6 +27,7 @@
 		<security:remember-me data-source-ref="dataSource" token-validity-seconds="86400"/>		
 		<!-- 접근 권한 없는 URI 접근시 에러페이지 설정 -->
 		<security:csrf disabled="true"/>
+		
 		<security:access-denied-handler error-page="/member/accessError"/>
 	</security:http>
 	<security:authentication-manager>
