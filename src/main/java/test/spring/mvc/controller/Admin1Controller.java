@@ -127,9 +127,6 @@ public class Admin1Controller {
 		model.addAttribute("coupon", list);
 		return "/admin/coupon";
 	}
-<<<<<<< HEAD
-=======
-
 	@RequestMapping("best2")
 	public String best2(Model model) {
 		List<ProductDTO> dto = service.best2();
@@ -188,7 +185,6 @@ public class Admin1Controller {
 		model.addAttribute("reco", dto);
 		return "admin/product";
 	}
->>>>>>> refs/remotes/origin/rladbwls1
-	
+
 }
 
