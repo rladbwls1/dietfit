@@ -68,7 +68,7 @@ public class MemberController {
 	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
 			Model model) {
 		model.addAttribute("exception",exception);
-		return "member/login";
+		return "member/loginForm";
 	}
 
 	//일반 회원가입 폼
