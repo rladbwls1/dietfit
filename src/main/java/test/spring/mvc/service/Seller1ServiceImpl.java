@@ -83,22 +83,12 @@ public class Seller1ServiceImpl implements Seller1Service {
 
     @Override
     public List<ProductimgDTO> findthumimg(String companyid, String category, String category2) {
-        List<ProductimgDTO> thumImages = sellerMapper.findthumimg(companyid, category , category2);
-        for (ProductimgDTO img : thumImages) {
-            String fileName = filename(img.getCompanyid(), img.getCategory(), img.getCategory2(), img.getFlavor(), img.getExt(), String.valueOf(img.getNum()));
-            img.setFileName(fileName);
-        }
-        return thumImages;
+        return sellerMapper.findthumimg(companyid, category, category2);
     }
 
     @Override
     public List<ProductimgDTO> findimg(String companyid, String category, String category2) {
-        List<ProductimgDTO> detailImages = sellerMapper.findimg(companyid, category, category2);
-        for (ProductimgDTO img : detailImages) {
-            String fileName = filename(img.getCompanyid(), img.getCategory(), img.getCategory2(), img.getFlavor(), img.getExt(), String.valueOf(img.getNum()));
-            img.setFileName(fileName);
-        }
-        return detailImages;
+        return sellerMapper.findimg(companyid, category, category2);
     }
 
 
@@ -151,10 +141,10 @@ public class Seller1ServiceImpl implements Seller1Service {
 
 	    return images;
 	}
-	
+
 	@Override
-    public String filename(String companyid, String category, String category2, String flavor, String ext, int num) {
-        return companyid + category + category2 + flavor + "F" + num + ext;
-    }
+	public void updatePrdouctimg(String companyid, String category, String category2, String flavor) {
+		sellerMapper.updateProductimg(companyid, category, category2, flavor);
+	}
 
 }

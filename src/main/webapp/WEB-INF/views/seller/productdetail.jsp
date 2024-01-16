@@ -9,7 +9,11 @@
     <h2>Product Details</h2>
     <table>
     	<tr>
-    		<td> <img src="/resources/p_img/${img.fileName}"></td>
+    		<td>
+    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
+				    <img src="${thumbnailPath}"> 
+				</c:forEach>
+    		</td>
     	</tr>	
         <tr>
             <td>상품이름:</td>
@@ -22,7 +26,13 @@
         <tr>
             <td>상세설명:</td>
             <td>${product.detail}</td>
-            <td>${img.fileName}</td>
+            <td>
+            	<c:forEach var="imagePath" items="${imagePaths}">
+		            <div>
+		                <img src="${imagePath}"> 
+		            </div>
+		        </c:forEach>
+            </td>
         </tr>
         <tr>
             <td>배송정보:</td>

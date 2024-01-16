@@ -48,9 +48,10 @@ public interface Seller1Service {
     // 상품 정보 수정
     public void updateProduct(ProductDTO productDTO);
     
+    // 상품 이미지 수정 
+    public void updatePrdouctimg(String companyid, String category, String category2, String flavor);
+    
     // 상품 이미지 찾기 
     public List<ProductimgDTO> imgfindupdate(String companyid, String category, String category2, String flavor);
     
-    // 상품 이름
-    String filename(String companyid, String category, String category2, String flavor, String ext, int num);
 }

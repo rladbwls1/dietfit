@@ -135,13 +135,43 @@ public class Seller1Controller {
                          Model model) {
         ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
 
-        ProductimgDTO img = service.findthumimg(companyid, category, category2);
+        // 썸네일 이미지 정보를 가져옴
+        List<ProductimgDTO> thumbnails = service.findthumimg(companyid, category, category2);
 
+        // 대표 이미지 정보를 가져옴
+        List<ProductimgDTO> images = service.findimg(companyid, category, category2);
+
+        List<String> thumbnailPaths = new ArrayList<>();
+        List<String> imagePaths = new ArrayList<>();
+
+        // 썸네일 이미지 경로들을 생성
+        for (ProductimgDTO thumbnail : thumbnails) {
+            String path = "/resources/p_img/" + thumbnail.getCompanyid() +
+                          thumbnail.getCategory() + thumbnail.getCategory2() +
+                          thumbnail.getFlavor() + "F" + thumbnail.getNum() +
+                          thumbnail.getExt();
+            thumbnailPaths.add(path);
+        }
+
+        // 대표 이미지 경로들을 생성
+        for (ProductimgDTO image : images) {
+            String path = "/resources/p_img/" + image.getCompanyid() +
+                          image.getCategory() + image.getCategory2() +
+                          image.getFlavor() + "F" + image.getNum() +
+                          image.getExt();
+            imagePaths.add(path);
+        }
+
+        // 모델에 추가
         model.addAttribute("product", product);
-        model.addAttribute("img", img); 
+        model.addAttribute("thumbnailPaths", thumbnailPaths);
+        model.addAttribute("imagePaths", imagePaths);
 
         return "seller/productdetail";
     }
+
+
+
 
 	 @RequestMapping("/store/Delete")
 	 public String deleteProduct(@RequestParam("companyid") String companyid,

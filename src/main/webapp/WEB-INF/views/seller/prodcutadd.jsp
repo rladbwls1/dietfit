@@ -61,9 +61,14 @@
 	            var fileInput = $('<input type="file" name="' + type + '" multiple>');
 	            fileInput.insertBefore(sectionId);
 	        }
-
+	
 	        function fileRemove(type) {
 	            $('input[name="' + type + '"]:last').remove();
+	            if (fileInputs.length > 1) {
+	                fileInputs.last().remove();
+	            } else {
+	                alert('첨부파일은 1개 이상있어야합니다.');
+	            }
 	        }
 	    </script>
 	    

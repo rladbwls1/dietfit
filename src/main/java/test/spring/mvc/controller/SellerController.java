@@ -23,9 +23,6 @@ public class SellerController {
 	
 	@Autowired
 	private SellerService service;
-<<<<<<< HEAD
-
-=======
 	
 //	@RequestMapping("/store/{companyid}")
 //	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
@@ -41,7 +38,6 @@ public class SellerController {
 //	    }
 //	    return "seller2/productList";
 //	}
->>>>>>> branch 'dmswls0062' of https://github.com/rladbwls1/dietfit.git
 	
 	@RequestMapping("/store/home")
 	public String main() {
@@ -66,11 +62,7 @@ public class SellerController {
 
 	@RequestMapping("/chat")
     public String chat() {
-<<<<<<< HEAD
         return "/seller2/chat";
-=======
-        return "/seller2/chat";	
->>>>>>> branch 'dmswls0062' of https://github.com/rladbwls1/dietfit.git
 	}
     public String chat(@RequestParam("productId") String productId,Model model) {
 		model.addAttribute("productId", productId);

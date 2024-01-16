@@ -65,8 +65,8 @@
     
     <!-- 상품 정보 수정 -->
     <update id="updateProduct" parameterType="test.spring.mvc.bean.ProductDTO">
-	    UPDATE all_product
-	    SET
+	    update all_product
+	    set
 	        boardname = #{boardname},
 	        product = #{product},
 	        price = #{price},
@@ -77,7 +77,20 @@
 	        stock = #{stock},
 	        expiry = #{expiry},
 	        delivery = #{delivery}
-	    WHERE
+	    where
 	        num = #{num} 
+	</update>
+	
+	<update id = "updateProductimg" parameterType="test.spring.mvc.Productimg">
+		update all_productimg
+		set
+			companyid = #{companyid},
+			category = #{category},
+			category2 = #{category2},
+			flavor = #{flavor},
+			ext = #{ext},
+			thum = #{thum}
+		where
+			companyid = #{companyid}, category = #{category}, category2 = #{category2}, flavor = #{flavor}
 	</update>									
 </mapper>
