@@ -81,7 +81,7 @@
 	        num = #{num} 
 	</update>
 	
-	<update id = "updateProductimg" parameterType="test.spring.mvc.Productimg">
+	<update id = "updateProductimg" parameterType="test.spring.mvc.bean.ProductimgDTO">
 		update all_productimg
 		set
 			companyid = #{companyid},
