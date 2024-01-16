@@ -19,9 +19,7 @@ public class SellerChatController {
 	@RequestMapping("/chat")
     public String chat(Model model,Principal pri) {
 		String id = pri.getName();
-		int status = service.findstatus(id);
 		model.addAttribute("id", id);
-		model.addAttribute("status", status);
         return "/seller2/chat";
     }
 

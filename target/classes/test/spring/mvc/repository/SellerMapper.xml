@@ -23,14 +23,12 @@
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
     
-    <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
-        INSERT INTO allcoupon
-        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck, minprice, content)
-        VALUES
-        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
-    </insert>
-	<select id="findcompanyid">
+    
+	<select id="findcompanyid" resultType="java.lang.String">
 		select companyid from member_detail where id=#{id}
+	</select>
+	<select id="findcompanyproduct" resultType="test.spring.mvc.bean.ProductDTO">
+		select * from all_product where companyid=#{companyid}
 	</select>
 	<select id="findstatus">
 		select status from member_basic where id=#{id}	
@@ -50,5 +48,25 @@
     </update>
     <update id="sellerwithdraw">
     	update member_basic set STATUS = 99 where id=#{id}
+    </update>
+    <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
+        INSERT INTO allcoupon
+        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck, minprice, content)
+        VALUES
+        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
+    </insert>
+    <insert id="updatediscount" parameterType="test.spring.mvc.bean.DiscountDTO">
+    	insert into discount (num, startr, endr, sale)
+    	values
+    	(#{num}, #{startr}, #{endr}, #{sale})
+    </insert>
+    <select id="sellerstockselect" resultType="test.spring.mvc.bean.ProductDTO">
+	    SELECT *
+	    FROM all_product
+	    WHERE SUBSTRING(companyid, 1, 2) || SUBSTRING(category, 1, 2) || SUBSTRING(category2, 1, 2) || SUBSTRING(flavor, 1, 2) = #{productId}
+	</select>
+    
+    <update id="sellerstock">
+    	update all_product set stock = #{stock} where 
     </update>
 </mapper>
