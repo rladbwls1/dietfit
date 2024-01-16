@@ -14,7 +14,6 @@ import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
 public class SellerChat extends DefaultEmbeddableVerticle{
 
 	private SocketIOServer io = null;
-	
 	@Override
 	public void start(Vertx arg0) {
 		HttpServer server = arg0.createHttpServer(); //서버생성
