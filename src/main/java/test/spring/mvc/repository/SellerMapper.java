@@ -14,4 +14,9 @@ public interface SellerMapper {
 										@Param("name")String name,
 										@Param("email")String email,
 										@Param("nic")String nic);
+	public String findcompanyid(String id);
+	public int findstatus(String id);
+	public Member_basicDTO sellermodifyselect(String id);
+	public void sellermodifyupdate(Member_basicDTO Member_basicDTO);
+	public void sellerwithdraw(String id);
 }

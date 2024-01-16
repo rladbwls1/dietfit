@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
   Kakao.init('c78f138fd0cf2db45923ee47d3fb2baf'); 
 </script>
@@ -54,6 +55,10 @@
 	<input type="text" name="username" id="username" /> <br/>
 	<input type="password" name="password" id="password"/> <br/>
 	자동 로그인 : <input type="checkbox" name="remember-me"/> <br/>
+	
+		${exception}
+
+	<br/>
 	<input type="submit" value="로그인"/>
 </form>
 <input type="button" value="회원가입" onclick="javascript:window.location='/member/registerForm'">
