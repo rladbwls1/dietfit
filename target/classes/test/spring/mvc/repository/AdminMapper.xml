@@ -32,7 +32,7 @@
 		select count(*) from all_product 
 	</select>
 	<select id="allProduct" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from all_product
+		select * from all_product order by companyid asc
 	</select>
 	
 	<select id="productcount" resultType="int">
