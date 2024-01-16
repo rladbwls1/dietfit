@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -69,5 +70,25 @@ public class SellerServiceImpl implements SellerService{
 	public int findstatus(String id) {
 		return mapper.findstatus(id);
 	}
+
+	@Override
+	public List<ProductDTO> getCompanyProduct(String id) {
+	    String companyId = mapper.findcompanyid(id);
+	    if (companyId != null) {
+	        return mapper.findcompanyproduct(companyId);
+	    }
+	    return null;
+	}
+
+	@Override
+	public void updatediscount(DiscountDTO discountDTO) {
+		mapper.updatediscount(discountDTO);
+	}
+
+	@Override
+	public ProductDTO sellerstockselect(String productId) {
+		return mapper.sellerstockselect(productId);
+	}
+
 
 }
