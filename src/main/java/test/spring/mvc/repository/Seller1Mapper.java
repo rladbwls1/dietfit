@@ -27,14 +27,43 @@ public interface Seller1Mapper {
 
     // 상품 리스트 썸네일 가져오기
     public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
-    								@Param("category") String category,
-                               @Param("category2") String category2);
+    								  @Param("category") String category,
+    								  @Param("category2") String category2);
 
     // 상품 상세 썸네일 가져오기
     public List<ProductimgDTO> findthumimg(@Param("companyid") String companyid, 
-                                    @Param("category2") String category2);
+                                    	   @Param("category") String category,
+                                    	   @Param("category2") String category2);
 
     // 상품 상세 이미지 가져오기
-    public List<ProductimgDTO> findimg(@Param("companyid") String companyid, 
-                               @Param("category2") String category2);
+    public List<ProductimgDTO> findimg(@Param("companyid") String companyid,
+    								   @Param("category") String category,
+                                       @Param("category2") String category2);
+    
+    // 상품 정보 삭제
+    public void deleteProduct(@Param("companyid") String companyid, 
+							  @Param("category") String category,
+					          @Param("category2") String category2,
+					          @Param("flavor") String flavor);
+    
+    // 상품 이미지 삭제 
+    public void deleteProductimg(@Param("companyid") String companyid, 
+							  	 @Param("category") String category,
+							  	 @Param("category2") String category2,
+							  	 @Param("flavor") String flavor);
+    // 상품 정보 수정
+    public void updateProduct(ProductDTO productDTO);
+    
+    // 상품 이미지 수정
+    public void updateProductimg(@Param("companyid") String companyid, 
+							  	 @Param("category") String category,
+							  	 @Param("category2") String category2,
+							  	 @Param("flavor") String flavor);
+    
+    // 상품 이미지 찾기 
+    public List<ProductimgDTO> imgfindupdate(@Param("companyid") String companyid, 
+					 		    			 @Param("category") String category,
+					 		    			 @Param("category2") String category2,
+					 		    			 @Param("flavor") String flavor);
+    
 }
