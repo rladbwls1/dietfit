@@ -97,16 +97,7 @@ public class SellerController {
 		model.addAttribute("adminstatus", adminstatus);
 		return "/seller2/SELLERCHAT";
 	}
-	@RequestMapping("/modify")
-	public String modify(Principal pri, Model model) {
-		String id = pri.getName();
-		model.addAttribute("id", id);
-		Member_basicDTO member = service.sellermodifyselect(id);
-		model.addAttribute("name", member.getName());
-		model.addAttribute("nic", member.getNic());
-		model.addAttribute("email", member.getEmail());
-		return "/seller2/sellermodifyform";
-	}
+	
 	@RequestMapping("/discountForm")
 	public String discountForm(int num, Model model) {
 		model.addAttribute("num",num);
@@ -138,10 +129,26 @@ public class SellerController {
         
         return "redirect:/seller/productdiscount";
     }
+	@RequestMapping("/modify")
+	public String modify(Principal pri, Model model) {
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		Member_basicDTO member = service.sellermodifyselect(id);
+		model.addAttribute("name", member.getName());
+		model.addAttribute("nic", member.getNic());
+		model.addAttribute("email", member.getEmail());
+		return "/seller2/sellermodifyform";
+	}
 	@RequestMapping("/sellerstock")
 	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
 		model.addAttribute("productId", productId);
+		ProductDTO product = service.sellerstockselect(productId);
+		model.addAttribute("product",product.getProduct());
 		return "/seller2/sellerstock";
+	}
+	@RequestMapping("/addStock")
+	public String addStock() {
+		return "/seller2/mypage";
 	}
 }
 
