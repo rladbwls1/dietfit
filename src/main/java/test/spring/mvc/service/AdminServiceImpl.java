@@ -1,6 +1,7 @@
 package test.spring.mvc.service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -23,6 +24,7 @@ public class AdminServiceImpl implements AdminService{
 	 
 	@Autowired
 	private AdminMapper mapper;
+	
 	
 	@Override
 	public int companycount() {
@@ -64,8 +66,42 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void companyStatus(String id, String status) {
-		mapper.companyStatus(id, status);
+	public void companyStatus(String status, String id) {
+		mapper.companyStatus(status, id);
+	}
+
+	@Override
+	public String getLastCompanyId() {
+		return mapper.getLastCompanyId();
+	}
+	
+	@Override
+	public String getCompanyId(String id) {
+		return mapper.getCompanyId(id);
+	}
+	
+	@Override
+	public String generateCompanyId(String companyid, String id) {
+	    String lastCompanyId = mapper.getLastCompanyId();
+
+		    if (lastCompanyId == null || lastCompanyId.isEmpty()) {
+		        return "AA";
+		    }
+	
+		    char[] chars = lastCompanyId.toCharArray();
+	
+		    // 현재 "AZ"까지 사용된 경우
+		    if (chars[1] == 'Z') {
+		        chars[0]++; // 첫 번째 문자를 다음 알파벳으로 이동
+		        chars[1] = 'A'; // 두 번째 문자를 'A'로 설정
+		    } else {
+		        chars[1]++; // 두 번째 문자를 다음 알파벳으로 이동
+		    }
+	
+		    String newCompanyId = new String(chars);
+		    mapper.generateCompanyId(newCompanyId, id);
+	    
+	    return newCompanyId;
 	}
 
 	@Override

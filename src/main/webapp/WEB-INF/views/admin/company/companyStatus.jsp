@@ -27,5 +27,20 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <button type="submit">등급 변경 신청</button>
 </form>
+<div id="result"></div>
 </body>
+
+<script>
+$(document).ready(function(){
+	$("#companyid").on("click", function(){
+		$.ajax({
+			url:"/admin/generateCompanyid"
+			success:function(a){
+				$("result").html(a);
+			}
+		})
+	})
+})
+</script>
+    
 </html>
