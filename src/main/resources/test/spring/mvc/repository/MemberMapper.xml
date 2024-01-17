@@ -83,7 +83,8 @@
 			DISCOUNT number,
 			PURDATE date default sysdate not null,
 			PAY varchar2(100) not null,
-			PURCHASE number default 0 not null 
+			PURCHASE number default 0 not null,
+			PRODUCTID varchar2(100) not null 
 		)
 	</update>
 	
@@ -98,6 +99,31 @@
 	</update>
 	
 	
+	<insert id="newemailkey" >
+		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
+	</insert>
+	<select id="isemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email}
+	</select>
+	<update id="updateemailkey">
+		update emailcheck set emailkey=#{emailkey}, emailauth=0 where email=#{email}
+	</update>
+	<select id="verifiedemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
+	</select>
+	<update id="emailAuth">
+		update emailcheck set emailauth=1 where email=#{email}
+	</update>
+	<select  id="isEmailAuth">
+		select emailauth from emailcheck where email=#{email}
+	</select>
+	<select id="findIdByEmail">
+		select id from member_basic where email=#{email}
+	</select>
+	
+	<update id="changePwById">
+		update member_basic set pw=#{pw} where id=#{id}
+	</update>
 
 	
 </mapper>

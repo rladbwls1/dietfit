@@ -25,6 +25,17 @@ public interface MemberMapper {
 	public void newOrderdetail(String id);
 	public void newDelivery(String id);
 	
+	//이메일 인증번호
+	public void newemailkey(@Param("email")String email, @Param("emailkey")String emailkey);
+	public int isemailkey(String email);
+	public void updateemailkey(@Param("email")String email, @Param("emailkey")String emailkey);
+	public int verifiedemailkey(@Param("email")String email, @Param("emailkey")String emailkey);
+	public void emailAuth(String email);
+	public int isEmailAuth(String email);
 	
-
+	//이메일로 아이디 찾기
+	public String findIdByEmail(String email);
+	//아이디로 비밀번호 변경하기
+	public void changePwById(@Param("id")String id, @Param("pw")String pw);
+	
 }

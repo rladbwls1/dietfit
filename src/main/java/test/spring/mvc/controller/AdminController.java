@@ -1,25 +1,15 @@
 package test.spring.mvc.controller;
 
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.service.AdminService;
-import test.spring.mvc.service.EmailService;
 
 @Controller
 @RequestMapping("/admin/*")
@@ -27,9 +17,6 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService service;
-	
-	@Autowired
-	private EmailService eservice;
 	
 	@RequestMapping("companylist")
 	public String companyList(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
@@ -60,11 +47,30 @@ public class AdminController {
 		model.addAttribute("companyBasic", companyBasic);
 		return "admin/company/companyStatus";
 	}
+	
 	@RequestMapping("companyStatusChange")
-	public String companyStatusChange(String id, String status) {
-		service.companyStatus(id, status);
-		return "admin/company/statusChange";
+	public String companyStatusChange(String id, String status, String companyid, Model model) {
+	    service.companyStatus(status, id);
+
+	    //companyid가져오기
+	    String companyId = service.getCompanyId(id);
+	    
+	    System.out.println("기존" + id + "의 companyid : " + companyId);
+	    
+	    //새로운 companyid 생성
+	    String newCompanyId = service.generateCompanyId(companyid, id);
+	    
+	    System.out.println("새로운 CompanyId : " +newCompanyId);
+
+	    //newCompanyid를 companyid에 넣어줌 
+	    model.addAttribute("companyid", newCompanyId);
+	    
+	    System.out.println("=====================");
+	    System.out.println("최종 companyId ===" + newCompanyId);
+
+	    return "admin/company/statusChange";
 	}
+
 
 	@RequestMapping("checkStock")
 	public @ResponseBody String checkStock() {

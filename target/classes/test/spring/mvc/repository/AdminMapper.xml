@@ -24,15 +24,38 @@
 		select * from member_detail where id=#{id}
 	</select>
 	
+	<!--  
+	<update id="companyStatus" parameterType="hashMap">
+		<script>
+        update member_basic set status=#{status} where id=#{id}
+        insert into member_detail (companyid) values (#{companyid}) where id=#{id}
+    	</script>
+	</update>
+	-->
+	
 	<update id="companyStatus" parameterType="String">
 		update member_basic set status=#{status} where id=#{id}
+	</update>	
+	<select id="getLastCompanyId" parameterType="String">
+	<![CDATA[
+		select companyid from
+		    (select companyid from member_detail where companyid is not null order by companyid desc)
+		     		where rownum <=1
+	]]>
+	</select>
+	<select id="getCompanyId" parameterType="String">
+		select companyid from member_detail where id=#{id}
+	</select>
+		
+	<update id="generateCompanyId" parameterType="String">
+		update member_detail set companyid =#{companyid} where id=#{id}
 	</update>
 	
 	<select id="allProductcount" resultType="int">
 		select count(*) from all_product 
 	</select>
 	<select id="allProduct" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from all_product
+		select * from all_product order by companyid asc
 	</select>
 	
 	<select id="productcount" resultType="int">
@@ -52,7 +75,7 @@
         		and category2 = #{category2} and flavor= #{flavor}
     </select>
     <select id="getProductId" resultType="String">
-    	select companyid||category||category2||stock from all_product where product=#{product}
+    	select companyid||category||category2||flavor from all_product where product=#{product}
     </select>
     <select id="getProductStock" resultType="int">
     	select stock from all_product where product=#{product}

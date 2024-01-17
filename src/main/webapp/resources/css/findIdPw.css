@@ -1,0 +1,63 @@
+/* findIdPw.css */
+
+body {
+	background-color: #4EA685;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    text-align: center;
+    max-width: 400px; /* Set your desired maximum width */
+    width: 100%; /* Ensure it takes 100% width within the max-width */
+    margin: 0; /* Center the card within its container */
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    color: #757575; /* Adjust the color as needed */
+}
+
+.input-group input {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: #efefef; /* Adjust the color as needed */
+    border-radius: 0.5rem;
+    border: 0.125rem solid #ffffff; /* Adjust the color as needed */
+    outline: none;
+}
+
+.input-group input:focus {
+    border: 0.125rem solid teal; /* Adjust the color as needed */
+}
+
+button {
+    cursor: pointer;
+    width: 100%;
+    padding: 0.6rem 0;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #4EA685;
+    color: white;
+    font-size: 1.2rem;
+    outline: none;
+}
+

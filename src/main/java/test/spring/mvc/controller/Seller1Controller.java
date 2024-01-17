@@ -1,7 +1,10 @@
 package test.spring.mvc.controller;
 
+<<<<<<< HEAD
 import java.nio.file.Paths;
 import java.security.Principal;
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
