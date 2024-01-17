@@ -48,6 +48,6 @@
 		<beans:property name="uploadTempDir" value="file:/C:/upload/temp"/>
 	</beans:bean>
 	
-	<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat" />
+	<!--<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat" />-->
 	
 </beans:beans>

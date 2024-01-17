@@ -33,16 +33,19 @@
 </head>
 <body>
     <h2>재고 추가</h2>
-    <form action="/addStock" method="post">
+    <form action="/seller/addStock" method="post">
+    <input type="hidden" name="companyid" value="${companyid}"/>
+    <input type="hidden" name="category" value="${category}"/>
+    <input type="hidden" name="category2" value="${category2}"/>
+    <input type="hidden" name="flavor" value="${flavor}"/>
         <label for="product">상품명:</label>
         <input type="text" id="product" name="product" value="${product}" readonly>
-        
 
         <label for="productId">상품ID:</label>
         <input type="text" id="productId" name="productId" value="${productId}" readonly>
 
-        <label for="quantity">추가 수량:</label>
-        <input type="number" id="quantity" name="quantity" min="1" required>
+        <label for="stock">추가 수량:</label>
+        <input type="number" id="stock" name="stock" min="1" required>
 
         <button type="submit">재고 추가</button>
     </form>
