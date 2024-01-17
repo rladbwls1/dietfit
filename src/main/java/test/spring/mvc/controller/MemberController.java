@@ -25,6 +25,7 @@ public class MemberController {
 		return "member/all";
 	}
 	
+	//카카오 로그인 
 	@RequestMapping("check")
 	public @ResponseBody Member_basicDTO doCheck(String email,Model model) {
 		Member_basicDTO dto=new Member_basicDTO();
@@ -61,20 +62,21 @@ public class MemberController {
 		System.out.println("access Denied===>>"+auth);
 		return "member/accessError";
 	}
-	//로그인
+	
+	//일반 로그인
 	@RequestMapping("customLogin")
 	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
 			Model model) {
 		model.addAttribute("exception",exception);
-		return "member/login";
+		return "member/loginForm";
 	}
 
-	//회원가입 폼
+	//일반 회원가입 폼
 	@RequestMapping("registerForm")
 	public String register() {
 		return "member/registerForm";
 	}
-	//회원가입 
+	//일반 회원가입 
 	@RequestMapping("registerPro")
 	public String registerPro(Member_basicDTO dto) {
 		int path=99;

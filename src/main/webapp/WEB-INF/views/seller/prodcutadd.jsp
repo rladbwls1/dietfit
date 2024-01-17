@@ -4,6 +4,7 @@
 	<head>
 	    <meta charset="UTF-8">
 	    <title>상품 등록</title>
+	    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	     <script>
 	        function showSmallCategory() {
 	            var bigCategory = document.getElementById("bigCategory");
@@ -56,12 +57,18 @@
 	            smallCategory.innerHTML = "작은 카테고리: " + smallCategoryOptions;
 	        }
 	
-	        function fileAdd() {
-	        	
+	        function fileAdd(type, sectionId) {
+	            var fileInput = $('<input type="file" name="' + type + '" multiple>');
+	            fileInput.insertBefore(sectionId);
 	        }
 	
-	        function fileRemove() {
-	        	
+	        function fileRemove(type) {
+	            $('input[name="' + type + '"]:last').remove();
+	            if (fileInputs.length > 1) {
+	                fileInputs.last().remove();
+	            } else {
+	                alert('첨부파일은 1개 이상있어야합니다.');
+	            }
 	        }
 	    </script>
 	    
@@ -136,16 +143,20 @@
 	        			<option value="0">일반배송, 정기배송</option>
 	        			<option value="1">일반배송</option>
 	        		</select> <br>
-	        <label>썸네일:</label>
-			<input type="file" name="thumbnail" multiple>
-			<input type="button" class="fileAdd" value="+" onclick="fileAdd()">
-			<input type="button" class="fileRemove" value="-" onclick="fileRemove()">
+	        <div id="thumbnailSection">
+			    <label>썸네일:</label>
+			    <input type="file" name="thumbnail" multiple>
+			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('thumbnail', '#thumbnailSection')">
+			    <input type="button" class="fileRemove" value="-" onclick="fileRemove('thumbnail')">
+			</div>
 			<br>
 			
-			<label>파일 첨부:</label>
-			<input type="file" name="attachments" multiple>
-			<input type="button" class="fileAdd" value="+" onclick="fileAdd()">
-			<input type="button" class="fileRemove" value="-" onclick="fileRemove()">
+			<div id="attachmentsSection">
+			    <label>파일 첨부:</label>
+			    <input type="file" name="attachments" multiple>
+			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('attachments', '#attachmentsSection')">
+			    <input type="button" class="fileRemove" value="-" onclick="fileRemove('attachments')">
+			</div>
 			<br>
 	        <input type="submit" value="등록">
 	    </form>

@@ -22,6 +22,82 @@
 	<select id="loginKakao" resultType="test.spring.mvc.bean.Member_basicDTO">
 		select id,pw from member_basic where email=#{email}
 	</select>
+	
+	<update id="newPoint" >
+		create table ${id}_point(
+			num number default ${id}_point_seq.nextval primary key,
+			opt number not null,
+			change number not null,
+			createdate date,
+			duedate date,
+			orderid varchar2(100),
+			point number not null,
+			deletedate date
+		)
+	</update>
+	<update id="newPointSeq">
+		create sequence ${id}_point_seq nocache
+	</update>
+	
+	<update id="newCoupon">
+		create table ${id}_coupon(
+			num number default ${id}_coupon_seq.nextval primary key,
+			coupon varchar2(100) not null,
+			CREATEDATE date not null,
+			DELETEDATE date not null,
+			STATUS number not null
+		)
+	</update>
+	<update id="newCouponSeq">
+		create sequence ${id}_coupon_seq nocache
+	</update>
+	
+	<update id="newDibs">
+		create table ${id}_dibs(
+			NUM number default ${id}_dibs_seq.nextval primary key,
+			PRODUCT varchar2(100) not null,
+			FOLDER varchar2(100)
+		)
+	</update>
+	<update id="newDibsSeq">
+		create sequence ${id}_dibs_seq nocache
+	</update>
+	
+	<update id="newCart">
+		create table ${id}_cart(
+			num number default ${id}_cart_seq.nextval primary key,
+			product varchar2(100) not null,
+			price number not null,
+			quantity number not null
+		)
+	</update>
+		<update id="newCartSeq">
+		create sequence ${id}_cart_seq nocache
+	</update>
+	
+	<update id="newOrderdetail">
+		create table ${id}_Orderdetail(
+			ORDERID varchar2(100) not null,
+			PRICE number not null,
+			QUANTITY number not null,
+			DISCOUNT number,
+			PURDATE date default sysdate not null,
+			PAY varchar2(100) not null,
+			PURCHASE number default 0 not null 
+		)
+	</update>
+	
+	<update id="newDelivery">
+		create table ${id}_delivery(
+			ADDR1 varchar2(100) not null,
+			ADDR2 varchar2(100) not null,
+			PHONE varchar2(100) not null,
+			DEFAULTADDR number default 0,
+			NICADDR varchar2(100)
+		)
+	</update>
+	
+	
 
 	
 </mapper>
