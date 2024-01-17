@@ -76,7 +76,9 @@
             
             <p>
               <b>
-                비밀번호 찾기
+              <a href="javascript:window.location='/member/findId'" style="text-decoration-line : none; color:black;">아이디 찾기</a>
+              /
+              <a href="javascript:window.location='/member/findPassword'" style="text-decoration-line : none; color:black;">비밀번호 찾기</a>
               </b>
             </p>
             
@@ -92,8 +94,8 @@
               <span>
                 계정이 없으신가요?
               </span>
-              <b onclick="toggle()" class="pointer">
-                회원가입
+              <b>
+              <a href="javascript:window.location='/member/registerForm'" style="text-decoration-line : none; color:black;">회원가입</a>
               </b>
             </p>
           </div>
