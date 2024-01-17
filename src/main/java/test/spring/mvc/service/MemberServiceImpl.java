@@ -153,7 +153,18 @@ public class MemberServiceImpl implements MemberService{
 	public int isEmailAuth(String email) {
 		return mapper.isEmailAuth(email);
 	}
+
+	@Override
+	public String findIdByEmail(String email) {
+		return mapper.findIdByEmail(email);
+	}
+
+	@Override
+	public void changePwById(String id, String pw) {
+		mapper.changePwById(id, encoder.encode(pw));
+	}
     
+	
 	
 
 }

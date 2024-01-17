@@ -117,7 +117,13 @@
 	<select  id="isEmailAuth">
 		select emailauth from emailcheck where email=#{email}
 	</select>
+	<select id="findIdByEmail">
+		select id from member_basic where email=#{email}
+	</select>
 	
+	<update id="changePwById">
+		update member_basic set pw=#{pw} where id=#{id}
+	</update>
 
 	
 </mapper>

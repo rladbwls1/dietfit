@@ -118,5 +118,29 @@ public class MemberController {
 		service.emailAuth(email);
 	}
 	
+	@RequestMapping("findId")
+	public String findId() {
+		return "member/findId";
+	}
 	
+	@RequestMapping("findIdByEmail")
+	public @ResponseBody String findIdByEmail(String email) {
+		return service.findIdByEmail(email);
+	}
+	
+	@RequestMapping("findPassword")
+	public String findPassword() {
+		return "member/findPassword";
+	}
+	@RequestMapping("changePassword")
+	public String changePassword(String email, Model model) {
+		model.addAttribute("id",service.findIdByEmail(email));
+		
+		return "member/changePassword";
+	}
+	@RequestMapping("changePwPro")
+	public String changePwPro(String id,String pw) {
+		service.changePwById(id, pw);
+		return "redirect:/dietfit/main";
+	}
 }

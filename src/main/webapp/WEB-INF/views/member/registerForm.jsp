@@ -104,6 +104,20 @@ function register(){
 	if($('#idd').val()=="false"){
 		result=false;
 	}
+	if($('#pw').val()==""){
+		$('#pw_check').text("비밀번호를 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#pw').val()!=""){
+		$('#pw_check').text("");
+	}
+	if($('#pw2').val()==""||$('#pw2').val()!=$('#pw').val()){
+		$('#pw2_check').text("비밀번호와 동일하게 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#pw2').val()==$('#pw').val()){
+		$('#pw2_check').text("");
+	}
 	if($('#emaill').val()!="true"){
 		$('#email_check').text("이메일 인증을 해주세요.").css("color","red");
 		result=false;
@@ -115,13 +129,8 @@ function register(){
 	if($('#name').val()!=""){
 		$('#name_check').text("");
 	}
-	if($('#pw').val()==""){
-		$('#pw_check').text("비밀번호를 입력해주세요.").css("color","red");
-		result=false;
-	}
-	if($('#pw').val()!=""){
-		$('#pw_check').text("");
-	}
+	
+	
 	return result;
 	
 }
@@ -132,11 +141,13 @@ function register(){
 	<input type="hidden" name="idd" id="idd" value="false"/>
 	<input type="hidden" name="emaill" id="emaill" value="false"/>
 	id: <input type="text" name="id" id="id" oninput="checkId()"/> 
-	<p id="id_check"></p><br/>
+	<p id="id_check"></p>
 	pw: <input type="password" name="pw" id="pw"/> <br/>
-	<p id="pw_check"></p><br/>
+	<p id="pw_check"></p>
+	pw확인: <input type="password" name="pw2" id="pw2"/> <br/>
+	<p id="pw2_check"></p>
 	name: <input type="text" name="name" id="name"/> <br/>
-	<p id="name_check"></p><br/>
+	<p id="name_check"></p>
 	nic: <input type="text" name="nic"/> <br/>
 	email: <input type="text" name="email" id="email" oninput="checkEmail()"/> 
 	<button type="button" onclick="sendEmail()">인증번호 받기</button><br/>
@@ -144,7 +155,7 @@ function register(){
 	<input type="text" name="emailkey" id="emailkey">
 	<button type="button" onclick="verifiedEmail()">인증하기</button>
 	</span>
-	<p id="email_check"></p><br/>
+	<p id="email_check"></p>
 	<input type="submit" value="가입하기"/>
 </form>
     

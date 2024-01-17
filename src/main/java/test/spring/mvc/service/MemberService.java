@@ -14,4 +14,6 @@ public interface MemberService {
 	public int verifiedCode(String email,String emailkey);
 	public void emailAuth(String email);
 	public int isEmailAuth(String email);
+	public String findIdByEmail(String email);
+	public void changePwById(String id, String pw);
 }
