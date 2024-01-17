@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,22 @@ public class MemberController {
 		}
 		return check;
 	}
-	
+	@RequestMapping("sendMail")
+	public @ResponseBody void sendMail(String email){
+		try {
+			service.sendMail(email);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("verifiedEmail")
+	public @ResponseBody int verifiedEmail(String email, String emailkey) {
+		return service.verifiedCode(email, emailkey);
+	}
+	@RequestMapping("emailAuth")
+	public @ResponseBody void emailAuth(String email) {
+		service.emailAuth(email);
+	}
 	
 	
 }
