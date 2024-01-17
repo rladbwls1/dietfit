@@ -1,11 +1,10 @@
 package test.spring.mvc.controller;
 import java.io.FileWriter;
-import java.util.logging.Handler;
 
+import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.json.JsonObject;
-
 import com.nhncorp.mods.socket.io.SocketIOServer;
 import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
@@ -14,6 +13,7 @@ import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
 public class SellerChat extends DefaultEmbeddableVerticle{
 
 	private SocketIOServer io = null;
+	
 	@Override
 	public void start(Vertx arg0) {
 		HttpServer server = arg0.createHttpServer(); //서버생성
