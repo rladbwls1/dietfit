@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Dietfit - 로그인</title>
-<link href="/resources/css/login.css" rel="stylesheet">
+<link href="/resources/css/signInUp.css" rel="stylesheet">
 </head>
 <body>
 	<div id="container" class="container">
@@ -16,25 +16,56 @@
       <div class="col align-items-center flex-col sign-up">
         <div class="form-wrapper align-items-center">
           <div class="form sign-up">
-            <div class="input-group">
-              <i class='bx bxs-user'></i>
-              <input type="text" placeholder="Username">
-            </div>
-            <div class="input-group">
-              <i class='bx bx-mail-send'></i>
-              <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-              <i class='bx bxs-lock-alt'></i>
-              <input type="password" placeholder="Password">
-            </div>
-            <div class="input-group">
-              <i class='bx bxs-lock-alt'></i>
-              <input type="password" placeholder="Confirm password">
-            </div>
-            <button>
-              가입하기
-            </button>
+          	<form action="/member/registerPro" method="post" onsubmit="return register()">
+            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	            <input type="hidden" name="idd" id="idd" value="false"/>
+				<input type="hidden" name="emaill" id="emaill" value="false"/>
+	            
+	            <div class="input-group">
+	              <i class='bx bxs-lock-alt'></i>
+	              <input type="text" name="id" id="id" oninput="checkId()" placeholder="Id">
+	              <p id="id_check"></p>
+	            </div>
+	            
+	            <div class="input-group">
+	              <i class='bx bxs-lock-alt'></i>
+	              <input type="password" name="pw" id="pw" placeholder="Password">
+	              <p id="pw_check"></p>
+	            </div>
+	            
+	            <div class="input-group">
+	              <i class='bx bxs-user'></i>
+	              <input type="password" name="pw2" id="pw2" placeholder="Password 확인">
+	              <p id="pw_check"></p>
+	            </div>
+	            
+	            <div class="input-group">
+	              <i class='bx bxs-user'></i>
+	              <input type="text" name="name" id="name" placeholder="Username">
+	           	  <p id="name_check"></p>
+	            </div>
+	            
+	            <div class="input-group">
+	              <i class='bx bxs-user'></i>
+	              <input type="text" name="nic" placeholder="Nicname">
+	            </div>
+	            
+	            <div class="input-group">
+	              <i class='bx bx-mail-send'></i>
+	              <input type="email" name="email" id="email" oninput="checkEmail()" placeholder="Email">
+	              <button type="button" onclick="sendEmail()"> 인증번호 받기</button>
+	              <span style="display:none;" id="verifiedEmail">
+	              	<input type="text" name="emailkey" id="emailkey" placeholder="인증번호">
+	              	<button type="button" onclick="verifiedEmail()">인증하기</button>
+              	  </span>
+              	 <p id="email_check"></p>
+	            </div>
+	            
+	            <button type="submit">
+	              <b> 가입하기 </b>
+	            </button>
+            </form>
+            
             <p>
               <span>
                 계정이 있으신가요?
@@ -57,7 +88,7 @@
 	          	
 				<div class="input-group">
 	              <i class='bx bxs-user'></i>
-	              <input type="text" name="username" id="username" placeholder="Username" />
+	              <input type="text" name="username" id="username" placeholder="Id" />
 	            </div>
 	            <div class="input-group">
 	              <i class='bx bxs-lock-alt'></i>
@@ -69,7 +100,7 @@
 				<br/>
 	
 	            <button type=submit>
-	              로그인
+	              <b> 로그인 </b>
 	            </button>
             	</form>
             
@@ -94,9 +125,14 @@
               <span>
                 계정이 없으신가요?
               </span>
+              <b onclick="toggle()" class="pointer">
+                회원가입
+              </b>
+              <!-- 
               <b>
               <a href="javascript:window.location='/member/registerForm'" style="text-decoration-line : none; color:black;">회원가입</a>
               </b>
+               -->
             </p>
           </div>
         </div>
@@ -138,7 +174,7 @@
     </div>
     <!-- END CONTENT SECTION -->
   </div>
-   <script src="/resources/js/login.js"></script>
+   <script src="/resources/js/signInUp.js"></script>
    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>

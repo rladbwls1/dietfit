@@ -69,14 +69,9 @@ public class MemberController {
 	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
 			Model model) {
 		model.addAttribute("exception",exception);
-		return "member/loginForm";
+		return "member/signInUp";
 	}
 
-	//일반 회원가입 폼
-	@RequestMapping("registerForm")
-	public String register() {
-		return "member/registerForm";
-	}
 	//일반 회원가입 
 	@RequestMapping("registerPro")
 	public String registerPro(Member_basicDTO dto) {
