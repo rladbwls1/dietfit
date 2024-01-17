@@ -98,6 +98,25 @@
 	</update>
 	
 	
+	<insert id="newemailkey" >
+		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
+	</insert>
+	<select id="isemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email}
+	</select>
+	<update id="updateemailkey">
+		update emailcheck set emailkey=#{emailkey} where email=#{email}
+	</update>
+	<select id="verifiedemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
+	</select>
+	<update id="emailAuth">
+		update emailcheck set emailauth=1 where email=#{email}
+	</update>
+	<select  id="isEmailAuth">
+		select emailauth from emailcheck where email=#{email}
+	</select>
+	
 
 	
 </mapper>
