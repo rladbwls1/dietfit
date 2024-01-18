@@ -1,18 +1,17 @@
 package test.spring.mvc.service;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.ChatDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
-import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.SellerMapper;
 
 @Service
@@ -43,16 +42,9 @@ public class SellerServiceImpl implements SellerService{
 		}
 		mapper.sellermodifyupdate(Member_basicDTO);
 	}
-	
-//	@Override
-//	public ProductDTO findproductdetail(String companyid, String category, String category2, String flavor) {
-//		
-//		return mapper.findproductdetail(companyid, category, category2, flavor);
-//	}
 
 	@Override
 	public String findcompanyid(String id) {
-		
 		return mapper.findcompanyid(id);
 	}
 
@@ -64,11 +56,6 @@ public class SellerServiceImpl implements SellerService{
 	@Override
 	public void sellerwithdraw(String id) {
 		mapper.sellerwithdraw(id);
-	}
-
-	@Override
-	public int findstatus(String id) {
-		return mapper.findstatus(id);
 	}
 
 	@Override
@@ -95,5 +82,26 @@ public class SellerServiceImpl implements SellerService{
 		mapper.sellerstockupdate(productdto);
 	}
 
+	@Override
+	public String findcompanyidbyproductid(String companyid) {
+		return mapper.findcompanyidbyproductid(companyid);
+	}
+
+	@Override
+	public void chatroomnum(ChatDTO chatDTO, Model model, String id, String product) {
+		String countidchat = mapper.countidchat(id,product);
+		if(countidchat == null) {
+			mapper.chatroomnum(chatDTO);
+			int roomnum = chatDTO.getRoomnum();
+			model.addAttribute("roomnum", roomnum);
+		}else {
+			model.addAttribute("roomnum", countidchat);
+		}
+	}
+
+	@Override
+	public List<ChatDTO> findnotreadchat(int readcheck) {
+		return mapper.findnotreadchat(readcheck);
+	}
 
 }

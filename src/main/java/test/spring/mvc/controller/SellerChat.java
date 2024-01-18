@@ -49,11 +49,15 @@ public class SellerChat extends DefaultEmbeddableVerticle {
                         String msg = event.getString("msg");
                         String senderId = event.getString("senderId");
                         String roomName = userRooms.get(senderId);
-
+                        // roomnum 값 가져오기
+                        String roomnum = event.getString("roomnum");
+                        // 파일 이름에 roomnum 추가
+                        String fileName = "D://chat//" + roomnum + ".txt";
+                        
                         FileWriter writer = null;
                         try {
-                            writer = new FileWriter("D://chat//" + roomName + ".txt", true);
-                            writer.write(msg);
+                        	writer = new FileWriter(fileName, true);
+                            writer.write(msg+"\n");
                             writer.flush();
                         } catch (Exception e) {
                             e.printStackTrace();

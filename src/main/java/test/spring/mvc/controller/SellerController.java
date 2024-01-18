@@ -1,10 +1,13 @@
 package test.spring.mvc.controller;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.ChatDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -56,10 +60,7 @@ public class SellerController {
         return "/seller2/chat";
 	}
 
-    public String chat(@RequestParam("productId") String productId,Model model) {
-		model.addAttribute("productId", productId);
-        return "/seller2/chat";
-    }
+    
 
 	@RequestMapping("/withdrawpro")
 	public String withdrawpro(Member_basicDTO Member_basicDTO,Principal pri, Model model) {
@@ -76,14 +77,35 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/SELLERCHAT")
-	public String SELLERCHAT(Principal pri, Model model) {
-		String id = pri.getName();
-		model.addAttribute("id", id);
-		int adminstatus = service.findstatus(id);
-		model.addAttribute("adminstatus", adminstatus);
+	public String SELLERCHAT(Principal pri, Model model, String roomnum)throws Exception {
+		String sellerid = pri.getName();
+	      String path = "D://chat//" + roomnum + ".txt";
+	      File file = new File(path);
+	      if(file.isFile()) {
+	    	  Scanner s = new Scanner(file);
+	    	  String chat = "";
+	    	  while(s.hasNextLine()) {
+	    		  chat += (s.nextLine()+"<br>");
+	    	  }
+	    	  model.addAttribute("chat",chat);
+	      }
+		model.addAttribute("sellerid", sellerid);
 		return "/seller2/SELLERCHAT";
 	}
 	
+	@RequestMapping("/sellerchatlist")
+	public String sellerchatlist(Principal pri, Model model) {
+		String sellerid = pri.getName();
+		model.addAttribute("sellerid", sellerid);
+		model.addAttribute("chatlist", service.findnotreadchat(0));
+		return "/seller2/sellerchatlist";
+	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount(Model model,Principal pri) {
+		model.addAttribute("id", pri.getName());
+		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
+		return "/seller2/productdiscount";
+	}
 	@RequestMapping("/discountForm")
 	public String discountForm(int num, Model model) {
 		model.addAttribute("num",num);
@@ -125,12 +147,7 @@ public class SellerController {
 		model.addAttribute("email", member.getEmail());
 		return "/seller2/sellermodifyform";
 	}
-	@RequestMapping("/productdiscount")
-	public String productdiscount(Model model,Principal pri) {
-		model.addAttribute("id", pri.getName());
-		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
-		return "/seller2/productdiscount";
-	}
+	
 	@RequestMapping("/sellerstock")
 	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
 	    model.addAttribute("productId", productId);
