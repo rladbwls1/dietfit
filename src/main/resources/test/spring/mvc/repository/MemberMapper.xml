@@ -13,6 +13,25 @@
 	<insert id="newMember2" parameterType="test.spring.mvc.bean.Member_detailDTO">
 		insert into Member_detail (id,path) values(#{id},#{path})
 	</insert>
+	<select id="getUserBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
+		select * from member_basic where id=#{id}
+	</select>
+	<select id="getEmailById" >
+		select email from member_basic where id=#{id}
+	</select>
+	
+	<select id="getUser" resultType="Map">
+		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
@@ -83,7 +102,10 @@
 			DISCOUNT number,
 			PURDATE date default sysdate not null,
 			PAY varchar2(100) not null,
-			PURCHASE number default 0 not null 
+			PURCHASE number default 0 not null,
+			PRODUCTID varchar2(100),
+			TRACKING varchar2(100),
+			COURIER varchar2(100)
 		)
 	</update>
 	
@@ -93,11 +115,37 @@
 			ADDR2 varchar2(100) not null,
 			PHONE varchar2(100) not null,
 			DEFAULTADDR number default 0,
-			NICADDR varchar2(100)
+			NICADDR varchar2(100),
+			POSTNUM varchar2(100) NOT NULL,
 		)
 	</update>
 	
 	
+	<insert id="newemailkey" >
+		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
+	</insert>
+	<select id="isemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email}
+	</select>
+	<update id="updateemailkey">
+		update emailcheck set emailkey=#{emailkey}, emailauth=0 where email=#{email}
+	</update>
+	<select id="verifiedemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
+	</select>
+	<update id="emailAuth">
+		update emailcheck set emailauth=1 where email=#{email}
+	</update>
+	<select  id="isEmailAuth">
+		select emailauth from emailcheck where email=#{email}
+	</select>
+	<select id="getIdByEmail">
+		select id from member_basic where email=#{email}
+	</select>
+	
+	<update id="changePwById">
+		update member_basic set pw=#{pw} where id=#{id}
+	</update>
 
 	
 </mapper>

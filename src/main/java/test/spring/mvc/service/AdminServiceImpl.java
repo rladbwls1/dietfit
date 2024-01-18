@@ -1,6 +1,7 @@
 package test.spring.mvc.service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -24,30 +25,31 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private AdminMapper mapper;
 	
+	
 	@Override
 	public int companycount() {
 		return mapper.companycount();
 	}
 
 	@Override
-	public void companyList(int pageNum, Model model) {
+	public void companyList(Model model) {
 		int companycount = mapper.companycount();
 		List<Member_basicDTO> companyList = Collections.EMPTY_LIST;
 		companyList = mapper.companyList();
 		
-		int pageSize = 3;
-		int pageCount = companycount / pageSize + ( companycount % pageSize == 0 ? 0 : 1);
-		 
-        int startPage = (int)(pageNum/10)*10+1;
-		int pageBlock=3;
-        int endPage = startPage + pageBlock-1;
-        if (endPage > pageCount) {
-        	endPage = pageCount;
-        }
-        model.addAttribute("pageCount", pageCount);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("pageBlock", pageBlock);
-        model.addAttribute("endPage", endPage);
+//		int pageSize = 3;
+//		int pageCount = companycount / pageSize + ( companycount % pageSize == 0 ? 0 : 1);
+//		 
+//        int startPage = (int)(pageNum/10)*10+1;
+//		int pageBlock=3;
+//        int endPage = startPage + pageBlock-1;
+//        if (endPage > pageCount) {
+//        	endPage = pageCount;
+//        }
+//        model.addAttribute("pageCount", pageCount);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("pageBlock", pageBlock);
+//        model.addAttribute("endPage", endPage);
         
 		model.addAttribute("companyList", companyList);
 		model.addAttribute("companycount", companycount);
@@ -64,8 +66,42 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void companyStatus(String id, String status) {
-		mapper.companyStatus(id, status);
+	public void companyStatus(String status, String id) {
+		mapper.companyStatus(status, id);
+	}
+
+	@Override
+	public String getLastCompanyId() {
+		return mapper.getLastCompanyId();
+	}
+	
+	@Override
+	public String getCompanyId(String id) {
+		return mapper.getCompanyId(id);
+	}
+	
+	@Override
+	public String generateCompanyId(String companyid, String id) {
+	    String lastCompanyId = mapper.getLastCompanyId();
+
+		    if (lastCompanyId == null || lastCompanyId.isEmpty()) {
+		        return "AA";
+		    }
+	
+		    char[] chars = lastCompanyId.toCharArray();
+	
+		    // 현재 "AZ"까지 사용된 경우
+		    if (chars[1] == 'Z') {
+		        chars[0]++; // 첫 번째 문자를 다음 알파벳으로 이동
+		        chars[1] = 'A'; // 두 번째 문자를 'A'로 설정
+		    } else {
+		        chars[1]++; // 두 번째 문자를 다음 알파벳으로 이동
+		    }
+	
+		    String newCompanyId = new String(chars);
+		    mapper.generateCompanyId(newCompanyId, id);
+	    
+	    return newCompanyId;
 	}
 
 	@Override
@@ -74,7 +110,7 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void allProduct(int pageNum, Model model) {
+	public void allProduct(Model model) {
 		int allProductcount = mapper.allProductcount();
 		List<ProductDTO> allProduct = Collections.EMPTY_LIST;
 		allProduct = mapper.allProduct();
@@ -84,17 +120,15 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public int productcount() {
-		return mapper.productcount();
+	public int productcount(String companyid) {
+		return mapper.productcount(companyid);
 	}
 	
 	@Override
-	public void productList(int pageNum, Model model, String companyid) {
-		int productcount = mapper.productcount();
+	public void productList(Model model, String companyid) {
+		int productcount = mapper.productcount(companyid);
 		List<ProductDTO> productList = Collections.EMPTY_LIST;
 		productList = mapper.productList(companyid);
-		
-        
 		model.addAttribute("productList", productList);
 		model.addAttribute("productcount", productcount);
 	}

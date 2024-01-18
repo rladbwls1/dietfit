@@ -9,18 +9,21 @@ import test.spring.mvc.bean.ProductDTO;
 public interface AdminService {
 	//ÆÇ¸ÅÀÚ
 		public int companycount();
-		public void companyList(int pageNum, Model model);
+		public void companyList(Model model);
 		
 		public Member_basicDTO companyBasic(String id);
 		public Member_detailDTO companyDetail(String id);
 		
-		public void companyStatus(String id, String status);
+		public void companyStatus(String status, String id);
+		public String getLastCompanyId();
+		public String getCompanyId(String id);
+		public String generateCompanyId(String companyid, String id);
 		
 		public int allProductcount();
-		public void allProduct(int pageNum, Model model);
+		public void allProduct(Model model);
 		
-		public int productcount();
-		public void productList(int pageNum, Model model, String companyid);
+		public int productcount(String companyid);
+		public void productList(Model model, String companyid);
 		
 		public void checkStock();
 		

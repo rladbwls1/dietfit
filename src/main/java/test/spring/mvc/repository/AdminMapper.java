@@ -13,13 +13,18 @@ public interface AdminMapper {
 	public List<Member_basicDTO> companyList();
 	public Member_basicDTO companyBasic(String id);
 	public Member_detailDTO companyDetail(String id);
-	public void companyStatus (@Param("id") String id, 
-			@Param("status") String status);
+	
+	public void companyStatus (@Param("status") String status, @Param("id") String id);
+	public String getLastCompanyId();
+	public String getCompanyId(String id);
+	public void generateCompanyId(
+			@Param("companyid") String companyid,
+			@Param("id") String id);
 	
 	public int allProductcount();
 	public List<ProductDTO> allProduct();
 	
-	public int productcount();
+	public int productcount(String companyid);
 	public List<ProductDTO> productList(String companyid);
 	
 	public String getCompanyName(String companyid);

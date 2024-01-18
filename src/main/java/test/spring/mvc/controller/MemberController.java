@@ -1,6 +1,11 @@
 package test.spring.mvc.controller;
 
-import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -18,6 +25,8 @@ import test.spring.mvc.service.MemberService;
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	@Autowired
+	private MemberMapper mapper;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -43,19 +52,6 @@ public class MemberController {
 		return dto;
 	}
 	
-	@RequestMapping("test")
-	public String doTest() {
-		return "member/test";
-	}
-	@RequestMapping("seller")
-	public String doMember() {
-		return "member/seller";
-	}
-	@RequestMapping("admin")
-	public String doAdmin() {
-		return "member/admin";
-	}
-	
 	//접근 제한 에러 
 	@RequestMapping("accessError")
 	public String accessError(Authentication auth) {
@@ -68,14 +64,9 @@ public class MemberController {
 	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
 			Model model) {
 		model.addAttribute("exception",exception);
-		return "member/loginForm";
+		return "member/signInUp";
 	}
 
-	//일반 회원가입 폼
-	@RequestMapping("registerForm")
-	public String register() {
-		return "member/registerForm";
-	}
 	//일반 회원가입 
 	@RequestMapping("registerPro")
 	public String registerPro(Member_basicDTO dto) {
@@ -100,7 +91,60 @@ public class MemberController {
 		}
 		return check;
 	}
+	@RequestMapping("sendMail")
+	public @ResponseBody void sendMail(String email){
+		try {
+			service.sendMail(email);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("verifiedEmail")
+	public @ResponseBody int verifiedEmail(String email, String emailkey) {
+		return service.verifiedCode(email, emailkey);
+	}
+	@RequestMapping("emailAuth")
+	public @ResponseBody void emailAuth(String email) {
+		service.emailAuth(email);
+	}
 	
+	@RequestMapping("findId")
+	public String findId() {
+		return "member/findId";
+	}
 	
+	@RequestMapping("findIdByEmail")
+	public @ResponseBody String findIdByEmail(String email) {
+		return service.findIdByEmail(email);
+	}
 	
+	@RequestMapping("findPassword")
+	public String findPassword() {
+		return "member/findPassword";
+	}
+	@RequestMapping("changePassword")
+	public String changePassword(String email, Model model) {
+		model.addAttribute("id",service.findIdByEmail(email));
+		
+		return "member/changePassword";
+	}
+	@RequestMapping("changePwPro")
+	public String changePwPro(String id,String pw) {
+		service.changePwById(id, pw);
+		return "redirect:/dietfit/main";
+	}
+	@RequestMapping("modifyForm")
+	public String modifyForm(Principal pri,Model model) {
+		String id=pri.getName();
+		model.addAttribute("id",id);
+		model.addAttribute("email",mapper.getEmailById(id));
+		model.addAttribute("member",mapper.getUser(id).get(0));
+		return "member/modifyForm";
+	}
+	@RequestMapping("modifyPro")
+	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
+		System.out.println(basicDTO);
+		System.out.println(detailDTO);
+		return "redirect:/dietfit/main";
+	}
 }
