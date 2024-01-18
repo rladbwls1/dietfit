@@ -59,10 +59,10 @@
 	</select>
 	
 	<select id="productcount" resultType="int">
-		select count(*) from all_product companyid = #{companyid}
+		select count(*) from all_product where companyid = #{companyid}
 	</select>
 	<select id="productList" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from all_product where companyid = #{companyid}
+		select * from all_product where companyid = #{companyid} order by num asc
 	</select>
 	
 	<select id="getCompanyName" resultType="String">
