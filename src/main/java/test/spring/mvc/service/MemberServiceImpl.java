@@ -156,7 +156,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String findIdByEmail(String email) {
-		return mapper.findIdByEmail(email);
+		return mapper.getIdByEmail(email);
 	}
 
 	@Override

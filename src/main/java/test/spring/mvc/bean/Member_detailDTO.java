@@ -19,4 +19,5 @@ public class Member_detailDTO {
 	private String companyid;
 	private String company;
 	private String businessnum;
+	private String postnum;
 }
