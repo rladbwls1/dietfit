@@ -54,13 +54,13 @@ function findPwVerify(){
 				$('#email_check').text("인증번호가 틀렸습니다.").css("color","red");
 			}else{
 				$('#email_check').text("인증이 완료되었습니다.").css("color","green");
-				$('emaill').val("true");	
+				$('#emaill').val("true");	
 			}
 		}
 	});
 }
 function toChangePw(){
-	if($('emaill').val()=="true"){
+	if($('#emaill').val()=="true"){
 		return true;	
 	}
 	$('#email_check').text("이메일 인증을 해주세요.").css("color","red");

@@ -1,7 +1,6 @@
 package test.spring.mvc.controller;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -42,19 +41,6 @@ public class MemberController {
 		}
 		dto=service.getIdPw(email);
 		return dto;
-	}
-	
-	@RequestMapping("test")
-	public String doTest() {
-		return "member/test";
-	}
-	@RequestMapping("seller")
-	public String doMember() {
-		return "member/seller";
-	}
-	@RequestMapping("admin")
-	public String doAdmin() {
-		return "member/admin";
 	}
 	
 	//접근 제한 에러 
@@ -142,5 +128,9 @@ public class MemberController {
 	public String changePwPro(String id,String pw) {
 		service.changePwById(id, pw);
 		return "redirect:/dietfit/main";
+	}
+	@RequestMapping("modifyForm")
+	public String modifyForm() {
+		return "member/modifyForm";
 	}
 }
