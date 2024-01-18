@@ -31,4 +31,6 @@ public interface SellerMapper {
 	public void sellerstockupdate(ProductDTO productdto);
 	public String countidchat(@Param("id")String id,
 							@Param("product")String product);
+    public String findallbyroomnum(int roomnum);
+    public void endchat(int roomnum);
 }
