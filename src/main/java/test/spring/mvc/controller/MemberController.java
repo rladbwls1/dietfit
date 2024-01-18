@@ -1,5 +1,10 @@
 package test.spring.mvc.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -18,6 +25,8 @@ import test.spring.mvc.service.MemberService;
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	@Autowired
+	private MemberMapper mapper;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -125,7 +134,17 @@ public class MemberController {
 		return "redirect:/dietfit/main";
 	}
 	@RequestMapping("modifyForm")
-	public String modifyForm() {
+	public String modifyForm(Principal pri,Model model) {
+		String id=pri.getName();
+		model.addAttribute("id",id);
+		model.addAttribute("email",mapper.getEmailById(id));
+		model.addAttribute("member",mapper.getUser(id).get(0));
 		return "member/modifyForm";
+	}
+	@RequestMapping("modifyPro")
+	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
+		System.out.println(basicDTO);
+		System.out.println(detailDTO);
+		return "redirect:/dietfit/main";
 	}
 }
