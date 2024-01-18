@@ -1,5 +1,7 @@
 package test.spring.mvc.controller;
 
+import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -131,7 +133,8 @@ public class Seller1Controller {
                          @PathVariable("category") String category,
                          @PathVariable("category2") String category2,
                          @PathVariable("flavor") String flavor,
-                         Model model) {
+                         Model model,Principal pri) {
+    	String id = pri.getName();
         ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
@@ -165,6 +168,7 @@ public class Seller1Controller {
         model.addAttribute("product", product);
         model.addAttribute("thumbnailPaths", thumbnailPaths);
         model.addAttribute("imagePaths", imagePaths);
+        model.addAttribute("id", id);
 
         return "seller/productdetail";
     }
