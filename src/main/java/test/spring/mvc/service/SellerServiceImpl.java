@@ -88,20 +88,37 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public void chatroomnum(ChatDTO chatDTO, Model model, String id, String product) {
+	public int chatroomnum(ChatDTO chatDTO, Model model, String id, String product) {
 		String countidchat = mapper.countidchat(id,product);
+		int roomnum = 0;
 		if(countidchat == null) {
 			mapper.chatroomnum(chatDTO);
-			int roomnum = chatDTO.getRoomnum();
+			roomnum = chatDTO.getRoomnum();
 			model.addAttribute("roomnum", roomnum);
 		}else {
-			model.addAttribute("roomnum", countidchat);
+			roomnum = Integer.parseInt(countidchat);
+			model.addAttribute("roomnum", roomnum);
 		}
+		model.addAttribute("id",id);
+		model.addAttribute("product",product);
+		return roomnum;
 	}
 
 	@Override
 	public List<ChatDTO> findnotreadchat(int readcheck) {
 		return mapper.findnotreadchat(readcheck);
 	}
+
+	@Override
+	public String findallbyroomnum(int roomnum) {
+		return mapper.findallbyroomnum(roomnum);
+	}
+
+	@Override
+	public void endchat(int roomnum) {
+		mapper.endchat(roomnum);
+	}
+
+	
 
 }
