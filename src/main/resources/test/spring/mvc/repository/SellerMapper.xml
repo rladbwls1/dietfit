@@ -8,30 +8,20 @@
     <select id="findallproductbycompanyid" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         select * from all_product
     </select>
-
-    <select id="findthumimg" parameterType="java.util.Map" resultType="test.spring.mvc.bean.ProductimgDTO">
-	    select * from all_productimg where
-	    companyid = #{companyid}
-	    AND category = #{category}
-	    AND category2 = #{category2}
-	    AND flavor = #{flavor}
-	    AND thum = 1
-	</select>
-	
-
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
-    
-    
 	<select id="findcompanyid" resultType="java.lang.String">
 		select companyid from member_detail where id=#{id}
+	</select>
+	<select id="findcompanyidbyproductid" resultType="java.lang.String">
+		select companyid from member_detail where companyid=#{companyid}
 	</select>
 	<select id="findcompanyproduct" resultType="test.spring.mvc.bean.ProductDTO">
 		select * from all_product where companyid=#{companyid}
 	</select>
-	<select id="findstatus">
-		select status from member_basic where id=#{id}	
+	<select id="findnotreadchat" resultType="test.spring.mvc.bean.ChatDTO">
+		select * from chat where readcheck=0
 	</select>
     <select id="sellermodifyselect" parameterType="string" resultType="test.spring.mvc.bean.Member_basicDTO">
     	select * from member_basic where id=#{id}
@@ -72,4 +62,16 @@
 	    where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor}
 	</update>
 
+	<insert id="chatroomnum" parameterType="test.spring.mvc.bean.ChatDTO">
+	    <selectKey keyProperty="roomnum" resultType="int" order="BEFORE">
+	        select chat_seq.nextval as roomnum from dual
+	    </selectKey>
+	    insert into chat (roomnum, id, product, readcheck) values (#{roomnum}, #{id}, #{product}, #{readcheck})
+	</insert>
+	<select id="countidchat">
+		select roomnum from chat where id=#{id} and product=#{product}
+	</select>
+	<update id="endchat" parameterType="test.spring.mvc.bean.ChatDTO">
+		update chat set readcheck = 1 where readcheck=${readcheck}
+	</update>
 </mapper>

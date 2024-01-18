@@ -1,9 +1,51 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<h1>회원가입하기</h1>
+let container = document.getElementById('container')
 
-<script>
+toggle = () => {
+  container.classList.toggle('sign-in')
+  container.classList.toggle('sign-up')
+}
+
+setTimeout(() => {
+  container.classList.add('sign-in')
+}, 200)
+
+
+function loginWithKakao() {
+	  Kakao.Auth.login({
+    	success: function (authObj) {
+            console.log(authObj); //access토큰 값
+            Kakao.Auth.setAccessToken(authObj.access_token); //access 토큰 값 저장
+            getInfo(authObj.access_token);
+          },
+          fail: function (err) {
+            console.log(err);
+          }
+    });
+  }
+  function getInfo(tos) {  // 카카오 유저정보 확인 
+      Kakao.API.request({
+        url: "/v2/user/me",
+        success: function (res) {
+          $.ajax({
+        	  type: "POST",
+        	  url: "/member/check",
+        	  data : {email:res.kakao_account.email},
+        	  success : function(dto){
+     				$("#username").val(dto.id);
+     				$("#password").val(dto.id);
+     				$("#login").submit();				
+        	  }
+          });
+        },
+        fail: function (error) {
+          alert("카카오 로그인 실패" + JSON.stringify(error));
+        },
+      });
+    }
+    
+    
+    
+
 //아이디 중복 확인
 function checkId(){
 	var id=$('#id').val();
@@ -134,29 +176,3 @@ function register(){
 	return result;
 	
 }
-
-</script>
-<form action="/member/registerPro" method="post" onsubmit="return register()">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	<input type="hidden" name="idd" id="idd" value="false"/>
-	<input type="hidden" name="emaill" id="emaill" value="false"/>
-	id: <input type="text" name="id" id="id" oninput="checkId()"/> 
-	<p id="id_check"></p>
-	pw: <input type="password" name="pw" id="pw"/> <br/>
-	<p id="pw_check"></p>
-	pw확인: <input type="password" name="pw2" id="pw2"/> <br/>
-	<p id="pw2_check"></p>
-	name: <input type="text" name="name" id="name"/> <br/>
-	<p id="name_check"></p>
-	nic: <input type="text" name="nic"/> <br/>
-	email: <input type="text" name="email" id="email" oninput="checkEmail()"/> 
-	<button type="button" onclick="sendEmail()">인증번호 받기</button><br/>
-	<span style="display:none;" id="verifiedEmail">
-	<input type="text" name="emailkey" id="emailkey">
-	<button type="button" onclick="verifiedEmail()">인증하기</button>
-	</span>
-	<p id="email_check"></p>
-	<input type="submit" value="가입하기"/>
-</form>
-    
-    

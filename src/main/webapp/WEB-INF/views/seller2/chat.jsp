@@ -43,9 +43,11 @@
     </style>
 </head>
 <body>
+	<input type="text" id="product" name="product" value="${product}" readonly style="width: 400px;"><br>
     <div class="chatBox" id="chatBox">
         <div class="message serverMessage">
-            상담원: ${id}님 안녕하세요! 어떤 도움이 필요하신가요?
+            안녕하세요! ${id}님 어떤 도움이 필요하신가요?<br>
+            ${roomnum}
         </div>
         <div id="msgs" class="msgs"></div>
     </div>
@@ -53,22 +55,22 @@
     <div class="chatContainer">
         <input type="text" name="chat" class="chat" id="chat" placeholder="메시지 입력" />
         <input type="button" value="전송" class="sendBtn" id="sendBtn" />
+		<input type="hidden" name="roomnum" value="${roomnum}">
     </div>
 
     <script>
         var socket = io.connect("http://192.168.219.163:7777");
         var userId = "${id}";
-        var adminStatus = ${adminstatus};
+        var sellercompany = "${sellercompany}";
         
         socket.on("response", function (message) {
             var messageClass = message.senderId === userId ? "userMessage" : "otherMessage";
             var msg = message.msg;
             var msgid = msg.split("-")[0];
-            if (message.senderId === userId) {
-                // 동일하다면 사용자 ID와 메시지를 처리
+            
+            if (msgid === sellercompany || message.senderId === userId) {
+                // 판매자에게 보낸 메시지 또는 나에게 보낸 메시지만 처리
                 $("#msgs").append('<div class="message ' + messageClass + '">' + message.msg + '</div><br />');
-            } else {
-                // 다르다면 다른 처리를 수행
             }
         });
 
@@ -87,8 +89,11 @@
         function sendMessage() {
             var m = $(".chat").val();
             if (m.trim() !== "") {
-                socket.emit("chatMsg", { msg: "${id}" + "-" + m, senderId: "${id}", roomType: "user" });
+                socket.emit("chatMsg", { msg: "${id}" + "-" + m, senderId: "${id}", roomType: "user", roomnum : "${roomnum}"});
                 $(".chat").val("");
+
+                // 메시지 전송 후 채팅 요청 리스트 갱신 요청
+                socket.emit("refreshChatList", { sellerId: "${sellercompany}" });
             }
         }
      // 사용자가 채팅을 종료했을 때 호출되는 함수

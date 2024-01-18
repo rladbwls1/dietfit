@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,14 +69,9 @@ public class MemberController {
 	public String doLogin(@RequestParam(value = "exception", required = false)String exception,
 			Model model) {
 		model.addAttribute("exception",exception);
-		return "member/loginForm";
+		return "member/signInUp";
 	}
 
-	//일반 회원가입 폼
-	@RequestMapping("registerForm")
-	public String register() {
-		return "member/registerForm";
-	}
 	//일반 회원가입 
 	@RequestMapping("registerPro")
 	public String registerPro(Member_basicDTO dto) {
@@ -100,7 +96,46 @@ public class MemberController {
 		}
 		return check;
 	}
+	@RequestMapping("sendMail")
+	public @ResponseBody void sendMail(String email){
+		try {
+			service.sendMail(email);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("verifiedEmail")
+	public @ResponseBody int verifiedEmail(String email, String emailkey) {
+		return service.verifiedCode(email, emailkey);
+	}
+	@RequestMapping("emailAuth")
+	public @ResponseBody void emailAuth(String email) {
+		service.emailAuth(email);
+	}
 	
+	@RequestMapping("findId")
+	public String findId() {
+		return "member/findId";
+	}
 	
+	@RequestMapping("findIdByEmail")
+	public @ResponseBody String findIdByEmail(String email) {
+		return service.findIdByEmail(email);
+	}
 	
+	@RequestMapping("findPassword")
+	public String findPassword() {
+		return "member/findPassword";
+	}
+	@RequestMapping("changePassword")
+	public String changePassword(String email, Model model) {
+		model.addAttribute("id",service.findIdByEmail(email));
+		
+		return "member/changePassword";
+	}
+	@RequestMapping("changePwPro")
+	public String changePwPro(String id,String pw) {
+		service.changePwById(id, pw);
+		return "redirect:/dietfit/main";
+	}
 }
