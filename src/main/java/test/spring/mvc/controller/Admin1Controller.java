@@ -185,5 +185,10 @@ public class Admin1Controller {
 		model.addAttribute("reco", dto);
 		return "admin/product";
 	}
+	
+	@RequestMapping("food")
+	public String food() {
+		return "/admin/food";
+	}
 }
 
