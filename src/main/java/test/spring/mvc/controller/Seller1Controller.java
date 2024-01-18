@@ -28,9 +28,6 @@ public class Seller1Controller {
 	@Autowired
     private Seller1Service service;
 	
-	@Autowired
-	private Seller1Mapper sellermapper;
-	
 	@RequestMapping("/store/{companyid}")
 	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);

@@ -18,5 +18,11 @@
 <form action="/seller/SELLERCHAT" method="post">
     <input type="submit" value="상품문의 목록"/>
 </form>
+<form action="/seller/orderhome" method="post">
+    <input type="submit" value="상품주문 목록"/>
+</form>
+<form action="/seller/store/home" method="post">
+    <input type="submit" value="상품 목록"/>
+</form>
 </body>
 </html>
