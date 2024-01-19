@@ -177,6 +177,17 @@ public class MemberServiceImpl implements MemberService{
 	public void changeEmailById(String id, String email) {
 		mapper.changeEmailById(email, id);
 	}
+
+	@Override
+	public boolean pwCheck(String id, String pw) {
+		String dbPw=mapper.getPwById(id);
+		return encoder.matches(pw, dbPw);
+	}
+
+	@Override
+	public void deleteUserself(String id) {
+		mapper.deleteUserself(id);
+	}
     
 	
 	

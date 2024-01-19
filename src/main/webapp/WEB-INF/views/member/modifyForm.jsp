@@ -48,7 +48,7 @@ ${id }</td></tr>
 </table>
 
 <br/>
-<button type="submit" >수정하기</button>
+<button type="submit" >수정하기</button> <button type="button" onclick="deleteUserself()">회원 탈퇴하기</button>
 </form>
 
 

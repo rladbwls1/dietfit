@@ -27,7 +27,7 @@
             <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
                 <input type="text" name="emailkey" id="emailkey" placeholder="인증번호">
-                <span id="verifiedEmail" >
+                <span id="verifiedEmail" style="display:none;" >
                 <button type="button" onclick="verifiedEmail()">인증하기</button>
                 </span>
             </div>

@@ -29,8 +29,12 @@
 		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
 					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
 	</update>	
-	
-	
+	<select id="getPwById">
+		select pw from member_basic where id=#{id}
+	</select>
+	<update id="deleteUserself">
+		update member_basic set status=99 where id=#{id}
+	</update>
 	
 	
 	
