@@ -23,7 +23,15 @@ public interface MemberMapper {
 	//회원 아이디로 basic 정보 가져오기
 	public List<Map<String,Object>> getUser(String id);
 	
-	//회원 가입시 장바구니, 찜, 쿠폰, 적립금, 배송정보 
+	//회원 아이디로 비밀번호 가져오기
+	public String getPwById(String id); 
+	//회원 탈퇴
+	public void deleteUserself(String id);
+	//회원 정보수정
+	public void modifyMemberBasic(Member_basicDTO dto);
+	public void modifyMemberDetail(Member_detailDTO dto);
+	
+	//회원 가입시 장바구니, 찜, 쿠폰, 적립금, 배송정보 테이블 생성
 	public void newPoint(String id);
 	public void newPointSeq(String id);
 	public void newCoupon(String id);
@@ -49,5 +57,6 @@ public interface MemberMapper {
 	public String getEmailById(String id);
 	//아이디로 비밀번호 변경하기
 	public void changePwById(@Param("id")String id, @Param("pw")String pw);
-	
+	//아이디로 이메일 변경하기
+	public void changeEmailById(@Param("email")String email, @Param("id")String id);
 }

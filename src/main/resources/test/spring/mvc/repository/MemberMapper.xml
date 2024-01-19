@@ -19,13 +19,22 @@
 	<select id="getEmailById" >
 		select email from member_basic where id=#{id}
 	</select>
-	
 	<select id="getUser" resultType="Map">
 		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
 	</select>
-	
-	
-	
+	<update id="modifyMemberBasic" parameterType="test.spring.mvc.bean.Member_basicDTO">
+		update member_basic set NAME=#{name}, NIC=#{nic} where id=#{id}
+	</update>
+	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
+		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
+					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
+	</update>	
+	<select id="getPwById">
+		select pw from member_basic where id=#{id}
+	</select>
+	<update id="deleteUserself">
+		update member_basic set status=99 where id=#{id}
+	</update>
 	
 	
 	
@@ -145,6 +154,9 @@
 	
 	<update id="changePwById">
 		update member_basic set pw=#{pw} where id=#{id}
+	</update>
+	<update id="changeEmailById">
+		update member_basic set email=#{email} where id=#{id}
 	</update>
 
 	

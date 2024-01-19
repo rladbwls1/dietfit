@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -148,8 +149,36 @@ public class MemberController {
 	}
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
-		System.out.println(basicDTO);
-		System.out.println(detailDTO);
-		return "redirect:/dietfit/main";
+		service.modifyUser(basicDTO, detailDTO);
+		return "redirect:/member/modifyForm";
 	}
+	@RequestMapping("changeEmail")
+	public String changeEmail(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/changeEmail";
+	}
+	@RequestMapping("changeEmailPro")
+	public String changeEmailPro(String id,String email) {
+		service.changeEmailById(id, email);
+		return "redirect:/member/modifyForm";
+	}
+	@RequestMapping("userDelete")
+	public String userDelete(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/userDelete";
+	}	
+	@RequestMapping("deletePro")
+	public @ResponseBody boolean deletePro(String id, String pw){
+		boolean check=service.pwCheck(id, pw);
+		if(check) {
+			service.deleteUserself(id);
+		}
+		return check;
+	}	
+	@RequestMapping("deletePro2")
+	public String deletePro2(String id, HttpSession session){
+		System.out.println("deletePro2³Ñ¾î¿È");
+		return "redirect:/dietfit/main";
+	}	
+	
 }
