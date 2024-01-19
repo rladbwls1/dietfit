@@ -19,4 +19,6 @@ public interface MemberService {
 	public void changePwById(String id, String pw);
 	public void changeEmailById(String id, String email);
 	public void modifyUser(Member_basicDTO basicDTO, Member_detailDTO detailDTO);
+	public boolean pwCheck(String id, String pw);
+	public void deleteUserself(String id);
 }

@@ -23,6 +23,10 @@ public interface MemberMapper {
 	//회원 아이디로 basic 정보 가져오기
 	public List<Map<String,Object>> getUser(String id);
 	
+	//회원 아이디로 비밀번호 가져오기
+	public String getPwById(String id); 
+	//회원 탈퇴
+	public void deleteUserself(String id);
 	//회원 정보수정
 	public void modifyMemberBasic(Member_basicDTO dto);
 	public void modifyMemberDetail(Member_detailDTO dto);
