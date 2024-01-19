@@ -5,59 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dietfit - 설문 결과</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            margin: 20px;
-        }
-
-        h2, h3 {
-            color: #3498db;
-        }
-
-        div.result-container {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: 0 auto;
-            margin-top: 20px;
-        }
-
-        p {
-            color: #333;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #3498db;
-            color: #fff;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        /* 추가된 부분 */
-        .center-table {
-            width: 50%;
-            margin: 0 auto;
-        }
-    </style>
+<link href="/resources/css/survey.css" rel="stylesheet">  
 </head>
 <body>
     <h2>설문 결과</h2>
@@ -115,5 +63,7 @@
         </tbody>
     </table>
     
+    <!-- protein ${protein}으로 고치기  -->
+    <button onclick="location.href='/dietfit/surveymenu?protein=10'">식단보기</button>
 </body>
 </html>

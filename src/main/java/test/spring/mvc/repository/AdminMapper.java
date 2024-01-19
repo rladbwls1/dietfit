@@ -35,4 +35,8 @@ public interface AdminMapper {
 			@Param("flavor") String flavor);
 	public int getProductStock(String product);
 	public String getCompanyEmail(String companyid);
+	
+	//½Ä´Ü!!!!
+	public List<String> getProtein(int protein);
+
 }

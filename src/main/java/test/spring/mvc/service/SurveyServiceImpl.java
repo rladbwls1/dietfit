@@ -1,10 +1,19 @@
 package test.spring.mvc.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import test.spring.mvc.repository.AdminMapper;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
 
+	@Autowired
+	private AdminMapper mapper;
+	
 	@Override
 	public double calculateBMI(double height, double weight) {
 	    double bmi = weight / ((height / 100.0) * (height / 100.0));
@@ -36,24 +45,34 @@ public class SurveyServiceImpl implements SurveyService {
 
 
 	@Override
-	public double needProtein(double weight) {
-		double protein = weight * 1.5;
+	public int needProtein(double weight) {
+		double dprotein =  weight * 1.0;
+		int protein = (int)dprotein;
 		return protein;
 	}
 
 
 	@Override
-	public double needFat(int diettdee) {
-		double fat = (diettdee * 0.2) / 9;
+	public int needFat(int diettdee) {
+		int fat = (int) (diettdee * 0.2) / 9;
 		return fat;
 	}
 
 
 	@Override
-	public double needRice(int diettdee, double protein, double fat) {
-		double rice = (diettdee - (protein + fat)) / 4;
+	public int needRice(int diettdee, int protein, int fat) {
+		int rice = (diettdee - (protein + fat)) / 4;
 		return rice;
 	}
+
+
+	@Override
+	public List<String> getProtein(int protein) {
+		return mapper.getProtein(protein);
+	}
+
+
+	
 	
 	
 

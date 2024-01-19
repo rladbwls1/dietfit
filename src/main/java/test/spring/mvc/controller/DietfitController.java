@@ -1,5 +1,7 @@
 package test.spring.mvc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,7 @@ public class DietfitController {
 	
 	@RequestMapping("survey")
 	public String survey() {
-		return "admin/survey";
+		return "admin/survey/form";
 	}
 	
 	@RequestMapping("surveyResult")
@@ -51,9 +53,9 @@ public class DietfitController {
 			diettdee = tdeeAsInt - 500;
 		}
 	
-		int protein = (int) service.needProtein(weight);
-		int fat = (int) service.needFat(diettdee);
-		int rice = (int) service.needRice(diettdee, protein, fat);
+		int protein = service.needProtein(weight);
+		int fat = service.needFat(diettdee);
+		int rice = service.needRice(diettdee, protein, fat);
 		
 		model.addAttribute("bmi", bmi);
 		model.addAttribute("bmr", bmr);
@@ -63,7 +65,16 @@ public class DietfitController {
 		model.addAttribute("protein", protein);
 		model.addAttribute("fat", fat);
 		model.addAttribute("rice", rice);
-		return "admin/surveyResult";
+		return "admin/survey/result";
+	}
+	
+	@RequestMapping("surveymenu")
+	public String surveymenu(int protein, Model model) {
+		List<String> proteinList = service.getProtein(protein);
+	    model.addAttribute("proteinList", proteinList);
+	    model.addAttribute("protein", protein); // 다른 데이터도 필요한 경우 추가
+
+		return "admin/survey/menu";
 	}
 	
 	
