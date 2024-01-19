@@ -1,7 +1,11 @@
 package test.spring.mvc.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -19,6 +25,8 @@ import test.spring.mvc.service.MemberService;
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	@Autowired
+	private MemberMapper mapper;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -42,19 +50,6 @@ public class MemberController {
 		}
 		dto=service.getIdPw(email);
 		return dto;
-	}
-	
-	@RequestMapping("test")
-	public String doTest() {
-		return "member/test";
-	}
-	@RequestMapping("seller")
-	public String doMember() {
-		return "member/seller";
-	}
-	@RequestMapping("admin")
-	public String doAdmin() {
-		return "member/admin";
 	}
 	
 	//접근 제한 에러 
@@ -138,4 +133,28 @@ public class MemberController {
 		service.changePwById(id, pw);
 		return "redirect:/dietfit/main";
 	}
+	@RequestMapping("modifyForm")
+	public String modifyForm(Principal pri,Model model) {
+		String id=pri.getName();
+		model.addAttribute("id",id);
+		model.addAttribute("email",mapper.getEmailById(id));
+		model.addAttribute("member",mapper.getUser(id).get(0));
+		return "member/modifyForm";
+	}
+	@RequestMapping("modifyPro")
+	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
+		service.modifyUser(basicDTO, detailDTO);
+		return "redirect:/member/modifyForm";
+	}
+	@RequestMapping("changeEmail")
+	public String changeEmail(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/changeEmail";
+	}
+	@RequestMapping("changeEmailPro")
+	public String changeEmailPro(String id,String email) {
+		service.changeEmailById(id, email);
+		return "redirect:/member/modifyForm";
+	}
+	
 }

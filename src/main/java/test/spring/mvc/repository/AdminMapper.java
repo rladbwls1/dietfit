@@ -1,6 +1,5 @@
 package test.spring.mvc.repository;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -25,7 +24,7 @@ public interface AdminMapper {
 	public int allProductcount();
 	public List<ProductDTO> allProduct();
 	
-	public int productcount();
+	public int productcount(String companyid);
 	public List<ProductDTO> productList(String companyid);
 	
 	public String getCompanyName(String companyid);

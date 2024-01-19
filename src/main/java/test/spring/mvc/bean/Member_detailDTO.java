@@ -1,5 +1,6 @@
 package test.spring.mvc.bean;
 
+
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,4 +20,5 @@ public class Member_detailDTO {
 	private String companyid;
 	private String company;
 	private String businessnum;
+	private String postnum;
 }

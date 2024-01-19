@@ -16,7 +16,7 @@
 	<c:if test="${companycount > 0}">
 	<h3>총 ${companycount}개 업체입니다</h3>
 	<div>
-		<button type="button" onclick="location.href='/admin/allProduct?pageNum=1'">전체상품보기</button>
+		<button type="button" onclick="location.href='/admin/allProduct'">전체상품보기</button>
 	</div>
 		<table>
 			<tr>      

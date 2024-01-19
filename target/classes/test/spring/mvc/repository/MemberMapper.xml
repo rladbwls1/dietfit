@@ -13,6 +13,30 @@
 	<insert id="newMember2" parameterType="test.spring.mvc.bean.Member_detailDTO">
 		insert into Member_detail (id,path) values(#{id},#{path})
 	</insert>
+	<select id="getUserBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
+		select * from member_basic where id=#{id}
+	</select>
+	<select id="getEmailById" >
+		select email from member_basic where id=#{id}
+	</select>
+	<select id="getUser" resultType="Map">
+		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
+	</select>
+	<update id="modifyMemberBasic" parameterType="test.spring.mvc.bean.Member_basicDTO">
+		update member_basic set NAME=#{name}, NIC=#{nic} where id=#{id}
+	</update>
+	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
+		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
+					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
+	</update>	
+	
+	
+	
+	
+	
+	
+	
+	
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
@@ -84,7 +108,9 @@
 			PURDATE date default sysdate not null,
 			PAY varchar2(100) not null,
 			PURCHASE number default 0 not null,
-			PRODUCTID varchar2(100) not null 
+			PRODUCTID varchar2(100),
+			TRACKING varchar2(100),
+			COURIER varchar2(100)
 		)
 	</update>
 	
@@ -94,7 +120,8 @@
 			ADDR2 varchar2(100) not null,
 			PHONE varchar2(100) not null,
 			DEFAULTADDR number default 0,
-			NICADDR varchar2(100)
+			NICADDR varchar2(100),
+			POSTNUM varchar2(100) NOT NULL,
 		)
 	</update>
 	
@@ -117,12 +144,15 @@
 	<select  id="isEmailAuth">
 		select emailauth from emailcheck where email=#{email}
 	</select>
-	<select id="findIdByEmail">
+	<select id="getIdByEmail">
 		select id from member_basic where email=#{email}
 	</select>
 	
 	<update id="changePwById">
 		update member_basic set pw=#{pw} where id=#{id}
+	</update>
+	<update id="changeEmailById">
+		update member_basic set email=#{email} where id=#{id}
 	</update>
 
 	

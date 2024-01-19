@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
@@ -14,7 +15,12 @@ import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
 import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
 
+import test.spring.mvc.service.SellerService;
+
 public class SellerChat extends DefaultEmbeddableVerticle {
+	
+	@Autowired
+	private SellerService service;
 
     private SocketIOServer io = null;
     private Map<String, SocketIOSocket> userSockets = new ConcurrentHashMap<>();
@@ -66,6 +72,18 @@ public class SellerChat extends DefaultEmbeddableVerticle {
                         io.sockets().in(roomName).emit("response", event);
                     }
                 });
+                socket.on("exitChat", new Handler<JsonObject>() {
+                    @Override
+                    public void handle(JsonObject event) {
+                        String userId = event.getString("userId");
+                        String roomnum = event.getString("roomnum");
+
+                        io.sockets().in(roomnum).emit("chatClosed", new JsonObject().putString("message", "Chat closed by user."));
+
+                        // 채팅방 상태 업데이트
+                        service.endchat(Integer.parseInt(roomnum));
+                    }
+                });
             }
         });
 
@@ -76,12 +94,6 @@ public class SellerChat extends DefaultEmbeddableVerticle {
         return "room_" + userId + "_" + userType;
     }
 
-    // 사용자가 문의를 종료했을 때 호출되는 메서드
-    public void closeChat(String userId) {
-        String roomName = userRooms.get(userId);
-        io.sockets().in(roomName).emit("chatClosed", new JsonObject().putString("message", "Chat closed by user."));
-        // TODO: 여기에서 필요한 추가 로직 수행
-    }
 }
 
 

@@ -156,12 +156,26 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String findIdByEmail(String email) {
-		return mapper.findIdByEmail(email);
+		return mapper.getIdByEmail(email);
 	}
 
 	@Override
 	public void changePwById(String id, String pw) {
 		mapper.changePwById(id, encoder.encode(pw));
+	}
+
+	@Override
+	public void modifyUser(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
+		//java.sql.Date sqlDate=new java.sql.Date(detailDTO.getBirth().getTime());
+		//detailDTO.setBirth(sqlDate);
+		//System.out.println(detailDTO.getBirth());
+		mapper.modifyMemberBasic(basicDTO);
+		mapper.modifyMemberDetail(detailDTO);
+	}
+
+	@Override
+	public void changeEmailById(String id, String email) {
+		mapper.changeEmailById(email, id);
 	}
     
 	
