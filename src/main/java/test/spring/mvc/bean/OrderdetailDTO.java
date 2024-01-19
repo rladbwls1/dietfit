@@ -8,14 +8,14 @@ import lombok.Data;
 
 @Data
 public class OrderdetailDTO {
-	private String orderid;
-	private int price;
-	private int quantity;
-	private int discount;
+	private String orderid;		// 주문 번호
+	private int price;			// 주문 상품 금액
+	private int quantity;		// 주문 수량
+	private int discount;		// 할인율
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date purdate;
-	private String pay;
-	private int purchase;
+	private Date purdate;		// 결제 날짜
+	private String pay;			// 결제 방법
+	private int purchase;		// 결제 여부
 	private String productid; 	// 상품 아이디
 	private String product; 	// 상품명
 	private String tracking; 	// 송장번호

@@ -34,6 +34,11 @@ public class MemberController {
 
 		return "member/all";
 	}
+	@RequestMapping("seller")
+	public String seller() {
+		return "member/seller";
+	}
+	
 	
 	//카카오 로그인 
 	@RequestMapping("check")
