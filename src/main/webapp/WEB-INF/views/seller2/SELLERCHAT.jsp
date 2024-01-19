@@ -35,10 +35,16 @@
             text-align: left;
             color: green;
         }
+        .exitMessage {
+        text-align: center;
+        color: red; /* 메시지 색상은 원하는 색상으로 변경 가능 */
+        font-weight: bold; /* 글자를 두껍게 만들 수 있습니다. */
+    	}
     </style>
 </head>
 <body>
 	<input type="button" value="뒤로 가기" onclick="goBack()" />
+	<input type="text" id="product" name="product" value="${product}" readonly style="width: 400px;"><br>
     <div class="chatBox" id="chatBox">
         <div id="msgs" class="msgs">${chat}</div>
     </div>
@@ -51,13 +57,13 @@
     <script>
     var socket = io.connect("http://192.168.219.163:7777");
     var sellerid = "${sellerid}";
-    var findid = "${findid}";
-    var findproduct = "${findproduct}";
     var product = "${product}";
     var roomnum = '${roomnum}';
     socket.on("response", function (message) {
     	if(message.roomnum == roomnum){
-    		$("#msgs").append('<div class="message">' + message.msg + '</div><br />');
+    		var alignmentClass = message.senderId === sellerid ? 'userMessage' : 'otherMessage';
+    		$("#msgs").append('<div class="message ' + alignmentClass + '">' + message.msg + '</div><br />');
+    		
     	}
     });
     
@@ -72,6 +78,7 @@
         $(".sendBtn").on("click", function () {
             sendMessage();
         });
+        
         function sendMessage() {
             var m = $(".chat").val();
             if (m.trim() !== "") {
@@ -79,9 +86,17 @@
                 $(".chat").val("");
             }
         }
-        function goBack() {
-            window.history.back();
+        
+        function goToSpecificPath(path) {
+            window.location.href = path;
         }
+
+        // 뒤로 가기 버튼 클릭 시
+        function goBack() {
+            // 특정 경로로 이동
+            goToSpecificPath('/seller/sellerchatlist');
+        }
+        
         
     </script>
 </body>

@@ -72,9 +72,18 @@
 		select roomnum from chat where id=#{id} and product=#{product} and readcheck!=1
 	</select>
 	<select id = "findallbyroomnum">
-		select * from chat where roomnum=#{roomnum}
+		select product from chat where roomnum=#{roomnum}
+	</select>
+	<select id = "findidbyroomnum">
+		select id from chat where roomnum=#{roomnum}
 	</select>
 	<update id="endchat">
 		update chat set readcheck = 1 where roomnum=#{roomnum}
+	</update>
+	<insert id="chatreport" parameterType="test.spring.mvc.bean.ChatreportDTO">
+		insert into chatreport (id,text) values (#{id},#{text})
+	</insert>
+	<update id="chatreportdelete">
+		update chat set readcheck = 9 where roomnum=#{roomnum}
 	</update>
 </mapper>
