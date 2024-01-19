@@ -143,8 +143,18 @@ public class MemberController {
 	}
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
-		System.out.println(basicDTO);
-		System.out.println(detailDTO);
-		return "redirect:/dietfit/main";
+		service.modifyUser(basicDTO, detailDTO);
+		return "redirect:/member/modifyForm";
 	}
+	@RequestMapping("changeEmail")
+	public String changeEmail(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/changeEmail";
+	}
+	@RequestMapping("changeEmailPro")
+	public String changeEmailPro(String id,String email) {
+		service.changeEmailById(id, email);
+		return "redirect:/member/modifyForm";
+	}
+	
 }

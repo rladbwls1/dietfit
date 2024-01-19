@@ -36,7 +36,7 @@
 	            <div class="input-group">
 	              <i class='bx bxs-user'></i>
 	              <input type="password" name="pw2" id="pw2" placeholder="Password 확인">
-	              <p id="pw_check"></p>
+	              <p id="pw2_check"></p>
 	            </div>
 	            
 	            <div class="input-group">
