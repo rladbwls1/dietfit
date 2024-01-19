@@ -10,6 +10,7 @@ import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 
 public interface Admin1Service{
 	public int count();
@@ -29,4 +30,5 @@ public interface Admin1Service{
 	public List<ProductDTO> discount();
 	public int sale(int num);
 	public List<ProductDTO> reco();
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model);
 }
