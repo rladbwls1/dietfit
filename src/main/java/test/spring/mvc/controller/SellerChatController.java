@@ -1,6 +1,8 @@
 package test.spring.mvc.controller;
 
+import java.io.File;
 import java.security.Principal;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +22,23 @@ public class SellerChatController {
 	private SellerService service;
 	
 	@RequestMapping("/chat")
-    public String chat(Model model,Principal pri,@RequestParam("product") String product, String companyid,ChatDTO chatdto) {
+    public String chat(Model model,Principal pri,@RequestParam("product") String product,
+    		String companyid,ChatDTO chatdto)throws Exception {
 		String id = pri.getName();
 		chatdto.setId(id);
 		chatdto.setProduct(product);
 		String sellercompany = service.findcompanyidbyproductid(companyid);
-		service.chatroomnum(chatdto, model,id,product);
+		int roomnum =service.chatroomnum(chatdto, model,id,product);
+		String path = "D://chat//" + roomnum + ".txt";
+	      File file = new File(path);
+	      if(file.isFile()) {
+	    	  Scanner s = new Scanner(file);
+	    	  String chat = "";
+	    	  while(s.hasNextLine()) {
+	    		  chat += (s.nextLine()+"<br>");
+	    	  }
+	    	  model.addAttribute("chat",chat);
+	      }
 		
 		model.addAttribute("sellercompany",sellercompany);
 		model.addAttribute("id", id);

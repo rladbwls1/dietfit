@@ -79,6 +79,9 @@ public class SellerController {
 	@RequestMapping("/SELLERCHAT")
 	public String SELLERCHAT(Principal pri, Model model, String roomnum)throws Exception {
 		String sellerid = pri.getName();
+		String findid = service.findallbyroomnum(Integer.parseInt(roomnum));
+		String findproduct = service.findallbyroomnum(Integer.parseInt(roomnum));
+		
 	      String path = "D://chat//" + roomnum + ".txt";
 	      File file = new File(path);
 	      if(file.isFile()) {
@@ -89,7 +92,10 @@ public class SellerController {
 	    	  }
 	    	  model.addAttribute("chat",chat);
 	      }
+	    model.addAttribute("findid", findid);
+	    model.addAttribute("findproduct", findproduct);
 		model.addAttribute("sellerid", sellerid);
+		model.addAttribute("roomnum",roomnum);
 		return "/seller2/SELLERCHAT";
 	}
 	

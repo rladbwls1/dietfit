@@ -72,12 +72,11 @@ public class AdminController {
 	    return "admin/company/statusChange";
 	}
 
-
 	@RequestMapping("checkStock")
 	public @ResponseBody String checkStock() {
 		service.checkStock();
 		return "stock check, mail Send!";
 	}
-
+	
 	  
 }
