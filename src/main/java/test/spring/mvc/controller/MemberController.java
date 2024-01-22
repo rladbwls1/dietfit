@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,11 @@ public class MemberController {
 
 		return "member/all";
 	}
+	@RequestMapping("seller")
+	public String seller() {
+		return "member/seller";
+	}
+	
 	
 	//카카오 로그인 
 	@RequestMapping("check")
@@ -156,5 +162,23 @@ public class MemberController {
 		service.changeEmailById(id, email);
 		return "redirect:/member/modifyForm";
 	}
+	@RequestMapping("userDelete")
+	public String userDelete(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/userDelete";
+	}	
+	@RequestMapping("deletePro")
+	public @ResponseBody boolean deletePro(String id, String pw){
+		boolean check=service.pwCheck(id, pw);
+		if(check) {
+			service.deleteUserself(id);
+		}
+		return check;
+	}	
+	@RequestMapping("deletePro2")
+	public String deletePro2(String id, HttpSession session){
+		System.out.println("deletePro2넘어옴");
+		return "redirect:/dietfit/main";
+	}	
 	
 }
