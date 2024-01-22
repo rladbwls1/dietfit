@@ -12,10 +12,12 @@
 <h2>Survey Menu</h2>
 <p>Protein: ${protein}</p>
 
-<ul>
-    <c:forEach var="proteinList" items="${proteinList}">
-        <li>${proteinList}</li>
-    </c:forEach>
-</ul>
+    <p>Detail Count: <span id="detailCount">${detailCount}</span></p>
+    
+    <ul id="productList">
+        <c:forEach var="product" items="${productinfo}">
+            <li>${product.productName} - ${product.protein}g Protein</li>
+        </c:forEach>
+    </ul>
 </body>
 </html>

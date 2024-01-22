@@ -3,6 +3,7 @@ package test.spring.mvc.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 import test.spring.mvc.entity.Member_basicEntity;
 import test.spring.mvc.repository.Admin1Mapper;
 import test.spring.mvc.repository.AdminJPARepository;
@@ -174,7 +176,21 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<ProductDTO> reco() {
 		return mapper.reco();
 	}
-	
-	
-	
+	// 식단 아침, 점심, 저녁 (칼로리만)
+	@Override
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model) {
+		List<ProductinfoDTO> list = mapper.food(minkcal, maxkcal);
+		List<ProductinfoDTO> meal = mapper.meal();
+		List<ProductinfoDTO> meal_replace = mapper.meal_replace();
+		if(list.isEmpty()) {
+			Random random = new Random();
+			int index = random.nextInt(meal.size());
+			ProductinfoDTO rmeal = meal.get(index);
+			if(rmeal.getKcal() > 500) {
+				
+			}
+			model.addAttribute("rmeal", rmeal);
+		}
+		return list;
+	}
 }

@@ -9,5 +9,6 @@
 		<typeAlias type="test.spring.mvc.bean.AllcouponDTO" alias="allcoupon"/>
 		<typeAlias type="test.spring.mvc.bean.ProductDTO" alias="product"/>
 		<typeAlias type="test.spring.mvc.bean.ProductimgDTO" alias="pimg"/>
+		<typeAlias type="test.spring.mvc.bean.ProductinfoDTO" alias="productinfo"/>
 	</typeAliases>
 </configuration>

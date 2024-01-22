@@ -146,6 +146,10 @@ function register(){
 	if($('#idd').val()=="false"){
 		result=false;
 	}
+	if($('#id').val()==""){
+		$('#id_check').text("아이디를 입력해주세요.").css("color","red");
+		result=false;
+	}
 	if($('#pw').val()==""){
 		$('#pw_check').text("비밀번호를 입력해주세요.").css("color","red");
 		result=false;

@@ -1,18 +1,9 @@
 package test.spring.mvc.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-
-import test.spring.mvc.repository.AdminMapper;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
-
-	@Autowired
-	private AdminMapper mapper;
 	
 	@Override
 	public double calculateBMI(double height, double weight) {
@@ -26,9 +17,9 @@ public class SurveyServiceImpl implements SurveyService {
 	    double bmr = 0.0; 
 
 	    if ("male".equalsIgnoreCase(gender)) { //대소문자 상관없이 일치하는지 확인
-	        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+	        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
 	    } else if ("female".equalsIgnoreCase(gender)) {
-	        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+	        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
 	    } else {
 	        throw new IllegalArgumentException("Invalid gender");
 	    }
@@ -45,35 +36,24 @@ public class SurveyServiceImpl implements SurveyService {
 
 
 	@Override
-	public int needProtein(double weight) {
-		double dprotein =  weight * 1.0;
-		int protein = (int)dprotein;
+	public int needProtein(int diettdee) {
+		int protein = (int) (diettdee * 0.3) / 4;
 		return protein;
 	}
 
 
 	@Override
 	public int needFat(int diettdee) {
-		int fat = (int) (diettdee * 0.2) / 9;
+		int fat = (int) (diettdee * 0.35) / 9;
 		return fat;
 	}
 
 
 	@Override
-	public int needRice(int diettdee, int protein, int fat) {
-		int rice = (diettdee - (protein + fat)) / 4;
+	public int needRice(int diettdee) {
+		int rice = (int) (diettdee * 0.35) / 4;
 		return rice;
 	}
 
-
-	@Override
-	public List<String> getProtein(int protein) {
-		return mapper.getProtein(protein);
-	}
-
-
-	
-	
-	
 
 }

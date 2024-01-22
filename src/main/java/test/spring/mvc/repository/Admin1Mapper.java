@@ -8,6 +8,7 @@ import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 
 public interface Admin1Mapper {
 	public Member_detailDTO mem_info(String id);
@@ -25,4 +26,7 @@ public interface Admin1Mapper {
 	public List<ProductDTO> discount();
 	public int sale(int num);
 	public List<ProductDTO> reco();
+	public List<ProductinfoDTO> food(@Param("minkcal")int minkcal, @Param("maxkcal")int maxkcal);
+	public List<ProductinfoDTO> meal();
+	public List<ProductinfoDTO> meal_replace();
 }

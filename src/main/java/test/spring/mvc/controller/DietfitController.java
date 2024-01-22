@@ -39,27 +39,28 @@ public class DietfitController {
 		double tdee = service.calculateTDEE(bmr, activity);
 		int tdeeAsInt = (int) tdee;
 		
+		model.addAttribute("bmi", bmi);
+		model.addAttribute("bmr", bmr);
+		model.addAttribute("tdeeAsInt", tdeeAsInt);
+		
 		int diettdee = 0;
 				
 		if(bmi <= 18.5) {
 			diettdee = tdeeAsInt + 200;
-		}else if(bmi > 18.5 || bmi <= 20){
+		}else if(bmi > 18.5 && bmi <= 23){
 			diettdee = tdeeAsInt;
-		}else if(bmi > 23 || bmi <= 25) {
+		}else if(bmi > 23 && bmi <= 25) {
 			diettdee = tdeeAsInt - 100;
-		}else if(bmi > 25 || bmi <= 30) {
+		}else if(bmi > 25 && bmi <= 30) {
 			diettdee = tdeeAsInt - 300;
 		}else if(bmi >= 30) {
 			diettdee = tdeeAsInt - 500;
 		}
 	
-		int protein = service.needProtein(weight);
+		int protein = service.needProtein(diettdee);
 		int fat = service.needFat(diettdee);
-		int rice = service.needRice(diettdee, protein, fat);
-		
-		model.addAttribute("bmi", bmi);
-		model.addAttribute("bmr", bmr);
-		model.addAttribute("tdeeAsInt", tdeeAsInt);
+		int rice = service.needRice(diettdee);
+
 		
 		model.addAttribute("diettdee", diettdee);
 		model.addAttribute("protein", protein);
@@ -67,16 +68,5 @@ public class DietfitController {
 		model.addAttribute("rice", rice);
 		return "admin/survey/result";
 	}
-	
-	@RequestMapping("surveymenu")
-	public String surveymenu(int protein, Model model) {
-		List<String> proteinList = service.getProtein(protein);
-	    model.addAttribute("proteinList", proteinList);
-	    model.addAttribute("protein", protein); // 다른 데이터도 필요한 경우 추가
-
-		return "admin/survey/menu";
-	}
-	
-	
 	
 }

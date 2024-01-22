@@ -86,20 +86,4 @@
    			where mb.id = md.id and companyid= #{companyid}
     </select>
     
-    <!-- 식단 단백질량 뽑기 -->
-    <select id ="getProtein" resultType="String">
-    <![CDATA[
-    select alp.product
-		from productinfo pfo
-			join all_product alp on pfo.productid = alp.companyid || alp.category || alp.category2 || alp.flavor 
-				where protein > #{protein}
-    ]]>
-    </select>
-    
-    <select id ="productDetail" resultType="String">
-    select *
-		from productinfo pfo
-			join all_product alp on pfo.productid = alp.companyid || alp.category || alp.category2 || alp.flavor 
-    </select>
-    
 </mapper>

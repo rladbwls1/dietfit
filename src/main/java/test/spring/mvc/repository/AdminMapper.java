@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 
 public interface AdminMapper {
 	public int companycount();
@@ -38,5 +39,8 @@ public interface AdminMapper {
 	
 	//½Ä´Ü!!!!
 	public List<String> getProtein(int protein);
+	
+	public int detailCount();
+	public List<ProductinfoDTO> allProductDetail();
 
 }
