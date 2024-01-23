@@ -109,11 +109,12 @@ public class SellerController {
 		model.addAttribute("roomnum",roomnum);
 		return "/seller2/chatreport";
 	}
+	
 	@RequestMapping("/chatreportpro")
 	public String chatreportpro(ChatreportDTO chatreportdto,int roomnum) {
 		service.chatreport(chatreportdto);
 		service.chatreportdelete(roomnum);
-		return "/seller2/sellerchatlist";
+		return "/seller2/chatreportpro";
 	}
 	@RequestMapping("/productdiscount")
 	public String productdiscount(Model model,Principal pri) {

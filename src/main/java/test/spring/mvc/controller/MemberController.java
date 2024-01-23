@@ -1,22 +1,30 @@
 package test.spring.mvc.controller;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
@@ -147,8 +155,8 @@ public class MemberController {
 	}
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
-		System.out.println(basicDTO);
-		System.out.println(detailDTO);
 		return "redirect:/dietfit/main";
 	}
+
+
 }

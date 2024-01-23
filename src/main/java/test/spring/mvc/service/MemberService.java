@@ -1,8 +1,11 @@
 package test.spring.mvc.service;
 
+import java.util.List;
+
 import javax.mail.MessagingException;
 
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.ProductDTO;
 
 public interface MemberService {
 	public void newMember(Member_basicDTO dto,int path);
@@ -16,4 +19,5 @@ public interface MemberService {
 	public int isEmailAuth(String email);
 	public String findIdByEmail(String email);
 	public void changePwById(String id, String pw);
+	List<ProductDTO> findall();
 }

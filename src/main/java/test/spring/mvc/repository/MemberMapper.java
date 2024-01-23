@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
 
 public interface MemberMapper {
 	//회원가입시 basic, detail, 권한
@@ -50,4 +51,5 @@ public interface MemberMapper {
 	//아이디로 비밀번호 변경하기
 	public void changePwById(@Param("id")String id, @Param("pw")String pw);
 	
+	List<ProductDTO> findall();
 }

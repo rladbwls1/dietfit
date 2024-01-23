@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -124,14 +125,22 @@ public class Seller1Controller {
     public String main() {
     	return "seller/home";
     }
+    @RequestMapping("RecentViewProduct")
+    public String RecentViewProduct(Model model,Principal pri) {
+    	String id = pri.getName();
+    	model.addAttribute("id", id);
+    	return "member/RecentViewProduct";
+    }
 	
     @GetMapping("/details/{companyid}/{category}/{category2}/{flavor}")
     public String detail(@PathVariable("companyid") String companyid,
                          @PathVariable("category") String category,
                          @PathVariable("category2") String category2,
                          @PathVariable("flavor") String flavor,
+                         HttpServletRequest request,
                          Model model,Principal pri) {
     	String id = pri.getName();
+    	
         ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
@@ -169,9 +178,6 @@ public class Seller1Controller {
 
         return "seller/productdetail";
     }
-
-
-
 
 	 @RequestMapping("/store/Delete")
 	 public String deleteProduct(@RequestParam("companyid") String companyid,

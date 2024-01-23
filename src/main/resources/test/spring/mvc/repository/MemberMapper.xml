@@ -24,14 +24,6 @@
 		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
 	</select>
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
@@ -147,5 +139,8 @@
 		update member_basic set pw=#{pw} where id=#{id}
 	</update>
 
+ 	<select id="findall">
+ 		select * from all_product
+ 	</select>
 	
 </mapper>

@@ -70,7 +70,7 @@
                     </td>
                     <td>${chat.product}</td>
                     <td>
-	                    <button onclick="openDiscountFormPopup('${chat.roomnum}')">신고</button>
+	                    <button type="button" onclick="openDiscountFormPopup('${chat.roomnum}');">신고</button>
 	                </td>
                 </tr>
             </c:forEach>
