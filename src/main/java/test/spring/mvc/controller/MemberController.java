@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
@@ -175,5 +176,81 @@ public class MemberController {
 		System.out.println("deletePro2넘어옴");
 		return "redirect:/dietfit/main";
 	}	
+	
+	
+	//-----------------------------------------------------------------------0122
+	@RequestMapping("productList")
+	public String productList(Model model,@RequestParam(value="pageNum", defaultValue="1") int pageNum
+							,Principal pri) {
+		//int number=0;
+		//number=count-(currentPage-1)*pageSize;
+		if(pri.getName()!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getallproduct(model,pageNum);
+	    return "member/productList";
+	}
+	@RequestMapping("productDetail")
+	public String productDetail(Model model,String companyid,String category,
+							String category2, String flavor) {
+		service.getProductDetail(companyid,category,category2,flavor,model);
+		return "member/productDetail";
+	}
+	
+	@RequestMapping("addWishList")
+	public @ResponseBody String addWishList(Principal pri,String product) {
+		String id=pri.getName();
+		service.addWishOne(product,id);
+		return "hi";
+	}
+	@RequestMapping("removeWishList")
+	public @ResponseBody String removeWishList(Principal pri,String product) {
+		String id=pri.getName();
+		service.removeWishOne(product,id);
+		return "bye";
+	}
+	@RequestMapping("removeWishList2")
+	public @ResponseBody String removeWishList2(Principal pri,String products) {
+		String id=pri.getName();
+		service.removeWishMore(products,id);
+		return "bye";
+	}
+	@RequestMapping("wishConfirm")
+	public String wishConfirm() {
+		return "member/wishConfirm";
+	}
+	@RequestMapping("wishList")
+	public String wishList(Model model, Principal pri,
+			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder) {
+		String id=pri.getName();
+		model.addAttribute("checkedFolder",checkedFolder);
+		service.getWishList(model, id);
+		return "member/wishList";
+	}
+	@RequestMapping("getProductCode")
+	public @ResponseBody ProductDTO getProductCode(String product) {
+		return mapper.getProductCodeByProductName(product);
+	}
+	@RequestMapping("wishFolderChange")
+	public String wishFolderChange(Principal pri,Model model,
+					String checkedFolder,String products) {
+		String id=pri.getName();
+		model.addAttribute("folderNames",mapper.getWishFolderName(id));
+		model.addAttribute("checkedFolder",checkedFolder);
+		model.addAttribute("products",products);
+		return "member/wishFolderChange";
+	}
+	@RequestMapping("wishFolderChangePro")
+	public @ResponseBody String wishFolderChangePro(
+			Principal pri,String checkedFolder, String products) {
+		//checkedFolder : 엄마, 아빠
+		//products : 54, 53
+		
+		return "bye";
+	}
+	
+	
+	
+	
 	
 }

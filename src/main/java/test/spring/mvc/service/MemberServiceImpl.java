@@ -1,7 +1,9 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -17,15 +19,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.repository.Seller1Mapper;
 
 @Service
 public class MemberServiceImpl implements MemberService{
 	@Autowired
 	private MemberMapper mapper;
+	@Autowired
+	private Seller1Mapper sel1mapper;
 		
 	@Autowired
 	PasswordEncoder encoder;
@@ -188,8 +198,129 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteUserself(String id) {
 		mapper.deleteUserself(id);
 	}
-    
-	
-	
 
+	@Override
+	public void getallproduct(Model model, int currentPage) {
+		int pageSize=10;
+		int startRow=(currentPage-1)*pageSize+1;		//시작
+		int endRow=currentPage*pageSize;				//끝
+		int count=mapper.countAllProduct();
+		List<ProductDTO> products = mapper.findallproduct(startRow,endRow);
+	    if (products != null) {
+	        for (ProductDTO product : products) {
+	            ProductimgDTO img = mapper.findlistthum(product.getCompanyid(),product.getCategory(), product.getCategory2());
+	            if (img != null) {
+	                // 이미지 경로 직접 조합하여 설정
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               product.setImagePath(imagePath);
+	            }
+	        }
+	        model.addAttribute("products", products);
+	    }
+	    //페이지
+		int pageBlock=10;
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+		int endPage=startPage + pageBlock - 1;
+
+		model.addAttribute("count",count);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageCount",pageCount);
+		model.addAttribute("startPage",startPage);
+		model.addAttribute("endPage",endPage);
+	    
+	}
+
+	@Override
+	public void getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
+		ProductDTO product = sel1mapper.findproductdetail(companyid, category, category2, flavor);
+
+        // 썸네일 이미지 정보를 가져옴
+        List<ProductimgDTO> thumbnails = sel1mapper.findthumimg(companyid, category, category2);
+
+        // 대표 이미지 정보를 가져옴
+        List<ProductimgDTO> images = sel1mapper.findimg(companyid, category, category2);
+
+        List<String> thumbnailPaths = new ArrayList<>();
+        List<String> imagePaths = new ArrayList<>();
+
+        // 썸네일 이미지 경로들을 생성
+        for (ProductimgDTO thumbnail : thumbnails) {
+            String path = "/resources/p_img/" + thumbnail.getCompanyid() +
+                          thumbnail.getCategory() + thumbnail.getCategory2() +
+                          thumbnail.getFlavor() + "F" + thumbnail.getNum() +
+                          thumbnail.getExt();
+            thumbnailPaths.add(path);
+        }
+
+        // 대표 이미지 경로들을 생성
+        for (ProductimgDTO image : images) {
+            String path = "/resources/p_img/" + image.getCompanyid() +
+                          image.getCategory() + image.getCategory2() +
+                          image.getFlavor() + "F" + image.getNum() +
+                          image.getExt();
+            imagePaths.add(path);
+        }
+
+        // 모델에 추가
+        model.addAttribute("product", product);
+        model.addAttribute("thumbnailPaths", thumbnailPaths);
+        model.addAttribute("imagePaths", imagePaths);
+	}
+
+	@Override
+	public void addWishOne(String product,String id) {
+		mapper.addWishOne(product,id);
+	}
+
+	@Override
+	public void getWishListProduct(Model model, String id) {
+		model.addAttribute("wishList",mapper.getWishListProduct(id));
+	}
+
+	@Override
+	public void removeWishOne(String product, String id) {
+		mapper.removeWishOne(product,id);
+	}
+
+	@Override
+	public void removeWishMore(String products, String id) {
+		String[] product1=products.split(",");
+		for (String num1 : product1) {
+			int num=Integer.parseInt(num1);
+			mapper.removeWishOneByNum(num,id);
+		}
+	}
+
+	@Override
+	public void getWishList(Model model, String id) {
+		List<DibsDTO> dibs = mapper.getWishList(id);
+		List<String> imgPaths=new ArrayList<>();
+	    if (dibs != null) {
+	        for (DibsDTO dib: dibs) {
+	        	//상품명으로 기업아이디, 대분류, 소분류 찾아서 값 넣어주면 됨.
+	        	ProductDTO dto=mapper.getProductCodeByProductName(dib.getProduct());
+	            ProductimgDTO img = mapper.findlistthum(dto.getCompanyid(),
+	            		dto.getCategory(), dto.getCategory2());
+	            if (img != null) {
+	                // 이미지 경로 직접 조합하여 설정
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               imgPaths.add(imagePath);
+	            }
+	        }
+	        model.addAttribute("wishList", dibs);
+	        model.addAttribute("imgPaths", imgPaths);
+	        model.addAttribute("folder",mapper.getWishFolderName(id));
+	    }
+	}
+	
+	
+	
 }
