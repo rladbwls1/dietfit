@@ -103,11 +103,12 @@
 			order by expiry asc
     	</select>
     	<select id="food" resultType="productinfo">
-    	<![CDATA[ 
 		    select * from productinfo
-			    WHERE SUBSTR(productid, 3, 2) IN ('11', '12', '13', '14', '15', '21', '22', '23', '24', '26')
+			    WHERE SUBSTR(productid, 3, 2) IN 
+			     <foreach item="item" collection="category" open="(" separator="," close=")">
+			        #{item}
+			    </foreach>
 			    AND kcal between #{minkcal} and #{maxkcal}
-		 ]]>   
     	</select>
     	<select id="meal" resultType="productinfo">
     		select * from productinfo
@@ -118,5 +119,48 @@
     		select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) 
                 IN ('21', '22', '23', '24', '25', '26')
+    	</select>
+    	
+    	<resultMap type="product" id="product">
+    		<result column="product" property="product"/>
+    		<result column="price" property="price"/>
+    		<collection property="pimg" resultMap="pimg"/>
+    		<collection property="productinfo" resultMap="productinfo"/>
+    	</resultMap>
+    	
+    	<resultMap type="pimg" id="pimg">
+    		<result column="companyid" property="companyid"/>
+    		<result column="category" property="category"/>
+    		<result column="category2" property="category2"/>
+    		<result column="flavor" property="flavor"/>
+    		<result column="num" property="num"/>
+    		<result column="ext" property="ext"/>
+    	</resultMap>
+
+    	<resultMap type="productinfo" id="productinfo">
+    		<result column="onesize" property="onesize"/>
+    		<result column="kcal" property="kcal"/>
+    		<result column="protein" property="protein"/>
+    		<result column="fat" property="fat"/>
+    		<result column="rice" property="rice"/>
+    		<result column="sugar" property="sugar"/>
+    		<result column="sodlium" property="sodlium"/>
+    		<result column="cholesterol" property="cholesterol"/>
+    		<result column="cholesterol" property="cholesterol"/>
+    		<result column="totalfat" property="totalfat"/>
+    		<result column="transfat" property="transfat"/>
+    		<result column="productid" property="productid"/>
+    	</resultMap>
+    	
+    	<select id="food_product" resultType="product" resultMap="product">
+    		SELECT ap.product, ap.price, api.*, pi.*
+			FROM all_product ap
+			JOIN all_productimg api ON ap.companyid = api.companyid
+			                      AND ap.category = api.category
+			                      AND ap.category2 = api.category2
+			                      AND ap.flavor = api.flavor
+			JOIN productinfo pi ON api.companyid || api.category || api.category2 || api.flavor = pi.productid
+			WHERE ap.companyid || ap.category || ap.category2 || ap.flavor = #{productid} and api.thum = 1
+			ORDER BY api.num ASC
     	</select>
     </mapper>

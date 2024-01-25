@@ -178,19 +178,50 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 	// 식단 아침, 점심, 저녁 (칼로리만)
 	@Override
-	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model) {
-		List<ProductinfoDTO> list = mapper.food(minkcal, maxkcal);
-		List<ProductinfoDTO> meal = mapper.meal();
-		List<ProductinfoDTO> meal_replace = mapper.meal_replace();
-		if(list.isEmpty()) {
-			Random random = new Random();
-			int index = random.nextInt(meal.size());
-			ProductinfoDTO rmeal = meal.get(index);
-			if(rmeal.getKcal() > 500) {
-				
-			}
-			model.addAttribute("rmeal", rmeal);
-		}
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category) {
+		System.out.println("category-----------"+category);
+		List<ProductinfoDTO> list = mapper.food(minkcal, maxkcal, category);
+//		List<ProductinfoDTO> fo = new ArrayList<>();
+//		fo.addAll(list);
+		 if (!list.isEmpty()) {
+			 
+		 }
+//		        Random random = new Random();
+//		        int randomIndex = random.nextInt(list.size()); // 랜덤 인덱스 생성
+//		        ProductinfoDTO randomProduct = list.get(randomIndex); // 랜덤으로 선택된 항목 가져오기
+//		        fo.add(randomProduct);
+//		    }
+//			ProductinfoDTO rmeal = list.get(index);
+//		List<ProductinfoDTO> meal = mapper.meal();
+//		List<ProductinfoDTO> meal_replace = mapper.meal_replace();
+//		if(list.isEmpty()) {
+//			if(!(minkcal < rmeal.getKcal() && rmeal.getKcal() < maxkcal)) {
+//				System.out.println("칼로리 부족");
+//				                                                                                                                                                                                                                                                                                                                                                                            
+//			}
+//			 List<ProductinfoDTO> rmeals = new ArrayList<>();
+//			 int totalKcal = 0;
+//			    while (!(minkcal < totalKcal && totalKcal < maxkcal)) {
+//			        int index = random.nextInt(meal.size());
+//			        ProductinfoDTO rmeal = meal.get(index);
+//			        
+//			        if (!(minkcal < rmeal.getKcal() && rmeal.getKcal() < maxkcal)) {
+//			            rmeals.add(rmeal);
+//			            totalKcal += rmeal.getKcal();
+//			        }
+//			        
+//			        if (minkcal < totalKcal && totalKcal < maxkcal) {
+//			            System.out.println("칼로리 완성");
+//			        }
+//			        
+//			    }
+//			model.addAttribute("list", list);
+//		}
 		return list;
+	}
+
+	@Override
+	public List<ProductDTO> food_product(String productid) {
+		return mapper.food_product(productid);
 	}
 }
