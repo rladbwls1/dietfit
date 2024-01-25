@@ -37,7 +37,7 @@
 	<tr id="newFolderTr" style="visibility:hidden;"><td>
 		<input type="text" id="newFolder" name="newFolder"/>
 	</td><td>
-		<button type="button" onclick="retrun changeNewFolder('${products}')">완료</button>
+		<button type="button" onclick="return changeNewFolder('${products}')">완료</button>
 	</td></tr>
 </table>
 </body>
