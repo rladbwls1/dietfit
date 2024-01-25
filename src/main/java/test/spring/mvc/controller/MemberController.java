@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+<<<<<<< HEAD
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,10 @@ public class MemberController {
 	public String seller() {
 		return "member/seller";
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	
 	//카카오 로그인 
 	@RequestMapping("check")
@@ -155,8 +162,45 @@ public class MemberController {
 	}
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
+<<<<<<< HEAD
 		return "redirect:/dietfit/main";
+=======
+		service.modifyUser(basicDTO, detailDTO);
+		return "redirect:/member/modifyForm";
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	}
+<<<<<<< HEAD
 
 
+=======
+	@RequestMapping("changeEmail")
+	public String changeEmail(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/changeEmail";
+	}
+	@RequestMapping("changeEmailPro")
+	public String changeEmailPro(String id,String email) {
+		service.changeEmailById(id, email);
+		return "redirect:/member/modifyForm";
+	}
+	@RequestMapping("userDelete")
+	public String userDelete(String id,Model model) {
+		model.addAttribute("id",id);
+		return "member/userDelete";
+	}	
+	@RequestMapping("deletePro")
+	public @ResponseBody boolean deletePro(String id, String pw){
+		boolean check=service.pwCheck(id, pw);
+		if(check) {
+			service.deleteUserself(id);
+		}
+		return check;
+	}	
+	@RequestMapping("deletePro2")
+	public String deletePro2(String id, HttpSession session){
+		System.out.println("deletePro2넘어옴");
+		return "redirect:/dietfit/main";
+	}	
+	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }

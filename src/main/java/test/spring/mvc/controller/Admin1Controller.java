@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 import test.spring.mvc.service.Admin1ServiceImpl;
 
 @Controller
@@ -183,12 +185,28 @@ public class Admin1Controller {
 			}
 		}
 		model.addAttribute("reco", dto);
-		return "admin/product";
+		return "admin/product"; 
 	}
 	
 	@RequestMapping("food")
-	public String food() {
+	public String food(Model model) {
+		
 		return "/admin/food";
 	}
+	
+	@RequestMapping("foodPro")
+	public String foodPro(int kcal, Model model) {
+		List<ProductinfoDTO>[] lists = new ArrayList[4];
+		double [][] oper = {{0.2, 0.25}, {0.3, 0.35}, {0.25, 0.3}};
+//		, {0.1, 0.15}
+		for(int i = 0; i < oper.length; i++) {
+			lists[i] = new ArrayList<>();
+			System.out.println((int)(oper[i][0] * kcal));
+			System.out.println((int)(oper[i][1] * kcal));
+			List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model);
+			lists[i].addAll(food);
+			model.addAttribute("list"+i, lists[i]);
+		}
+		return "admin/foodPro";
+	}
 }
-
