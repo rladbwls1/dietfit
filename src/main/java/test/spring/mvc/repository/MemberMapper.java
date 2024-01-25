@@ -9,10 +9,7 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
-<<<<<<< HEAD
 import test.spring.mvc.bean.ProductimgDTO;
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
 public interface MemberMapper {
 	//회원가입시 basic, detail, 권한

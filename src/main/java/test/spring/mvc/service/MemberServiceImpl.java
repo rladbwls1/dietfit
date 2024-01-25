@@ -1,10 +1,7 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -30,10 +27,7 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
-<<<<<<< HEAD
 import test.spring.mvc.bean.ProductimgDTO;
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.repository.Seller1Mapper;
 

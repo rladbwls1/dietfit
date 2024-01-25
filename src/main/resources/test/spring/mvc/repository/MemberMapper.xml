@@ -45,11 +45,7 @@
 	<update id="deleteUserself">
 		update member_basic set status=99 where id=#{id}
 	</update>
-<<<<<<< HEAD
 	<!-- 이메일 중복 확인, 0이면 생성가능 1이면 생성불가(이미 있음) -->
-=======
-	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
