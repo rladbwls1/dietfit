@@ -5,57 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Dietfit - Survey</title>
-<style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            margin: 20px;
-        }
-
-        h2 {
-            color: #3498db;
-        }
-
-        form {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-            color: #333;
-        }
-
-        select,
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2980b9;
-        }
-    </style>
+<link href="/resources/css/survey.css" rel="stylesheet">
 </head>
+
 <body>
 	<h2> 설문조사 </h2>
 	<form action="surveyResult" method="post">

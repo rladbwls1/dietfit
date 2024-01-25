@@ -83,7 +83,7 @@
 	<body>
 		<table>
 			<tr>
-				<input type="hidden" name="companyid" id="companyid" value=${companyid}/>
+				<input type="hidden" name="companyid" id="companyid" value=${companyid} />
 				<td></td>
 				<td>결제 날짜</td>
 				<td>주문번호</td>
@@ -122,7 +122,6 @@
 						        <c:when test="${order.courier == '53'}">농협택배</c:when>
 						        <c:when test="${order.courier == '69'}">대림통운</c:when>
 						        <c:when test="${order.courier == '94'}">카카오 T 당일배송</c:when>
-						        <c:otherwise>알 수 없는 택배사</c:otherwise>
 						    </c:choose>
 					    </c:otherwise>
 					</c:choose>

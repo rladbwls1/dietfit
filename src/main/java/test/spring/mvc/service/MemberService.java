@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 
@@ -22,6 +23,7 @@ public interface MemberService {
 	public int isEmailAuth(String email);
 	public String findIdByEmail(String email);
 	public void changePwById(String id, String pw);
+	List<ProductDTO> findall();
 	public void changeEmailById(String id, String email);
 	public void modifyUser(Member_basicDTO basicDTO, Member_detailDTO detailDTO);
 	public boolean pwCheck(String id, String pw);

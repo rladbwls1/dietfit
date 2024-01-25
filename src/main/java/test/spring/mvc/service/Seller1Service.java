@@ -2,6 +2,7 @@ package test.spring.mvc.service;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import test.spring.mvc.bean.ProductDTO;
@@ -53,5 +54,8 @@ public interface Seller1Service {
     
     // 상품 이미지 찾기 
     public List<ProductimgDTO> imgfindupdate(String companyid, String category, String category2, String flavor);
+    
+    //쿠키로 상품 정보 꺼내기
+    public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
     
 }

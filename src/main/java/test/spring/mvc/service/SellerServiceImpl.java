@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -111,12 +112,28 @@ public class SellerServiceImpl implements SellerService{
 
 	@Override
 	public String findallbyroomnum(int roomnum) {
+		
 		return mapper.findallbyroomnum(roomnum);
 	}
 
 	@Override
 	public void endchat(int roomnum) {
 		mapper.endchat(roomnum);
+	}
+
+	@Override
+	public void chatreport(ChatreportDTO chatreportdto) {
+		mapper.chatreport(chatreportdto);
+	}
+
+	@Override
+	public void chatreportdelete(int roomnum) {
+		mapper.chatreportdelete(roomnum);
+	}
+
+	@Override
+	public String findidbyroomnum(int roomnum) {
+		return mapper.findidbyroomnum(roomnum);
 	}
 
 	

@@ -80,5 +80,10 @@
     	<input type="hidden" name="flavor" value="${product.flavor}">
         <button type="submit" onclick="return confirm('상품을 삭제하시겠습니까?');">상품 삭제</button>
     </form>
+    
+    
+    
+
+
 </body>
 </html>

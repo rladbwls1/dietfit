@@ -1,17 +1,23 @@
 package test.spring.mvc.controller;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +41,11 @@ public class MemberController {
 
 		return "member/all";
 	}
+	@RequestMapping("seller")
+	public String seller() {
+		return "member/seller";
+	}
+	
 	
 	//카카오 로그인 
 	@RequestMapping("check")
@@ -148,6 +159,8 @@ public class MemberController {
 		service.modifyUser(basicDTO, detailDTO);
 		return "redirect:/member/modifyForm";
 	}
+
+
 	@RequestMapping("changeEmail")
 	public String changeEmail(String id,Model model) {
 		model.addAttribute("id",id);
