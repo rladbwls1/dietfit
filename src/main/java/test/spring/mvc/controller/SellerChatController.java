@@ -34,6 +34,7 @@ public class SellerChatController {
 	      if(file.isFile()) {
 	    	  Scanner s = new Scanner(file);
 	    	  String chat = "";
+	    	  
 	    	  while(s.hasNextLine()) {
 	    		  chat += (s.nextLine()+"<br>");
 	    	  }

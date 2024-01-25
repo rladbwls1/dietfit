@@ -1,7 +1,5 @@
 package test.spring.mvc.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,11 @@ public class DietfitController {
 	@RequestMapping("main")
 	public String main() {
 		return "main";
+	}
+	
+	@RequestMapping("contact")
+	public String contact() {
+		return "contact";
 	}
 	
 	@RequestMapping("survey")
