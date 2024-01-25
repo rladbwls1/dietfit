@@ -12,7 +12,7 @@
 <body>
 <table>
 <c:forEach var="folder" items="${folderNames }">
-	<c:if test="${folder!='분류없음' }">
+	<c:if test="${folder!='분류없음'&&!folder.contains(',') }">
 	<tr>
 		<td>${folder }</td>
 		<td>
@@ -28,10 +28,17 @@
 	</tr>
 	</c:if>
 </c:forEach>
+
 </table>
 
 <table>
-	<tr><td><button type="button" onclick="changeFolder('${products}')">폴더 변경하기</button></td></tr>
+	<tr><td><button type="button" onclick="changeFolder('${products}')">폴더 변경하기</button></td>
+	<td><button type="button" onclick="showNewFolder()">새 폴더로 옮기기</button></td></tr>
+	<tr id="newFolderTr" style="visibility:hidden;"><td>
+		<input type="text" id="newFolder" name="newFolder"/>
+	</td><td>
+		<button type="button" onclick="retrun changeNewFolder('${products}')">완료</button>
+	</td></tr>
 </table>
 </body>
 </html>

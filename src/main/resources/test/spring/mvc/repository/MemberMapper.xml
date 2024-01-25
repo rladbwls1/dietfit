@@ -126,6 +126,14 @@
 	<select id="getWishList">
 		select * from ${id}_dibs order by num desc
 	</select>
+	<!-- 유저 관심상품 폴더 변경하기 -->
+	<update id="changeFolder">
+		update ${id}_dibs set folder=#{checkedFolder} where num=#{num}
+	</update>
+	<!-- 유저의 관심상품의 폴더명 가져오기 -->
+	<select id="getFolderByNum">
+		select folder from ${id}_dibs where num=#{num}
+	</select>
 	<!-- 상품명으로 companyid, category, category2, flavor 뽑기 -->
 	<select id="getProductCodeByProductName">
 		select companyid, category, category2, flavor from all_product where product=#{product}

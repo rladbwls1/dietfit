@@ -31,7 +31,8 @@ public interface MemberService {
 			String category2,String flavor, Model model);
 	public void addWishOne(String product,String id);
 	public void removeWishOne(String product,String id);
-	public void removeWishMore(String products,String id);
+	public void removeWishMore(String products,String id,String checkedFolder);
 	public void getWishListProduct(Model model, String id);
 	public void getWishList(Model model, String id);
+	public void changeFolder(String checkedFolder,String products,String id);
 }

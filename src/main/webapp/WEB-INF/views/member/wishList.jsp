@@ -24,6 +24,7 @@
 		</c:otherwise>
 	</c:choose>
 	<c:forEach var="folder" items="${folder }">
+		<c:if test="${!folder.contains(',') }">
 		<c:choose>
 			<c:when test="${checkedFolder==folder }">
 				<button type="button" >${folder}</button>
@@ -32,6 +33,7 @@
 				<button type="button" onclick="chooseFolder('${folder}')" style="color:gray">${folder}</button>
 			</c:otherwise>
 		</c:choose>
+		</c:if>
 	</c:forEach>
 <table border="1">
 	<tr>
@@ -62,7 +64,7 @@
 </table>
 <table>
 <tr><td>
-<button type="button" onclick="deleteSelectedItems()">선택 상품 삭제</button>
+<button type="button" onclick="deleteSelectedItems('${checkedFolder}')">선택 상품 삭제</button>
 <c:if test="${checkedFolder!='전체' }">
 <button type="button" onclick="moveSelectedItems('${checkedFolder}')">폴더 변경하기</button>
 </c:if>

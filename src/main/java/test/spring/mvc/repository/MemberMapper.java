@@ -88,4 +88,11 @@ public interface MemberMapper {
 	public ProductDTO getProductCodeByProductName(String product);
 	//유저 관심상품 폴더명 가져오기
 	public List<String> getWishFolderName(String id);
+	//유저 관심상품의 폴더 변경하기
+	public void changeFolder(@Param("id") String id,
+			  @Param("checkedFolder") String checkedFolder,
+			  @Param("num") int num);
+	//유저의 관심상품의 폴더명 가져오기
+	public String getFolderByNum(@Param("num") int num,
+			@Param("id") String id);
 }

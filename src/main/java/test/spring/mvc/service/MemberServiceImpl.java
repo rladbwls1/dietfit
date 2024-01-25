@@ -2,6 +2,7 @@ package test.spring.mvc.service;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -288,11 +289,26 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void removeWishMore(String products, String id) {
+	public void removeWishMore(String products, String id,String checkedFolder) {
 		String[] product1=products.split(",");
+		String removeFolder=checkedFolder;
+			//
 		for (String num1 : product1) {
 			int num=Integer.parseInt(num1);
-			mapper.removeWishOneByNum(num,id);
+			if(checkedFolder.equals("ÀüÃ¼")) {
+				mapper.removeWishOneByNum(num,id);
+			}else {
+				String Folder=mapper.getFolderByNum(num,id);
+				if(Folder.contains(",")) {
+					String[] folderarray=Folder.split(",");
+					List<String> folderList= new ArrayList<>(Arrays.asList(folderarray));
+					folderList.remove(removeFolder);
+					checkedFolder=String.join(",", folderList);
+					mapper.changeFolder(id, checkedFolder, num);
+				}else {
+					mapper.removeWishOneByNum(num,id);
+				}
+			}
 		}
 	}
 
@@ -319,6 +335,15 @@ public class MemberServiceImpl implements MemberService{
 	        model.addAttribute("imgPaths", imgPaths);
 	        model.addAttribute("folder",mapper.getWishFolderName(id));
 	    }
+	}
+
+	@Override
+	public void changeFolder(String checkedFolder, String products,String id) {
+		String[] product1=products.split(",");
+		for(String product:product1) {
+			int num=Integer.parseInt(product);
+			mapper.changeFolder(id,checkedFolder,num);
+		}
 	}
 	
 	

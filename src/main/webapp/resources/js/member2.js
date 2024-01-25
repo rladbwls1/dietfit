@@ -87,7 +87,7 @@ function updateCheckAll() {
     chkAll.checked = allChecked;
 }
 
-function deleteSelectedItems() {
+function deleteSelectedItems(checkedFolder) {
     const checkboxes = document.getElementsByName("num");
     const selectedItems = [];
 
@@ -103,7 +103,7 @@ function deleteSelectedItems() {
 				url:'removeWishList2',
 				type:'post',
 				async:false,
-				data:{products:selectedItems.join(",")},
+				data:{products:selectedItems.join(","), checkedFolder:checkedFolder},
 				success:function(a){
 					window.location.reload();
 				}
@@ -117,6 +117,7 @@ function deleteSelectedItems() {
     
     return false;
 }
+//선택한 상품들을 어떤 폴더로 옮길지 새 창 띄움
 function moveSelectedItems(Folder){
     const checkboxes = document.getElementsByName("num");
     const selectedItems = [];
@@ -133,6 +134,7 @@ function moveSelectedItems(Folder){
     }
     return false;
 }
+//찜에서 폴더 선택
 function chooseFolder(folder){
 	let f=document.createElement('form');
 	let obj;
@@ -146,6 +148,7 @@ function chooseFolder(folder){
 	document.body.appendChild(f);
 	f.submit();
 }
+//선택한 관심상품 폴더 변경
 function changeFolder(products){
     const checkboxes2 = document.getElementsByName("folder2");
     const selectedItems2 = [];
@@ -154,16 +157,52 @@ function changeFolder(products){
         	selectedItems2.push(checkbox.value);
         }
     });
-    console.log(""+selectedItems2.join(","));
-    //폴더 변경하고 
-    $.ajax({
+    
+    if(selectedItems2.join(",")==""){
+	    $.ajax({
+	    	url:'wishFolderChangePro',
+	    	type:'post',
+	    	async:false,
+	    	data:{checkedFolder:'분류없음', products:products},
+	    	success:function(a){
+	    		window.opener.location.reload();
+	    		window.close()
+	    	}
+	    });
+    }else{
+	    $.ajax({
+	    	url:'wishFolderChangePro',
+	    	type:'post',
+	    	async:false,
+	    	data:{checkedFolder:selectedItems2.join(","), products:products},
+	    	success:function(a){
+	    		window.opener.location.reload();
+	    		window.close()
+	    	}
+	    });
+    }
+
+}
+//새 폴더 이름 적을 칸 노출
+function showNewFolder(){
+	$('#newFolderTr').css('visibility','visible');
+}
+//선택한 관심상품 새 폴더로 옮기기
+function changeNewFolder(products){
+	var newFolder=$('#newFolder').val();
+	if (newFolder==null){
+		alert("새 폴더명을 적으세요.");
+		return false;
+	}else{
+	    $.ajax({
     	url:'wishFolderChangePro',
     	type:'post',
-    	data:{checkedFolder:selectedItems2.join(","), products:products},
+    	async:false,
+    	data:{checkedFolder:newFolder, products:products},
     	success:function(a){
-    	
-    	}
-    });
-    
-    
+    		window.opener.location.reload();
+    		window.close()
+    		}
+    	});
+	}
 }

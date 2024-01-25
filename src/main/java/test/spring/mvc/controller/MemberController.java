@@ -210,9 +210,9 @@ public class MemberController {
 		return "bye";
 	}
 	@RequestMapping("removeWishList2")
-	public @ResponseBody String removeWishList2(Principal pri,String products) {
+	public @ResponseBody String removeWishList2(Principal pri,String products,String checkedFolder) {
 		String id=pri.getName();
-		service.removeWishMore(products,id);
+		service.removeWishMore(products,id,checkedFolder);
 		return "bye";
 	}
 	@RequestMapping("wishConfirm")
@@ -240,14 +240,15 @@ public class MemberController {
 		model.addAttribute("products",products);
 		return "member/wishFolderChange";
 	}
+	//관심상품 폴더 변경하기
 	@RequestMapping("wishFolderChangePro")
 	public @ResponseBody String wishFolderChangePro(
 			Principal pri,String checkedFolder, String products) {
-		//checkedFolder : 엄마, 아빠
-		//products : 54, 53
-		
+		String id=pri.getName();
+		service.changeFolder(checkedFolder,products,id);
 		return "bye";
 	}
+	
 	
 	
 	
