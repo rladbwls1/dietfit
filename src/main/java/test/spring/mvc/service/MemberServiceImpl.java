@@ -168,13 +168,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<ProductDTO> findall() {
 		return mapper.findall();
 	}
 
 	
-=======
 	public void modifyUser(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
 		//java.sql.Date sqlDate=new java.sql.Date(detailDTO.getBirth().getTime());
 		//detailDTO.setBirth(sqlDate);
@@ -198,7 +196,6 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteUserself(String id) {
 		mapper.deleteUserself(id);
 	}
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     
 	
 	

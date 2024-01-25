@@ -9,11 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-<<<<<<< HEAD
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +45,7 @@ public class MemberController {
 	public String seller() {
 		return "member/seller";
 	}
-<<<<<<< HEAD
-=======
 	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	
 	//카카오 로그인 
 	@RequestMapping("check")
@@ -162,17 +156,11 @@ public class MemberController {
 	}
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
-<<<<<<< HEAD
-		return "redirect:/dietfit/main";
-=======
 		service.modifyUser(basicDTO, detailDTO);
 		return "redirect:/member/modifyForm";
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	}
-<<<<<<< HEAD
 
 
-=======
 	@RequestMapping("changeEmail")
 	public String changeEmail(String id,Model model) {
 		model.addAttribute("id",id);
@@ -202,5 +190,4 @@ public class MemberController {
 		return "redirect:/dietfit/main";
 	}	
 	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }

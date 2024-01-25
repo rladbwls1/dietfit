@@ -58,11 +58,7 @@ public interface MemberMapper {
 	public String getEmailById(String id);
 	//아이디로 비밀번호 변경하기
 	public void changePwById(@Param("id")String id, @Param("pw")String pw);
-<<<<<<< HEAD
-	
 	List<ProductDTO> findall();
-=======
 	//아이디로 이메일 변경하기
 	public void changeEmailById(@Param("email")String email, @Param("id")String id);
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }
