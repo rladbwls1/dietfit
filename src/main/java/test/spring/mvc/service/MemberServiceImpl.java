@@ -338,7 +338,17 @@ public class MemberServiceImpl implements MemberService{
 	        }
 	        model.addAttribute("wishList", dibs);
 	        model.addAttribute("imgPaths", imgPaths);
-	        model.addAttribute("folder",mapper.getWishFolderName(id));
+	        List<String> folder1=new ArrayList<>(mapper.getWishFolderName(id));
+	        List<String> folder2=new ArrayList<>();
+	        for(String folder:folder1) {
+	        	String[] names=folder.split(",");
+	        	for(String name:names) {
+	        		if(!folder2.contains(name)) {
+	        			folder2.add(name);
+	        		}
+	        	}
+	        }
+	        model.addAttribute("folder",folder2);
 	    }
 	}
 
