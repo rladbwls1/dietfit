@@ -36,11 +36,6 @@
 		update member_basic set status=99 where id=#{id}
 	</update>
 	
-	
-	
-	
-	
-	
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
@@ -159,5 +154,8 @@
 		update member_basic set email=#{email} where id=#{id}
 	</update>
 
+ 	<select id="findall">
+ 		select * from all_product
+ 	</select>
 	
 </mapper>

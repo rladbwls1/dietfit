@@ -1,7 +1,9 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.MemberMapper;
 
 @Service
@@ -165,6 +168,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public List<ProductDTO> findall() {
+		return mapper.findall();
+	}
+
+	
 	public void modifyUser(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
 		//java.sql.Date sqlDate=new java.sql.Date(detailDTO.getBirth().getTime());
 		//detailDTO.setBirth(sqlDate);
