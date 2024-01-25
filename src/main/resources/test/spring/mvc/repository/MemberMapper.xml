@@ -4,48 +4,146 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="test.spring.mvc.repository.MemberMapper">
+	<!-- 회원가입시 기본 정보 삽입 -->
 	<insert id="newMember" parameterType="test.spring.mvc.bean.Member_basicDTO">
 		insert into Member_basic (id,pw,name,nic,email) values(#{id},#{pw},#{name},#{nic},#{email})
 	</insert>
+	<!-- 회원가입시 authorities 테이블에 정보 삽입 -->
 	<insert id="newMemberstatus" >
 		insert into authorities values(#{id}, 'ROLE_1')
 	</insert>
+	<!-- 회원 가입시 가입경로(카카오, 일반) 정보 삽입 -->
 	<insert id="newMember2" parameterType="test.spring.mvc.bean.Member_detailDTO">
 		insert into Member_detail (id,path) values(#{id},#{path})
 	</insert>
+	<!-- id로 member_basic 가져옴 -->
 	<select id="getUserBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
 		select * from member_basic where id=#{id}
 	</select>
+	<!-- id로 이메일 가져옴 -->
 	<select id="getEmailById" >
 		select email from member_basic where id=#{id}
 	</select>
+	<!-- id로 member_basic, member_detail 가져옴 -->
 	<select id="getUser" resultType="Map">
 		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
 	</select>
+	<!-- 정보 수정시 member_basic 부분 수정 -->
 	<update id="modifyMemberBasic" parameterType="test.spring.mvc.bean.Member_basicDTO">
 		update member_basic set NAME=#{name}, NIC=#{nic} where id=#{id}
 	</update>
+	<!-- 정보 수정시 member_detail 부분 수정 -->
 	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
 		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
 					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
-	</update>	
+	</update>
+	<!-- 암호화된 비밀번호 가져오기(아이디로) -->	
 	<select id="getPwById">
 		select pw from member_basic where id=#{id}
 	</select>
+	<!-- 회원이 스스로 탈퇴한 경우 상태 변경 -->
 	<update id="deleteUserself">
 		update member_basic set status=99 where id=#{id}
 	</update>
-	
+	<!-- 이메일 중복 확인, 0이면 생성가능 1이면 생성불가(이미 있음) -->
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
+	<!-- id 중복 확인, 0이면 생성가능 1이면 생성불가(이미 있음) -->
 	<select id="registerIdCheck" resultType="int">
 		select count(*) from member_basic where id=#{id}
 	</select>
+	<!-- 카카오로 로그인한 경우 id가져오기(pw안씀) -->
 	<select id="loginKakao" resultType="test.spring.mvc.bean.Member_basicDTO">
 		select id,pw from member_basic where email=#{email}
 	</select>
+	<!-- 이메일 인증번호 발급 -->
+	<insert id="newemailkey" >
+		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
+	</insert>
+	<!-- 인증번호 테이블에 이메일이 등록돼있는지 확인, 0이면 없음 1이면 있음 -->
+	<select id="isemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email}
+	</select>
+	<!-- 이미 인증번호 테이블에 등록됐을 경우 인증번호 발급 -->
+	<update id="updateemailkey">
+		update emailcheck set emailkey=#{emailkey}, emailauth=0 where email=#{email}
+	</update>
+	<!-- 이메일 인증번호 확인, 0이면 틀림 1이면 맞음 -->
+	<select id="verifiedemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
+	</select>
+	<!-- 이메일 인증 권한을 줌 -->
+	<update id="emailAuth">
+		update emailcheck set emailauth=1 where email=#{email}
+	</update>
+	<!-- 인증 권한 가져옴, 1이면 인증됨 0이면 인증 안됨 -->
+	<select  id="isEmailAuth">
+		select emailauth from emailcheck where email=#{email}
+	</select>
+	<!-- member_basic테이블에서 이메일로 id 가져오기 -->
+	<select id="getIdByEmail">
+		select id from member_basic where email=#{email}
+	</select>
+	<!-- 비밀번호 변경 -->
+	<update id="changePwById">
+		update member_basic set pw=#{pw} where id=#{id}
+	</update>
+	<!-- 이메일 변경 -->
+	<update id="changeEmailById">
+		update member_basic set email=#{email} where id=#{id}
+	</update>
+	<select id="countAllProduct">
+		select count(*) from all_product
+	</select>
+	<!-- 전체 상품,페이지 맞게 10개만 -->
+	<select id="findallproduct"  resultType="test.spring.mvc.bean.ProductDTO">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+	<!-- 상품 리스트 썸네일 -->
+    <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
+    	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
+    </select>
+	<!-- 관심상품에 상품 하나 추가하기 -->
+	<insert id="addWishOne">
+		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')
+	</insert>
+	<!-- 관심상품에 상품 하나 제거하기 -->
+	<insert id="removeWishOne">
+		delete from ${id}_dibs where product=#{product}
+	</insert>
+	<!-- 관심상품에 상품 하나 제거하기 -->
+	<insert id="removeWishOneByNum">
+		delete from ${id}_dibs where num=#{num}
+	</insert>
+	<!-- 유저의 관심상품 목록 중 상품명만 가져오기 -->
+	<select id="getWishListProduct">
+		select product from ${id}_dibs
+	</select>
+	<!-- 유저의 관심상품 목록 가져오기 -->
+	<select id="getWishList">
+		select * from ${id}_dibs order by num desc
+	</select>
+	<!-- 유저 관심상품 폴더 변경하기 -->
+	<update id="changeFolder">
+		update ${id}_dibs set folder=#{checkedFolder} where num=#{num}
+	</update>
+	<!-- 유저의 관심상품의 폴더명 가져오기 -->
+	<select id="getFolderByNum">
+		select folder from ${id}_dibs where num=#{num}
+	</select>
+	<!-- 상품명으로 companyid, category, category2, flavor 뽑기 -->
+	<select id="getProductCodeByProductName">
+		select companyid, category, category2, flavor from all_product where product=#{product}
+	</select>
+	<!-- 찜 폴더명들 가져오기 -->
+	<select id="getWishFolderName">
+		select distinct folder from ${id}_dibs
+	</select>
 	
+	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
 		create table ${id}_point(
 			num number default ${id}_point_seq.nextval primary key,
@@ -125,34 +223,6 @@
 	</update>
 	
 	
-	<insert id="newemailkey" >
-		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
-	</insert>
-	<select id="isemailkey" resultType="int">
-		select count(*) from emailcheck where email=#{email}
-	</select>
-	<update id="updateemailkey">
-		update emailcheck set emailkey=#{emailkey}, emailauth=0 where email=#{email}
-	</update>
-	<select id="verifiedemailkey" resultType="int">
-		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
-	</select>
-	<update id="emailAuth">
-		update emailcheck set emailauth=1 where email=#{email}
-	</update>
-	<select  id="isEmailAuth">
-		select emailauth from emailcheck where email=#{email}
-	</select>
-	<select id="getIdByEmail">
-		select id from member_basic where email=#{email}
-	</select>
-	
-	<update id="changePwById">
-		update member_basic set pw=#{pw} where id=#{id}
-	</update>
-	<update id="changeEmailById">
-		update member_basic set email=#{email} where id=#{id}
-	</update>
 
  	<select id="findall">
  		select * from all_product
