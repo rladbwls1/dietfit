@@ -83,56 +83,7 @@
     
     
     
-    <!-- 페이지 상단에 다음과 같이 스크립트를 추가합니다. -->
-<script>
-    // 최근 본 상품 정보를 가져오는 함수
-    function getRecentlyViewedProducts() {
-        var recentlyViewedProducts = [];
-        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)recentlyViewedProducts\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
-        if (cookieValue) {
-            try {
-                recentlyViewedProducts = JSON.parse(decodeURIComponent(cookieValue));
-            } catch (e) {
-                console.error("Error parsing recently viewed products JSON:", e);
-            }
-        }
 
-        return recentlyViewedProducts;
-    }
-
-    // 최근 본 상품 정보를 쿠키에 저장하는 함수
-    function setRecentlyViewedProducts(recentlyViewedProducts) {
-        var cookieExpirationDays = 7; // 쿠키 유효 기간 설정 (일 단위)
-        var expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + cookieExpirationDays);
-
-        document.cookie = "recentlyViewedProducts=" + encodeURIComponent(JSON.stringify(recentlyViewedProducts)) + "; expires=" + expirationDate.toUTCString() + "; path=/";
-    }
-
-    // 상품 페이지가 로드될 때 실행되는 함수
-    function onProductPageLoad(productId, productName, productUrl) {
-        var recentlyViewedProducts = getRecentlyViewedProducts();
-
-        // 중복 상품 체크
-        var existingProductIndex = recentlyViewedProducts.findIndex(function (product) {
-            return product.id === productId;
-        });
-
-        // 중복된 상품이 없으면 최근 본 상품에 추가
-        if (existingProductIndex === -1) {
-            recentlyViewedProducts.unshift({ id: productId, name: productName, url: productUrl });
-            // 최근 본 상품을 최대 5개까지 유지하도록 설정
-            if (recentlyViewedProducts.length > 5) {
-                recentlyViewedProducts.pop();
-            }
-
-            // 최근 본 상품 정보를 쿠키에 저장
-            setRecentlyViewedProducts(recentlyViewedProducts);
-        }
-    }
-</script>
-    
-    
 </body>
 </html>
