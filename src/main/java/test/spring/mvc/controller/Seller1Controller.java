@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -130,8 +133,12 @@ public class Seller1Controller {
                          @PathVariable("category") String category,
                          @PathVariable("category2") String category2,
                          @PathVariable("flavor") String flavor,
-                         Model model,Principal pri) {
+                         HttpServletRequest request,
+                         HttpServletResponse response,
+                         Model model,Principal pri,
+                         String productUrl, String productImage) {
     	String id = pri.getName();
+    	
         ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
@@ -166,12 +173,90 @@ public class Seller1Controller {
         model.addAttribute("thumbnailPaths", thumbnailPaths);
         model.addAttribute("imagePaths", imagePaths);
         model.addAttribute("id", id);
+        
+        // 최근 본 상품 정보를 쿠키에 추가
+        addRecentlyViewedProductToCookie(request, response, companyid + category + category2 + flavor, id, 
+        		model, "/details/" + companyid + "/" + category + "/" + category2 + "/" + flavor, thumbnailPaths);
 
         return "seller/productdetail";
     }
+    
+    private void addRecentlyViewedProductToCookie(HttpServletRequest request, HttpServletResponse response, String productId, String id, Model model, String productUrl, List<String> thumbnailPaths) {
+        String recentlyViewedProduct = getRecentlyViewedProductFromCookie(request, id);
+
+     // 기존 쿠키 값이 없으면 새로 생성
+        if (recentlyViewedProduct == null) {
+            recentlyViewedProduct = productId;
+        } else {
+            String[] productArray = splitProducts(recentlyViewedProduct);
+
+            // 중복 체크
+            if (!containsProduct(productArray, productId)) {
+                recentlyViewedProduct += "/" + productId;
+            }
+        }
+
+        // 쿠키 값 "/" 기준으로 나누기
+        String[] productArray = splitProducts(recentlyViewedProduct);
+
+        // JSP에 전달하기 위해 배열을 문자열로 조합
+        String joinedProducts = String.join("/", productArray);
+
+        Cookie cookie = new Cookie("recentlyViewed_" + id, joinedProducts);
+        model.addAttribute("recentlyViewedProducts", joinedProducts);
+        cookie.setMaxAge(24 * 60 * 60); // 쿠키의 유효 시간 (초 단위), 여기서는 1일로 설정
+        //cookie.setMaxAge(60); // 1분으로 설정
+        cookie.setPath("/"); // 쿠키의 경로 설정
+        response.addCookie(cookie);
+    }
+
+    private String[] splitProducts(String products) {
+        if (products != null && !products.isEmpty()) {
+            return products.split("/");
+        }
+        return new String[0];
+    }
+    private boolean containsProduct(String[] products, String productId) {
+        for (String product : products) {
+            if (product.equals(productId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getRecentlyViewedProductFromCookie(HttpServletRequest request, String id) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (("recentlyViewed_" + id).equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
 
+    @RequestMapping("RecentViewProduct")
+    public String recentViewProduct(Model model, Principal pri, HttpServletRequest request) {
+        String id = pri.getName(); // 사용자 ID 얻어오기
 
+        // 쿠키에서 최근 본 상품 정보를 읽어옴
+        String recentlyViewedProduct = getRecentlyViewedProductFromCookie(request, id);
+
+        // 최근 본 상품 정보를 리스트로 변환 (예시로 문자열로 표현)
+        List<String> recentlyViewedProducts = Arrays.asList(recentlyViewedProduct.split("/"));
+        service.getProductByCookie(recentlyViewedProducts,model);
+        
+        model.addAttribute("recentlyViewedProducts", recentlyViewedProducts);
+        model.addAttribute("id", id);
+
+        return "member/RecentViewProduct";
+    }
+    
+    
+    
 
 	 @RequestMapping("/store/Delete")
 	 public String deleteProduct(@RequestParam("companyid") String companyid,
