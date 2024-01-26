@@ -92,13 +92,9 @@
 	<hr/>
 	
 	<c:if test="${check == 1}">
-		<c:forEach var="pair" items="${list2}">
-        <div>
-        <c:forEach var="food" items="${pair}">
-        	<img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-            <br>${food.product}<br>
-        </c:forEach>
-        </div>
+		<c:forEach var="food" items="${list2}">
+			<img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
+	    	<div>${food.product}</div>
     	</c:forEach>
 	</c:if>
 	

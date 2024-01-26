@@ -204,7 +204,8 @@ public class Admin1ServiceImpl implements Admin1Service{
 				                pair.add(re.get(i + 1));
 				            }
 				            groupedList.add(pair);
-				            model.addAttribute("list2", groupedList);
+				            List<ProductDTO> selectedPair = groupedList.get(0);
+				            model.addAttribute("list2", selectedPair);
 				        }
 			 if(list.isEmpty()) {
 				 // 해당 상품이 존재하지 않습니다.
