@@ -72,4 +72,9 @@ public class DietfitController {
 		return "admin/survey/result";
 	}
 	
+	@RequestMapping("kakaopay")
+	public String kakaopay() {
+		return "admin/kakaopay";
+	}
+	
 }
