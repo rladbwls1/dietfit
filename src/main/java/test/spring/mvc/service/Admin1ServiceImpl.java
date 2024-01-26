@@ -181,10 +181,34 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category) {
 		System.out.println("category-----------"+category);
 		List<ProductinfoDTO> list = mapper.food(minkcal, maxkcal, category);
+		int check = 0;
 //		List<ProductinfoDTO> fo = new ArrayList<>();
 //		fo.addAll(list);
-		 if (!list.isEmpty()) {
-			 
+		 if (list.isEmpty()) {
+//			 System.out.println("------------------------------------------");
+			 check = 1;
+			 model.addAttribute("check", check);
+			 list = mapper.food((minkcal/2), (maxkcal/2), category);
+			 List<List<ProductDTO>> groupedList = new ArrayList<>();
+			 List<ProductDTO> list2 = new ArrayList<>();
+			 List<ProductDTO> re = new ArrayList<>();
+				 for(ProductinfoDTO f : list) {
+					 list2 = mapper.food_product(f.getProductid());
+					 re.addAll(list2);
+				 }
+				 Collections.shuffle(re);
+					 for(int i = 0; i < re.size(); i += 2) {
+				            List<ProductDTO> pair = new ArrayList<>();
+				            pair.add(re.get(i));
+				            if (i + 1 < re.size()) {
+				                pair.add(re.get(i + 1));
+				            }
+				            groupedList.add(pair);
+				            model.addAttribute("list2", groupedList);
+				        }
+			 if(list.isEmpty()) {
+				 // 해당 상품이 존재하지 않습니다.
+			 }
 		 }
 //		        Random random = new Random();
 //		        int randomIndex = random.nextInt(list.size()); // 랜덤 인덱스 생성
