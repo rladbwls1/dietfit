@@ -11,6 +11,10 @@
 </head>
 <body>
 <h1>찜</h1>
+<br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기 </button>
+<br/><button type="button" onclick="javascript:window.location='/member/cartList'">장바구니</button>
+<br/><button type="button" onclick="javascript:window.location='/member/productList'">상품목록</button>
+<br/>
 <c:if test="${empty wishList }">
 	관심상품이 없습니다.	
 </c:if>
@@ -48,7 +52,7 @@
 		<td><input type="checkbox" name="num" onclick="updateCheckAll()" value="${wish.num }"></td>
 		<td><a href="javascript:void(0)" style="text-decoration-line : none; color:black;" 
 		onclick="getProductCodeANDtoDetail('${wish.product}')">${wish.product }</a></td>
-		<td><a href="javascript:void(0)" onclick="getProductCodeANDtoDetail('${wish.product}')"><img src="${imgPaths.get(i) }" width="100"/></a></td>
+		<td><a href="javascript:void(0)" onclick="getProductCodeANDtoDetail('${wish.product}')"><img src="${imgPaths[i] }" width="100"/></a></td>
 	</tr>
 	</c:if>
 	<c:if test="${checkedFolder!='전체'&&wish.folder.contains(checkedFolder) }">
@@ -56,7 +60,7 @@
 		<td><input type="checkbox" name="num" onclick="updateCheckAll()" value="${wish.num }"></td>
 		<td><a href="javascript:void(0)" style="text-decoration-line : none; color:black;" 
 		onclick="getProductCodeANDtoDetail('${wish.product}')">${wish.product }</a></td>
-		<td><a href="javascript:void(0)" onclick="getProductCodeANDtoDetail('${wish.product}')"><img src="${imgPaths.get(i) }" width="100"/></a></td>
+		<td><a href="javascript:void(0)" onclick="getProductCodeANDtoDetail('${wish.product}')"><img src="${imgPaths[i] }" width="100"/></a></td>
 	</tr>
 	</c:if>
 <c:set var="i" value="${i+1}" />

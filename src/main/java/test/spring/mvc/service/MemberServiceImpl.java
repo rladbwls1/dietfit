@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -297,13 +298,15 @@ public class MemberServiceImpl implements MemberService{
 	public void removeWishMore(String products, String id,String checkedFolder) {
 		String[] product1=products.split(",");
 		String removeFolder=checkedFolder;
-			//
 		for (String num1 : product1) {
 			int num=Integer.parseInt(num1);
+			//폴더가 전체인 경우 목록에서 바로 제거
 			if(checkedFolder.equals("전체")) {
 				mapper.removeWishOneByNum(num,id);
 			}else {
+				//폴더에서 삭제한 경우 폴더에서만 삭제 
 				String Folder=mapper.getFolderByNum(num,id);
+				//선택 상품이 여러 폴더에 담겨있는 경우 삭제하려는 폴더에서만 삭제
 				if(Folder.contains(",")) {
 					String[] folderarray=Folder.split(",");
 					List<String> folderList= new ArrayList<>(Arrays.asList(folderarray));
@@ -311,6 +314,7 @@ public class MemberServiceImpl implements MemberService{
 					checkedFolder=String.join(",", folderList);
 					mapper.changeFolder(id, checkedFolder, num);
 				}else {
+					//선택 상품이 하나의 폴더에만 담겨있는 경우 목록에서 제거
 					mapper.removeWishOneByNum(num,id);
 				}
 			}
@@ -360,6 +364,42 @@ public class MemberServiceImpl implements MemberService{
 			mapper.changeFolder(id,checkedFolder,num);
 		}
 	}
+
+	@Override
+	public void addCartOne(String id,String product, int quantity, int price) {
+		mapper.addCartOne(id, product, quantity, price);
+	}
+
+	@Override
+	public void getCartList(Model model, String id) {
+		List<CartDTO> list=mapper.getCartList(id);
+		model.addAttribute("list",list);
+		List<String> imgPaths=new ArrayList<>();
+		for(CartDTO dto:list) {
+			ProductDTO pdto=mapper.getProductCodeByProductName(dto.getProduct());
+			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
+            if (img != null) {
+                // 이미지 경로 직접 조합하여 설정
+                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+                                   img.getCategory() + img.getCategory2() +
+                                   img.getFlavor() + "F" + img.getNum() +
+                                   img.getExt();
+                imgPaths.add(imagePath);
+            }
+		}
+		model.addAttribute("imgPaths",imgPaths);
+	}
+
+	@Override
+	public void updateCartQuantity(String id,int num, int quantity) {
+		mapper.updateCart(id, quantity, num);
+	}
+
+	@Override
+	public void deleteCart(String id, int num) {
+		mapper.deleteCart(id, num);
+	}
+	
 	
 	
 	

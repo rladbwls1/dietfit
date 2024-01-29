@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
@@ -190,14 +191,12 @@ public class MemberController {
 		return "redirect:/dietfit/main";
 	}	
 	
-	
-	//-----------------------------------------------------------------------0122
 	@RequestMapping("productList")
-	public String productList(Model model,@RequestParam(value="pageNum", defaultValue="1") int pageNum
-							,Principal pri) {
+	public String productList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+					Model model,Principal pri) {
 		//int number=0;
 		//number=count-(currentPage-1)*pageSize;
-		if(pri.getName()!=null) {
+		if(pri!=null) {
 			service.getWishListProduct(model,pri.getName());
 		}
 		service.getallproduct(model,pageNum);
@@ -261,7 +260,38 @@ public class MemberController {
 		service.changeFolder(checkedFolder,products,id);
 		return "bye";
 	}
+	@RequestMapping("miniCart")
+	public String miniCart(Model model, String companyid,
+			String category,String category2, String price) {
+		model.addAttribute("price",price);
+		model.addAttribute("list",mapper.getProductByCompanyidCateCate2(companyid, category, category2));
+		return "member/miniCart";
+	}
 	
+	@RequestMapping("addCartOne")
+	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
+		service.addCartOne(pri.getName(),product,quantity,price);
+		return "hi";
+		
+	}
+	
+	@RequestMapping("cartList")
+	public String cartList(Model model,Principal pri) {
+		service.getCartList(model, pri.getName());
+		return "member/cartList";
+	}
+	@RequestMapping("updateCartQuantity")
+	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
+		service.updateCartQuantity(pri.getName(),num,quantity);
+		service.getCartList(model, pri.getName());
+		return "hi";
+	}
+	@RequestMapping("deleteCart")
+	public @ResponseBody String deleteCart(Model model, Principal pri, int num) {
+		service.deleteCart(pri.getName(), num);
+		service.getCartList(model, pri.getName());
+		return "hi";
+	}
 	
 	
 	
