@@ -206,3 +206,86 @@ function changeNewFolder(products){
     	});
 	}
 }
+
+//-----------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@장바구니
+function openCart(companyid, category, category2,price){
+	window.open("miniCart?companyid="+companyid+"&category="+category+"&category2="+category2+"&price="+price,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
+}
+//장바구니 버튼 눌러서, 상품 고르면 개수 변경할 수 있게.
+function showQuantityDiv(){
+	$('#quantity').val(1);
+	$('#amout').text($('#price').val()*$('#quantity').val());
+}
+function quantityUp(){
+	var num=parseInt($('#quantity').val());
+	$('#quantity').val(num+1);
+	$('#quantity').text($('#quantity').val());
+	$('#amout').text($('#price').val()*$('#quantity').val());
+	
+}
+function quantityDown(){
+	var num=parseInt($('#quantity').val());
+	if(num>1){
+		$('#quantity').val(num-1);
+		$('#quantity').text(num-1);
+		$('#amout').text($('#price').val()*$('#quantity').val());
+	}
+}
+function addCartFromList(){
+	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
+		alert("개수를 입력해주세요.");
+	}else{
+	    $.ajax({
+    	url:'addCartOne',
+    	type:'post',
+    	async:false,
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val()},
+    	success:function(a){
+    		window.opener.location.reload();
+    		if(confirm("장바구니에 성공적으로 추가하였습니다. 장바구니로 가겠습니까?")){
+    			window.opener.location.href="cartList";
+    			window.close();
+    		}else{
+    			window.close();
+    		}
+		}
+    	});
+	}
+}
+function cartQuantityDown(num,quantity){
+	 if(quantity>1){
+		 $.ajax({
+	    	url:'updateCartQuantity',
+	    	type:'post',
+	    	async:false,
+	    	data:{num:num, quantity:quantity-1},
+	    	success:function(a){
+	    		window.location.reload();
+	    	}
+	 	});   	
+ 	}
+}
+function cartQuantityUp(num,quantity){
+	$.ajax({
+    	url:'updateCartQuantity',
+    	type:'post',
+    	async:false,
+    	data:{num:num, quantity:parseInt(quantity)+1},
+    	success:function(a){
+    		window.location.reload();
+    	}
+ 	});  
+}
+function deleteCart(num){
+	$.ajax({
+    	url:'deleteCart',
+    	type:'post',
+    	async:false,
+    	data:{num:num},
+    	success:function(a){
+    		window.location.reload();
+    	}
+ 	}); 
+}
+
+

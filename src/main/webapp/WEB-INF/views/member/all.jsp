@@ -25,6 +25,7 @@
 <br/><button type="button" onclick="javascript:window.location='/member/modifyForm'">정보수정</button>
 <br/><button type="button" onclick="javascript:window.location='/member/productList'">상품목록</button>
 <br/><button type="button" onclick="javascript:window.location='/member/wishList'">관심상품</button>
+<br/><button type="button" onclick="javascript:window.location='/member/cartList'">장바구니</button>
 <hr/>
 
 	로그인된 유저 정보 : <sec:authentication property="principal"/> <br/>

@@ -142,6 +142,28 @@
 	<select id="getWishFolderName">
 		select distinct folder from ${id}_dibs
 	</select>
+	<!-- miniCart 장바구니, 상품 정보 가져오기 -->
+	<select id="getProductByCompanyidCateCate2">
+		select * from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2}
+	</select>
+	<!-- 장바구니에 하나의 상품 추가 -->
+	<insert id="addCartOne">
+		insert into ${id}_cart (product, price, quantity) values (#{product},#{price},#{quantity})
+	</insert>
+	<!-- 장바구니 목록 가져오기 -->
+	<select id="getCartList">
+		select * from ${id}_cart order by num desc
+	</select>
+	<!-- 장바구니 개수 수정 -->
+	<update id="updateCart">
+		update ${id}_cart set quantity=#{quantity} where num=#{num}
+	</update>
+	<!-- 장바구니 목록 삭제 -->
+	<delete id="deleteCart">
+		delete from ${id}_cart where num=#{num}
+	</delete>
+	
+	
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >

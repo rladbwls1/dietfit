@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -96,4 +97,17 @@ public interface MemberMapper {
 	//유저의 관심상품의 폴더명 가져오기
 	public String getFolderByNum(@Param("num") int num,
 			@Param("id") String id);
+	//miniCart 장바구니, 상품 정보 가져오기
+	public List<ProductDTO> getProductByCompanyidCateCate2(@Param("companyid") String companyid, 
+							     	  @Param("category") String category,
+							     	  @Param("category2") String category2);
+	//장바구니에 하나의 상품 추가
+	public void addCartOne(@Param("id")String id, @Param("product") String product, 
+			@Param("quantity")int quantity, @Param("price")int price);
+	//장바구니 목록 가져오기
+	public List<CartDTO> getCartList(String id);
+	//장바구니 개수 수정
+	public void updateCart(@Param("id")String id, @Param("quantity")int quantity, @Param("num")int num );
+	//장바구니 목록 삭제
+	public void deleteCart(@Param("id")String id, @Param("num")int num );
 }
