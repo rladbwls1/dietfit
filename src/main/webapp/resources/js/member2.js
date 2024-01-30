@@ -111,11 +111,38 @@ function deleteSelectedItems(checkedFolder) {
         }
     }else{
     	if (confirm("상품을 선택해주세요.")) {
-    		return false;
+    	}
+    }
+}
+function cartSelectedItems(){
+    const checkboxes = document.getElementsByName("num");
+    const selectedItems = [];
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	selectedItems.push(checkbox.value);
+        }
+    });
+    if (selectedItems.length > 0) {
+		$.ajax({
+			url:'addCartMore',
+			type:'post',
+			async:false,
+			data:{products:selectedItems.join(",")},
+			success:function(a){
+				if(confirm('장바구니에 추가 되었습니다.')){
+					window.location.reload();
+				}else{
+					window.location.reload();
+				}
+			}
+		});
+    }else{
+    	if (confirm("상품을 선택해주세요.")) {
     	}
     }
     
-    return false;
+    	
 }
 //선택한 상품들을 어떤 폴더로 옮길지 새 창 띄움
 function moveSelectedItems(Folder){
@@ -206,3 +233,137 @@ function changeNewFolder(products){
     	});
 	}
 }
+
+//-----------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@장바구니
+function openCart(companyid, category, category2,price){
+	window.open("miniCart?companyid="+companyid+"&category="+category+"&category2="+category2+"&price="+price,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
+}
+//장바구니 버튼 눌러서, 상품 고르면 개수 변경할 수 있게.
+function showQuantityDiv(){
+	$('#quantity').val(1);
+	$('#amout').text($('#price').val()*$('#quantity').val());
+}
+function quantityUp(){
+	var num=parseInt($('#quantity').val());
+	$('#quantity').val(num+1);
+	$('#quantity').text($('#quantity').val());
+	$('#amout').text($('#price').val()*$('#quantity').val());
+	
+}
+function quantityDown(){
+	var num=parseInt($('#quantity').val());
+	if(num>1){
+		$('#quantity').val(num-1);
+		$('#quantity').text(num-1);
+		$('#amout').text($('#price').val()*$('#quantity').val());
+	}
+}
+function addCartFromList(){
+	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
+		alert("개수를 입력해주세요.");
+	}else{
+	    $.ajax({
+    	url:'addCartOne',
+    	type:'post',
+    	async:false,
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val()},
+    	success:function(a){
+    		window.opener.location.reload();
+    		if(confirm("장바구니에 성공적으로 추가하였습니다. 장바구니로 가겠습니까?")){
+    			window.opener.location.href="cartList";
+    			window.close();
+    		}else{
+    			window.close();
+    		}
+		}
+    	});
+	}
+}
+function cartQuantityDown(num){
+	 var quantity=$('#'+num+'_quantity').text();
+	 if(quantity>1){
+		 $.ajax({
+	    	url:'updateCartQuantity',
+	    	type:'post',
+	    	async:false,
+	    	dataType:"json",
+	    	data:{num:num, quantity:quantity-1},
+	    	success:function(js){
+	    		$('#'+num+'_quantity').text(js.quantity);
+    			$('#'+num+'_price').text(js.price*js.quantity);
+	    	}
+	 	});   	
+ 	}
+ 	updateAmount();
+ 	
+}
+function cartQuantityUp(num){
+	var quantity=$('#'+num+'_quantity').text();
+	$.ajax({
+    	url:'updateCartQuantity',
+    	type:'post',
+    	async:false,
+    	data:{num:num, quantity:parseInt(quantity)+1},
+    	dataType:"json",
+    	success:function(js){
+    		$('#'+num+'_quantity').text(js.quantity);
+    		$('#'+num+'_price').text(js.price*js.quantity);
+    	}
+ 	}); 
+ 	updateAmount();
+}
+function deleteCart(num){
+	$.ajax({
+    	url:'deleteCart',
+    	type:'post',
+    	async:false,
+    	data:{num:num},
+    	success:function(a){
+    		$('#'+num).hide();								//상품 숨김
+    		$('#'+num).find('#num').prop('checked', false);	//체크 풀음
+    		$('#'+num+'_price').text('0');	//가격 0으로 
+    	}
+ 	}); 
+ 	
+ 	updateAmount(); 
+}
+function cartCheckAll() {
+    const chkAll = document.getElementById("chk_all");
+    const checkboxes = document.getElementsByName("num");
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = chkAll.checked;
+    });
+    
+	updateAmount();  
+}
+function cartUpdateCheckAll() {
+    const chkAll = document.getElementById("chk_all");
+    const checkboxes = document.getElementsByName("num");
+    let allChecked = true;
+
+    checkboxes.forEach((checkbox) => {
+        if (!checkbox.checked) {
+            allChecked = false;
+        }else{
+        	
+        }
+    });
+    chkAll.checked = allChecked;
+
+	updateAmount();
+    
+}
+function updateAmount(){
+	//총가격 수정하는 부분
+	const checkboxes = document.getElementsByName("num");
+    var result=0;
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	result+=parseInt($('#'+checkbox.value+'_price').text());
+        }
+    });
+	$('#amout').text(result);
+}
+
+

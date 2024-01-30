@@ -11,7 +11,7 @@
     	<tr>
     		<td>
     			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
-				    <img src="${thumbnailPath}"> 
+				    <img src="${thumbnailPath}" width="300"> 
 				</c:forEach>
     		</td>
     	</tr>	

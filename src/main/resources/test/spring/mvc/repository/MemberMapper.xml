@@ -138,10 +138,47 @@
 	<select id="getProductCodeByProductName">
 		select companyid, category, category2, flavor from all_product where product=#{product}
 	</select>
+	<!-- 상품명으로 가격 뽑기 -->
+	<select id="getPriceByProductName">
+		select price from all_product where product=#{product}
+	</select>
 	<!-- 찜 폴더명들 가져오기 -->
 	<select id="getWishFolderName">
 		select distinct folder from ${id}_dibs
 	</select>
+	<!-- 찜 num으로 product꺼내기 -->
+	<select id="getProductByNum">
+		select product from ${id}_dibs where num=#{num}
+	</select>
+	<!-- miniCart 장바구니, 상품 정보 가져오기 -->
+	<select id="getProductByCompanyidCateCate2">
+		select * from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2}
+	</select>
+	<!-- 장바구니에 상품이 이미 있나 확인 -->
+	<select id="isCart">
+		select count(*) from ${id}_cart where product=#{product}
+	</select>
+	<!-- 장바구니에 하나의 상품 추가 -->
+	<insert id="addCartOne">
+		insert into ${id}_cart (product, price, quantity) values (#{product},#{price},#{quantity})
+	</insert>
+	<!-- 장바구니 목록 가져오기 -->
+	<select id="getCartList">
+		select * from ${id}_cart order by num desc
+	</select>
+	<!-- 장바구니 개수 수정 -->
+	<update id="updateCart">
+		update ${id}_cart set quantity=#{quantity} where num=#{num}
+	</update>
+	<!-- 장바구니 목록 삭제 -->
+	<delete id="deleteCart">
+		delete from ${id}_cart where num=#{num}
+	</delete>
+	<!-- 장바구니에서 개수 수정한 목록만 가져오기 -->
+	<select id="getCartListByNum">
+		select * from ${id}_cart where num=#{num}
+	</select>
+	
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
