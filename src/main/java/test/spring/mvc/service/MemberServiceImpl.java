@@ -367,7 +367,19 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addCartOne(String id,String product, int quantity, int price) {
-		mapper.addCartOne(id, product, quantity, price);
+		int check=mapper.isCart(id, product);
+		if(check==0) {
+			mapper.addCartOne(id, product, quantity, price);
+		}
+	}
+
+	@Override
+	public void addCartMore(String id, String products) {
+		for(String num:products.split(",")) {
+			String product=mapper.getProductByNum(id, Integer.parseInt(num));
+			int price=mapper.getPriceByProductName(product);
+			addCartOne(id,product,1,price);
+		}
 	}
 
 	@Override

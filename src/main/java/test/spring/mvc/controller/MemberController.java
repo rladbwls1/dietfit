@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -272,7 +276,11 @@ public class MemberController {
 	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
 		service.addCartOne(pri.getName(),product,quantity,price);
 		return "hi";
-		
+	}
+	@RequestMapping("addCartMore")
+	public @ResponseBody String addCartMore(Principal pri ,String products) {
+		service.addCartMore(pri.getName(),products);
+		return "hi";
 	}
 	
 	@RequestMapping("cartList")
@@ -283,13 +291,17 @@ public class MemberController {
 	@RequestMapping("updateCartQuantity")
 	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
 		service.updateCartQuantity(pri.getName(),num,quantity);
-		service.getCartList(model, pri.getName());
-		return "hi";
+		CartDTO dto=mapper.getCartListByNum(pri.getName(), num);
+		ObjectMapper om=new ObjectMapper();
+		String js="";
+		try {
+			js = om.writeValueAsString(dto);   //문자열로 변경
+		} catch (JsonProcessingException e) {	e.printStackTrace();	}  
+		return js;
 	}
 	@RequestMapping("deleteCart")
 	public @ResponseBody String deleteCart(Model model, Principal pri, int num) {
 		service.deleteCart(pri.getName(), num);
-		service.getCartList(model, pri.getName());
 		return "hi";
 	}
 	
