@@ -18,6 +18,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
+	function modi(minkcal, maxkcal, mo, type){
+		 $("#modalBody").empty();
+		 
+		<c:forEach var="fo" items="${mo_rest}">
+			console.log("${fo}");
+			<c:forEach var="food" items="${fo}">
+			var product = "${food.product}";
+			var img = "${food.pimg.companyid}" + "${food.pimg.category}" + "${food.pimg.category2}" + "${food.pimg.flavor}" + "F" + "${food.pimg.num}" + "${food.pimg.ext}";
+            var kcal = "${food.productinfo.kcal}";
+            var productid = "${food.productinfo.productid}";
+            // 모달 내용에 추가
+            $("#modalBody").append("<li class='col-md-4'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
+            		"style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
+                "<div>" + product + "</div>"+
+                "<div>칼로리 : " + kcal + "</div></li>");
+			</c:forEach>
+		</c:forEach>
+		$("#myModal").modal('show');
+	}
+         
+</script>
+<script>
+
 	function modify(minkcal, maxkcal, mo, type){
 		var category = 1;
 		if(type == "se"){
@@ -33,24 +56,29 @@
 	            // 모달 내용 초기화
 	            $("#modalBody").empty();
 
+				if(data.length > 0){
+					console.log(data);
 	            for (var i = 0; i < data.length; i++) {
 	                var food = data[i];
 	                var img = food.pimg.companyid + food.pimg.category + food.pimg.category2 + food.pimg.flavor + "F" + food.pimg.num + food.pimg.ext;
 	                var kcal = food.productinfo.kcal;
 	                var productid = food.productinfo.productid;
 	                var product = food.product;
-
 	                // 모달 내용에 추가
 	                $("#modalBody").append("<li class='col-md-4'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
 	                		"style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
 	                    "<div>" + product + "</div>"+
 	                    "<div>칼로리 : " + kcal + "</div></li>");
+					}
+	            }else{
+						$("#modalBody").append("해당 제품은 대체 상품이 없습니다!");
 	            }
 	            // 모달 열기
 	            $("#myModal").modal('show');
 	        }
 	    });
 	}
+	
     $(document).on('click', '.thum', function() {
     	var productid = $(this).data('productid');
     	var img = $(this).data('img');
@@ -78,6 +106,21 @@
 	
 	<c:set var="totalKcal" value="0" scope="page" />
 	
+	<c:if test="${mo_check == 1}">
+		<h2>아침</h2>
+		<c:forEach var="food" items="${mo_group}">
+		<div id="mo">
+	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
+	    <div>${food.product}</div>
+	    <div id="mo_m">${food.productinfo.kcal}</div>
+	    </div>
+	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
+	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
+	    	<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
+    	</c:forEach>
+	    <div><button type="button" onclick="modi('${mo_minkcal}', '${mo_maxkcal}', '${productid}','mo');" id="modify">다른 식품 추천</button></div>
+	</c:if>
+	<c:if test="${mo_check != 1}">
 	<c:forEach var="food" items="${mo_re}">
 	    <h2>아침</h2>
 	    <div id="mo">
@@ -89,27 +132,53 @@
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 	    <div id="result"></div>
 	</c:forEach>
+	</c:if>
 	<hr/>
 	
-	<c:if test="${check == 1}">
-		<c:forEach var="food" items="${list2}">
-			<img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-	    	<div>${food.product}</div>
+	<c:if test="${br_check == 1}">
+		<h2>점심</h2>
+		<c:forEach var="food" items="${br_group}">
+		<div id="br">
+	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
+	    <div>${food.product}</div>
+	    <div id="br_m">${food.productinfo.kcal}</div>
+	    </div>
+	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
+	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
+	    	<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
     	</c:forEach>
+	    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${productid}','br');" id="modify">다른 식품 추천</button></div>
 	</c:if>
-	
+	<c:if test="${br_check != 1}">
 	<c:forEach var="food" items="${br_re}">
 	    <h2>점심</h2>
 	    <div id="br">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
 	    <div id="br_m">${food.productinfo.kcal}</div>
-	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/></div>
+	    </div>
 	    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${food.productinfo.productid}','br');" id="modify">다른 식품 추천</button></div>
+	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 	</c:forEach>
+	</c:if>
 	<hr/>
 	
+	<c:if test="${de_check == 1}">
+		<h2>저녁</h2>
+		<c:forEach var="food" items="${de_group}">
+		<div id="de">
+	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
+	    <div>${food.product}</div>
+	    <div id="de_m">${food.productinfo.kcal}</div>
+	    </div>
+	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
+	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
+    	<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
+    	</c:forEach>
+	    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${productid}','de');" id="modify">다른 식품 추천</button></div>
+	</c:if>
+	<c:if test="${de_check != 1}">
 	<c:forEach var="food" items="${de_re}">
 	    <h2>저녁</h2>
 	    <div id="de">
@@ -120,7 +189,24 @@
 	    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${food.productinfo.productid}','de');" id="modify">다른 식품 추천</button></div>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 	</c:forEach>
+	</c:if>
 	<hr/>
+	
+	<c:if test="${se_check == 1}">
+		<h2>간식</h2>
+		<c:forEach var="food" items="${se_group}">
+		<div id="se">
+	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
+	    <div>${food.product}</div>
+	    <div id="se_m">${food.productinfo.kcal}</div>
+	    </div>
+	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
+	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
+			<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
+    	</c:forEach>
+	    <div><button type="button" onclick="modify('${se_minkcal}', '${se_maxkcal}', '${productid}','se');" id="modify">다른 식품 추천</button></div>
+	</c:if>
+	<c:if test="${se_check != 1}">
 	<c:forEach var="food" items="${se_re}">
 	    <h2>간식</h2>
 	    <div id="se">
@@ -131,6 +217,7 @@
 	    <div><button type="button" onclick="modify('${se_minkcal}', '${se_maxkcal}', '${food.productinfo.productid}','se');" id="modify">다른 식품 추천</button></div>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 	</c:forEach>
+	</c:if>
 	<hr/>
 	<div style="display: flex;">
 	Total Kcal: 

@@ -3,7 +3,8 @@ package test.spring.mvc.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -178,7 +179,7 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 	// 식단 아침, 점심, 저녁 (칼로리만)
 	@Override
-	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category) {
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category, HttpServletRequest request) {
 		System.out.println("category-----------"+category);
 		List<ProductinfoDTO> list = mapper.food(minkcal, maxkcal, category);
 		int check = 0;
@@ -187,63 +188,40 @@ public class Admin1ServiceImpl implements Admin1Service{
 		 if (list.isEmpty()) {
 //			 System.out.println("------------------------------------------");
 			 check = 1;
-			 model.addAttribute("check", check);
 			 list = mapper.food((minkcal/2), (maxkcal/2), category);
-			 List<List<ProductDTO>> groupedList = new ArrayList<>();
-			 List<ProductDTO> list2 = new ArrayList<>();
-			 List<ProductDTO> re = new ArrayList<>();
-				 for(ProductinfoDTO f : list) {
-					 list2 = mapper.food_product(f.getProductid());
-					 re.addAll(list2);
-				 }
-				 Collections.shuffle(re);
-					 for(int i = 0; i < re.size(); i += 2) {
-				            List<ProductDTO> pair = new ArrayList<>();
-				            pair.add(re.get(i));
-				            if (i + 1 < re.size()) {
-				                pair.add(re.get(i + 1));
-				            }
-				            groupedList.add(pair);
-				            List<ProductDTO> selectedPair = groupedList.get(0);
-				            model.addAttribute("list2", selectedPair);
-				        }
-			 if(list.isEmpty()) {
+			 
+//			 List<List<ProductDTO>> groupedList = new ArrayList<>();
+//			 List<ProductDTO> list2 = new ArrayList<>();
+//			 List<ProductDTO> re = new ArrayList<>();
+//				 for(ProductinfoDTO f : list) {
+//					 list2 = mapper.food_product(f.getProductid());
+//					 re.addAll(list2);
+//				 }
+//				 Collections.shuffle(re); // 리스트 순서 랜덤 코드
+//					 for(int i = 0; i < re.size(); i += 2) {
+//				            List<ProductDTO> pair = new ArrayList<>();
+//				            pair.add(re.get(i));
+//				            if (i + 1 < re.size()) {
+//				                pair.add(re.get(i + 1));
+//				            }
+//				            groupedList.add(pair);
+//				            List<ProductDTO> selectedPair = groupedList.get(0);
+//				            model.addAttribute("list2", selectedPair);
+//				        }
+					 List<ProductinfoDTO> otfood = new ArrayList<>();
+					 otfood.addAll(list);
+//					 for(int i = 1; i < groupedList.size(); i++) {
+//						 otfood.addAll(groupedList.get(i));
+//					 }
+//					 model.addAttribute("otfood", otfood);
+					 request.setAttribute("check", check);
+					 return otfood;
 				 // 해당 상품이 존재하지 않습니다.
-			 }
+			 }else {
+				 request.setAttribute("check", check);
+				 return list;
 		 }
-//		        Random random = new Random();
-//		        int randomIndex = random.nextInt(list.size()); // 랜덤 인덱스 생성
-//		        ProductinfoDTO randomProduct = list.get(randomIndex); // 랜덤으로 선택된 항목 가져오기
-//		        fo.add(randomProduct);
-//		    }
-//			ProductinfoDTO rmeal = list.get(index);
-//		List<ProductinfoDTO> meal = mapper.meal();
-//		List<ProductinfoDTO> meal_replace = mapper.meal_replace();
-//		if(list.isEmpty()) {
-//			if(!(minkcal < rmeal.getKcal() && rmeal.getKcal() < maxkcal)) {
-//				System.out.println("칼로리 부족");
-//				                                                                                                                                                                                                                                                                                                                                                                            
-//			}
-//			 List<ProductinfoDTO> rmeals = new ArrayList<>();
-//			 int totalKcal = 0;
-//			    while (!(minkcal < totalKcal && totalKcal < maxkcal)) {
-//			        int index = random.nextInt(meal.size());
-//			        ProductinfoDTO rmeal = meal.get(index);
-//			        
-//			        if (!(minkcal < rmeal.getKcal() && rmeal.getKcal() < maxkcal)) {
-//			            rmeals.add(rmeal);
-//			            totalKcal += rmeal.getKcal();
-//			        }
-//			        
-//			        if (minkcal < totalKcal && totalKcal < maxkcal) {
-//			            System.out.println("칼로리 완성");
-//			        }
-//			        
-//			    }
-//			model.addAttribute("list", list);
-//		}
-		return list;
-	}
+	 }
 
 	@Override
 	public List<ProductDTO> food_product(String productid) {
