@@ -3,14 +3,22 @@ package test.spring.mvc.service;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import lombok.RequiredArgsConstructor;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -169,5 +177,10 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.getCompanyEmail(companyid);
 	}
 
+	
+
+	
+
+	
 	
 }
