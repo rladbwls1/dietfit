@@ -63,6 +63,8 @@ public interface MemberService {
 	public void changeFolder(String checkedFolder,String products,String id);
 	//장바구니에 하나의 상품 추가 
 	public void addCartOne(String id,String product,int quantity,int price);
+	//관심목록에서 여러 상품을 장바구니에 추가하는 경우
+	public void addCartMore(String id,String product);
 	//장바구니 목록 가져오기+썸네일
 	public void getCartList(Model model, String id);
 	//장바구니 수량 변경

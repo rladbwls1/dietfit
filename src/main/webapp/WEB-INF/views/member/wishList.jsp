@@ -69,6 +69,7 @@
 <table>
 <tr><td>
 <button type="button" onclick="deleteSelectedItems('${checkedFolder}')">선택 상품 삭제</button>
+<button type="button" onclick="cartSelectedItems()">선택 상품 장바구니담기</button>
 <c:if test="${checkedFolder!='전체' }">
 <button type="button" onclick="moveSelectedItems('${checkedFolder}')">폴더 변경하기</button>
 </c:if>
