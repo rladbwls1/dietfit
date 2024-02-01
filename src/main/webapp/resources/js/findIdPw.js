@@ -206,8 +206,21 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
+function deleteUserself(){
+	let fff=document.createElement('form');
+	let obj21;
+	obj21=document.createElement('input');
+	obj21.setAttribute('type','hidden');
+	obj21.setAttribute('name','id');
+	obj21.setAttribute('value',$('#id').val());
+	fff.appendChild(obj21);
+	fff.setAttribute('method','post');
+	fff.setAttribute('action','/member/userDelete');
+	document.body.appendChild(fff);
+	fff.submit();	
+}
 
-//changeEmail
+//changeEmail@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 //이메일 중복 확인
 function checkEmail(){
@@ -292,6 +305,28 @@ function changeEmailCheck(){
 	if($('#emaill').val()=="true"){
 		return true;
 	}else{
+		return false;
+	}
+}
+// userDelete@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+function deletePro(){
+	var id=$('#id').val();
+	var pw=$('#pw').val();
+	var error=false;
+	$.ajax({
+		url:'/member/deletePro',
+		async:false,
+		type:'post',
+		data:{pw:pw, id:id},
+		success:function(check){
+			if(check){
+			}else{
+				$('#pw_check').text("비밀번호가 틀렸습니다.").css("color","red");
+				error=true;
+			}
+		}
+	});
+	if(error){
 		return false;
 	}
 }

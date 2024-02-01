@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -32,5 +33,8 @@ public interface SellerMapper {
 	public String countidchat(@Param("id")String id,
 							@Param("product")String product);
     public String findallbyroomnum(int roomnum);
+    public String findidbyroomnum(int roomnum);
     public void endchat(int roomnum);
+    public void chatreport(ChatreportDTO chatreportdto);
+    public void chatreportdelete(int roomnum);
 }
