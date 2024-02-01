@@ -68,10 +68,24 @@
     </div>
 
     <script>
+<<<<<<< HEAD
+        var socket = io.connect("http://192.168.219.167:7777");
+        var userId = "${id}";
+        var sellercompany = "${sellercompany}";
+        var roomnum = '${roomnum}';
+        
+        socket.on("response", function (message) {
+        	if(message.roomnum == roomnum){
+        		$("#msgs").append('<div class="message">' + message.msg + '</div><br />');
+        	}
+        });
+        
+=======
     var socket = io.connect("http://192.168.219.167:7777");
     var userId = "${id}";
     var sellercompany = "${sellercompany}";
     var roomnum = '${roomnum}';
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
     socket.on("response", function (message) {
         if (message.roomnum == roomnum) {

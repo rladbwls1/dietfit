@@ -78,5 +78,10 @@ public class AdminController {
 		return "stock check, mail Send!";
 	}
 	
+	@RequestMapping("adminChat")
+	public String adminChat() {
+		return "admin/adminChat";
+	}
+	
 	  
 }
