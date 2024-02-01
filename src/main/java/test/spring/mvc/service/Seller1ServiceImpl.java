@@ -2,10 +2,10 @@ package test.spring.mvc.service;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 import java.util.List;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
-import test.spring.mvc.bean.SetproductDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -166,9 +166,6 @@ public class Seller1ServiceImpl implements Seller1Service {
 	        }
 	    }
 	}
-<<<<<<< HEAD
-=======
-
 	@Override
 	public void getProductByCookie(List<String> recentlyViewedProducts,Model model) {
 		List<ProductDTO> list=new ArrayList<>();
@@ -207,7 +204,13 @@ public class Seller1ServiceImpl implements Seller1Service {
 		model.addAttribute("list",list);
 	}
 	
-	
-
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
+	@Override
+	public void updatePrdouctimg(String companyid, String category, String category2, String flavor) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public List<ProductimgDTO> imgfindupdate(String companyid, String category, String category2, String flavor) {
+		return null;
+	}
 }

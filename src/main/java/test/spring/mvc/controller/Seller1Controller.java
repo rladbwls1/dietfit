@@ -3,12 +3,12 @@ package test.spring.mvc.controller;
 import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -233,9 +233,6 @@ public class Seller1Controller {
         return null;
     }
 
-<<<<<<< HEAD
-=======
-
     @RequestMapping("RecentViewProduct")
     public String recentViewProduct(Model model, Principal pri, HttpServletRequest request) {
         String id = pri.getName(); // 사용자 ID 얻어오기
@@ -254,10 +251,7 @@ public class Seller1Controller {
     }
     
     
-    
-
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
-	 @RequestMapping("/store/Delete")
+ 	 @RequestMapping("/store/Delete")
 	 public String deleteProduct(@RequestParam("companyid") String companyid,
 	                             @RequestParam("category") String category,
 	                             @RequestParam("category2") String category2,
