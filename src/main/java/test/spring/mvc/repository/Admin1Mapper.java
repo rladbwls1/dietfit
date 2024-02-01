@@ -26,7 +26,8 @@ public interface Admin1Mapper {
 	public List<ProductDTO> discount();
 	public int sale(int num);
 	public List<ProductDTO> reco();
-	public List<ProductinfoDTO> food(@Param("minkcal")int minkcal, @Param("maxkcal")int maxkcal);
+	public List<ProductinfoDTO> food(@Param("minkcal")int minkcal, @Param("maxkcal")int maxkcal, @Param("category")List<Integer>category);
 	public List<ProductinfoDTO> meal();
 	public List<ProductinfoDTO> meal_replace();
+	public List<ProductDTO> food_product(String productid);
 }
