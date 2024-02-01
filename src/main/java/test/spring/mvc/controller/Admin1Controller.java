@@ -200,7 +200,6 @@ public class Admin1Controller {
 	
 	@RequestMapping("food")
 	public String food(Model model) {
-		
 		return "/admin/food";
 	}
 	
@@ -347,4 +346,64 @@ public class Admin1Controller {
 //		Collections.shuffle(re);
 		return restOfGroupedList;
 	}
+	
+	@RequestMapping("eat")
+	public String eat(int kcal, Model model, HttpServletRequest request) {
+		List<ProductinfoDTO> lists = new ArrayList<>();
+		double [][] oper = {{0.2, 0.25}, {0.3, 0.35}, {0.25, 0.3}, {0.1, 0.15}};
+		String [] menu = {"mo","br","de","se"};
+		lists = new ArrayList<>();
+		List<ProductDTO> result = new ArrayList<>();
+		List<int[]> boundsList = new ArrayList<>();
+		Random random = new Random();
+		List<Integer> category = null;
+// 간식		, {0.1, 0.15}
+		for(int i = 0; i < oper.length; i++) {
+			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
+			if(i < 3) {
+				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
+				System.out.println("11111111111111111");
+			}
+			System.out.println(menu[i]);
+			String me = menu[i];
+			System.out.println((int)(oper[i][0] * kcal));
+			System.out.println((int)(oper[i][1] * kcal));
+
+			List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
+			lists.addAll(food);
+			List<ProductDTO> re = new ArrayList<>();
+			List<ProductDTO> aa = new ArrayList<>();
+			int check = (int) request.getAttribute("check");
+			for(ProductinfoDTO f: food) {
+			   result = service.food_product(f.getProductid());
+			   re.addAll(result);
+			}
+			System.out.println("0000000000000000000000000"+re);
+			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
+				Collections.shuffle(re);
+				ProductDTO pi = re.get(0);
+				aa.add(pi);
+				if(re.size() >= 2 && check == 1) {
+					pi = re.get(1);
+					aa.add(pi);
+				}
+            }
+			model.addAttribute(me + "_minkcal", (int)(oper[i][0] * kcal));
+			model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
+			model.addAttribute(me +"_re", aa);
+			model.addAttribute("list", lists);
+			model.addAttribute("kcal", boundsList);
+			System.out.println(me + "@@@@@@@@@@@@@@@@"+check);
+			model.addAttribute(me+"_chk", check);
+			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
+		}
+		return "admin/eat";
+	}
+	
+	@RequestMapping("main")
+	public String admin_main() {
+		return "/admin/admin_main";
+	}
+	
+	
 }

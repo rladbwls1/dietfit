@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
 <!-- Bootstrap JS 및 Popper.js -->
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -20,27 +19,61 @@
 <script>
 	function modi(minkcal, maxkcal, mo, type){
 		 $("#modalBody").empty();
+		 if(type == "br"){
+			 <c:forEach var="fo" items="${br_rest}">
+	        console.log("${fo}");
+	        var divContent = $("<div class='tu'><b>"); // <div> 열기
+	        
+	        <c:forEach var="food" items="${fo}">
+	            console.log("${food}");
+	            var product = "${food.product}";
+	            var img = "${food.pimg.companyid}" + "${food.pimg.category}" + "${food.pimg.category2}" + "${food.pimg.flavor}" + "F" + "${food.pimg.num}" + "${food.pimg.ext}";
+	            var kcal = "${food.productinfo.kcal}";
+	            var productid = "${food.productinfo.productid}";
+	            // 모달 내용에 추가
+	            var divContent += $("<li class='col-md-4'><div class='thum' data-productid='" + productid + "' data-img='" + img + "' data-product='" + product + "'data-type='" + type + "'data-kcal='" + kcal + "'" +
+	                "style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
+	                "<div>" + product + "</div>" +
+	                "<div>칼로리 : " + kcal + "</div></li>");
+	        </c:forEach>
+	        var divContent = $("</div>"); // </div> 닫기
+	        $("#modalBody").append(endDiv);
+	    </c:forEach>
+	}else if(type == "de"){
+		<c:forEach var="fo" items="${de_rest}">
+	    console.log("${fo}");
+	    var divContent = "<div class='tu'>"; // <div> 열기
+	    
+	    <c:forEach var="food" items="${fo}">
+	        console.log("${food}");
+	        var product = "${food.product}";
+	        var img = "${food.pimg.companyid}" + "${food.pimg.category}" + "${food.pimg.category2}" + "${food.pimg.flavor}" + "F" + "${food.pimg.num}" + "${food.pimg.ext}";
+	        var kcal = "${food.productinfo.kcal}";
+	        var productid = "${food.productinfo.productid}";
+	        
+	        // 모달 내용에 추가
+	        divContent += "<li class='col-md-4'><div class='thum' data-productid='" + productid + "' data-img='" + img + "' data-product='" + product + "'data-type='" + type + "'data-kcal='" + kcal + "'" +
+	            "style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
+	            "<div>" + product + "</div>" +
+	            "<div>칼로리 : " + kcal + "</div></li>";
+	    </c:forEach>
+
+	    divContent += "</div>"; // </div> 닫기
+	    $("#modalBody").append(divContent);
+	</c:forEach>
+	}
+		 $(".tu").click(function () {
+	            var clickedContent = $(this).html();
+	            $("#myModal").modal('hide');
+	            $("#de").html("");
+	            $("#de").html(clickedContent);
+	        });
 		 
-		<c:forEach var="fo" items="${mo_rest}">
-			console.log("${fo}");
-			<c:forEach var="food" items="${fo}">
-			var product = "${food.product}";
-			var img = "${food.pimg.companyid}" + "${food.pimg.category}" + "${food.pimg.category2}" + "${food.pimg.flavor}" + "F" + "${food.pimg.num}" + "${food.pimg.ext}";
-            var kcal = "${food.productinfo.kcal}";
-            var productid = "${food.productinfo.productid}";
-            // 모달 내용에 추가
-            $("#modalBody").append("<li class='col-md-4'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
-            		"style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
-                "<div>" + product + "</div>"+
-                "<div>칼로리 : " + kcal + "</div></li>");
-			</c:forEach>
-		</c:forEach>
+		 
 		$("#myModal").modal('show');
 	}
-         
 </script>
 <script>
-
 	function modify(minkcal, maxkcal, mo, type){
 		var category = 1;
 		if(type == "se"){
@@ -57,7 +90,6 @@
 	            $("#modalBody").empty();
 
 				if(data.length > 0){
-					console.log(data);
 	            for (var i = 0; i < data.length; i++) {
 	                var food = data[i];
 	                var img = food.pimg.companyid + food.pimg.category + food.pimg.category2 + food.pimg.flavor + "F" + food.pimg.num + food.pimg.ext;
@@ -147,7 +179,7 @@
 	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 	    	<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
     	</c:forEach>
-	    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${productid}','br');" id="modify">다른 식품 추천</button></div>
+	    <div><button type="button" onclick="modi('${br_minkcal}', '${br_maxkcal}', '${productid}','br');" id="modify">다른 식품 추천</button></div>
 	</c:if>
 	<c:if test="${br_check != 1}">
 	<c:forEach var="food" items="${br_re}">
@@ -166,8 +198,9 @@
 	
 	<c:if test="${de_check == 1}">
 		<h2>저녁</h2>
-		<c:forEach var="food" items="${de_group}">
 		<div id="de">
+		<c:forEach var="food" items="${de_group}">
+		<div id="dee">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
 	    <div id="de_m">${food.productinfo.kcal}</div>
@@ -176,7 +209,8 @@
 	    	<c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
     	<c:set var="productid" value="${food.productinfo.productid}" scope="page" />
     	</c:forEach>
-	    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${productid}','de');" id="modify">다른 식품 추천</button></div>
+    	</div>
+	    <div><button type="button" onclick="modi('${de_minkcal}', '${de_maxkcal}', '${productid}','de');" id="modify">다른 식품 추천</button></div>
 	</c:if>
 	<c:if test="${de_check != 1}">
 	<c:forEach var="food" items="${de_re}">
