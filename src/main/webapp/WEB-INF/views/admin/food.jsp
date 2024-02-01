@@ -11,7 +11,7 @@
 </head>
 <body>
 	<h2>식단 짜주기</h2>
-	<form action="/admin/foodPro" method="post">
+	<form action="/admin/eat" method="post">
 		<input type="text" name="kcal"/>
 		<button type="submit">전송</button>
 	</form>
