@@ -8,12 +8,12 @@
 </head>
 <body>
     <form id="kakaoPayForm">
-        가맹점 주문번호 : <input type="text" name="partner_order_id" value="123"><br>
-        가맹점 회원 id : <input type="text" name="partner_user_id" value="12"><br>
-        상품명 : <input type="text" name="item_name" value="초코파이"><br>
-        상품 수량 : <input type="text" name="quantity" value="1"><br>
-        상품 총액 : <input type="text" name="total_amount" value="10"><br>
-        상품 비과세 금액 : <input type="text" name="tax_free_amount" value="10"><br>
+        가맹점 주문번호 : <input type="text" name="partner_order_id" value="${orderid }"><br>
+        가맹점 회원 id : <input type="text" name="partner_user_id" value="${userid }"><br>
+        상품명 : <input type="text" name="item_name" value="${초코파이 }외"><br>
+        상품 수량 : <input type="text" name="quantity" value="${quantity }"><br>
+        상품 총액 : <input type="text" name="total_amount" value="${amount }"><br>
+        상품 비과세 금액 : <input type="text" name="tax_free_amount" value="${taxfree }"><br>
         <input type="hidden" name="command" value="ready">
         <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly">
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">

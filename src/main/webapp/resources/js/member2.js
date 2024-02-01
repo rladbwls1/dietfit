@@ -365,5 +365,37 @@ function updateAmount(){
     });
 	$('#amout').text(result);
 }
+function toOrder(){
+    const checkboxes = document.getElementsByName("num");
+    const selectedItems = [];
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	selectedItems.push(checkbox.value);
+        }
+    });
+    if (selectedItems.length > 0) {
+		let f=document.createElement('form');
+		let obj;
+		obj=document.createElement('input');
+		obj.setAttribute('type','hidden');
+		obj.setAttribute('name','nums');
+		obj.setAttribute('value',selectedItems.join(","));
+		f.appendChild(obj);
+		obj2=document.createElement('input');
+		obj2.setAttribute('type','hidden');
+		obj2.setAttribute('name','amout');
+		obj2.setAttribute('value',$('#amout').text());
+		f.appendChild(obj2);
+		f.setAttribute('method','post');
+		f.setAttribute('action','/dietfit/order');
+		document.body.appendChild(f);
+		f.submit();
+    }else{
+    	if (confirm("상품을 선택해주세요.")) {
+    	}
+    }
+
+}
 
 

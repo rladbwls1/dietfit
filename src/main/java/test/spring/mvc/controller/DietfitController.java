@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,12 +91,26 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order() {
+	public String order(String nums, Model model, int amout) {
+		model.addAttribute("nums",nums);
+		model.addAttribute("amount", amout);
 		return "admin/order";
 	}
 	
 	@RequestMapping("kakaopay")
-	public String kakaopay() {
+	public String kakaopay(Model model,
+			String partner_order_id,
+			String partner_user_id,
+			String item_name,
+			Integer quantity,
+			Integer total_amount,
+			Integer tax_free_amount) {
+		model.addAttribute("orderid", partner_order_id);
+		model.addAttribute("userid", partner_user_id);
+		model.addAttribute("product", item_name);
+		model.addAttribute("quantity", quantity);
+		model.addAttribute("amount", total_amount);
+		model.addAttribute("taxfree", total_amount * 0.9);
 		return "admin/kakaopay/pay";
 	}
 	
@@ -128,6 +143,8 @@ public class DietfitController {
 			    "&approval_url=http://localhost:8080/dietfit/kakaopay/success" +
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
+			
+			//주문번호, 회사ID, 멤버 ID, product, quantity, price, tax_free_amount는 계산으로 
 			
 			 // 파라미터를 UTF-8로 인코딩하여 전송
             byte[] paramsBytes = paramsString.getBytes(StandardCharsets.UTF_8);
@@ -169,5 +186,7 @@ public class DietfitController {
 	public String cancel() {
 		return "admin/kakaopay/cancel";
 	}
+	
+	
 }
 	
