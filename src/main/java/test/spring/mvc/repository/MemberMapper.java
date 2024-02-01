@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 
 public interface MemberMapper {
 	//회원가입시 basic, detail, 권한
@@ -61,4 +64,58 @@ public interface MemberMapper {
 	List<ProductDTO> findall();
 	//아이디로 이메일 변경하기
 	public void changeEmailById(@Param("email")String email, @Param("id")String id);
+
+	public int countAllProduct();
+	//모든 상품 중, 페이지에 맞게 10개 가져오기
+	public List<ProductDTO> findallproduct(@Param("startRow") int startRow, 
+										   @Param("endRow") int endRow);
+	//썸네일 가져오기
+	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
+							     	  @Param("category") String category,
+							     	  @Param("category2") String category2);
+	//관심상품에 상품 하나 추가하기
+	public void addWishOne(@Param("product") String product,
+						   @Param("id") String id);
+	//관심상품에 상품 하나 제거하기
+	public void removeWishOne(@Param("product") String product,
+							  @Param("id") String id);
+	public void removeWishOneByNum(@Param("num") int num,
+			@Param("id") String id);
+	
+	//유저의 관심상품 목록에서 상품명만 가져오기
+	public List<String> getWishListProduct(String id);
+	//유저의 관심상품 목록 가져오기
+	public List<DibsDTO> getWishList(String id);
+	//상품명으로 상품코드 뽑기
+	public ProductDTO getProductCodeByProductName(String product);
+	//상품명으로 가격 뽑기
+	public int getPriceByProductName(String product);
+	//찜에서 num으로 product 뽑기
+	public String getProductByNum(@Param("id")String id,@Param("num")int num);
+	//유저 관심상품 폴더명 가져오기
+	public List<String> getWishFolderName(String id);
+	//유저 관심상품의 폴더 변경하기
+	public void changeFolder(@Param("id") String id,
+			  @Param("checkedFolder") String checkedFolder,
+			  @Param("num") int num);
+	//유저의 관심상품의 폴더명 가져오기
+	public String getFolderByNum(@Param("num") int num,
+			@Param("id") String id);
+	//miniCart 장바구니, 상품 정보 가져오기
+	public List<ProductDTO> getProductByCompanyidCateCate2(@Param("companyid") String companyid, 
+							     	  @Param("category") String category,
+							     	  @Param("category2") String category2);
+	//장바구니에 이미 있는 상품인지 확인
+	public int isCart(@Param("id")String id, @Param("product") String product);
+	//장바구니에 하나의 상품 추가
+	public void addCartOne(@Param("id")String id, @Param("product") String product, 
+			@Param("quantity")int quantity, @Param("price")int price);
+	//장바구니 목록 가져오기
+	public List<CartDTO> getCartList(String id);
+	//장바구니 개수 수정
+	public void updateCart(@Param("id")String id, @Param("quantity")int quantity, @Param("num")int num );
+	//장바구니 목록 삭제
+	public void deleteCart(@Param("id")String id, @Param("num")int num );
+	//장바구니에서 개수 수정한 목록만 가져오기
+	public CartDTO getCartListByNum(@Param("id")String id, @Param("num")int num );
 }
