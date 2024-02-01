@@ -26,7 +26,7 @@
     <h2>Product List</h2>
     <a href="<c:url value='productadd?companyid=${companyid}'/>">상품추가</a>
     <input type="hidden" name="companyid" value="${companyid}">
-    <table>
+    <table>	
         <thead>
             <tr>
                 <th>Product Name</th>
