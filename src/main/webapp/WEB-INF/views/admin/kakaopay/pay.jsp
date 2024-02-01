@@ -8,8 +8,8 @@
 </head>
 <body>
     <form id="kakaoPayForm">
-        가맹점 주문번호 : <input type="text" name="partner_order_id" value="${orderid }"><br>
-        가맹점 회원 id : <input type="text" name="partner_user_id" value="${userid }"><br>
+        가맹점 주문번호 : <input type="text" name="partner_order_id" value="123"><br>
+        가맹점 회원 id : <input type="text" name="partner_user_id" value="dietfit"><br>
         상품명 : <input type="text" name="item_name" value="${초코파이 }외"><br>
         상품 수량 : <input type="text" name="quantity" value="${quantity }"><br>
         상품 총액 : <input type="text" name="total_amount" value="${amount }"><br>

@@ -50,6 +50,10 @@ public class MemberController {
 	public String seller() {
 		return "member/seller";
 	}
+	@RequestMapping("admin")
+	public String admin() {
+		return "member/admin";
+	}
 	
 	
 	//카카오 로그인 

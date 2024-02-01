@@ -295,6 +295,7 @@ function cartQuantityDown(num){
 	 	});   	
  	}
  	updateAmount();
+ 	updateTotalQuantity();
  	
 }
 function cartQuantityUp(num){
@@ -311,6 +312,7 @@ function cartQuantityUp(num){
     	}
  	}); 
  	updateAmount();
+ 	updateTotalQuantity();
 }
 function deleteCart(num){
 	$.ajax({
@@ -326,6 +328,7 @@ function deleteCart(num){
  	}); 
  	
  	updateAmount(); 
+ 	updateTotalQuantity();
 }
 function cartCheckAll() {
     const chkAll = document.getElementById("chk_all");
@@ -335,7 +338,8 @@ function cartCheckAll() {
         checkbox.checked = chkAll.checked;
     });
     
-	updateAmount();  
+	updateAmount(); 
+	updateTotalQuantity(); 
 }
 function cartUpdateCheckAll() {
     const chkAll = document.getElementById("chk_all");
@@ -352,8 +356,21 @@ function cartUpdateCheckAll() {
     chkAll.checked = allChecked;
 
 	updateAmount();
-    
+	updateTotalQuantity();
 }
+
+function updateTotalQuantity(){
+	//총가격 수정하는 부분
+	const checkboxes = document.getElementsByName("num");
+    var result=0;
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	result+=parseInt($('#'+checkbox.value+'_quantity').text());
+        }
+    });
+	$('#totalQuantity').text(result);
+}
+
 function updateAmount(){
 	//총가격 수정하는 부분
 	const checkboxes = document.getElementsByName("num");
@@ -387,6 +404,11 @@ function toOrder(){
 		obj2.setAttribute('name','amout');
 		obj2.setAttribute('value',$('#amout').text());
 		f.appendChild(obj2);
+		obj3=document.createElement('input');
+		obj3.setAttribute('type','hidden');
+		obj3.setAttribute('name','totalQuantity');
+		obj3.setAttribute('value',$('#totalQuantity').text());
+		f.appendChild(obj3);
 		f.setAttribute('method','post');
 		f.setAttribute('action','/dietfit/order');
 		document.body.appendChild(f);

@@ -11,7 +11,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vertx.java.core.json.JsonObject;
 
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
+import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.SurveyService;
 
 @Controller
@@ -31,7 +41,9 @@ public class DietfitController {
 	
 	@Autowired
 	private SurveyService service;
-
+	
+	@Autowired
+	private Admin1ServiceImpl aservice1;
 	
 	@RequestMapping("main")
 	public String main() {
@@ -90,28 +102,68 @@ public class DietfitController {
 		return "admin/survey/result";
 	}
 	
-	@RequestMapping("order")
-	public String order(String nums, Model model, int amout) {
-		model.addAttribute("nums",nums);
-		model.addAttribute("amount", amout);
-		return "admin/order";
+	@RequestMapping("eat")
+	public String eat(int kcal, Model model, HttpServletRequest request) {
+		List<ProductinfoDTO> lists = new ArrayList<>();
+		double [][] oper = {{0.2, 0.25}, {0.3, 0.35}, {0.25, 0.3}, {0.1, 0.15}};
+		String [] menu = {"mo","br","de","se"};
+		lists = new ArrayList<>();
+		List<ProductDTO> result = new ArrayList<>();
+		List<int[]> boundsList = new ArrayList<>();
+		Random random = new Random();
+		List<Integer> category = null;
+// 간식		, {0.1, 0.15}
+		for(int i = 0; i < oper.length; i++) {
+			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
+			if(i < 3) {
+				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
+				System.out.println("11111111111111111");
+			}
+			System.out.println(menu[i]);
+			String me = menu[i];
+			System.out.println((int)(oper[i][0] * kcal));
+			System.out.println((int)(oper[i][1] * kcal));
+
+			List<ProductinfoDTO> food = aservice1.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
+			lists.addAll(food);
+			List<ProductDTO> re = new ArrayList<>();
+			List<ProductDTO> aa = new ArrayList<>();
+			int check = (int) request.getAttribute("check");
+			for(ProductinfoDTO f: food) {
+			   result = aservice1.food_product(f.getProductid());
+			   re.addAll(result);
+			}
+			System.out.println("0000000000000000000000000"+re);
+			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
+				Collections.shuffle(re);
+				ProductDTO pi = re.get(0);
+				aa.add(pi);
+				if(re.size() >= 2 && check == 1) {
+					pi = re.get(1);
+					aa.add(pi);
+				}
+            }
+			model.addAttribute(me + "_minkcal", (int)(oper[i][0] * kcal));
+			model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
+			model.addAttribute(me +"_re", aa);
+			model.addAttribute("list", lists);
+			model.addAttribute("kcal", boundsList);
+			System.out.println(me + "@@@@@@@@@@@@@@@@"+check);
+			model.addAttribute(me+"_chk", check);
+			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
+		}
+		return "admin/eat";
 	}
 	
-	@RequestMapping("kakaopay")
-	public String kakaopay(Model model,
-			String partner_order_id,
-			String partner_user_id,
-			String item_name,
-			Integer quantity,
-			Integer total_amount,
-			Integer tax_free_amount) {
-		model.addAttribute("orderid", partner_order_id);
-		model.addAttribute("userid", partner_user_id);
-		model.addAttribute("product", item_name);
-		model.addAttribute("quantity", quantity);
-		model.addAttribute("amount", total_amount);
-		model.addAttribute("taxfree", total_amount * 0.9);
-		return "admin/kakaopay/pay";
+	@RequestMapping("order")
+	public String order(String nums, Model model, Integer amout, Integer totalQuantity) {
+		model.addAttribute("nums",nums);
+		model.addAttribute("amount", amout);
+		model.addAttribute("quantity", totalQuantity);
+		Integer taxfree = (int) ((Integer)amout*0.9);
+		System.out.println(taxfree);
+		model.addAttribute("taxfree", taxfree);
+		return "admin/order";
 	}
 	
 	@RequestMapping("kakaopaygo")
@@ -168,7 +220,7 @@ public class DietfitController {
             return response;
          } catch (IOException e) {
             e.printStackTrace();
-            return "admin/kakaopay/pay";
+            return "admin/order";
         }
 	}
 	
