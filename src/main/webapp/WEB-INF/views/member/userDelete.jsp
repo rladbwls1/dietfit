@@ -25,6 +25,10 @@
             	<p id="pw_check"></p>
             </div>
 			<button type="submit" > <b> 탈퇴 </b> </button>
+			<br/>
+            <br/>
+            <button type="button" onclick="window.location.href='modifyForm'"> <b> 취소 </b> </button>
+        
         </form>
     </div>
     

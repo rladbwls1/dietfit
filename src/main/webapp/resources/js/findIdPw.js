@@ -219,6 +219,9 @@ function deleteUserself(){
 	document.body.appendChild(fff);
 	fff.submit();	
 }
+function toUserDelivery(){
+	window.open("userDelivery","배송지 설정", "width = 400, height = 200, top = 100, left = 200, location = no");
+}
 
 //changeEmail@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -305,6 +308,7 @@ function changeEmailCheck(){
 	if($('#emaill').val()=="true"){
 		return true;
 	}else{
+		$('#email_check').text("이메일 인증을 하세요.").css("color","red");
 		return false;
 	}
 }

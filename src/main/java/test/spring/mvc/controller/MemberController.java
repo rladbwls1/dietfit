@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -305,7 +306,16 @@ public class MemberController {
 		return "hi";
 	}
 	
-	
+	@RequestMapping("addDelivery")
+	public String addDelivery(DeliveryDTO dto) {
+		
+		return "member/addDelivery";
+	}
+	@RequestMapping("userDelivery")
+	public String userDelivery(Principal pri,Model model) {
+		model.addAttribute("id",pri.getName());
+		return "member/userDelivery";
+	}
 	
 	
 	

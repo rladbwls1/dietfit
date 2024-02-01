@@ -256,6 +256,7 @@
 			DEFAULTADDR number default 0,
 			NICADDR varchar2(100),
 			POSTNUM varchar2(100) NOT NULL,
+			RECEIVER varchar2(20) NOT NULL
 		)
 	</update>
 	
