@@ -3,6 +3,7 @@ import java.util.List;
 import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -22,5 +23,8 @@ public interface SellerService {
     public ProductDTO sellerstockselect(String productId);
     public void sellerstockupdate(ProductDTO productdto);
     public String findallbyroomnum(int roomnum);
+    public String findidbyroomnum(int roomnum);
     public void endchat(int roomnum);
+    public void chatreport(ChatreportDTO chatreportdto);
+    public void chatreportdelete(int roomnum);
 }

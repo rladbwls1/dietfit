@@ -17,6 +17,9 @@
 <form action="/seller/productdiscount" method="post">
     <input type="submit" value="상품할인율조정"/>
 </form>
+<form action="/seller/coupon/request" method="post">
+    <input type="submit" value="쿠폰요청"/>
+</form>
 <br>
 <form action="/seller/sellerchatlist" method="post">
     <input type="submit" value="상품문의 목록"/>

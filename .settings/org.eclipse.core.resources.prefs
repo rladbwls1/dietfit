@@ -4,4 +4,6 @@
 eclipse.preferences.version=1
 encoding//src/main/java/test/spring/mvc/security/CustomAuthFailureHandler.java=UTF-8
 encoding//src/main/java/test/spring/mvc/service/EmailServiceImpl.java=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/adminChat.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/contact.jsp=UTF-8
 encoding//src/main/webapp/resources/css/bootstrap.min.css=UTF-8

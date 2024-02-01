@@ -5,8 +5,11 @@ import java.io.FilenameFilter;
 import java.util.List;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.SetproductDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import test.spring.mvc.repository.Seller1Mapper;
@@ -163,4 +166,48 @@ public class Seller1ServiceImpl implements Seller1Service {
 	        }
 	    }
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public void getProductByCookie(List<String> recentlyViewedProducts,Model model) {
+		List<ProductDTO> list=new ArrayList<>();
+		for(String ProductCode:recentlyViewedProducts) {
+			String companyid=ProductCode.substring(0,2);
+			String category=ProductCode.substring(2,4);
+			String category2=ProductCode.substring(4,6);
+			String flavor=ProductCode.substring(6,8);
+			
+			String product = sellerMapper.findproductdetail(companyid, category, category2, flavor).getProduct();
+			String price = sellerMapper.findproductdetail(companyid, category, category2, flavor).getPrice();
+			ProductimgDTO thumbnailPath = findlistthum(companyid, category, category2);
+			
+			// ProductDTO 객체 생성 및 정보 설정
+	        ProductDTO ProductDTO = new ProductDTO();
+	        ProductDTO.setCompanyid(companyid);
+	        ProductDTO.setCategory(category);
+	        ProductDTO.setCategory2(category2);
+	        ProductDTO.setFlavor(flavor);
+			ProductDTO.setProduct(product);
+			ProductDTO.setPrice(price);
+			// 이미지 경로 직접 조합하여 설정
+			String imagePath = "/resources/p_img/" + thumbnailPath.getCompanyid() +
+					thumbnailPath.getCategory() + thumbnailPath.getCategory2() +
+					thumbnailPath.getFlavor() + "F" + thumbnailPath.getNum() +
+					thumbnailPath.getExt();
+			ProductDTO.setImagePath(imagePath);
+			
+			//썸네일, 이름, 가격 꺼내
+			//list.add(ProductDTO);
+			//product를 메퍼로 불러오고
+			//썸네일도 불러와서 이미지 패스 넣어라
+			list.add(ProductDTO);
+		}
+		
+		model.addAttribute("list",list);
+	}
+	
+	
+
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }

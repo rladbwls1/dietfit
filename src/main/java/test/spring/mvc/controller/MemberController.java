@@ -1,23 +1,36 @@
 package test.spring.mvc.controller;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.MemberService;
 
@@ -37,6 +50,10 @@ public class MemberController {
 	@RequestMapping("seller")
 	public String seller() {
 		return "member/seller";
+	}
+	@RequestMapping("admin")
+	public String admin() {
+		return "member/admin";
 	}
 	
 	
@@ -152,6 +169,8 @@ public class MemberController {
 		service.modifyUser(basicDTO, detailDTO);
 		return "redirect:/member/modifyForm";
 	}
+
+
 	@RequestMapping("changeEmail")
 	public String changeEmail(String id,Model model) {
 		model.addAttribute("id",id);
@@ -180,5 +199,128 @@ public class MemberController {
 		System.out.println("deletePro2넘어옴");
 		return "redirect:/dietfit/main";
 	}	
+	
+	@RequestMapping("productList")
+	public String productList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+					Model model,Principal pri) {
+		//int number=0;
+		//number=count-(currentPage-1)*pageSize;
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getallproduct(model,pageNum);
+	    return "member/productList";
+	}
+	@RequestMapping("productDetail")
+	public String productDetail(Model model,String companyid,String category,
+							String category2, String flavor) {
+		service.getProductDetail(companyid,category,category2,flavor,model);
+		return "member/productDetail";
+	}
+	
+	@RequestMapping("addWishList")
+	public @ResponseBody String addWishList(Principal pri,String product) {
+		String id=pri.getName();
+		service.addWishOne(product,id);
+		return "hi";
+	}
+	@RequestMapping("removeWishList")
+	public @ResponseBody String removeWishList(Principal pri,String product) {
+		String id=pri.getName();
+		service.removeWishOne(product,id);
+		return "bye";
+	}
+	@RequestMapping("removeWishList2")
+	public @ResponseBody String removeWishList2(Principal pri,String products,String checkedFolder) {
+		String id=pri.getName();
+		service.removeWishMore(products,id,checkedFolder);
+		return "bye";
+	}
+	@RequestMapping("wishConfirm")
+	public String wishConfirm() {
+		return "member/wishConfirm";
+	}
+	@RequestMapping("wishList")
+	public String wishList(Model model, Principal pri,
+			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder) {
+		String id=pri.getName();
+		model.addAttribute("checkedFolder",checkedFolder);
+		service.getWishList(model, id);
+		return "member/wishList";
+	}
+	@RequestMapping("getProductCode")
+	public @ResponseBody ProductDTO getProductCode(String product) {
+		return mapper.getProductCodeByProductName(product);
+	}
+	@RequestMapping("wishFolderChange")
+	public String wishFolderChange(Principal pri,Model model,
+					String checkedFolder,String products) {
+		String id=pri.getName();
+		model.addAttribute("folderNames",mapper.getWishFolderName(id));
+		model.addAttribute("checkedFolder",checkedFolder);
+		model.addAttribute("products",products);
+		return "member/wishFolderChange";
+	}
+	//관심상품 폴더 변경하기
+	@RequestMapping("wishFolderChangePro")
+	public @ResponseBody String wishFolderChangePro(
+			Principal pri,String checkedFolder, String products) {
+		String id=pri.getName();
+		service.changeFolder(checkedFolder,products,id);
+		return "bye";
+	}
+	@RequestMapping("miniCart")
+	public String miniCart(Model model, String companyid,
+			String category,String category2, String price) {
+		model.addAttribute("price",price);
+		model.addAttribute("list",mapper.getProductByCompanyidCateCate2(companyid, category, category2));
+		return "member/miniCart";
+	}
+	
+	@RequestMapping("addCartOne")
+	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
+		service.addCartOne(pri.getName(),product,quantity,price);
+		return "hi";
+	}
+	@RequestMapping("addCartMore")
+	public @ResponseBody String addCartMore(Principal pri ,String products) {
+		service.addCartMore(pri.getName(),products);
+		return "hi";
+	}
+	
+	@RequestMapping("cartList")
+	public String cartList(Model model,Principal pri) {
+		service.getCartList(model, pri.getName());
+		return "member/cartList";
+	}
+	@RequestMapping("updateCartQuantity")
+	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
+		service.updateCartQuantity(pri.getName(),num,quantity);
+		CartDTO dto=mapper.getCartListByNum(pri.getName(), num);
+		ObjectMapper om=new ObjectMapper();
+		String js="";
+		try {
+			js = om.writeValueAsString(dto);   //문자열로 변경
+		} catch (JsonProcessingException e) {	e.printStackTrace();	}  
+		return js;
+	}
+	@RequestMapping("deleteCart")
+	public @ResponseBody String deleteCart(Model model, Principal pri, int num) {
+		service.deleteCart(pri.getName(), num);
+		return "hi";
+	}
+	
+	@RequestMapping("addDelivery")
+	public String addDelivery(DeliveryDTO dto) {
+		
+		return "member/addDelivery";
+	}
+	@RequestMapping("userDelivery")
+	public String userDelivery(Principal pri,Model model) {
+		model.addAttribute("id",pri.getName());
+		return "member/userDelivery";
+	}
+	
+	
 	
 }
