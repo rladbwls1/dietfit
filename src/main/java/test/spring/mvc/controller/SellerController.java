@@ -72,9 +72,15 @@ public class SellerController {
 	
 	@RequestMapping("/mypage")
 	public String mypage(Principal pri, Model model) {
-		model.addAttribute("id", pri.getName());
-		return "/seller2/mypage";
+	    String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+
+	    String companyid = service.findcompanyid(id);
+	    model.addAttribute("companyid", companyid);
+
+	    return "/seller2/mypage";
 	}
+
 	
 	@RequestMapping("/SELLERCHAT")
 	public String SELLERCHAT(Principal pri, Model model, String roomnum)throws Exception {

@@ -1,9 +1,8 @@
 package test.spring.mvc.controller;
 
-import java.nio.file.Paths;
+import java.io.File;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,9 +27,11 @@ import test.spring.mvc.service.Seller1Service;
 public class Seller1Controller {
 	@Autowired
     private Seller1Service service;
+	@Autowired
+	private Seller1Mapper mapper;
 	
-	@RequestMapping("/store/{companyid}")
-	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
+	@RequestMapping("store")
+	public String getProductsByCompanyId(@RequestParam("companyid") String companyid, Model model) {
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
 	    if (products != null) {
 	        for (ProductDTO product : products) {
@@ -47,11 +47,12 @@ public class Seller1Controller {
 	        }
 	        model.addAttribute("products", products);
 	    }
+	    model.addAttribute("companyid", companyid); 
 	    return "seller/productList";
 	}
 	
     // 상품 등록 페이지
-	@RequestMapping("/store/productadd")
+	@RequestMapping("productadd")
 	public String productadd(@RequestParam("companyid") String companyid, Model model) {
 	    model.addAttribute("companyid", companyid); 
 	    return "seller/prodcutadd";
@@ -66,64 +67,59 @@ public class Seller1Controller {
 	                            @RequestParam("flavor") String flavor, 
 	                            @RequestParam("thumbnail") MultipartFile[] thumbnails,
 	                            @RequestParam("attachments") MultipartFile[] attachments,
-	                            HttpServletRequest request) {
-
-	    // 제품 정보 저장
+	                            HttpServletRequest request,
+	                            Model model) {
+	    
+	    String path = request.getServletContext().getRealPath("/resources/p_img/");
+	    
+	    // 제품 정보 설정
 	    dto.setCompanyid(companyid);
 	    img.setCompanyid(companyid);
-
-	    List<MultipartFile> thumbnailList = thumbnails != null ? Arrays.asList(thumbnails) : new ArrayList<>();
-	    List<MultipartFile> attachmentList = attachments != null ? Arrays.asList(attachments) : new ArrayList<>();
-
-	    // 파일 개수 계산
-	    int thumbnailCount = thumbnailList.size();
-	    int attachmentCount = attachmentList.size();
-
-	    // 파일 총 개수 저장
-	    dto.setIsfile(thumbnailCount + attachmentCount);
-	    
-	    // attachmentList 확장자 추출 및 DB에 저장
-	    for (MultipartFile attachment : attachmentList) {
-	        String originalFilename = attachment.getOriginalFilename();
-	        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-	        
-	        // 확장자 추출 후 DB에 저장 (여기에서는 예시로 thum 열에 0로 저장)
-	        img.setExt(ext);
-	        img.setThum(0);
-	        service.insertProductimg(img, companyid);
-	        service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), attachment);
-	        
-	        }
-	    
-	    // thumbnail 확장자 추출 및 DB에 저장
-	    for (MultipartFile thumbnail : thumbnailList) {
-	        String originalFilename = thumbnail.getOriginalFilename();
-	        String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-	        
-	        // 확장자 추출 후 DB에 저장 (여기에서는 예시로 thum 열에 1로 저장)
-	        img.setExt(ext);
-	        img.setThum(1);
-	        service.insertProductimg(img, companyid);
-	        service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), thumbnail);
-	    }
-	    
-	    // img 객체에 필요한 필드를 설정
 	    img.setCategory(category);
 	    img.setCategory2(category2);
 	    img.setFlavor(flavor);
 
-	    
+	    // 파일 총 개수 저장
+	    int thumbnailCount = (thumbnails != null) ? thumbnails.length : 0;
+	    int attachmentCount = (attachments != null) ? attachments.length : 0;
+	    dto.setIsfile(thumbnailCount + attachmentCount);
+
+	    // attachment 파일 처리
+        for (MultipartFile attachment : attachments) {
+            String originalFilename = attachment.getOriginalFilename();
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            if (ext == null) ext = "";
+
+            // 확장자와 기타 정보를 DB에 저장
+            img.setExt(ext);
+            img.setThum(0);
+            service.insertProductimg(img, companyid);
+
+            // 파일 업로드
+            service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), attachment, path);
+        }
+
+	    // thumbnail 파일 처리
+        for (MultipartFile thumbnail : thumbnails) {
+            String originalFilename = thumbnail.getOriginalFilename();
+            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            if (ext == null) ext = "";
+
+            // 확장자와 기타 정보를 DB에 저장
+            img.setExt(ext);
+            img.setThum(1);
+            service.insertProductimg(img, companyid);
+
+            // 파일 업로드
+            service.fileUpload(companyid, img.getCategory(), img.getCategory2(), img.getFlavor(), thumbnail, path);
+        }
+
 	    // 데이터베이스에 상품 저장
 	    service.insertProduct(dto, companyid);
-	    
-	    return "redirect:seller/store/home";
+	    model.addAttribute("companyid", companyid);
+	    return "redirect:/seller/store";
 	}
 
-
-    @RequestMapping("/store/home")
-    public String main() {
-    	return "seller/home";
-    }
 	
     @GetMapping("/details/{companyid}/{category}/{category2}/{flavor}")
     public String detail(@PathVariable("companyid") String companyid,
@@ -170,22 +166,22 @@ public class Seller1Controller {
         return "seller/productdetail";
     }
 
-
-
-
 	 @RequestMapping("/store/Delete")
 	 public String deleteProduct(@RequestParam("companyid") String companyid,
 	                             @RequestParam("category") String category,
 	                             @RequestParam("category2") String category2,
 	                             @RequestParam("flavor") String flavor,
-	                             RedirectAttributes redirectAttributes) {
-	         // 상품 및 관련 이미지 삭제
-	         service.deleteProduct(companyid, category, category2, flavor);
-	         service.deleteProductimg(companyid, category, category2, flavor);
-	         service.fileDelete(companyid, category, category2, flavor);
-	         redirectAttributes.addFlashAttribute("successMessage", "상품이 성공적으로 삭제되었습니다.");
-
-	     return "redirect:/seller/store/home";
+	                             RedirectAttributes redirectAttributes,
+	                             Model model,
+	                             HttpServletRequest request) {
+	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
+         // 상품 및 관련 이미지 삭제
+         service.deleteProduct(companyid, category, category2, flavor);
+         service.deleteProductimg(companyid, category, category2, flavor);
+         service.fileDelete(companyid, category, category2, flavor,path);
+         redirectAttributes.addFlashAttribute("상품이 성공적으로 삭제되었습니다.");
+         model.addAttribute("companyid", companyid);
+	     return "redirect:/seller/store?companyid="+companyid;
 	 }
 	 
 	 @RequestMapping("/store/Update")
@@ -193,22 +189,89 @@ public class Seller1Controller {
 	                          @RequestParam("companyid") String companyid, 
 	                          @RequestParam("category") String category, 
 	                          @RequestParam("category2") String category2, 
-	                          @RequestParam("flavor") String flavor) {
+	                          @RequestParam("flavor") String flavor,
+	                          HttpServletRequest request) {
 	     // 상품 정보 조회
-	     ProductDTO dto = service.findproductdetail(companyid, category, category2, flavor);
-	     List<ProductimgDTO> imgList = service.imgfindupdate(companyid, category, category2, flavor);
-
-	     // 모델에 상품 정보와 이미지 목록 추가
-	     model.addAttribute("product", dto);
+	     ProductDTO product = service.findproductdetail(companyid, category, category2, flavor);
+	     // 상품 이미지 조회
+	     List<ProductimgDTO> imgList = service.updateimg(companyid, category, category2, flavor);
+	     List<ProductimgDTO> thumimgList = service.updatethumimg(companyid, category, category2, flavor);
+	     
+	     model.addAttribute("companyid", companyid);
+	     model.addAttribute("category", category);
+	     model.addAttribute("category2", category2);
+	     model.addAttribute("flavor", flavor);
+	     model.addAttribute("product", product);
 	     model.addAttribute("images", imgList);
-
+	     model.addAttribute("thumimages", thumimgList);
 	     return "seller/updatefrom";
 	 }
 
 	 @RequestMapping("UpdatePro")
-	 public String UpdatePro(@ModelAttribute("productDTO") ProductDTO productDTO, 
+	 public String UpdatePro(ProductDTO productDTO,
+			 				 ProductimgDTO img,
+	                         @RequestParam("companyid") String companyid,
+	                         @RequestParam("category") String category, 
+	                         @RequestParam("category2") String category2,
+	                         @RequestParam("flavor") String flavor, 
+	                         @RequestParam(value="thumfileName",required = false) List<String> thumfileNames,
+	                         @RequestParam(value="thumnum",required = false) List<Integer> thumnums,
+	                         @RequestParam(value="imgfileName",required = false) List<String> imgfileNames,
+	                         @RequestParam(value="imgnum",required = false) List<Integer> imgnums,
+	                         @RequestParam(value="thumbnail",required = false) MultipartFile[] thumbnails,
+	                         @RequestParam(value="attachments",required = false) MultipartFile[] attachments,
+	                         HttpServletRequest request,
 	                         Model model) {
-	     service.updateProduct(productDTO);
-	     return "redirect:/seller/store/home";
+		 
+	     String path = request.getServletContext().getRealPath("/resources/p_img/");
+        //companyid, category, category2, flavor 수정되면
+        ProductDTO pdto=mapper.getProductCodeByNum(productDTO.getNum());
+        
+        if(pdto.getCompanyid()!=productDTO.getCompanyid()||pdto.getCategory()!=productDTO.getCategory()||
+        		pdto.getCategory2()!=productDTO.getCategory2()||pdto.getFlavor()!=productDTO.getFlavor()) {
+        	//기존 productimg DB 
+        	//기존 썸네일
+        	for(String thumname:thumfileNames) {
+        		String ext = thumname.substring(thumname.lastIndexOf(".")); 
+        		img.setExt(ext);
+    	    	img.setThum(1);
+        		//DB추가
+        		service.insertProductimg(img, companyid);
+        		String newfilename = companyid + category + category2 + flavor + "F" + mapper.selectMaxProductSeq(companyid) + ext;
+        		File saveFile = new File(path, thumname);
+        		File newFile = new File(path, newfilename);
+        		//새로 저장할 파일
+	    		try {
+	    			//파일 이름 변경
+	    			 saveFile.renameTo(newFile);
+    			}catch (Exception e) {
+	    				e.printStackTrace();
+    			}
+	    		//기존거 DB삭제 
+	    		service.deleteProductimgnum(thumnums);
+        	}
+        	//기존 상품설명이미지
+        	for(String imgname:imgfileNames) {
+        		String ext = imgname.substring(imgname.lastIndexOf(".")); 
+        		img.setExt(ext);
+    	    	img.setThum(0);
+        		//DB추가
+        		service.insertProductimg(img, companyid);
+        		String newfilename = companyid + category + category2 + flavor + "F" + mapper.selectMaxProductSeq(companyid) + ext;
+        		File saveFile = new File(path, imgname);
+        		File newFile = new File(path, newfilename);
+        		//새로 저장할 파일
+	    		try {
+	    			//파일 이름 변경
+	    			 saveFile.renameTo(newFile);
+    			}catch (Exception e) {
+	    				e.printStackTrace();
+    			}
+	    		service.deleteProductthumimg(imgnums);
+        	}
+        }
+	    service.updateProduct(productDTO);
+	    model.addAttribute("companyid", companyid);
+	    return "redirect:/seller/store";
 	 }
 }

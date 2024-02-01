@@ -39,7 +39,7 @@
 						    <option value="32">초콜릿</option>
 						    <option value="33">떡</option>
 						    <option value="34">빵</option>
-						    <option value="35">고구마</option>
+						    <option value="35">구황작물</option>
 						    <option value="36">프로틴바,견과류</option>
 						    <option value="39">기타</option>
 					  </select> `;
@@ -78,7 +78,7 @@
 	    <form action="/seller/productaddPro" method="post" enctype="multipart/form-data">
 	    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	    	<input type="hidden" name="companyid" value="${companyid}">
-	    	
+	    	<p>회사 아이디 : ${companyid}</p>
 	    	큰 카테고리:
 		        <select id="bigCategory" onchange="showSmallCategory()">
 		            <option value="=====">=====</option>

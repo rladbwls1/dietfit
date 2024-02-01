@@ -2,7 +2,9 @@ package test.spring.mvc.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
 
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
 
 public interface SellerSaleService {
@@ -28,5 +30,26 @@ public interface SellerSaleService {
 	public Integer weeklyFee(String companyid);
 	public Integer monthlyFee(String companyid);
 	
+	// 회사 아이디
+	public String findcompanyid(String id);
+	
+	// 광고 신청 
+    public void insertCommercial(CommercailDTO commercailDTO);
+    // 광고 이미지 업로드 
+    public String fileupload(MultipartFile file, String path);
+	// 광고 신청내역
+	public List<CommercailDTO> selectcommercial(String companyid);
+	
+	// 광고 취소
+	public void commdelect(int num);
+	// 광고 이미지 삭제
+	public String filedelete(String comfile, String path);
+	
+	// 광고 내역서
+	public CommercailDTO commercial(int num);
+	// 광고 수정 
+	public int commupdate(CommercailDTO cdto);
+	// 광고 이미지 수정
+	public String fileupdate(MultipartFile file, String comfile, String path);
 
 }
