@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.Session;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.remoting.httpinvoker.SimpleHttpInvokerServiceExporter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +33,7 @@ import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 import test.spring.mvc.service.Admin1ServiceImpl;
+import test.spring.mvc.service.Seller1Service;
 
 @Controller
 @RequestMapping("/admin/*")
@@ -36,6 +41,9 @@ public class Admin1Controller {
 
 	@Autowired
 	private Admin1ServiceImpl service;
+	
+	@Autowired
+	private Seller1Service service1;
 	
 	@RequestMapping("mList")
 	public String memberList(Model model, @RequestParam(value="pageNum", defaultValue="1") int pageNum) {
@@ -206,7 +214,7 @@ public class Admin1Controller {
 	@RequestMapping("foodPro")
 	public String foodPro(int kcal, Model model, HttpServletRequest request) {
 		List<ProductinfoDTO> lists = new ArrayList<>();
-		double [][] oper = {{0.2, 0.25}, {0.3, 0.35}, {0.25, 0.3}, {0.1, 0.15}};
+		double [][] oper = {{0.23, 0.25}, {0.33, 0.35}, {0.28, 0.3}, {0.12, 0.15}};
 		String [] menu = {"mo","br","de","se"};
 		lists = new ArrayList<>();
 		List<ProductDTO> result = new ArrayList<>();
@@ -405,5 +413,54 @@ public class Admin1Controller {
 		return "/admin/admin_main";
 	}
 	
+	@GetMapping("/detail/{companyid}/{category}/{category2}/{flavor}")
+    public String detail(@PathVariable("companyid") String companyid,
+                         @PathVariable("category") String category,
+                         @PathVariable("category2") String category2,
+                         @PathVariable("flavor") String flavor,
+                         HttpServletRequest request,
+                         HttpServletResponse response,
+                         Model model,Principal pri,
+                         String productUrl, String productImage) {
+    	String id = pri.getName();
+    	
+        ProductDTO product = service1.findproductdetail(companyid, category, category2, flavor);
+
+        // 썸네일 이미지 정보를 가져옴
+        List<ProductimgDTO> thumbnails = service1.findthumimg(companyid, category, category2);
+
+        // 대표 이미지 정보를 가져옴
+        List<ProductimgDTO> images = service1.findimg(companyid, category, category2);
+
+        List<String> thumbnailPaths = new ArrayList<>();
+        List<String> imagePaths = new ArrayList<>();
+
+        // 썸네일 이미지 경로들을 생성
+        for (ProductimgDTO thumbnail : thumbnails) {
+            String path = "/resources/p_img/" + thumbnail.getCompanyid() +
+                          thumbnail.getCategory() + thumbnail.getCategory2() +
+                          thumbnail.getFlavor() + "F" + thumbnail.getNum() +
+                          thumbnail.getExt();
+            thumbnailPaths.add(path);
+        }
+
+        // 대표 이미지 경로들을 생성
+        for (ProductimgDTO image : images) {
+            String path = "/resources/p_img/" + image.getCompanyid() +
+                          image.getCategory() + image.getCategory2() +
+                          image.getFlavor() + "F" + image.getNum() +
+                          image.getExt();
+            imagePaths.add(path);
+        }
+
+        // 모델에 추가
+        model.addAttribute("product", product);
+        model.addAttribute("thumbnailPaths", thumbnailPaths);
+        model.addAttribute("imagePaths", imagePaths);
+        model.addAttribute("id", id);
+        
+
+        return "/admin/detail";
+    }
 	
 }

@@ -89,6 +89,8 @@
     });
 </script>
 <body>
+	<button type="button" onclick="management('aa');">관리</button>
+	<button onclick="window.location.href='/admin/eat'">전체 상품 변경</button>
 	<c:forEach var="food" items="${mo_re}" varStatus="loop">
 	    <h2>아침</h2>
 	    <div id="mo_${loop.index}">
@@ -157,5 +159,24 @@
         </div>
     </div>
 </div>
+<script>
+function management(companyid, category, category2, flavor){
+	var width = 650;
+    var height = 650;
+	var companyid = 'AA';
+	var category = '25';
+	var category2 = '11';
+	var flavor = '00';
+    var screenWidth = window.innerWidth;
+    var screenHeight = window.innerHeight;
+
+    var left = (screenWidth - width) / 2;
+    var top = (screenHeight - height) / 2;
+
+    var popOption = "width=" + width + "px, height=" + height + "px, top=" + top + "px, left=" + left + "px, scrollbars=yes";
+    var openUrl = '/admin/detail/'+companyid+'/'+category+'/'+category2+'/'+flavor;
+    window.open(openUrl, 'pop', popOption);
+}
+</script>
 </body>
 </html>
