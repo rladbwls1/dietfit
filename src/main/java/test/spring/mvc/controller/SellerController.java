@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -60,8 +61,6 @@ public class SellerController {
         return "/seller2/chat";
 	}
 
-    
-
 	@RequestMapping("/withdrawpro")
 	public String withdrawpro(Member_basicDTO Member_basicDTO,Principal pri, Model model) {
 		String id = pri.getName();
@@ -77,11 +76,9 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/SELLERCHAT")
-	public String SELLERCHAT(Principal pri, Model model, String roomnum)throws Exception {
+	public String SELLERCHAT(Principal pri, Model model, int roomnum)throws Exception {
 		String sellerid = pri.getName();
-		String findid = service.findallbyroomnum(Integer.parseInt(roomnum));
-		String findproduct = service.findallbyroomnum(Integer.parseInt(roomnum));
-		
+		String product = service.findallbyroomnum(roomnum);
 	      String path = "D://chat//" + roomnum + ".txt";
 	      File file = new File(path);
 	      if(file.isFile()) {
@@ -92,8 +89,7 @@ public class SellerController {
 	    	  }
 	    	  model.addAttribute("chat",chat);
 	      }
-	    model.addAttribute("findid", findid);
-	    model.addAttribute("findproduct", findproduct);
+	    model.addAttribute("product", product);
 		model.addAttribute("sellerid", sellerid);
 		model.addAttribute("roomnum",roomnum);
 		return "/seller2/SELLERCHAT";
@@ -105,6 +101,20 @@ public class SellerController {
 		model.addAttribute("sellerid", sellerid);
 		model.addAttribute("chatlist", service.findnotreadchat(0));
 		return "/seller2/sellerchatlist";
+	}
+	@RequestMapping("/chatreport")
+	public String chatreport(Model model,int roomnum) {
+		String id = service.findidbyroomnum(roomnum);
+		model.addAttribute("id",id);
+		model.addAttribute("roomnum",roomnum);
+		return "/seller2/chatreport";
+	}
+	
+	@RequestMapping("/chatreportpro")
+	public String chatreportpro(ChatreportDTO chatreportdto,int roomnum) {
+		service.chatreport(chatreportdto);
+		service.chatreportdelete(roomnum);
+		return "/seller2/chatreportpro";
 	}
 	@RequestMapping("/productdiscount")
 	public String productdiscount(Model model,Principal pri) {
