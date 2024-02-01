@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,23 +79,30 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/SELLERCHAT")
-	public String SELLERCHAT(Principal pri, Model model, int roomnum)throws Exception {
-		String sellerid = pri.getName();
-		String product = service.findallbyroomnum(roomnum);
-	      String path = "D://chat//" + roomnum + ".txt";
-	      File file = new File(path);
-	      if(file.isFile()) {
-	    	  Scanner s = new Scanner(file);
-	    	  String chat = "";
-	    	  while(s.hasNextLine()) {
-	    		  chat += (s.nextLine()+"<br>");
-	    	  }
-	    	  model.addAttribute("chat",chat);
-	      }
+	public String SELLERCHAT(Principal pri, Model model, int roomnum, HttpServletRequest request) throws Exception {
+	    String sellerid = pri.getName();
+	    String product = service.findallbyroomnum(roomnum);
+
+	    // 서버의 실제 경로를 얻습니다.
+	    ServletContext servletContext = request.getServletContext();
+	    String realPath2 = servletContext.getRealPath("/resources/chat/");
+	    String realPath = realPath2 + roomnum+".txt";
+
+	    File file = new File(realPath);
+
+	    if (file.isFile()) {
+	        Scanner s = new Scanner(file);
+	        String chat = "";
+	        while (s.hasNextLine()) {
+	            chat += (s.nextLine() + "<br>");
+	        }
+	        model.addAttribute("chat", chat);
+	    }
+
 	    model.addAttribute("product", product);
-		model.addAttribute("sellerid", sellerid);
-		model.addAttribute("roomnum",roomnum);
-		return "/seller2/SELLERCHAT";
+	    model.addAttribute("sellerid", sellerid);
+	    model.addAttribute("roomnum", roomnum);
+	    return "/seller2/SELLERCHAT";
 	}
 	
 	@RequestMapping("/sellerchatlist")
