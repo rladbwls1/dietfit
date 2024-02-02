@@ -1,11 +1,17 @@
 package test.spring.mvc.service;
 
+
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.repository.SellerMapper;
 import test.spring.mvc.repository.SellerSaleMapper;
 
 @Service
@@ -13,6 +19,8 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 	
 	@Autowired
 	private SellerSaleMapper sellermapper;
+	@Autowired
+	private SellerMapper sellermapper1;
 
 	@Override
 	public List<OrderdetailDTO> orderproduct(String companyid) {
@@ -28,7 +36,6 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 	@Override
 	public Integer  getTodaySales(String companyid) {
 		companyid+="%";
-		System.out.println(companyid);
 		return sellermapper.getTodaySales(companyid);
 	}
 
@@ -79,5 +86,64 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 		companyid+="%";
 		return sellermapper.monthlyFee(companyid);
 	}
+
+	@Override
+	public String findcompanyid(String id) {
+		return sellermapper1.findcompanyid(id);
+	}
+	// 광고 신청
+	@Override
+	public void insertCommercial(CommercailDTO commercial) {
+	    sellermapper.insertCommercial(commercial);
+	}
+
+	@Override
+	public List<CommercailDTO> selectcommercial(String companyid) {
+		return sellermapper.selectcommercial(companyid);
+	}
+
+	@Override
+	public String fileupload(MultipartFile file, String path) {
+	    String originalFileName = file.getOriginalFilename();
+	    String uuid = UUID.randomUUID().toString();
+	    String uuidName = uuid + "-" + originalFileName;
+	    File saveFile = new File(path, uuidName);
+	    try {
+	        file.transferTo(saveFile);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return uuidName;
+	}
+
+	@Override
+	public void commdelect(int num) {
+		sellermapper.commdelect(num);
+	}
+
+	@Override
+	public String filedelete(String comfile, String path) {
+	    String fullPath = path + comfile;
+	    File file = new File(fullPath);
+	    file.delete();
+	    return "삭제 성공";
+	}
+
+	@Override
+	public CommercailDTO commercial(int num) {
+		 return sellermapper.commercial(num);
+	}
+
+	@Override
+	public int commupdate(CommercailDTO cdto) {
+		return sellermapper.commupdate(cdto);
+	}
+
+	@Override
+	public String fileupdate(MultipartFile file, String comfile, String path) {
+	    filedelete(comfile, path);
+	    return fileupload(file, path);
+	}
+
 
 }
