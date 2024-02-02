@@ -38,14 +38,25 @@
 					<td>${coupon.boardnums}</td>
 					<td>${coupon.onstatus}</td>
 					<td>
-						<form action="coupondownloadPro" >
-						<input type="hidden" name="coupon" value="${coupon }"/>
+						<c:if test="${!userList.contains(coupon.couponid) }">
+						<form action="coupondownloadPro" method="post" >
+						<input type="hidden" name="couponid" value="${coupon.couponid }"/>
+						<input type="hidden" name="createdate" value=<fmt:formatDate value="${coupon.createdate}" pattern="yyyy-MM-dd"/> />
+						<input type="hidden" name="deletedate" value=<fmt:formatDate value="${coupon.deletedate}" pattern="yyyy-MM-dd"/>/>
+						<input type="hidden" name="coupon" value="${coupon.coupon }"/>
 							<button type="submit">다운로드</button>
 						</form>
+						</c:if>
+						<c:if test="${userList.contains(coupon.couponid) }">
+						다운로드 완료
+						</c:if>
 					</td>
 				</c:forEach>
 			</thead>
 		</table>
+		<button type="button" onclick="window.location.href='all'" >all로 가기 </button>
+		<button type="button" onclick="window.location.href='myCoupon'" >내 쿠폰함 가기</button>
+		
 	</c:if>
 </body>
 </html>

@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.ui.Model;
 
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -82,4 +83,8 @@ public interface MemberService {
 	//쿠폰
 	public int couponcount();
 	public void couponList(Model model);
+	//쿠폰 다운로드
+	public void downloadCoupon(String id,CouponDTO cdto);
+	//유저 쿠폰 불러오기 ( 기간 만료된 건 만료 처리해줌)
+	public List<CouponDTO> getUserCoupon(String id);
 }
