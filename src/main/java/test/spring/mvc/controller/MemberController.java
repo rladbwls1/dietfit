@@ -311,14 +311,33 @@ public class MemberController {
 	}
 	
 	@RequestMapping("addDelivery")
-	public String addDelivery(DeliveryDTO dto) {
-		
+	public String addDelivery() {
 		return "member/addDelivery";
+	}
+	@RequestMapping("addDeliveryPro")
+	public String addDeliveryPro(DeliveryDTO dto,Principal pri,Model model) {
+		int result=mapper.checkNicaddr(pri.getName(), dto.getNicaddr());
+		if(result!=1) {
+			service.addDelivery(dto,pri.getName());
+		}
+		model.addAttribute("result",result);
+		return "member/addDeliveryPro";
 	}
 	@RequestMapping("userDelivery")
 	public String userDelivery(Principal pri,Model model) {
 		model.addAttribute("id",pri.getName());
+		model.addAttribute("list",mapper.getUserDelivery(pri.getName()));
 		return "member/userDelivery";
+	}
+	@RequestMapping("setDefaultDelivery")
+	public String setDefaultDelivery(Principal pri,String nicaddr) {
+		service.setDefaultDelivery(pri.getName(),nicaddr);
+		return "redirect:/member/userDelivery";
+	}
+	@RequestMapping("deleteDelivery")
+	public @ResponseBody String deleteDelivery(Principal pri,String nicaddr) {
+		service.deleteDelivery(pri.getName(),nicaddr);
+		return "bye";
 	}
 	
 	

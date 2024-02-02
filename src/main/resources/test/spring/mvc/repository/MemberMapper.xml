@@ -178,6 +178,34 @@
 	<select id="getCartListByNum">
 		select * from ${id}_cart where num=#{num}
 	</select>
+	<!-- 유저 배송지에 새 배송지 추가 -->
+	<insert id="addDelivery">
+		insert into ${id}_delivery (addr1,addr2,phone,nicaddr,postnum,receiver) values
+			(#{dto.addr1},#{dto.addr2},#{dto.phone},#{dto.nicaddr},#{dto.postnum},#{dto.receiver})
+	</insert>
+	<!-- 유저 배송지 정보 가져오기 -->
+	<select id="getUserDelivery">
+		select * from ${id}_delivery order by DEFAULTADDR desc, NICADDR asc
+	</select>
+	<!-- 유저 배송지에서 동일 별명 유무 판단 -->
+	<select id="checkNicaddr">
+		select count(*) from ${id}_delivery where nicaddr=#{nicaddr}
+	</select>
+	<!-- 사용자 배송지, 기본 배송지 없앰 -->
+	<update id="removeDefaultDelivery">
+		update ${id}_delivery set defaultaddr=0
+	</update>
+	<!-- 사용자 배송지, 기본 배송지 설정 -->
+	<update id="setDefaultDelivery">
+		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr}
+	</update>
+	<!-- 사용자 배송지 삭제 -->
+	<delete id="deleteDelivery">
+		delete from ${id}_delivery where nicaddr=#{nicaddr}
+	</delete>
+	
+	
+	
 	
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
