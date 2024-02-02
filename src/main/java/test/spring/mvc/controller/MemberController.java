@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -345,6 +346,11 @@ public class MemberController {
 	public String coupondownload(Model model) {
 		service.couponList(model);
 		return "admin/coupon/couponList";
+	}
+	@RequestMapping("coupondownloadPro")
+	public String coupondownloadPro(CouponDTO coupon) {
+		System.out.println(coupon);
+		return "redirect:/admin/coupon/couponList";
 	}
 	
 	

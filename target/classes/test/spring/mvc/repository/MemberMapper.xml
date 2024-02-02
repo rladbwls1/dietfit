@@ -233,6 +233,7 @@
 		create table ${id}_coupon(
 			num number default ${id}_coupon_seq.nextval primary key,
 			coupon varchar2(100) not null,
+			couponid varchar2(100) not null,
 			CREATEDATE date not null,
 			DELETEDATE date not null,
 			STATUS number not null
