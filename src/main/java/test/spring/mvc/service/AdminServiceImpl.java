@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -208,7 +209,6 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.getCompanyEmail(companyid);
 	}
 
-	
 
 	
 

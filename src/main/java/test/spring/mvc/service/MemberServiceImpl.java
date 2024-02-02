@@ -3,6 +3,7 @@ package test.spring.mvc.service;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
@@ -429,7 +431,20 @@ public class MemberServiceImpl implements MemberService{
 		mapper.deleteDelivery(id,nicaddr);
 	}
 	
-	
+	//ÄíÆù
+	@Override
+	public int couponcount() {
+		return mapper.couponcount();
+	}
+
+	@Override
+	public void couponList(Model model) {
+		int couponcount = mapper.couponcount();
+		List<AllcouponDTO> couponList = Collections.EMPTY_LIST;
+		couponList = mapper.couponList();
+		model.addAttribute("couponcount", couponcount);
+		model.addAttribute("couponList", couponList);
+	}
 	
 	
 	

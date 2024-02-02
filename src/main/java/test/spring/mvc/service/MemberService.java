@@ -78,4 +78,8 @@ public interface MemberService {
 	public void setDefaultDelivery(String id,String nicaddr);
 	//사용자 배송지 삭제
 	public void deleteDelivery(String id,String nicaddr);
+	
+	//쿠폰
+	public int couponcount();
+	public void couponList(Model model);
 }
