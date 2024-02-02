@@ -13,7 +13,7 @@
 		<h5> 다운로드 가능 한 쿠폰이 없습니다.</h5>
 	</c:if>
 	<c:if test="${couponcount > 0 }">
-		<table>
+		<table border="1">
 			<thead>
 				<tr>
 					<th>쿠폰명</th>
@@ -21,9 +21,9 @@
 					<th>최소 사용 금액</th>
 					<th>업체</th>
 					<th>다운로드 가능</th>
-					<th>발급 인원수</th>
+					<th>할인률(%)</th>
 					<th>적용 가능 제품</th>
-					<th>사용등급</th>
+					<th>최소구매금액</th>
 					<th>다운로드 </th>
 				</tr>
 				
@@ -38,7 +38,8 @@
 					<td>${coupon.boardnums}</td>
 					<td>${coupon.onstatus}</td>
 					<td>
-						<form>
+						<form action="coupondownloadPro" >
+						<input type="hidden" name="coupon" value="${coupon }"/>
 							<button type="submit">다운로드</button>
 						</form>
 					</td>
