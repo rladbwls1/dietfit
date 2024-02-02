@@ -25,6 +25,14 @@ public interface AdminMapper {
 	public int allProductcount();
 	public List<ProductDTO> allProduct();
 	
+	public int stocklesscount(int stock);
+	public List<ProductDTO> stockless(int stock);
+	public int getStock(String product);
+	public String getCompanyid(String productname);
+	public String getCategory(String productname);
+	public String getCategory2(String productname);
+	public String getFlavor(String productname);
+	
 	public int productcount(String companyid);
 	public List<ProductDTO> productList(String companyid);
 	
@@ -34,7 +42,6 @@ public interface AdminMapper {
 			@Param("category") String category, 
 			@Param("category2") String category2,
 			@Param("flavor") String flavor);
-	public int getProductStock(String product);
 	public String getCompanyEmail(String companyid);
 	
 	//½Ä´Ü!!!!

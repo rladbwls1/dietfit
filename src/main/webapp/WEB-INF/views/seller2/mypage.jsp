@@ -45,6 +45,7 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <div class="container">
         <h1>Seller Mypage</h1>
         <p>${id}님, 환영합니다.</p>
@@ -78,5 +79,44 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+=======
+<h1>seller mypage</h1>
+<p>${id}님 환영합니다.</p>
+<br>
+<form action="/seller/modify" method="post">
+    <input type="submit" value="정보수정"/>
+</form>
+<br>
+<form action="/seller/productdiscount" method="post">
+    <input type="submit" value="상품할인율조정"/>
+</form>
+<form action="/seller/coupon/request" method="post">
+    <input type="submit" value="쿠폰요청"/>
+</form>
+<br>
+<form action="/seller/sellerchatlist" method="post">
+    <input type="submit" value="상품문의 목록"/>
+</form>
+<br>
+<form action="/seller/order" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
+    <input type="submit" value="상품주문 목록"/>
+</form>
+<br>
+<form action="/seller/store" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
+    <input type="submit" value="상품 목록"/>
+</form>
+<br>
+<form action="/seller/calculate" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
+    <input type="submit" value="정산"/>
+</form>
+<br>
+<form action="/seller/commercailhome" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
+    <input type="submit" value="광고 신청"/>
+</form>
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 </body>
 </html>

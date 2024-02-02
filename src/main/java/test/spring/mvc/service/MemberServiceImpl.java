@@ -80,7 +80,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public String getRamdomPassword() {
         char[] charSet = new char[] {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'q', 'w', 'e', 'r', 't', 'y', '!' };
+                'q', 'w', 'e', 'r', 't', 'y', 'u' , 'a', 's', 'd', 'f', 'g', 'h' , 'z', 'x', 'c', 'v', 'b', 'n' };
         StringBuffer sb = new StringBuffer();
         SecureRandom sr = new SecureRandom();
         sr.setSeed(new Date().getTime());

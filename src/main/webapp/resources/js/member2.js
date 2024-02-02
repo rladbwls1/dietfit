@@ -295,6 +295,7 @@ function cartQuantityDown(num){
 	 	});   	
  	}
  	updateAmount();
+ 	updateTotalQuantity();
  	
 }
 function cartQuantityUp(num){
@@ -311,6 +312,7 @@ function cartQuantityUp(num){
     	}
  	}); 
  	updateAmount();
+ 	updateTotalQuantity();
 }
 function deleteCart(num){
 	$.ajax({
@@ -326,6 +328,7 @@ function deleteCart(num){
  	}); 
  	
  	updateAmount(); 
+ 	updateTotalQuantity();
 }
 function cartCheckAll() {
     const chkAll = document.getElementById("chk_all");
@@ -335,7 +338,8 @@ function cartCheckAll() {
         checkbox.checked = chkAll.checked;
     });
     
-	updateAmount();  
+	updateAmount(); 
+	updateTotalQuantity(); 
 }
 function cartUpdateCheckAll() {
     const chkAll = document.getElementById("chk_all");
@@ -352,8 +356,21 @@ function cartUpdateCheckAll() {
     chkAll.checked = allChecked;
 
 	updateAmount();
-    
+	updateTotalQuantity();
 }
+
+function updateTotalQuantity(){
+	//총가격 수정하는 부분
+	const checkboxes = document.getElementsByName("num");
+    var result=0;
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	result+=parseInt($('#'+checkbox.value+'_quantity').text());
+        }
+    });
+	$('#totalQuantity').text(result);
+}
+
 function updateAmount(){
 	//총가격 수정하는 부분
 	const checkboxes = document.getElementsByName("num");
@@ -364,6 +381,43 @@ function updateAmount(){
         }
     });
 	$('#amout').text(result);
+}
+function toOrder(){
+    const checkboxes = document.getElementsByName("num");
+    const selectedItems = [];
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	selectedItems.push(checkbox.value);
+        }
+    });
+    if (selectedItems.length > 0) {
+		let f=document.createElement('form');
+		let obj;
+		obj=document.createElement('input');
+		obj.setAttribute('type','hidden');
+		obj.setAttribute('name','nums');
+		obj.setAttribute('value',selectedItems.join(","));
+		f.appendChild(obj);
+		obj2=document.createElement('input');
+		obj2.setAttribute('type','hidden');
+		obj2.setAttribute('name','amout');
+		obj2.setAttribute('value',$('#amout').text());
+		f.appendChild(obj2);
+		obj3=document.createElement('input');
+		obj3.setAttribute('type','hidden');
+		obj3.setAttribute('name','totalQuantity');
+		obj3.setAttribute('value',$('#totalQuantity').text());
+		f.appendChild(obj3);
+		f.setAttribute('method','post');
+		f.setAttribute('action','/dietfit/order');
+		document.body.appendChild(f);
+		f.submit();
+    }else{
+    	if (confirm("상품을 선택해주세요.")) {
+    	}
+    }
+
 }
 
 
