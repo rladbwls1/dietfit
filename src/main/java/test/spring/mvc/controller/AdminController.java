@@ -1,5 +1,7 @@
 package test.spring.mvc.controller;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.repository.AdminMapper;
 import test.spring.mvc.service.AdminService;
+import test.spring.mvc.service.EmailService;
 
 @Controller
 @RequestMapping("/admin/*")
@@ -17,6 +22,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService service;
+	
+	@Autowired
+	private EmailService eservice;
 	
 	@RequestMapping("companylist")
 	public String companyList(Model model) {
@@ -35,6 +43,12 @@ public class AdminController {
 			) {
 		service.allProduct(model);
 		return "admin/company/allProduct";
+	}
+	
+	@RequestMapping("stockless")
+	public String stockless(Model model, int stock) {
+		service.stockless(model, stock);
+		return "admin/company/stockless";
 	}
 	
 	@RequestMapping("companyProduct")
@@ -72,10 +86,12 @@ public class AdminController {
 	    return "admin/company/statusChange";
 	}
 
+	
 	@RequestMapping("checkStock")
-	public @ResponseBody String checkStock() {
-		service.checkStock();
-		return "stock check, mail Send!";
+	public @ResponseBody String checkStock(String product) {
+		System.out.println(product);
+		service.checkstock(product);
+		return "stock check!!";
 	}
 	
 	@RequestMapping("adminChat")

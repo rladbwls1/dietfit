@@ -20,13 +20,16 @@ public interface AdminService {
 		public int allProductcount();
 		public void allProduct(Model model);
 		
+		public int stocklesscount(int stock);
+		public void stockless(Model model, int stock);
+		public void checkstock(String product);
+		
 		public int productcount(String companyid);
 		public void productList(Model model, String companyid);
 		
-		public void checkStock();
 		
 		public void getProductName(String companyid, String category, String category2, String flavor, Model model);
-		public void getProductStock(String product, Model model);
+//		public void getProductStock(String product, Model model);
 		public String getCompanyEmail(String companyid);
 
 }
