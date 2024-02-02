@@ -27,6 +27,8 @@
 <br/><button type="button" onclick="javascript:window.location='/member/wishList'">관심상품</button>
 <br/><button type="button" onclick="javascript:window.location='/member/cartList'">장바구니</button>
 <br/><button type="button" onclick="javascript:window.location='/member/coupondownload'">쿠폰 다운받기</button>
+<br/><button type="button" onclick="javascript:window.location='/member/myCoupon'">내 쿠폰함</button>
+
 <hr/>
 
 	로그인된 유저 정보 : <sec:authentication property="principal"/> <br/>

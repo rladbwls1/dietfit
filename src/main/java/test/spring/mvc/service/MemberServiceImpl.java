@@ -1,6 +1,7 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
@@ -447,6 +449,19 @@ public class MemberServiceImpl implements MemberService{
 		model.addAttribute("couponcount", couponcount);
 		model.addAttribute("couponList", couponList);
 	}
+
+	@Override
+	public void downloadCoupon(String id, CouponDTO cdto) {
+		mapper.downloadCoupon(id,cdto);
+	}
+
+	@Override
+	public List<CouponDTO> getUserCoupon(String id) {
+		mapper.checkUsableCoupon(id);
+		return mapper.getUserCoupon(id);
+	}
+	
+	
 	
 	
 	
