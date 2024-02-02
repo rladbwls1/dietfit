@@ -75,6 +75,10 @@ public interface MemberMapper {
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
 							     	  @Param("category2") String category2);
+	//조회수 올리기
+	public void countUp(@Param("companyid") String companyid, 
+	     	  			@Param("category") String category,
+	     	  			@Param("category2") String category2);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);

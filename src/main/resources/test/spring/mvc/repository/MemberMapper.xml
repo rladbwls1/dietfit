@@ -106,6 +106,10 @@
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
     	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
     </select>
+    <!-- 조회수 올리기 -->
+    <update id="countUp">
+    	update all_product set count=count+1 where companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2}
+    </update>
 	<!-- 관심상품에 상품 하나 추가하기 -->
 	<insert id="addWishOne">
 		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')

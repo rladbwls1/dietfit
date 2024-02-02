@@ -247,6 +247,8 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
+		mapper.countUp(companyid,category,category2);
+		
 		ProductDTO product = sel1mapper.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
