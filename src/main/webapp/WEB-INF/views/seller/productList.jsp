@@ -25,13 +25,23 @@
 <body>
     <h2>Product List</h2>
     <a href="<c:url value='productadd?companyid=${companyid}'/>">상품추가</a>
+<<<<<<< HEAD
+    <input type="hidden" name="companyid" value="${product.companyid}">
+    <input type="hidden" name="product" value="${product.product}">
+    <input type="hidden" name="category" value="${product.category}"/>
+    <input type="hidden" name="category2" value="${product.category2}"/>
+    <input type="hidden" name="flavor" value="${product.flavor}"/>
+    <table>
+=======
     <input type="hidden" name="companyid" value="${companyid}">
     <table>	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
         <thead>
             <tr>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Image</th>
+                <th>재고</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +52,8 @@
 		            <td>
 		                <img src="${product.imagePath}" alt="${product.product}">
 		            </td>
+		            <td>
+					   <a href="/seller/sellerstock?productId=${product.companyid}${product.category}${product.category2}${product.flavor}">${product.stock}</a></td>
 		        </tr>
 		    </c:forEach>
 		</tbody>
