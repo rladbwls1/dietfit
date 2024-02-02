@@ -293,5 +293,13 @@
  	<select id="findall">
  		select * from all_product
  	</select>
+ 	
+ 	<!-- 쿠폰 -->
+    <select id="couponcount" resultType="int">
+    	select count(*) from allcoupon where deletedate > sysdate 
+    </select>
+    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	select * from allcoupon where deletedate > sysdate
+    </select>
 	
 </mapper>

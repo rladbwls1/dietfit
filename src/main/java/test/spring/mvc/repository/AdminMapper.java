@@ -51,10 +51,6 @@ public interface AdminMapper {
 	public int detailCount();
 	public List<ProductinfoDTO> allProductDetail();
 	
-	//ÄíÆù
-	public int couponcount();
-	public List<AllcouponDTO> couponList();
-	
 	
 
 }

@@ -34,8 +34,4 @@ public interface AdminService {
 //		public void getProductStock(String product, Model model);
 		public String getCompanyEmail(String companyid);
 		
-		//ÄíÆù
-		public int couponcount();
-		public void couponList(Model model);
-
 }

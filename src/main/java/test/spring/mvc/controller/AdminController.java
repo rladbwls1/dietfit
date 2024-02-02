@@ -100,12 +100,6 @@ public class AdminController {
 	}
 	
 	//쿠폰 === 일단 여기 컨트롤러에 할게욤
-		//쿠폰 다운로드 함
-		@RequestMapping("coupondownload")
-		public String coupondownload(Model model) {
-			service.couponList(model);
-			return "admin/coupon/couponList";
-		}
 		
 	
 	  

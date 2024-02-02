@@ -340,6 +340,12 @@ public class MemberController {
 		return "bye";
 	}
 	
+	//쿠폰 다운로드 함
+	@RequestMapping("coupondownload")
+	public String coupondownload(Model model) {
+		service.couponList(model);
+		return "admin/coupon/couponList";
+	}
 	
 	
 }

@@ -112,12 +112,4 @@
     	select mb.email from member_basic mb, member_detail md 
    			where mb.id = md.id and companyid= #{companyid}
     </select>
-    
-    <!-- 쿠폰 -->
-    <select id="couponcount" resultType="int">
-    	select count(*) from allcoupon where deletedate > sysdate 
-    </select>
-    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
-    	select * from allcoupon where deletedate > sysdate
-    </select>
 </mapper>

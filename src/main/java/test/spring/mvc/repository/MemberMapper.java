@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
@@ -132,4 +133,7 @@ public interface MemberMapper {
 	//사용자 배송지 삭제
 	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
 	
+	//쿠폰
+	public int couponcount();
+	public List<AllcouponDTO> couponList();
 }
