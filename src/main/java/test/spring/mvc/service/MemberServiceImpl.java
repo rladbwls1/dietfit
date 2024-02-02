@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -411,6 +412,23 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteCart(String id, int num) {
 		mapper.deleteCart(id, num);
 	}
+
+	@Override
+	public void addDelivery(DeliveryDTO dto, String id) {
+		mapper.addDelivery(dto,id);
+	}
+
+	@Override
+	public void setDefaultDelivery(String id, String nicaddr) {
+		mapper.removeDefaultDelivery(id);
+		mapper.setDefaultDelivery(id,nicaddr);
+	}
+
+	@Override
+	public void deleteDelivery(String id, String nicaddr) {
+		mapper.deleteDelivery(id,nicaddr);
+	}
+	
 	
 	
 	
