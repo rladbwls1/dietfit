@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.ui.Model;
 
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -71,4 +72,10 @@ public interface MemberService {
 	public void updateCartQuantity(String id, int num,int quantity);
 	//장바구니 선택 상품 삭제
 	public void deleteCart(String id, int num);
+	//사용자 배송지 추가
+	public void addDelivery(DeliveryDTO dto,String id);
+	//사용자 배송지, 기본 배송지 설정
+	public void setDefaultDelivery(String id,String nicaddr);
+	//사용자 배송지 삭제
+	public void deleteDelivery(String id,String nicaddr);
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -118,4 +119,17 @@ public interface MemberMapper {
 	public void deleteCart(@Param("id")String id, @Param("num")int num );
 	//장바구니에서 개수 수정한 목록만 가져오기
 	public CartDTO getCartListByNum(@Param("id")String id, @Param("num")int num );
+	//사용자 배송지에 새 배송지 추가
+	public void addDelivery(@Param("dto")DeliveryDTO dto,@Param("id")String id);
+	//사용자 배송지 목록 가져오기
+	public List<DeliveryDTO> getUserDelivery(String id);
+	//사용자 배송지에서 동일 별명 유무 판단, 1이면 있음 0이면 없음
+	public int checkNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지, 기본 배송지 없앰
+	public void removeDefaultDelivery(String id);
+	//사용자 배송지, 기본 배송지 설정
+	public void setDefaultDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지 삭제
+	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	
 }
