@@ -20,9 +20,7 @@ ${nums }
 	<p>배송지 - delivery 테이블</p>
 	<p>주문상품 - orderdetail 테이블</p>
 	상품명 : 
-	상품명 : 
-	상품 수량 : 
-	상품 비과세 금액 : 
+	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
 	<p>쿠폰</p>
 	<p>포인트</p>
@@ -37,18 +35,18 @@ ${nums }
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
-	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이 <br />
-		<input type="text" name="partner_order_id" value="123"><br>
-        <input type="text" name="partner_user_id" value="dietfit"><br>
-        <input type="text" name="item_name" value="${quantity }"><br>
-        <input type="text" name="quantity" value="${quantity }"><br>
-        <input type="text" name="total_amount" value="${amount }"><br>
-        <input type="text" name="tax_free_amount" value="${taxfree }"><br>
-        <input type="hidden" name="command" value="ready">
-        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly">
+	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
+		<input type="hidden" name="partner_order_id" value="${orderid }" />
+        <input type="hidden" name="partner_user_id" value="dietfit" />
+        <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
+        <input type="hidden" name="quantity" value="${quantity }" />
+        <input type="hidden" name="total_amount" value="${amount }" />
+        <input type="hidden" name="tax_free_amount" value="${taxfree }" />
+        <input type="hidden" name="command" value="ready" />
+        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly" />
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">

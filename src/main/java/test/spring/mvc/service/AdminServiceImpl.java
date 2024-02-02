@@ -1,6 +1,10 @@
 package test.spring.mvc.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +16,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
-import lombok.RequiredArgsConstructor;
-import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -209,8 +207,15 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.getCompanyEmail(companyid);
 	}
 
+	@Override
+	public String generateOrderId() {
+        // 여기에서 주문 ID 생성 로직을 구현
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String datePart = dateFormat.format(new Date());
 
-	
+        // 예시: 날짜 + 5자리 랜덤 숫자
+        return datePart + String.format("%05d", (int) (Math.random() * 100000));
+    }
 
 	
 	

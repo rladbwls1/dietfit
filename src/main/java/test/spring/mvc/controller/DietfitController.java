@@ -30,9 +30,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vertx.java.core.json.JsonObject;
 
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 import test.spring.mvc.service.Admin1ServiceImpl;
+import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.SurveyService;
 
 @Controller
@@ -41,6 +43,9 @@ public class DietfitController {
 	
 	@Autowired
 	private SurveyService service;
+	
+	@Autowired
+	private AdminService aservice;
 	
 	@Autowired
 	private Admin1ServiceImpl aservice1;
@@ -157,12 +162,13 @@ public class DietfitController {
 	
 	@RequestMapping("order")
 	public String order(String nums, Model model, Integer amout, Integer totalQuantity) {
+	    
 		model.addAttribute("nums",nums);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
 		Integer taxfree = (int) ((Integer)amout*0.9);
-		System.out.println(taxfree);
 		model.addAttribute("taxfree", taxfree);
+		model.addAttribute("orderid", aservice.generateOrderId());
 		return "admin/order";
 	}
 	
@@ -196,7 +202,7 @@ public class DietfitController {
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
 			
-			//주문번호, 회사ID, 멤버 ID, product, quantity, price, tax_free_amount는 계산으로 
+			//주문번호, 회사ID(dietfit), product, quantity, price, tax_free_amount는 계산으로 
 			
 			 // 파라미터를 UTF-8로 인코딩하여 전송
             byte[] paramsBytes = paramsString.getBytes(StandardCharsets.UTF_8);

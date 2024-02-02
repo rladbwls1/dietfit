@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 
@@ -51,6 +51,7 @@ public interface AdminMapper {
 	public int detailCount();
 	public List<ProductinfoDTO> allProductDetail();
 	
+	public void memberOrderDetail(OrderdetailDTO orderdetail);
 	
 
 }

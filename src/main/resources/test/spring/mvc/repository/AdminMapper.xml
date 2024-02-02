@@ -112,4 +112,15 @@
     	select mb.email from member_basic mb, member_detail md 
    			where mb.id = md.id and companyid= #{companyid}
     </select>
+    
+    <!-- 결제.. 주문번호 생성 및 DB삽입 -->
+    <insert id="memberOrderDetail" parameterType="test.spring.mvc.bean.OrderdetailDTO">
+    	INSERT INTO your_table (
+		    orderid, price, quantity, discount, purdate,
+		    pay, purchase, productid, product, tracking, courier
+		) VALUES (
+		    #{orderid}, #{price}, #{quantity}, #{discount}, #{purdate},
+		    #{pay}, #{purchase}, #{productid}, #{product}, #{tracking}, #{courier}
+		);
+	</insert>
 </mapper>
