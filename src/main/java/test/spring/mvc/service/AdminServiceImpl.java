@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -208,6 +209,21 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.getCompanyEmail(companyid);
 	}
 
+	@Override
+	public int couponcount() {
+		return mapper.couponcount();
+	}
+
+	@Override
+	public void couponList(Model model) {
+		int couponcount = mapper.couponcount();
+		List<AllcouponDTO> couponList = Collections.EMPTY_LIST;
+		couponList = mapper.couponList();
+		model.addAttribute("couponcount", couponcount);
+		model.addAttribute("couponList", couponList);
+	}
+
+	//ÄíÆù
 	
 
 	

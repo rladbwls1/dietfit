@@ -238,7 +238,5 @@ public class DietfitController {
 	public String cancel() {
 		return "admin/kakaopay/cancel";
 	}
-	
-	
 }
 	
