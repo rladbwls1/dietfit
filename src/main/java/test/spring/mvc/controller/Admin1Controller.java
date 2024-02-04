@@ -398,6 +398,7 @@ public class Admin1Controller {
             }
 			model.addAttribute(me + "_minkcal", (int)(oper[i][0] * kcal));
 			model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
+			model.addAttribute("kc", kcal);
 			model.addAttribute(me +"_re", aa);
 			model.addAttribute("list", lists);
 			model.addAttribute("kcal", boundsList);
