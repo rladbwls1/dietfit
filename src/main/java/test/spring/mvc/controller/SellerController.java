@@ -1,7 +1,12 @@
 package test.spring.mvc.controller;
 
-import java.nio.file.Paths;
+import java.io.File;
+import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,10 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
+import test.spring.mvc.bean.DiscountDTO;
+import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.service.SellerService;
@@ -25,47 +35,16 @@ public class SellerController {
 	@Autowired
 	private SellerService service;
 	
-	@RequestMapping("/store/{companyid}")
-	public String getProductsByCompanyId(@PathVariable("companyid") String companyid, Model model) {
-	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
-	    if (products != null) {
-	        for (ProductDTO product : products) {
-	            List<ProductimgDTO> thumImages = service.findthumimg(
-	                    companyid, product.getCategory(),
-	                    product.getCategory2(), product.getFlavor());
-	            product.setImages(thumImages);
-	        }
-	        model.addAttribute("products", products);
-	    }
-	    return "seller2/productList";
-	}
-	
 	@RequestMapping("/store/home")
 	public String main() {
 		return "seller2/home";
 	}
 	
-//	@GetMapping("/{companyid}/{category}/{category2}/{flavor}/{num}/{ext}/{thum}")
-//	public String getImageUrl(@PathVariable String companyid,
-//	                          @PathVariable String category,
-//	                          @PathVariable String category2,
-//	                          @PathVariable String flavor,
-//	                          @PathVariable String num,
-//	                          @PathVariable String ext,
-//	                          @PathVariable String thum) {
-//	    // 이미지 파일이 저장된 디렉토리 경로 설정 (예: 바탕화면-식단파일)
-//	    String directoryPath = "C:\\Users\\y\\Desktop\\dietfitfile";
-//
-//	    // 이미지 파일의 전체 경로 생성
-//	    String filename = companyid + category + category2 + flavor + num + ext;
-//	    String imagePath = Paths.get(directoryPath, filename).toString();
-//
-//	    // 이미지 파일의 URL로 변환하여 반환
-//	    return "file:" + imagePath;
-//	}
-	
 	@RequestMapping("/coupon/request")
-    public String showCouponRequestForm(Model model) {
+    public String showCouponRequestForm(Principal pri, Model model) {
+		String id = pri.getName();
+        String companyId = service.findcompanyid(id);
+		model.addAttribute("companyId", companyId);
         model.addAttribute("couponRequest", new AllcouponDTO());
         return "/seller2/couponrequestForm";
     }
@@ -80,14 +59,146 @@ public class SellerController {
 	@RequestMapping("/chat")
     public String chat() {
         return "/seller2/chat";
-    }
-	@RequestMapping("/contact")
-	public String contact(@RequestParam("productId") String productId, Model model) {
-		model.addAttribute("productId", productId);
-		return "/seller2/contactForm";
 	}
 
+	@RequestMapping("/withdrawpro")
+	public String withdrawpro(Member_basicDTO Member_basicDTO,Principal pri, Model model) {
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		service.sellerwithdraw(id);
+		return "redirect:/member/customLogin";
+	}
 	
+	@RequestMapping("/mypage")
+	public String mypage(Principal pri, Model model) {
+		model.addAttribute("id", pri.getName());
+		return "/seller2/mypage";
+	}
 	
+	@RequestMapping("/SELLERCHAT")
+	public String SELLERCHAT(Principal pri, Model model, int roomnum)throws Exception {
+		String sellerid = pri.getName();
+		String product = service.findallbyroomnum(roomnum);
+	      String path = "D://chat//" + roomnum + ".txt";
+	      File file = new File(path);
+	      if(file.isFile()) {
+	    	  Scanner s = new Scanner(file);
+	    	  String chat = "";
+	    	  while(s.hasNextLine()) {
+	    		  chat += (s.nextLine()+"<br>");
+	    	  }
+	    	  model.addAttribute("chat",chat);
+	      }
+	    model.addAttribute("product", product);
+		model.addAttribute("sellerid", sellerid);
+		model.addAttribute("roomnum",roomnum);
+		return "/seller2/SELLERCHAT";
+	}
+	
+	@RequestMapping("/sellerchatlist")
+	public String sellerchatlist(Principal pri, Model model) {
+		String sellerid = pri.getName();
+		model.addAttribute("sellerid", sellerid);
+		model.addAttribute("chatlist", service.findnotreadchat(0));
+		return "/seller2/sellerchatlist";
+	}
+	@RequestMapping("/chatreport")
+	public String chatreport(Model model,int roomnum) {
+		String id = service.findidbyroomnum(roomnum);
+		model.addAttribute("id",id);
+		model.addAttribute("roomnum",roomnum);
+		return "/seller2/chatreport";
+	}
+	
+	@RequestMapping("/chatreportpro")
+	public String chatreportpro(ChatreportDTO chatreportdto,int roomnum) {
+		service.chatreport(chatreportdto);
+		service.chatreportdelete(roomnum);
+		return "/seller2/chatreportpro";
+	}
+	@RequestMapping("/productdiscount")
+	public String productdiscount(Model model,Principal pri) {
+		model.addAttribute("id", pri.getName());
+		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
+		return "/seller2/productdiscount";
+	}
+	@RequestMapping("/discountForm")
+	public String discountForm(int num, Model model) {
+		model.addAttribute("num",num);
+		return "/seller2/discountForm";
+	}
+	
+	@PostMapping("/addDiscount")
+    public String addDiscount(@RequestParam("start") String start,
+                              @RequestParam("end") String end,
+                              @RequestParam("sale") int sale,
+                              @RequestParam("num") String num) {
+        DiscountDTO discountDTO = new DiscountDTO();
+        discountDTO.setNum(Integer.parseInt(num));
+     // 문자열을 Date로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = dateFormat.parse(start);
+            Date endDate = dateFormat.parse(end);
+
+            discountDTO.setStartr(startDate);
+            discountDTO.setEndr(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace(); // 또는 로그 등으로 기록
+        }
+        discountDTO.setSale(sale);
+
+        // 할인 정보를 데이터베이스에 추가
+        service.updatediscount(discountDTO);
+        
+        return "redirect:/seller/productdiscount";
+    }
+	@RequestMapping("/modify")
+	public String modify(Principal pri, Model model) {
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		Member_basicDTO member = service.sellermodifyselect(id);
+		model.addAttribute("name", member.getName());
+		model.addAttribute("nic", member.getNic());
+		model.addAttribute("email", member.getEmail());
+		return "/seller2/sellermodifyform";
+	}
+	
+	@RequestMapping("/sellerstock")
+	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
+	    model.addAttribute("productId", productId);
+	    if (productId != null && productId.length() >= 8) {
+	        // 앞에서부터 2글자씩 잘라내어 각 변수에 저장
+	        String companyid = productId.substring(0, 2).trim();
+	        String category = productId.substring(2, 4).trim();
+	        String category2 = productId.substring(4, 6).trim();
+	        String flavor = productId.substring(6, 8).trim();
+
+	        // 모델에 각각의 정보를 추가
+	        model.addAttribute("companyid", companyid);
+	        model.addAttribute("category", category);
+	        model.addAttribute("category2", category2);
+	        model.addAttribute("flavor", flavor);
+	        
+	        // 나머지 로직 수행
+	        ProductDTO product = service.sellerstockselect(productId);
+	        model.addAttribute("product", product.getProduct());
+
+	    }
+	    return "/seller2/sellerstock";
+	}
+
+	@RequestMapping("/modifyPro")
+	public String modifyPro(Member_basicDTO Member_basicDTO) {
+		service.sellermodifyupdate(Member_basicDTO);
+		return "/seller2/mypage";
+	}
+	@RequestMapping("/addStock")
+	public String addStock(ProductDTO productdto) {
+		System.out.println(productdto.getCompanyid());
+		
+		service.sellerstockupdate(productdto);
+		return "redirect:/seller/mypage";
+	}
 }
 

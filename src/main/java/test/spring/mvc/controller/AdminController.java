@@ -1,16 +1,15 @@
 package test.spring.mvc.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.service.AdminService;
-import test.spring.mvc.service.SellerService;
 
 @Controller
 @RequestMapping("/admin/*")
@@ -21,7 +20,7 @@ public class AdminController {
 	
 	@RequestMapping("companylist")
 	public String companyList(Model model) {
-		service.companyList(model);
+		service.companyList(model); //결과는 model에
 		return "admin/company/list";
 	}
 	@RequestMapping("companyDetail")
@@ -30,6 +29,14 @@ public class AdminController {
         model.addAttribute("companyDetail", companyDetail);
         return "admin/company/detailList";
 	}
+	@RequestMapping("allProduct")
+	public String allProduct(Model model
+			//, @RequestParam(value="pageNum", defaultValue = "1") int pageNum
+			) {
+		service.allProduct(model);
+		return "admin/company/allProduct";
+	}
+	
 	@RequestMapping("companyProduct")
 	public String companyProduct(String companyid, Model model) {
 		service.productList(model, companyid);
@@ -41,11 +48,35 @@ public class AdminController {
 		model.addAttribute("companyBasic", companyBasic);
 		return "admin/company/companyStatus";
 	}
+	
 	@RequestMapping("companyStatusChange")
-	public String companyStatusChange(String id, String status) {
-		service.companyStatus(id, status);
-		return "admin/company/statusChange";
+	public String companyStatusChange(String id, String status, String companyid, Model model) {
+	    service.companyStatus(status, id);
+
+	    //companyid가져오기
+	    String companyId = service.getCompanyId(id);
+	    
+	    System.out.println("기존" + id + "의 companyid : " + companyId);
+	    
+	    //새로운 companyid 생성
+	    String newCompanyId = service.generateCompanyId(companyid, id);
+	    
+	    System.out.println("새로운 CompanyId : " +newCompanyId);
+
+	    //newCompanyid를 companyid에 넣어줌 
+	    model.addAttribute("companyid", newCompanyId);
+	    
+	    System.out.println("=====================");
+	    System.out.println("최종 companyId ===" + newCompanyId);
+
+	    return "admin/company/statusChange";
+	}
+
+	@RequestMapping("checkStock")
+	public @ResponseBody String checkStock() {
+		service.checkStock();
+		return "stock check, mail Send!";
 	}
 	
-
+	  
 }

@@ -2,7 +2,8 @@ package test.spring.mvc.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
@@ -10,6 +11,7 @@ import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.bean.ProductinfoDTO;
 
 public interface Admin1Service{
 	public int count();
@@ -27,5 +29,8 @@ public interface Admin1Service{
 	public List<AllcouponDTO> coupon(String id);
 	public ProductimgDTO pro_img(String companyid, String category, String category2);
 	public List<ProductDTO> discount();
-
+	public int sale(int num);
+	public List<ProductDTO> reco();
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category, HttpServletRequest request);
+	public List<ProductDTO> food_product(String productid);
 }

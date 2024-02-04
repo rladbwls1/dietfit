@@ -1,16 +1,30 @@
 package test.spring.mvc.service;
-
 import java.util.List;
-
+import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.ChatDTO;
+import test.spring.mvc.bean.ChatreportDTO;
+import test.spring.mvc.bean.DiscountDTO;
+import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
-import test.spring.mvc.bean.ProductimgDTO;
 
 public interface SellerService {
     
-    List<ProductDTO> findallproductbycompanyid(String companyid);
-    List<ProductimgDTO> findthumimg(String companyid, String category, String category2, String flavor);
-    ProductDTO findproductdetail(String companyid, String category, String category2, String flavor);
-    
     void addCoupon(AllcouponDTO couponDTO);
+    public int chatroomnum(ChatDTO chatDTO, Model model,String id, String product);
+    public String findcompanyid(String id);
+    public String findcompanyidbyproductid(String companyid);
+    public List<ChatDTO> findnotreadchat(int readcheck);
+    public List<ProductDTO> getCompanyProduct(String id);
+    Member_basicDTO sellermodifyselect(String id);
+    public void sellermodifyupdate(Member_basicDTO Member_basicDTO);
+    public void sellerwithdraw(String id);
+    public void updatediscount(DiscountDTO discountDTO);
+    public ProductDTO sellerstockselect(String productId);
+    public void sellerstockupdate(ProductDTO productdto);
+    public String findallbyroomnum(int roomnum);
+    public String findidbyroomnum(int roomnum);
+    public void endchat(int roomnum);
+    public void chatreport(ChatreportDTO chatreportdto);
+    public void chatreportdelete(int roomnum);
 }
