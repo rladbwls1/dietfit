@@ -16,7 +16,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+<style>
+	.product{
+	    width: fit-content;
+	}
+</style>
 <script>
 	function modify(minkcal, maxkcal, mo, type, catogory){
 		var category = 1;
@@ -70,7 +74,7 @@
     	$("#myModal").modal('hide');
     	console.log(kcal);
     	$("#"+type).html("");
-    	$("#"+type).html("<div id='" + productid + "' onclick=\"management('" + part1 + "', '" + part2 + "', '" + part3 + "', '" + part4 + "');\">" +
+    	$("#"+type).html("<div  class='" + product + "' id='" + productid + "' onclick=\"management('" + part1 + "', '" + part2 + "', '" + part3 + "', '" + part4 + "');\">" +
                 "<img style='width:50px;' src='/resources/p_img/" + img + "'/></div>" +
                 "<div>" + product + "</div>" +
                 "<div id='" + type + "_m'>" + kcal + "</div>" +
@@ -95,9 +99,11 @@
 	<button onclick="window.location.href='/admin/eat?kcal=${kc}'">전체 상품 변경</button>
 	<c:forEach var="food" items="${mo_re}" varStatus="loop">
 	    <h2>아침</h2>
-	    <div id="mo_${loop.index}" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+	    <div id="mo_${loop.index}">
+	    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
+	    </div>
 	    <div id="mo_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
 	    </div>
@@ -108,9 +114,11 @@
 	<hr>
 	<c:forEach var="food" items="${br_re}" varStatus="loop">
 	    <h2>점심</h2>
-	    <div id="br_${loop.index}" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+	    <div id="br_${loop.index}">
+	    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
+	    </div>
 	    <div id="br_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
 	    </div>
@@ -121,9 +129,11 @@
 	<hr>
 	<c:forEach var="food" items="${de_re}" varStatus="loop">
 	    <h2>저녁</h2>
-	    <div id="de_${loop.index}" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+	    <div id="de_${loop.index}">
+	    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
+	    </div>
 	    <div id="de_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
 	    </div>
@@ -133,9 +143,11 @@
 	<hr>
 	<c:forEach var="food" items="${se_re}" varStatus="loop">
 	    <h2>간식</h2>
-	    <div id="se_${loop.index}" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+	    <div id="se_${loop.index}">
+	    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
 	    <img style="width:50px;" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
 	    <div>${food.product}</div>
+	    </div>
 	    <div id="se_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
 	    </div>
@@ -167,7 +179,7 @@
 </div>
 <script>
 function management(companyid, category, category2, flavor){
-	var width = 650;
+	var width = 850;
     var height = 650;
     var screenWidth = window.innerWidth;
     var screenHeight = window.innerHeight;

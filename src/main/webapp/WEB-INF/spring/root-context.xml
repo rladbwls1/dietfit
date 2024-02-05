@@ -18,8 +18,7 @@
 		<!-- property : 해당 클래스의 set 메서드 호출 -->
 		<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> -->
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<!-- 58.73.200.225 192.168.219.123-->
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@58.73.200.225:1521/orcl"/>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@192.168.219.123:1521/orcl"/>
 		<property name="username" value="final04"/>
 		<property name="password" value="final04"/>
 	</bean>                                      <!-- 종료될 때 close 란 메서드를 사용하겠다는 뜻 -->
