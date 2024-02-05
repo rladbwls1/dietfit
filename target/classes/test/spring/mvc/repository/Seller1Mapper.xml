@@ -107,4 +107,21 @@
 	        #{num}
 	    </foreach>
 	</delete>
+	
+	<!-- 이미지 파일 갯수 변경 -->
+	<update id="updateProductIsfile">
+		update all_product set isfile=#{isfile} where num=#{num}
+	</update>
+	
+	<delete id="thumbnailDelete">
+		delete from all_productimg where num=#{num}
+	</delete>
+	<update id="productIsfileDelete">
+		update all_product set isfile=isfile-1 where num=#{num}
+	</update>
 </mapper>
+
+
+
+
+

@@ -62,13 +62,20 @@ public interface Seller1Service {
     public void fileDeletethumnum(List<String> thumfileNames,String path);
     // 첨부파일
     public void fileDeleteimgnum(List<String> imgfileName, String path);
-
-    // 상품 이미지 수정 
-    public void updatePrdouctimg(String companyid, String category, String category2, String flavor);
-    
-    // 상품 이미지 찾기 
-    public List<ProductimgDTO> imgfindupdate(String companyid, String category, String category2, String flavor);
     
     //쿠키로 상품 정보 꺼내기
     public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
+    
+    // 상풍 수정 증가
+    public void updateProductIsfile(ProductimgDTO dto);
+    // 해당 이미지 DB 삭제 
+    public void thumbnailDelete(int num);
+    // 상품 이미지 총 갯수 삭제 
+    public void productIsfileDelete(int num);
+    
+    
 }
+
+
+
+

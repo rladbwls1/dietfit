@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,52 +37,70 @@ public class SellersaleController {
 	
 	// 주문 목록
 	@RequestMapping("order")
-	public String orderproduct(@RequestParam String companyid, Model model) {
-	    List<OrderdetailDTO> order = service.orderproduct(companyid);
-	    model.addAttribute("companyid",companyid);
-	    model.addAttribute("order", order);
+	public String order(@RequestParam("companyid") String companyid, Model model) {
+	    // 모든 회원의 ID 조회
+	    List<String> memberIds = service.allmember();
+	    // 각 회원별 주문 상세 정보를 저장할 리스트
+	    List<OrderdetailDTO> orderDetails = new ArrayList<>();
+
+	    // 각 회원 ID에 대해 주문 상세 정보 조회
+	    for (String memberId : memberIds) {
+	        List<OrderdetailDTO> memberOrderDetails = service.orderproduct(companyid, memberId);
+	        orderDetails.addAll(memberOrderDetails);
+	    }
+
+	    // 모델에 주문 상세 정보 추가
+	    model.addAttribute("orderDetails", orderDetails);
+	    model.addAttribute("companyid", companyid);
 	    return "seller/orderlist";
 	}
+
 	
 	// 송장번호 입력
 	@RequestMapping("insertpurchase")
 	public String insertpurchase(@RequestParam("orderid") String orderid,
 								 @RequestParam("companyid") String companyid,
+								 @RequestParam("memberid") String memberid,
 								 Model model) {
 	    model.addAttribute("orderid", orderid);
 		model.addAttribute("companyid", companyid);
+		model.addAttribute("memberid", memberid);
 	    return "seller/insertpurchase";
 	}
 
 	// 송장번호 입력 후 DB 저장
 	@RequestMapping("purchasepro")
 	public String purchasepro(@RequestParam("orderid") String orderid,
-	                                @RequestParam("tracking") String tracking,
-	                                @RequestParam("courier") String courier,
-	                                @RequestParam("companyid") String companyid) {
-	    service.updateTrackingAndCourier(tracking, courier, orderid, companyid);
+	                          @RequestParam("tracking") String tracking,
+	                          @RequestParam("courier") String courier,
+	                          @RequestParam("companyid") String companyid,
+	                          @RequestParam("memberid") String memberid
+	                          ) {
+	    service.updateTrackingAndCourier(tracking, courier, orderid, companyid,memberid);
 	    return "seller/purchasepro";
 	}
 	
 	// 판매량 + 정산 버튼
 	@RequestMapping("calculate")
 	public String calculate(@RequestParam("companyid") String companyid, Model model) {
-	    model.addAttribute("companyid", companyid); // 수정됨
+	    model.addAttribute("companyid", companyid); 
 	    return "seller/calculate";
 	}
 	
 	// 정상 그래프
-	@RequestMapping("sales/{companyid}")
-	public String sales(@PathVariable("companyid") String companyid, Model model) {
+	@RequestMapping("sales")
+	public String sales(@RequestParam("companyid") String companyid, Model model) {
 
 	    // 판매 매출액
 		Integer todaySales = service.getTodaySales(companyid);
 		Integer weeklySales = service.getWeeklySales(companyid);
 		Integer monthlySales = service.getMonthlySales(companyid);
+		
 		// 순수 매출액
 		Integer todayNetSales = service.todayNetSales(companyid);
 		Integer weeklyNetSales = service.weeklyNetSales(companyid);
 		Integer monthlyNetSales = service.monthlyNetSales(companyid);
+		
 		// 수수료 
 		Integer todayFee = service.todayFee(companyid);
 		Integer weeklyFee = service.weeklyFee(companyid);
@@ -108,7 +126,22 @@ public class SellersaleController {
 	// 판매량
 	@RequestMapping("salesranking")
 	public String salesranking(@RequestParam("companyid") String companyid, Model model) {
-		model.addAttribute(companyid);
+		System.out.println(companyid);
+		List<OrderdetailDTO> dailySalesRank = service.dailySalesRank(companyid);
+		List<OrderdetailDTO> weeklySalesRank =service.weeklySalesRank(companyid);
+		List<OrderdetailDTO> monthlySalesRank =service.monthlySalesRank(companyid);
+		List<OrderdetailDTO> allSalesRank =service.allSalesRank(companyid);
+		
+		System.out.println(dailySalesRank);
+		System.out.println(weeklySalesRank);
+		System.out.println(monthlySalesRank);
+		System.out.println(allSalesRank);
+		
+	    model.addAttribute("dailySalesRank", dailySalesRank);
+	    model.addAttribute("weeklySalesRank", weeklySalesRank);
+	    model.addAttribute("monthlySalesRank", monthlySalesRank);
+	    model.addAttribute("allSalesRank", allSalesRank);
+	    model.addAttribute("companyid", companyid);
 		return "seller/salesranking";
 	}
 	

@@ -9,12 +9,14 @@ import test.spring.mvc.bean.OrderdetailDTO;
 
 public interface SellerSaleMapper {
 	// 회사별 주문 상품목록
-	public List<OrderdetailDTO> orderproduct(String companyid);
+	public List<OrderdetailDTO> orderproduct(@Param("companyid") String companyid, @Param("memberid") String memberid);
+	
 	// 송장번호 업데이트
 	public void updateTrackingAndCourier(@Param("tracking") String tracking, 
-			 							 @Param("courier") String courier,
-			 							 @Param("orderid") String orderid, 
-			 							 @Param("companyid") String companyid);
+			 					      @Param("courier") String courier,
+			 					      @Param("orderid") String orderid, 
+			 						  @Param("companyid") String companyid,
+			 						 @Param("memberid") String memberid);
 	// 회사별 매출액 하루 일주일 한달
 	public Integer getTodaySales(@Param("companyid") String companyid);
 	public Integer getWeeklySales(@Param("companyid") String companyid);
@@ -30,6 +32,12 @@ public interface SellerSaleMapper {
 	public Integer weeklyFee(@Param("companyid") String companyid);
 	public Integer monthlyFee(@Param("companyid") String companyid);
 	
+	// 회사별 잘팔리는 상품 하루 일주일 한달
+	public List<OrderdetailDTO> dailySalesRank(@Param("companyid") String companyid);
+	public List<OrderdetailDTO> weeklySalesRank(@Param("companyid") String companyid);
+	public List<OrderdetailDTO> monthlySalesRank(@Param("companyid") String companyid);
+	public List<OrderdetailDTO> allSalesRank(@Param("companyid") String companyid);
+	
 	// 광고 신청 
 	public void insertCommercial(CommercailDTO commercial);
 	
@@ -44,4 +52,7 @@ public interface SellerSaleMapper {
 	
 	// 광고 수정
 	public int commupdate(CommercailDTO cdto);
+	
+	// 전체 회원
+	public List<String> allmember();
 }
