@@ -163,4 +163,16 @@
 			WHERE ap.companyid || ap.category || ap.category2 || ap.flavor = #{productid} and api.thum = 1
 			ORDER BY api.num ASC
     	</select>
+    	
+    	<!-- 장바구니에 상품이 이미 있나 확인 -->
+		<select id="isCart">
+			select count(*) from ${id}_cart where product=#{product}
+		</select>
+		<!-- 장바구니에 하나의 상품 추가 -->
+		<insert id="addCartOne">
+			insert into ${id}_cart (product, price, quantity) values (#{product},#{price},#{quantity})
+		</insert>
+		<select id="Productid" resultType="product">
+			select * from all_product where companyid || category || category2 || flavor = #{productid}
+		</select>
     </mapper>

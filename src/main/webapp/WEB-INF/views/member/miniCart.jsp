@@ -25,6 +25,7 @@
 <br/>
 가격 <span id="amout">${price }</span> <br/>
 <button type="button" onclick="">즉시구매</button>
+<input type="checkbox" id="chk" value="0">정기배송으로 받아보시겠어요?
 <button type="button" onclick="addCartFromList()">장바구니</button>
 
 </body>

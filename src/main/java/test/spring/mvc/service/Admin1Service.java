@@ -33,4 +33,5 @@ public interface Admin1Service{
 	public List<ProductDTO> reco();
 	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category, HttpServletRequest request);
 	public List<ProductDTO> food_product(String productid);
+	public void addCartOne(String id,String product,int quantity,int price);
 }

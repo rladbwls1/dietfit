@@ -30,4 +30,10 @@ public interface Admin1Mapper {
 	public List<ProductinfoDTO> meal();
 	public List<ProductinfoDTO> meal_replace();
 	public List<ProductDTO> food_product(String productid);
+	//장바구니에 이미 있는 상품인지 확인
+	public int isCart(@Param("id")String id, @Param("product") String product);
+	//장바구니에 하나의 상품 추가
+	public void addCartOne(@Param("id")String id, @Param("product") String product, 
+				@Param("quantity")int quantity, @Param("price")int price);
+	public ProductDTO Productid(String productid);
 }

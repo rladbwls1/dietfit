@@ -227,4 +227,21 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<ProductDTO> food_product(String productid) {
 		return mapper.food_product(productid);
 	}
+	
+	public void addCartMore(String id, String products) {
+		for(String productid:products.split(",")) {
+			ProductDTO pro = mapper.Productid(productid);
+			String product = pro.getProduct();
+			int price= Integer.parseInt(pro.getPrice());
+			addCartOne(id,product,1,price);
+		}
+	}
+
+	@Override
+	public void addCartOne(String id, String product, int quantity, int price) {
+		int check=mapper.isCart(id, product);
+		if(check==0) {
+			mapper.addCartOne(id, product, quantity, price);
+		}
+	}
 }

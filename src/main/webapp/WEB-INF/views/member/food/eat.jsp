@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/member2.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -20,6 +21,9 @@
 	.product{
 	    width: fit-content;
 	}
+	.images{
+	    width: -webkit-fill-available;
+	}
 </style>
 <script>
 	function modify(minkcal, maxkcal, mo, type, catogory){
@@ -28,7 +32,7 @@
 			category = 0;
 		}
 	    $.ajax({
-	        url: "/admin/change",
+	        url: "/member/change",
 	        data: {mo: mo,
 	        	   minkcal: minkcal,
 	        	   maxkcal: maxkcal,
@@ -79,6 +83,7 @@
                 "<div>" + product + "</div>" +
                 "<div id='" + type + "_m'>" + kcal + "</div>" +
                 "<div id='" + type + "_p'>" + price + "</div>" +
+                "<input type='hidden' id='fonum' value='" + productid + "'/>"+
                 "<input type='hidden' id='mo' value='" + productid + "'/>");
 
         var totalKcal = 0;
@@ -94,9 +99,93 @@
         // var totalKcal = parseInt($("#mo_0_m").text()) + parseInt($("#mo_1_m").text()) + parseInt($("#br_0_m").text()) + parseInt($("#br_1_m").text()) + parseInt($("#de_0_m").text()) + parseInt($("#de_1_m").text()) + parseInt($("#se_0_m").text()) + parseInt($("#se_1_m").text());
         $("#totalKcal").text(totalKcal);
     });
+    
+    function management(companyid, category, category2, flavor){
+    	$.ajax({
+	        url: "/member/detail",
+	        data: {companyid: companyid,
+	        	category: category,
+	        	category2: category2,
+	        	flavor: flavor},
+	        success: function (product) {
+	          
+	        	content = `<h2>Product Details</h2>
+	            <button onclick="openCart('`+product.companyid+`','`+product.category+`','`+product.category2+`','`+product.price+`')">장바구니</button>
+	                <table>
+	                	<tr>
+	                		<td>
+	                		 for (var i = 0; i < product.thumimg.length; i++) {
+	         				    <img src="' + product.thumimg[i] + '">
+	         				}
+	                		</td>
+	                	</tr>	
+	                    <tr>
+	                        <td>상품이름:</td>
+	                        <td>`+product.product+`</td>
+	                    </tr>
+	                    <tr>
+	                        <td>가격:</td>
+	                        <td>`+product.price+`</td>
+	                    </tr>
+	                    <tr>
+	                        <td>배송정보:</td>
+	                        <td></td>
+	                    </tr>
+	                    <tr>
+	                        <td>조회수:</td>
+	                        <td>`+product.count+`</td>
+	                    </tr>
+	                    <tr>
+	                        <td>유통기한:</td>
+	                        <td>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td colspan="2">
+	                            <form action="/sellerchat/chat" method="post">
+	                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	                                <input type="hidden" name="product" value="${product.product}">
+	                                <input type="hidden" name="companyid" value="${product.companyid}">
+	                                <button type="submit">상품 문의</button>
+	                            </form>
+	                        </td>
+	                    </tr>
+	                </table>
+	            `;
+				content += `<div>상세정보</div><hr>`;
+				for (var i = 0; i < product.img.length; i++) {
+				    content += '<img class="images" src="' + product.img[i] + '">';
+				}
+	              $("#modalBody").empty();
+	            $("#modalBody").append(content);
+	            $("#myModal").modal('show');
+	        }
+	    });
+    }
+    
+    function cartSelectedItems2(){
+    	var selectedItems = [];
+
+        $('input[name="fonum"]').each(function() {
+            selectedItems.push($(this).val());
+        });
+    	$.ajax({
+			url:'addCartMore1',
+			type:'post',
+			async:false,
+			data:{products:selectedItems.join(",")},
+			success:function(a){
+				if(confirm('장바구니에 추가 되었습니다.')){
+					window.location.reload();
+				}else{
+					window.location.reload();
+				}
+			}
+		});
+    }
 </script>
 <body>
-	<button onclick="window.location.href='/admin/eat?kcal=${kc}'">전체 상품 변경</button>
+	<button onclick="window.location.href='/member/eat?kcal=${kc}'">전체 상품 변경</button>
 	<c:forEach var="food" items="${mo_re}" varStatus="loop">
 	    <h2>아침</h2>
 	    <div id="mo_${loop.index}">
@@ -106,6 +195,7 @@
 	    </div>
 	    <div id="mo_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
+	    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 	    </div>
 	    <div><button type="button" onclick="modify('${mo_minkcal}', '${mo_maxkcal}', '${food.productinfo.productid}','mo_${loop.index}', 'mo');" id="modify">다른 식품 추천</button></div>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
@@ -121,6 +211,7 @@
 	    </div>
 	    <div id="br_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
+	    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 	    </div>
 	    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${food.productinfo.productid}','br_${loop.index}', 'br');" id="modify">다른 식품 추천</button></div>
 	    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
@@ -136,6 +227,7 @@
 	    </div>
 	    <div id="de_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
+	    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 	    </div>
 	    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${food.productinfo.productid}','de_${loop.index}', 'de');" id="modify">다른 식품 추천</button></div>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
@@ -150,6 +242,7 @@
 	    </div>
 	    <div id="se_${loop.index}_m">${food.productinfo.kcal}</div>
 	    <div id="mo_${loop.index}_p">${food.price}</div>
+	    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 	    </div>
 	    <div><button type="button" onclick="modify('${se_minkcal}', '${se_maxkcal}', '${food.productinfo.productid}','se_${loop.index}', 'se');" id="modify">다른 식품 추천</button></div>
 	    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
@@ -172,12 +265,14 @@
             </div>
             <div class="modal-body">
              	<ul id="modalBody" class="list-unstyled row">
-             	</ul>
+             	</ul>	
             </div>
         </div>
     </div>
 </div>
+<button onclick="cartSelectedItems2();">전체 상품 장바구니 담기</button>
 <script>
+/*
 function management(companyid, category, category2, flavor){
 	var width = 850;
     var height = 650;
@@ -188,9 +283,10 @@ function management(companyid, category, category2, flavor){
     var top = (screenHeight - height) / 2;
 
     var popOption = "width=" + width + "px, height=" + height + "px, top=" + top + "px, left=" + left + "px, scrollbars=yes";
-    var openUrl = '/admin/detail/'+companyid+'/'+category+'/'+category2+'/'+flavor;
+    var openUrl = '/member/detail/'+companyid+'/'+category+'/'+category2+'/'+flavor;
     window.open(openUrl, 'pop', popOption);
 }
+*/
 </script>
 </body>
 </html>

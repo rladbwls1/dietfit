@@ -259,6 +259,8 @@ function quantityDown(){
 	}
 }
 function addCartFromList(){
+	 var chk = $('#chk').is(':checked') ? 1 : 0;
+
 	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
 		alert("개수를 입력해주세요.");
 	}else{
@@ -266,7 +268,7 @@ function addCartFromList(){
     	url:'addCartOne',
     	type:'post',
     	async:false,
-    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val()},
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val(), chk:chk},
     	success:function(a){
     		window.opener.location.reload();
     		if(confirm("장바구니에 성공적으로 추가하였습니다. 장바구니로 가겠습니까?")){

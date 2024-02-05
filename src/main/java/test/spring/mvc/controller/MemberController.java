@@ -279,7 +279,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("addCartOne")
-	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
+	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price, int chk) {
+		CartDTO dto = null;
+		if (chk == 1) {
+			dto.setDelivery(1);
+		}
+		else {
+			dto.setDelivery(0);
+		}
 		service.addCartOne(pri.getName(),product,quantity,price);
 		return "hi";
 	}
