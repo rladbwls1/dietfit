@@ -37,4 +37,5 @@ public interface SellerMapper {
     public void endchat(int roomnum);
     public void chatreport(ChatreportDTO chatreportdto);
     public void chatreportdelete(int roomnum);
+    public List<ProductDTO> memberproductall();
 }

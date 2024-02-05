@@ -26,7 +26,7 @@ public class CustomLoginHandler implements AuthenticationSuccessHandler{
 		if(roleNames.contains("ROLE_999")){
 			rdir="/member/admin";
 		}else if(roleNames.contains("ROLE_888")) {
-			rdir="/member/seller";
+			rdir="/seller/home";
 		}
 		response.sendRedirect(rdir);
 	}

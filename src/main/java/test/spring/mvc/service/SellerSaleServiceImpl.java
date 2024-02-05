@@ -23,67 +23,58 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 	private SellerMapper sellermapper1;
 
 	@Override
-	public List<OrderdetailDTO> orderproduct(String companyid) {
-		return sellermapper.orderproduct(companyid);
+	public List<OrderdetailDTO> orderproduct(String companyid, String memberid) {
+		return sellermapper.orderproduct(companyid,memberid);
 	}
 
 	@Override
-	public void updateTrackingAndCourier(String tracking, String courier ,String orderid, String companyid) {
+	public void updateTrackingAndCourier(String tracking, String courier ,String orderid, String companyid, String memberid) {
 		companyid+="%";
-		sellermapper.updateTrackingAndCourier( tracking, courier ,orderid, companyid );
+		sellermapper.updateTrackingAndCourier( tracking, courier ,orderid, companyid,memberid );
 	}
 
 	@Override
 	public Integer  getTodaySales(String companyid) {
-		companyid+="%";
 		return sellermapper.getTodaySales(companyid);
 	}
 
 	@Override
 	public Integer  getWeeklySales(String companyid) {
-		companyid+="%";
 		return sellermapper.getWeeklySales(companyid);
 	}
 
 	@Override
 	public Integer  getMonthlySales(String companyid) {
-		companyid+="%";
 		return sellermapper.getMonthlySales(companyid);
 	}
 
 	@Override
 	public Integer todayNetSales(String companyid) {
-		companyid+="%";
 		return sellermapper.todayNetSales(companyid);
 	}
 
 	@Override
 	public Integer weeklyNetSales(String companyid) {
-		companyid+="%";
 		return sellermapper.weeklyNetSales(companyid);
 	}
 
 	@Override
 	public Integer monthlyNetSales(String companyid) {
-		companyid+="%";
 		return sellermapper.monthlyNetSales(companyid);
 	}
 
 	@Override
 	public Integer todayFee(String companyid) {
-		companyid+="%";
 		return sellermapper.todayFee(companyid);
 	}
 
 	@Override
 	public Integer weeklyFee(String companyid) {
-		companyid+="%";
 		return sellermapper.weeklyFee(companyid);
 	}
 
 	@Override
 	public Integer monthlyFee(String companyid) {
-		companyid+="%";
 		return sellermapper.monthlyFee(companyid);
 	}
 
@@ -144,6 +135,29 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 	    filedelete(comfile, path);
 	    return fileupload(file, path);
 	}
+	
+	@Override
+	public List<String> allmember() {
+        return sellermapper.allmember();
+    }
 
+	@Override
+	public List<OrderdetailDTO> dailySalesRank(String companyid) {
+		return sellermapper.dailySalesRank(companyid);
+	}
 
+	@Override
+	public List<OrderdetailDTO> weeklySalesRank(String companyid) {
+		return sellermapper.weeklySalesRank(companyid);
+	}
+
+	@Override
+	public List<OrderdetailDTO> monthlySalesRank(String companyid) {
+		return sellermapper.monthlySalesRank(companyid);
+	}
+
+	@Override
+	public List<OrderdetailDTO> allSalesRank(String companyid) {
+		return sellermapper.allSalesRank(companyid);
+	}
 }

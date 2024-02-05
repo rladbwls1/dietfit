@@ -11,6 +11,7 @@
 </head>
 <body>
 	<h2>베스트 상품 > 주간</h2>
+	<c:if test="${not empty best}">
 	<div class="container">
 	    <ul class="list-unstyled row">
 	        <c:forEach var="best" items="${best}">
@@ -22,5 +23,9 @@
 	        </c:forEach>
 	    </ul>
 	</div>
+	</c:if>
+	<c:if test="${empty best}">
+		<h2>베스트 상품이 존재하지 않습니다</h2>
+	</c:if>
 </body>
 </html>

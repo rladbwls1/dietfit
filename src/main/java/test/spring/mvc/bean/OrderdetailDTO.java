@@ -19,5 +19,7 @@ public class OrderdetailDTO {
 	private String productid; 	// 상품 아이디
 	private String product; 	// 상품명
 	private String tracking; 	// 송장번호
-	private String courier;		// 택배사 번호 
+	private String courier;		// 택배사 번호
+	private String memberid;    // 회원 아이디
+	private int totalSold;     // 판매량
 }

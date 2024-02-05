@@ -10,10 +10,10 @@ import test.spring.mvc.bean.OrderdetailDTO;
 public interface SellerSaleService {
 	
 	// 회사별 상품 주문 목록 + 상품 이름
-	public List<OrderdetailDTO> orderproduct(String companyid);
+	public List<OrderdetailDTO> orderproduct(String companyid, String memberid);
 	
 	// 송장번호 택배사 업데이트
-	public void updateTrackingAndCourier(String tracking,  String courier, String orderid, String companyid);
+	public void updateTrackingAndCourier(String tracking,  String courier, String orderid, String companyid, String memberid);
 	
 	// 회사별 매출액 하루 일주일 한달
 	public Integer getTodaySales(String companyid);
@@ -25,10 +25,16 @@ public interface SellerSaleService {
 	public Integer weeklyNetSales(String companyid);
 	public Integer monthlyNetSales(String companyid);
 	
-	// 회사별 순수 매출액 하루 일주일 한달
+	// 회사별 수수료 하루 일주일 한달
 	public Integer todayFee(String companyid);
 	public Integer weeklyFee(String companyid);
 	public Integer monthlyFee(String companyid);
+	
+	// 회사별 판매 상품 랭킹 하루 일주일 한달
+	public List<OrderdetailDTO> dailySalesRank(String companyid);
+	public List<OrderdetailDTO> weeklySalesRank(String companyid);
+	public List<OrderdetailDTO> monthlySalesRank(String companyid);
+	public List<OrderdetailDTO> allSalesRank(String companyid);
 	
 	// 회사 아이디
 	public String findcompanyid(String id);
@@ -51,5 +57,8 @@ public interface SellerSaleService {
 	public int commupdate(CommercailDTO cdto);
 	// 광고 이미지 수정
 	public String fileupdate(MultipartFile file, String comfile, String path);
+	
+	// 전체 회원
+	public List<String> allmember();
 
 }

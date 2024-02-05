@@ -73,11 +73,6 @@
         var sellercompany = "${sellercompany}";
         var roomnum = '${roomnum}';
         
-        socket.on("response", function (message) {
-        	if(message.roomnum == roomnum){
-        		$("#msgs").append('<div class="message">' + message.msg + '</div><br />');
-        	}
-        });
         
     var socket = io.connect("http://192.168.219.167:7777");
     var userId = "${id}";
