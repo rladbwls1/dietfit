@@ -11,6 +11,7 @@
 </head>
 <body>
 	<h2>상품추천</h2>
+	<c:if test="${not empty reco}">
 	<div class="container">
 	    <ul class="list-unstyled row">
 	        <c:forEach var="reco" items="${reco}">
@@ -22,5 +23,9 @@
 	        </c:forEach>
 	    </ul>
 	</div>
+	</c:if>
+	<c:if test="${empty reco}">
+		<h5>상품추천 상품이 존재하지 않습니다!</h5>
+	</c:if>
 </body>
 </html>
