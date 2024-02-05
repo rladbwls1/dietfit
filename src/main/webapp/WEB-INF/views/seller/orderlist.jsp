@@ -24,9 +24,9 @@
             }
         </style>
         <script>
-        function openInvoiceInputPopup(orderid, productid) {
+        function openInvoiceInputPopup(orderid, productid, memberid) {
             var cid = $('#companyid').val().substr(0, 2);
-            var popupUrl = '/seller/insertpurchase?orderid=' + orderid + '&companyid=' + cid;
+            var popupUrl = '/seller/insertpurchase?orderid=' + orderid + '&companyid=' + cid + '&memberid=' + memberid;
             var popupWindow = window.open(popupUrl, '_blank', 'width=600, height=400, scrollbars=yes');
 
             var checkPopupClosed = setInterval(function() {
@@ -76,17 +76,55 @@
             window.open('', 'popupWindow', 'width=450, height=930, scrollbars=yes');
             form.submit();
         }
+        
+        $(document).ready(function() {
+            var lastOrderId = null;
+            var mergeCount = 0;
+            var firstRow = null;
+
+            $("table tr").each(function(index) {
+                // 첫 번째 행(헤더)은 건너뛰기
+                if (index === 0) return;
+
+                var $this = $(this);
+                var orderId = $.trim($this.find("td:eq(1)").text()); // 주문번호가 있는 칼럼 인덱스
+
+                if (orderId === lastOrderId) {
+                    // 동일한 주문번호를 가진 행 발견
+                    mergeCount++;
+
+                    // 현재 행의 주문번호, 택배사, 배송, 구매 확정여부 셀을 제거
+                    $this.find("td:eq(1), td:eq(8), td:eq(9), td:eq(10)").remove();
+                } else {
+                    // 새로운 주문번호 처리 시작
+                    if (mergeCount > 0) {
+                        // 이전에 병합했던 셀의 rowspan 크기 조정
+                        firstRow.find("td:eq(1), td:eq(8), td:eq(9), td:eq(10)").attr("rowspan", mergeCount + 1);
+                    }
+                    mergeCount = 0;
+                    firstRow = $this;
+                }
+
+                lastOrderId = orderId;
+            });
+
+            // 마지막 그룹의 rowspan 조정
+            if (mergeCount > 0) {
+                firstRow.find("td:eq(1), td:eq(8), td:eq(9), td:eq(10)").attr("rowspan", mergeCount + 1);
+            }
+        });
 
 		</script>
 	</head>
 	
 	<body>
+				<input type="hidden" name="companyid" id="companyid" value="${companyid}" />
 		<table>
 			<tr>
-				<input type="hidden" name="companyid" id="companyid" value=${companyid} />
 				<td></td>
-				<td>결제 날짜</td>
+				<td>회원아이디 </td>
 				<td>주문번호</td>
+				<td>결제 날짜</td>
 				<td>상품 이름</td>
 				<td>상품 가격</td>
 				<td>상품 수량</td>
@@ -96,11 +134,12 @@
 				<td>배송</td>
 				<td>구매 확정여부</td>
 			</tr>
-		<c:forEach var="order" items="${order}"  varStatus="status">
+		<c:forEach var="order" items="${orderDetails}"  varStatus="status">
 			<tr>
 				<td>${order.courier},${order.tracking} </td>
-				<td><fmt:formatDate value="${order.purdate}" pattern="yyyy-MM-dd"/></td>
+				<td>${order.memberid }</td>
 				<td>${order.orderid }</td>
+				<td><fmt:formatDate value="${order.purdate}" pattern="yyyy-MM-dd"/></td>
 				<td>${order.product}</td>
 				<td>${order.price }  원</td>
 				<td>${order.quantity }</td>
@@ -129,7 +168,7 @@
 				<td>
 					<c:choose>
 					    <c:when test="${order.tracking == null}">
-					        <button onclick="openInvoiceInputPopup('${order.orderid}')">송장번호 입력</button>
+					        <button onclick="openInvoiceInputPopup('${order.orderid}', '${order.productid}', '${order.memberid}')">송장번호 입력</button>
 					    </c:when>
 					    <c:otherwise>
 					        <button onclick="openTracking('${order.courier}', '${order.tracking}')">배송조회</button>

@@ -203,14 +203,17 @@ public class Seller1ServiceImpl implements Seller1Service {
 		
 		model.addAttribute("list",list);
 	}
-	
 	@Override
-	public void updatePrdouctimg(String companyid, String category, String category2, String flavor) {
-		// TODO Auto-generated method stub
+	public void updateProductIsfile(ProductimgDTO dto) {
+		sellerMapper.updateProductIsfile(dto);
+	}
+	@Override
+	public void thumbnailDelete(int num) {
+		sellerMapper.thumbnailDelete(num);
 		
 	}
 	@Override
-	public List<ProductimgDTO> imgfindupdate(String companyid, String category, String category2, String flavor) {
-		return null;
+	public void productIsfileDelete(int num) {
+		sellerMapper.productIsfileDelete(num);
 	}
 }
