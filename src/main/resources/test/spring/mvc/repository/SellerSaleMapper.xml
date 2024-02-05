@@ -57,14 +57,48 @@
 		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail where PRODUCTID like #{companyid}  
 			and purchase = 1  and TRUNC(purdate) = TRUNC(SYSDATE)  
 	</select>
+	
 	<!-- 일주일 수수료 -->
 	<select id = "weeklyFee">
 		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail  where PRODUCTID like #{companyid}  
 		and purchase = 1  and TRUNC(purdate) >= TRUNC(SYSDATE) - 7
 	</select>
+	
 	<!-- 한달 수수료 -->
 	<select id = "monthlyFee">
 		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail  where PRODUCTID like #{companyid} 
 		and purchase = 1 and TRUNC(purdate) >= ADD_MONTHS(TRUNC(SYSDATE), -1)
-	</select>			
+	</select>
+	
+	<!-- 광고 신청 내역 -->
+	<select id="selectcommercial">
+	    select * from commercials where companyid = #{companyid}
+	</select>
+
+	<!-- 광고 신청 -->
+	<insert id="insertCommercial" parameterType="test.spring.mvc.bean.CommercailDTO">
+	    insert into commercials (NUM, COMNAME, COMPANYID, COMFILE, ADMINCHECK, STARTDATE, ENDDATE)
+	    values (com_seq.NEXTVAL, #{comname}, #{companyid}, #{comfile}, 0, #{startdate}, #{enddate})
+	</insert>
+	
+	<!-- 광고 취소 -->
+	<delete  id = "commdelect">
+    	delete from commercials where num = ${num}
+	</delete >
+	
+	<!-- 광고 내역 -->
+	<select id = "commercial"  parameterType="test.spring.mvc.bean.CommercailDTO">
+		select * from commercials where num = ${num}
+	</select>
+	
+	<!-- 광고 수정 -->
+	<update id="commupdate" parameterType="test.spring.mvc.bean.CommercailDTO">
+	    update commercials
+	    set comname = #{comname},
+	        startdate = #{startdate},
+	        enddate = #{enddate},
+	        comfile = CASE WHEN #{comfile} IS NOT NULL THEN #{comfile} ELSE comfile END
+	    where num = #{num}
+	</update>
+
 </mapper>

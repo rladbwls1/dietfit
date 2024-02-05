@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
 
 public interface SellerSaleMapper {
@@ -28,4 +29,19 @@ public interface SellerSaleMapper {
 	public Integer todayFee(@Param("companyid") String companyid);
 	public Integer weeklyFee(@Param("companyid") String companyid);
 	public Integer monthlyFee(@Param("companyid") String companyid);
+	
+	// ±¤°í ½ÅÃ» 
+	public void insertCommercial(CommercailDTO commercial);
+	
+	// ±¤°í ½ÅÃ»³»¿ª
+	public List<CommercailDTO> selectcommercial(String companyid);
+	
+	// ±¤°í Ãë¼Ò
+	public void commdelect (@Param("num") int num);
+	
+	// ±¤°í ³»¿ª¼­
+	public CommercailDTO commercial(@Param("num") int num);
+	
+	// ±¤°í ¼öÁ¤
+	public int commupdate(CommercailDTO cdto);
 }

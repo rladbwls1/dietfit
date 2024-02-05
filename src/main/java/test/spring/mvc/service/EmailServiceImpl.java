@@ -1,6 +1,5 @@
 package test.spring.mvc.service;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -13,10 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import test.spring.mvc.bean.ProductDTO; // ProductDTO를 import 추가
 import test.spring.mvc.repository.AdminMapper;
 
 @Service
@@ -49,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
         String companyemail = mapper.getCompanyEmail(companyid);
         String productName = mapper.getProductName(companyid, category, category2, flavor);
         String productId = mapper.getProductId(productName);
-        int stock = mapper.getProductStock(productName);
+        int stock = mapper.getStock(productName);
 
         String subject = "Dietfit입니다. 재고수량 관련 메일 드립니다.";
         String text = "<div>"

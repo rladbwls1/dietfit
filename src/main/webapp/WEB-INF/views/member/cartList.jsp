@@ -51,8 +51,10 @@
 <c:set var="i" value="${i+1 }"/>
 
 </c:forEach>
-<tr><td></td> <td colspan="3">총 가격 : <span id="amout">0</span></td>
-<td colspan="2"><button type="button">주문하기</button></td></tr>
+<tr><td></td> 
+<td colspan="1">총 상품 : <span id="totalQuantity"> 0</span></td>
+<td colspan="1">총 가격 : <span id="amout">0</span></td>
+<td colspan="2"><button type="button" onclick="toOrder()">주문하기</button></td></tr>
 </table>
 </c:if>
 </body>

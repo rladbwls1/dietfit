@@ -58,6 +58,36 @@
 		select * from all_product order by companyid asc
 	</select>
 	
+	<select id="stocklesscount" resultType="int">
+	<![CDATA[
+		select count(*) from all_product where stock < #{stock}
+	]]>
+	</select>
+	
+	<select id="stockless" resultType="test.spring.mvc.bean.ProductDTO">
+	<![CDATA[
+		select * from all_product where stock < #{stock} order by companyid asc
+	]]>
+	</select>
+	<select id ="getStock" resultType="int">
+		select stock from all_product where product =#{product}
+	</select>
+	
+	<select id="getCompanyid" resultType="String">
+		select companyid from all_product where product=#{productname}
+	</select>
+	<select id="getCategory" resultType="String">
+		select category from all_product where product=#{productname}
+	</select>
+	
+	<select id="getCategory2" resultType="String">
+		select category2 from all_product where product=#{productname}
+	</select>
+	
+	<select id="getFlavor" resultType="String">
+		select flavor from all_product where product=#{productname}
+	</select>
+	
 	<select id="productcount" resultType="int">
 		select count(*) from all_product where companyid = #{companyid}
 	</select>
@@ -77,13 +107,9 @@
     <select id="getProductId" resultType="String">
     	select companyid||category||category2||flavor from all_product where product=#{product}
     </select>
-    <select id="getProductStock" resultType="int">
-    	select stock from all_product where product=#{product}
-    </select>
 
     <select id="getCompanyEmail" parameterType="String" resultType="String">
     	select mb.email from member_basic mb, member_detail md 
    			where mb.id = md.id and companyid= #{companyid}
     </select>
-    
 </mapper>

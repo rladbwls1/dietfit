@@ -29,6 +29,9 @@
 
         <!-- Template Stylesheet -->
         <link href="/resources/css/style.css" rel="stylesheet">
+        
+        <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+      		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
     </head>
 
     <body>
@@ -46,6 +49,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="mailto:dietfitdie@gmail.com" class="text-white">dietfitdie@gmail.com</a></small>
+                        <div id="kakao-talk-channel-add-button"></div>
                     </div>
                     <div class="top-link pe-2">
                         <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
@@ -65,6 +69,7 @@
                             <a href="index.html" class="nav-item nav-link active">Home</a>
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
                             <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <a href="survey" class="nav-item nav-link">나의식단</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -74,7 +79,7 @@
                                     <a href="404.html" class="dropdown-item">404 Page</a>
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -118,8 +123,8 @@
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
                     <div class="col-md-12 col-lg-7">
-                        <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
-                        <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
+                        <h4 class="mb-3 text-secondary">DIETFIT</h4>
+                        <h1 class="mb-5 display-3 text-primary">Healthy But Delicious Diet Food</h1>
                         <div class="position-relative mx-auto">
                             <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
                             <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
@@ -1162,14 +1167,12 @@
                             <a class="btn-link" href="">International Orders</a>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                     <div class="col-lg-3 col-md-6">
                         <div class="footer-item">
                             <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address: 1429 Netus Rd, NY 48247</p>
-                            <p>Email: Example@gmail.com</p>
-                            <p>Phone: +0123 4567 8910</p>
-                            <p>Payment Accepted</p>
-                            <img src="img/payment.png" class="img-fluid" alt="">
+                            <p>Address: 서울특별시 관악구 남부순환로 1820</p>
+                            <p>Email: dietfitdie@gmail.com</p>
+                            <p>KakaoTalk: Dietfit </p>
                         </div>
                     </div>
                 </div>
@@ -1211,6 +1214,17 @@
 
     <!-- Template Javascript -->
     <script src="/resources/js/main.js"></script>
+    <script type="text/javascript">
+      // 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init('ce765a4e5047770d03e8b69f53f43139');
+      // 채널 추가하기 버튼을 생성합니다.
+      Kakao.Channel.createAddChannelButton({
+        container: '#kakao-talk-channel-add-button',
+        channelPublicId: '_GCliG',
+        size: 'small',
+        supportMultipleDensities: true,
+      });
+    </script>
     </body>
 
 </html>

@@ -22,4 +22,5 @@ public class AllcouponDTO {
 	private int admincheck;
 	private int minprice;
 	private String content;
+	private int onstatus;
 }

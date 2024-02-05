@@ -36,7 +36,19 @@
         </tr>
         <tr>
             <td>배송정보:</td>
-            <td>${product.delivery}</td>
+            <td>
+			    <c:choose>
+			        <c:when test="${product.delivery == 0}">
+			            일반배송, 정기배송
+			        </c:when>
+			        <c:when test="${product.delivery == 1}">
+			            일반배송
+			        </c:when>
+			        <c:otherwise>
+			            기타 배송 옵션
+			        </c:otherwise>
+			    </c:choose>
+			</td>
         </tr>
         <tr>
             <td>조회수:</td>
