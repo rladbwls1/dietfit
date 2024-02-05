@@ -23,7 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.Seller1Mapper;
+import test.spring.mvc.repository.SellerMapper;
 import test.spring.mvc.service.Seller1Service;
+import test.spring.mvc.service.SellerService;
 
 @Controller
 @RequestMapping("/seller/**")
@@ -259,6 +261,7 @@ public class Seller1Controller {
 	                             RedirectAttributes redirectAttributes,
 	                             Model model,
 	                             HttpServletRequest request) {
+ 		 System.out.println(companyid);
 	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
          // 상품 및 관련 이미지 삭제
          service.deleteProduct(companyid, category, category2, flavor);
