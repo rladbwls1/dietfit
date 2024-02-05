@@ -181,8 +181,9 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/sellerstock")
-	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
+	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model, String productname) {
 	    model.addAttribute("productId", productId);
+	    
 	    if (productId != null && productId.length() >= 8) {
 	        // 앞에서부터 2글자씩 잘라내어 각 변수에 저장
 	        String companyid = productId.substring(0, 2).trim();
@@ -211,8 +212,6 @@ public class SellerController {
 	}
 	@RequestMapping("/addStock")
 	public String addStock(ProductDTO productdto) {
-		System.out.println(productdto.getCompanyid());
-		
 		service.sellerstockupdate(productdto);
 		return "redirect:/seller/mypage";
 	}

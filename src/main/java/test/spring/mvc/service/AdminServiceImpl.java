@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -32,7 +33,6 @@ public class AdminServiceImpl implements AdminService{
 	 
 	@Autowired
 	private AdminMapper mapper;
-	
 	
 	@Override
 	public int companycount() {
@@ -128,6 +128,54 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
+	public int stocklesscount(int stock) {
+		return mapper.stocklesscount(stock);
+	}
+	
+	@Override
+	public void stockless(Model model, int stock) {
+		int stocklesscount = mapper.stocklesscount(stock);
+		List<ProductDTO> stockless = Collections.EMPTY_LIST;
+		stockless = mapper.stockless(stock);
+		
+		model.addAttribute("stocklesscount", stocklesscount);
+		model.addAttribute("stockless", stockless);
+	}
+	
+	@Override
+	public void checkstock(String product) {
+		for(String productname:product.split(",")) {
+				try {
+					String companyid = mapper.getCompanyid(productname);
+					String category = mapper.getCategory(productname);
+					String category2 = mapper.getCategory2(productname);
+					String flavor = mapper.getFlavor(productname);
+					eservice.sendMail(companyid, category, category2, flavor);
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			}
+		
+	}
+	
+//	@Override
+//	@Scheduled(cron = "0 0 10 * * ?")
+//	public void checkStock() {
+//		List<ProductDTO> allProduct = mapper.allProduct();
+//		for(ProductDTO product : allProduct) {
+//			int stock = mapper.getProductStock(product.getProduct());
+//			
+//			if(stock < 20) {
+//				try {
+//					eservice.sendMail(product.getCompanyid(), product.getCategory(), product.getCategory2(), product.getFlavor());
+//				} catch (MessagingException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//	}
+
+	@Override
 	public int productcount(String companyid) {
 		return mapper.productcount(companyid);
 	}
@@ -141,22 +189,6 @@ public class AdminServiceImpl implements AdminService{
 		model.addAttribute("productcount", productcount);
 	}
 
-	@Override
-	@Scheduled(cron = "0 0 10 * * ?")
-	public void checkStock() {
-		List<ProductDTO> allProduct = mapper.allProduct();
-		for(ProductDTO product : allProduct) {
-			int stock = mapper.getProductStock(product.getProduct());
-			
-			if(stock < 20) {
-				try {
-					eservice.sendMail(product.getCompanyid(), product.getCategory(), product.getCategory2(), product.getFlavor());
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 
 	@Override
 	public void getProductName(String companyid, String category, String category2, String flavor, Model model) {
@@ -166,18 +198,17 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 
-	@Override
-	public void getProductStock(String product, Model model) {
-		int stock = mapper.getProductStock(product);
-		model.addAttribute("stock", stock);
-	}
+//	@Override
+//	public void getProductStock(String product, Model model) {
+//		int stock = mapper.getProductStock(product);
+//		model.addAttribute("stock", stock);
+//	}
 
 	@Override
 	public String getCompanyEmail(String companyid) {
 		return mapper.getCompanyEmail(companyid);
 	}
 
-	
 
 	
 
