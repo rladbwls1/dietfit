@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>정보 수정</title>
 <script src="/resources/js/findIdPw.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -38,9 +38,6 @@ ${id }</td></tr>
 <tr><td>이메일</td><td>
 <input type="text" name="email" id="email" value="${email}" />
 <button type="button" onclick="toChangeEmail()">이메일 변경</button></td></tr>
-
-<tr><td colspan="2">아래 우편번호,주소,상세주소는 지울 예정</td></tr>
-
 <tr><td>우편번호</td><td>
 <input type="text" id="sample6_postcode" name="postnum" placeholder="우편번호" value="${member.get('POSTNUM')}" >
 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"></td></tr>

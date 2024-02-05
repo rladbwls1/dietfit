@@ -112,5 +112,4 @@
     	select mb.email from member_basic mb, member_detail md 
    			where mb.id = md.id and companyid= #{companyid}
     </select>
-    
 </mapper>

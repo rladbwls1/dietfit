@@ -220,7 +220,7 @@ function deleteUserself(){
 	fff.submit();	
 }
 function toUserDelivery(){
-	window.open("userDelivery","배송지 설정", "width = 400, height = 200, top = 100, left = 200, location = no");
+	window.open("userDelivery","배송지 설정", "width = 600, height = 800, top = 100, left = 200, location = no");
 }
 
 //changeEmail@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
