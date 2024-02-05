@@ -23,6 +23,7 @@
 		</label><br>
 			<input type="hidden" name="orderid" value="${orderid}">
 			<input type="hidden" name="companyid" value="${companyid}">
+			<input type="hidden" name="memberid" value="${memberid}">
 			<input type="submit"  value="등록">
 			
 		</form>
