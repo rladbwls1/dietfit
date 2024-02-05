@@ -10,4 +10,6 @@ public class DeliveryDTO {
 	private String phone;
 	private int defaultaddr;
 	private String nicaddr;
+	private String postnum;
+	private String receiver;
 }

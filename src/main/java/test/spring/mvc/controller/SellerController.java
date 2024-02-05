@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,28 +74,41 @@ public class SellerController {
 	
 	@RequestMapping("/mypage")
 	public String mypage(Principal pri, Model model) {
-		model.addAttribute("id", pri.getName());
-		return "/seller2/mypage";
+	    String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+
+	    String companyid = service.findcompanyid(id);
+	    model.addAttribute("companyid", companyid);
+
+	    return "/seller2/mypage";
 	}
+
 	
 	@RequestMapping("/SELLERCHAT")
-	public String SELLERCHAT(Principal pri, Model model, int roomnum)throws Exception {
-		String sellerid = pri.getName();
-		String product = service.findallbyroomnum(roomnum);
-	      String path = "D://chat//" + roomnum + ".txt";
-	      File file = new File(path);
-	      if(file.isFile()) {
-	    	  Scanner s = new Scanner(file);
-	    	  String chat = "";
-	    	  while(s.hasNextLine()) {
-	    		  chat += (s.nextLine()+"<br>");
-	    	  }
-	    	  model.addAttribute("chat",chat);
-	      }
+	public String SELLERCHAT(Principal pri, Model model, int roomnum, HttpServletRequest request) throws Exception {
+	    String sellerid = pri.getName();
+	    String product = service.findallbyroomnum(roomnum);
+
+	    // 서버의 실제 경로를 얻습니다.
+	    ServletContext servletContext = request.getServletContext();
+	    String realPath2 = servletContext.getRealPath("/resources/chat/");
+	    String realPath = realPath2 + roomnum+".txt";
+
+	    File file = new File(realPath);
+
+	    if (file.isFile()) {
+	        Scanner s = new Scanner(file);
+	        String chat = "";
+	        while (s.hasNextLine()) {
+	            chat += (s.nextLine() + "<br>");
+	        }
+	        model.addAttribute("chat", chat);
+	    }
+
 	    model.addAttribute("product", product);
-		model.addAttribute("sellerid", sellerid);
-		model.addAttribute("roomnum",roomnum);
-		return "/seller2/SELLERCHAT";
+	    model.addAttribute("sellerid", sellerid);
+	    model.addAttribute("roomnum", roomnum);
+	    return "/seller2/SELLERCHAT";
 	}
 	
 	@RequestMapping("/sellerchatlist")
@@ -165,8 +181,9 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/sellerstock")
-	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
+	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model, String productname) {
 	    model.addAttribute("productId", productId);
+	    
 	    if (productId != null && productId.length() >= 8) {
 	        // 앞에서부터 2글자씩 잘라내어 각 변수에 저장
 	        String companyid = productId.substring(0, 2).trim();
@@ -195,8 +212,6 @@ public class SellerController {
 	}
 	@RequestMapping("/addStock")
 	public String addStock(ProductDTO productdto) {
-		System.out.println(productdto.getCompanyid());
-		
 		service.sellerstockupdate(productdto);
 		return "redirect:/seller/mypage";
 	}

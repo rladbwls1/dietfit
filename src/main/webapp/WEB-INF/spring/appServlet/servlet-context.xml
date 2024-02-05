@@ -48,6 +48,8 @@
 		<beans:property name="uploadTempDir" value="file:/C:/upload/temp"/>
 	</beans:bean>
 	
-	<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat" />
+	<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat">
+		<beans:property name="realPath" value="D:\spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\dietfit\resources\chat\" />
+	</beans:bean>
 	
 </beans:beans>
