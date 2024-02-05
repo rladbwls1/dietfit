@@ -32,6 +32,7 @@ import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
@@ -460,7 +461,21 @@ public class MemberServiceImpl implements MemberService{
 		mapper.checkUsableCoupon(id);
 		return mapper.getUserCoupon(id);
 	}
-	
+
+	@Override
+	public void getUserOrder(String id,Model model) {
+		List<OrderdetailDTO> list=mapper.getUserOrder(id);
+		ProductDTO dto=new ProductDTO();
+		for(OrderdetailDTO odto:list) {
+			String productid=odto.getProductid();
+			dto.setCompanyid(productid.substring(0,2));
+			dto.setCategory(productid.substring(2,4));
+			dto.setCategory2(productid.substring(4,6));
+			dto.setFlavor(productid.substring(6,8));
+			odto.setProduct(mapper.getProductnameByProductcode(dto));
+		}
+		model.addAttribute("list",list);
+	}
 	
 	
 	

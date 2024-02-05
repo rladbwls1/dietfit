@@ -232,6 +232,16 @@
 	<select id="getUserCoupon" resultType="test.spring.mvc.bean.CouponDTO">
 		select * from ${id}_coupon where status=0
 	</select>
+	<!-- 유저 주문 정보 가져오기 -->
+	<select id="getUserOrder" resultType="test.spring.mvc.bean.OrderdetailDTO">
+		select * from ${id}_orderdetail order by purdate desc
+	</select>
+	<!-- 상품 코드로 상품명 검색 -->
+	<select id="getProductnameByProductcode">
+		select product from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor} 
+	</select>
+	
+	
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
@@ -298,7 +308,8 @@
 			PURCHASE number default 0 not null,
 			PRODUCTID varchar2(100),
 			TRACKING varchar2(100),
-			COURIER varchar2(100)
+			COURIER varchar2(100),
+			MEMBERID varchar2(100) not null
 		)
 	</update>
 	

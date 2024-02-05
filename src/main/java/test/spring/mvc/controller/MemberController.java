@@ -359,6 +359,12 @@ public class MemberController {
 		model.addAttribute("list",service.getUserCoupon(pri.getName()));
 		return "member/myCoupon";
 	}
+	//주문,배송
+	@RequestMapping("myOrder")
+	public String myOrder(Principal pri,Model model) {
+		service.getUserOrder(pri.getName(),model);
+		return "member/myOrder";
+	}
 	
 	
 }

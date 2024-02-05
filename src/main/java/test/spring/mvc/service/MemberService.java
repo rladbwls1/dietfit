@@ -87,4 +87,7 @@ public interface MemberService {
 	public void downloadCoupon(String id,CouponDTO cdto);
 	//유저 쿠폰 불러오기 ( 기간 만료된 건 만료 처리해줌)
 	public List<CouponDTO> getUserCoupon(String id);
+	//유저 주문/배송 정보 가져오기 
+	public void getUserOrder(String id,Model model);
+
 }

@@ -42,3 +42,10 @@ function checkNicaddr(){
 		return false;
 	}
 }
+
+//------------------------------------------------myOrder
+function toOderDetail(orderid,memberid){
+	
+	
+	
+}
