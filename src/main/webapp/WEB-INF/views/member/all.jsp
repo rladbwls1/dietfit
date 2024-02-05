@@ -7,15 +7,10 @@
      
 <h1>사용자외 모두 </h1>
 
-
-
 <sec:authorize access="isAnonymous()">
 <input type="button" value="로그인" onclick="javascript:window.location='/member/customLogin'">
 
-
-
 </sec:authorize>
-
 
 <sec:authorize access="isAuthenticated()">
 <form action="/logout" method="post">
