@@ -3,6 +3,7 @@ package test.spring.mvc.service;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 
@@ -217,6 +219,30 @@ public class AdminServiceImpl implements AdminService{
         return datePart + String.format("%05d", (int) (Math.random() * 100000));
     }
 
+	@Override
+	public List<String> findproductId(String id, String nums) {
+		String[] numsArray = nums.split(",");
+        List<Integer> numsList = new ArrayList<>();
+        for (String num : numsArray) {
+            numsList.add(Integer.parseInt(num.trim()));
+        }
+
+        List<String> productIds = new ArrayList<>();
+        for (int productNum : numsList) {
+            String product = mapper.findproduct(id, productNum);
+            String productId = mapper.getProductId(product);
+            productIds.add(productId);
+        }
+        return productIds;
+    }
+
+	@Override
+	public void createOrder(String id, OrderdetailDTO orderdetail) {
+		mapper.memberOrderDetail(id, orderdetail);
+	}
+
+	
+	
 	
 	
 }

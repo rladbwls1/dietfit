@@ -51,7 +51,7 @@ public interface AdminMapper {
 	public int detailCount();
 	public List<ProductinfoDTO> allProductDetail();
 	
-	public void memberOrderDetail(OrderdetailDTO orderdetail);
-	
+	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
+	public String findproduct(@Param("id") String id, @Param("num") int num);
 
 }

@@ -19,6 +19,7 @@ ${nums }
         
 	<p>배송지 - delivery 테이블</p>
 	<p>주문상품 - orderdetail 테이블</p>
+	주문번호 : ${orderid }
 	상품명 : 
 	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
@@ -28,10 +29,11 @@ ${nums }
 	
 	<h4>결제금액</h4>
 	<p>총 상품 : ${quantity } 개 </p>
-	<p>상품금액:  ${amount }   원 </p>
+	<p>상품금액:  ${price }   원 </p>
 	<p>배송비:      원</p>
-	<p>할인금액:(-)     원 </p>
+	<p>할인금액:(-)  ${discount }   원 </p>
 	<b>총 결제금액 </b>
+	
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >

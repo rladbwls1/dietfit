@@ -115,12 +115,15 @@
     
     <!-- 결제.. 주문번호 생성 및 DB삽입 -->
     <insert id="memberOrderDetail" parameterType="test.spring.mvc.bean.OrderdetailDTO">
-    	INSERT INTO your_table (
+    	INSERT INTO ${id}_orderdetail (
 		    orderid, price, quantity, discount, purdate,
-		    pay, purchase, productid, product, tracking, courier
+		    pay, purchase, productid, memberid
 		) VALUES (
-		    #{orderid}, #{price}, #{quantity}, #{discount}, #{purdate},
-		    #{pay}, #{purchase}, #{productid}, #{product}, #{tracking}, #{courier}
+		    #{orderdetail.orderid}, #{orderdetail.price}, #{orderdetail.quantity}, #{orderdetail.discount}, #{orderdetail.purdate},
+		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
 		);
 	</insert>
+	<select id="findproduct" resultType="String">
+		select product from ${id}_cart where num =#{num}
+	</select>
 </mapper>

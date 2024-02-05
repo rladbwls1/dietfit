@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -161,14 +162,28 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(String nums, Model model, Integer amout, Integer totalQuantity) {
-	    
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity) {
+		String id = pri.getName();
+		String orderid = aservice.generateOrderId();
+		List<String> productIdList = aservice.findproductId(id, nums);
+		for(String productId: productIdList) {
+		    OrderdetailDTO orderdetail = new OrderdetailDTO();
+		    orderdetail.setOrderid(orderid);
+		    orderdetail.setPurdate(new Date());
+		    orderdetail.setQuantity(totalQuantity);
+		    orderdetail.setPrice(amout);
+		    orderdetail.setDiscount(0); //할인정보
+		    orderdetail.setPay(10); //카카오페이
+	    	orderdetail.setProductid(productId);
+	    	orderdetail.
+	    	aservice.createOrder(id, orderdetail);
+	    }
 		model.addAttribute("nums",nums);
+		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
-		model.addAttribute("orderid", aservice.generateOrderId());
 		return "admin/order";
 	}
 	

@@ -1,5 +1,7 @@
 package test.spring.mvc.service;
 
+import java.util.List;
+
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
@@ -37,6 +39,8 @@ public interface AdminService {
 		
 		//주문번호
 		public String generateOrderId();
+		public List<String> findproductId(String id, String nums);
+		public void createOrder(String id, OrderdetailDTO orderdetail);
 		
 		
 }
