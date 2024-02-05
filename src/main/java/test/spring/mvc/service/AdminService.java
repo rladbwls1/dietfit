@@ -1,5 +1,6 @@
 package test.spring.mvc.service;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.ui.Model;
@@ -38,7 +39,7 @@ public interface AdminService {
 		public String getCompanyEmail(String companyid);
 		
 		//주문번호
-		public String generateOrderId();
+		public String generateOrderId(Principal pri);
 		public List<String> findproductId(String id, String nums);
 		public void createOrder(String id, OrderdetailDTO orderdetail);
 		

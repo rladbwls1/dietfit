@@ -106,6 +106,10 @@
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
     	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
     </select>
+    <!-- 조회수 올리기 -->
+    <update id="countUp">
+    	update all_product set count=count+1 where companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2}
+    </update>
 	<!-- 관심상품에 상품 하나 추가하기 -->
 	<insert id="addWishOne">
 		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')
@@ -203,10 +207,31 @@
 	<delete id="deleteDelivery">
 		delete from ${id}_delivery where nicaddr=#{nicaddr}
 	</delete>
-	
-	
-	
-	
+ 	<!-- 쿠폰 -->
+    <select id="couponcount" resultType="int">
+    	select count(*) from allcoupon where deletedate > sysdate 
+    </select>
+    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	select * from allcoupon where deletedate > sysdate
+    </select>
+    <!-- 유저가 갖고있는 쿠폰의 쿠폰번호 가져오기 -->
+    <select id="getUserCouponid">
+    	select couponid from ${id}_coupon
+    </select>
+    <!-- 쿠폰 다운로드 -->
+    <insert id="downloadCoupon">
+    	insert into ${id}_coupon (coupon,couponid,CREATEDATE,DELETEDATE,STATUS) values (#{cdto.coupon},#{cdto.couponid},#{cdto.createdate},#{cdto.deletedate},#{cdto.status})
+    </insert>
+	<!-- 만료된 쿠폰 만료처리 -->
+	<update id="checkUsableCoupon">
+	<![CDATA[	
+		update ${id}_coupon set status=99 where deletedate < sysdate
+	]]>
+	</update>
+	<!-- 유저 쿠폰 가져오기 -->
+	<select id="getUserCoupon" resultType="test.spring.mvc.bean.CouponDTO">
+		select * from ${id}_coupon where status=0
+	</select>
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
@@ -229,6 +254,7 @@
 		create table ${id}_coupon(
 			num number default ${id}_coupon_seq.nextval primary key,
 			coupon varchar2(100) not null,
+			couponid varchar2(100) not null,
 			CREATEDATE date not null,
 			DELETEDATE date not null,
 			STATUS number not null
@@ -288,18 +314,12 @@
 		)
 	</update>
 	
-	
-
  	<select id="findall">
  		select * from all_product
  	</select>
- 	
- 	<!-- 쿠폰 -->
-    <select id="couponcount" resultType="int">
-    	select count(*) from allcoupon where deletedate > sysdate 
-    </select>
-    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
-    	select * from allcoupon where deletedate > sysdate
-    </select>
+	
+	
+
+
 	
 </mapper>

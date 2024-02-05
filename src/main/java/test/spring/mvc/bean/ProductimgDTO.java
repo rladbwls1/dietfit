@@ -12,4 +12,5 @@ public class ProductimgDTO {
 	private String ext;			// 이미지 파일 확장자
 	private int thum;			// 썸네일 
 	private String fileName;	// 파일 이름
+	private int isfile;			// 이미지 개수
 }

@@ -164,20 +164,20 @@ public class DietfitController {
 	@RequestMapping("order")
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity) {
 		String id = pri.getName();
-		String orderid = aservice.generateOrderId();
-		List<String> productIdList = aservice.findproductId(id, nums);
-		for(String productId: productIdList) {
-		    OrderdetailDTO orderdetail = new OrderdetailDTO();
-		    orderdetail.setOrderid(orderid);
-		    orderdetail.setPurdate(new Date());
-		    orderdetail.setQuantity(totalQuantity);
-		    orderdetail.setPrice(amout);
-		    orderdetail.setDiscount(0); //할인정보
-		    orderdetail.setPay(10); //카카오페이
-	    	orderdetail.setProductid(productId);
-	    	orderdetail.
-	    	aservice.createOrder(id, orderdetail);
-	    }
+		String orderid = aservice.generateOrderId(pri);
+//		List<String> productIdList = aservice.findproductId(id, nums);
+//		for(String productId: productIdList) {
+//		    OrderdetailDTO orderdetail = new OrderdetailDTO();
+//		    orderdetail.setOrderid(orderid);
+//		    orderdetail.setPurdate(new Date());
+//		    orderdetail.setQuantity(totalQuantity);
+//		    orderdetail.setPrice(amout);
+//		    orderdetail.setDiscount(0); //할인정보
+//		    orderdetail.setPay(10); //카카오페이
+//	    	orderdetail.setProductid(productId);
+//	    	orderdetail.setMemberid(id);
+//	    	aservice.createOrder(id, orderdetail);
+//	    }
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
@@ -188,7 +188,8 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("kakaopaygo")
-	public @ResponseBody String kakaopaygo(@RequestParam String partner_order_id,
+	public @ResponseBody String kakaopaygo(Principal pri, String nums, 
+			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
@@ -196,6 +197,27 @@ public class DietfitController {
 	        @RequestParam Integer tax_free_amount) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
+		
+		//orderdetail DTO 저장
+		String id = pri.getName();
+		String orderid = partner_order_id;
+		List<String> productIds = aservice.findproductId(id, nums);
+		System.out.println(productIds);
+		for(String productId: productIds) {
+		    OrderdetailDTO orderdetail = new OrderdetailDTO();
+		    orderdetail.setOrderid(orderid);
+		    orderdetail.setPurdate(new Date());
+		    orderdetail.setQuantity(quantity);
+		    orderdetail.setPrice(total_amount);
+		    orderdetail.setDiscount(0); //할인정보
+		    orderdetail.setPay(10); //카카오페이
+	    	orderdetail.setProductid(productId);
+	    	orderdetail.setMemberid(id);
+	    	
+	    	System.out.println("OrderdetailDTO 정보: " + orderdetail);
+	    	
+	    	aservice.createOrder(id, orderdetail);
+	    }
 		
 		try {
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");

@@ -121,8 +121,11 @@
 		) VALUES (
 		    #{orderdetail.orderid}, #{orderdetail.price}, #{orderdetail.quantity}, #{orderdetail.discount}, #{orderdetail.purdate},
 		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
-		);
+		)
 	</insert>
+	<select id="findOrderId" resultType="int">
+		select count(*) from ${id}_orderdetail where orderid = #{orderid}
+	</select>
 	<select id="findproduct" resultType="String">
 		select product from ${id}_cart where num =#{num}
 	</select>

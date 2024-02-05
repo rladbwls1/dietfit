@@ -38,7 +38,8 @@ ${nums }
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
-		<input type="hidden" name="partner_order_id" value="${orderid }" />
+		<input type="hidden" name="nums" value="${nums }"/>
+		<input type="text" name="partner_order_id" value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
         <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
         <input type="hidden" name="quantity" value="${quantity }" />

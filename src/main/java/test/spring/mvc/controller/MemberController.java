@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -339,12 +340,24 @@ public class MemberController {
 		service.deleteDelivery(pri.getName(),nicaddr);
 		return "bye";
 	}
-	
 	//쿠폰 다운로드 함
 	@RequestMapping("coupondownload")
-	public String coupondownload(Model model) {
+	public String coupondownload(Model model,Principal pri) {
 		service.couponList(model);
+		model.addAttribute("userList",mapper.getUserCouponid(pri.getName()));
 		return "admin/coupon/couponList";
+	}
+	@RequestMapping("coupondownloadPro")
+	public String coupondownloadPro(CouponDTO cdto,Principal pri) {
+			cdto.setStatus(0);
+			service.downloadCoupon(pri.getName(),cdto);
+		return "redirect:/member/coupondownload";
+	}
+	//내 쿠폰함
+	@RequestMapping("myCoupon")
+	public String myCoupon(Principal pri,Model model) {
+		model.addAttribute("list",service.getUserCoupon(pri.getName()));
+		return "member/myCoupon";
 	}
 	
 	

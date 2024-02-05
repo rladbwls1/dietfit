@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
@@ -28,6 +29,7 @@ import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.service.Seller1Service;
 import test.spring.mvc.service.SellerService;
 
 
@@ -37,6 +39,14 @@ public class SellerController {
 	
 	@Autowired
 	private SellerService service;
+	@Autowired
+	private Seller1Service service2;
+	
+	@RequestMapping("/home")
+	public String home() {
+		return "sellermain";
+	}
+	
 	
 	@RequestMapping("/store/home")
 	public String main() {
@@ -76,10 +86,8 @@ public class SellerController {
 	public String mypage(Principal pri, Model model) {
 	    String id = pri.getName(); // 현재 사용자의 ID
 	    model.addAttribute("id", id);
-
 	    String companyid = service.findcompanyid(id);
 	    model.addAttribute("companyid", companyid);
-
 	    return "/seller2/mypage";
 	}
 
@@ -128,6 +136,7 @@ public class SellerController {
 	
 	@RequestMapping("/chatreportpro")
 	public String chatreportpro(ChatreportDTO chatreportdto,int roomnum) {
+		
 		service.chatreport(chatreportdto);
 		service.chatreportdelete(roomnum);
 		return "/seller2/chatreportpro";
@@ -139,7 +148,8 @@ public class SellerController {
 		return "/seller2/productdiscount";
 	}
 	@RequestMapping("/discountForm")
-	public String discountForm(int num, Model model) {
+	public String discountForm(int num, Model model,Principal pri) {
+		model.addAttribute("id", pri.getName());
 		model.addAttribute("num",num);
 		return "/seller2/discountForm";
 	}
@@ -148,7 +158,8 @@ public class SellerController {
     public String addDiscount(@RequestParam("start") String start,
                               @RequestParam("end") String end,
                               @RequestParam("sale") int sale,
-                              @RequestParam("num") String num) {
+                              @RequestParam("num") String num,
+                              Principal pri, Model model) {
         DiscountDTO discountDTO = new DiscountDTO();
         discountDTO.setNum(Integer.parseInt(num));
      // 문자열을 Date로 변환
@@ -166,7 +177,8 @@ public class SellerController {
 
         // 할인 정보를 데이터베이스에 추가
         service.updatediscount(discountDTO);
-        
+        String id = pri.getName();
+		model.addAttribute("id", id);
         return "redirect:/seller/productdiscount";
     }
 	@RequestMapping("/modify")
@@ -206,14 +218,40 @@ public class SellerController {
 	}
 
 	@RequestMapping("/modifyPro")
-	public String modifyPro(Member_basicDTO Member_basicDTO) {
+	public String modifyPro(Principal pri, Model model, Member_basicDTO Member_basicDTO) {
+		String id = pri.getName();
+		model.addAttribute("id", id);
 		service.sellermodifyupdate(Member_basicDTO);
 		return "/seller2/mypage";
 	}
 	@RequestMapping("/addStock")
-	public String addStock(ProductDTO productdto) {
+	public String addStock(Principal pri, Model model, ProductDTO productdto) {
 		service.sellerstockupdate(productdto);
+		String id = pri.getName();
+		model.addAttribute("id", id);
 		return "redirect:/seller/mypage";
 	}
+	
+	@RequestMapping("/productdelete")
+	 public String deleteProduct(@RequestParam("companyid") String companyid,
+	                             @RequestParam("category") String category,
+	                             @RequestParam("category2") String category2,
+	                             @RequestParam("flavor") String flavor,
+	                             RedirectAttributes redirectAttributes,
+	                             Principal pri,Model model,
+	                             HttpServletRequest request) {
+		System.out.println(companyid);
+		System.out.println(category);
+		System.out.println(category2);
+		System.out.println(flavor);
+	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
+        // 상품 및 관련 이미지 삭제
+        service2.deleteProduct(companyid, category, category2, flavor);
+        service2.deleteProductimg(companyid, category, category2, flavor);
+        service2.fileDelete(companyid, category, category2, flavor,path);
+        redirectAttributes.addFlashAttribute("상품이 성공적으로 삭제되었습니다.");
+        model.addAttribute("companyid", companyid);
+        return "redirect:/seller/store?companyid="+companyid;
+	 }
 }
 

@@ -1,5 +1,6 @@
 package test.spring.mvc.service;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -210,18 +211,29 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public String generateOrderId() {
+	public String generateOrderId(Principal pri) {
         // 여기에서 주문 ID 생성 로직을 구현
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String datePart = dateFormat.format(new Date());
 
-        // 예시: 날짜 + 5자리 랜덤 숫자
-        return datePart + String.format("%05d", (int) (Math.random() * 100000));
+        String id = pri.getName();
+        String orderId;
+        boolean isDuplicate;
+        
+        do {
+        	orderId = datePart + String.format("%04d", (int) (Math.random() * 10000));
+        	isDuplicate = mapper.findOrderId(id, orderId) > 0;
+        } while (isDuplicate);
+        // 예시: 날짜 + 4자리 랜덤 숫자
+        return orderId;
     }
 
 	@Override
 	public List<String> findproductId(String id, String nums) {
-		String[] numsArray = nums.split(",");
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
         List<Integer> numsList = new ArrayList<>();
         for (String num : numsArray) {
             numsList.add(Integer.parseInt(num.trim()));

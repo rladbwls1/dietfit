@@ -89,45 +89,6 @@
 
 	            smallCategory.innerHTML = "작은 카테고리: " + smallCategoryOptions;
 	        }
-	
-	        function fileAdd(type, sectionIdSelector) {
-	            var fileInputDiv = $('<div class="file-input-wrapper"></div>');
-	            var fileInput = $('<input type="file" name="' + type + '" multiple>');
-	            var deleteButton = $('<button type="button">삭제</button>');
-	            var previewDiv = $('<div class="file-preview"></div>');
-
-	            fileInput.on('change', function(event) {
-	                var files = event.target.files;
-	                for (var i = 0; i < files.length; i++) {
-	                    var file = files[i];
-	                    var reader = new FileReader();
-
-	                    reader.onload = function(e) {
-	                        var img = $('<img>').attr('src', e.target.result);
-	                        img.css('width', '100px');
-	                        img.css('height', 'auto');
-	                        previewDiv.append(img);
-	                    };
-
-	                    reader.readAsDataURL(file);
-	                }
-	            });
-
-	            deleteButton.click(function() {
-	                $(this).parent().remove();
-	            });
-
-	            fileInputDiv.append(fileInput).append(deleteButton).append(previewDiv);
-	            $(sectionIdSelector).append(fileInputDiv);
-	        }
-	        function removeImage(wrapperId) {
-	            // 해당 ID를 가진 요소를 찾아서 제거
-	            var element = document.getElementById(wrapperId);
-	            if (element) {
-	                element.style.display = 'none'; // 요소를 숨김 처리
-	                element.remove(); // 요소를 완전히 제거하려면 이 코드 사용
-	            }
-	        }
 	    </script>
 	</head>
 	<body>
@@ -225,32 +186,51 @@
 		                <option value="1" ${product.delivery == '1' ? 'selected' : ''}>일반배송</option>
 		              </select> <br>
 	        <div id="thumbnailSection">
-			    <label>썸네일:</label>
 			    <c:forEach items="${thumimages}" var="thumbImg">
 				    <div class="image-wrapper" id="thumbnailWrapper${thumbImg.num}">
-				        <img src="/resources/p_img/${thumbImg.fileName}" alt="Thumbnail" class="preview-image"/>
-				        <button type="button" onclick="removeImage('thumbnailWrapper${thumbImg.num}')">삭제</button>
 				        <input type="hidden" name="thumfileName" value="${thumbImg.fileName}">
 				        <input type="hidden" name="thumnum" value="${thumbImg.num}">
 				    </div>
 				</c:forEach>
-			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('thumbnail', '#thumbnailSection')">
 			</div>
 			<br>
 			<div id="attachmentsSection">
-			    <label>파일 첨부:</label>
 			    <c:forEach items="${images}" var="img">
 				    <div class="image-wrapper" id="imageWrapper${img.num}">
-				        <img src="/resources/p_img/${img.fileName}" alt="Image" class="preview-image"/>
-				        <button type="button" onclick="removeImage('imageWrapper${img.num}')">삭제</button>
 				        <input type="hidden" name="imgfileName" value="${img.fileName}">
 				        <input type="hidden" name="imgnum" value="${img.num}">
 				    </div>
 				</c:forEach>
-			    <input type="button" class="fileAdd" value="+" onclick="fileAdd('attachments', '#attachmentsSection')">
 			</div>
 			<br>
 	        <input type="submit" value="수정">
 	    </form>
+	    <br />
+	    
+	    <form action="/seller/thumbnailUpdate" method="post">
+		    <input type="hidden" name="companyid" value="${product.companyid}">
+		    <input type="hidden" name="num" value="${product.num}">
+		    <input type="hidden" name="isfile" value="${product.isfile}">
+		    <input type="hidden" name="category" value="${product.category}">
+	        <input type="hidden" name="category2" value="${product.category2}">
+	        <input type="hidden" name="flavor" value="${product.flavor}">
+	    	<button type="submit">썸네일 수정</button>
+		</form>
+		<br>
+		<form action="/seller/productImageUpdate" method="post">
+		    <input type="hidden" name="companyid" value="${product.companyid}">
+		    <input type="hidden" name="num" value="${product.num}">
+		    <input type="hidden" name="isfile" value="${product.isfile}">
+		    <input type="hidden" name="category" value="${product.category}">
+	        <input type="hidden" name="category2" value="${product.category2}">
+	        <input type="hidden" name="flavor" value="${product.flavor}">
+	    	<button type="submit">이미지 수정</button>
+		</form>
 	</body>
 	</html>
+	
+	
+	
+	
+	
+	

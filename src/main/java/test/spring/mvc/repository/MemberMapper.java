@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
@@ -75,6 +76,10 @@ public interface MemberMapper {
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
 							     	  @Param("category2") String category2);
+	//조회수 올리기
+	public void countUp(@Param("companyid") String companyid, 
+	     	  			@Param("category") String category,
+	     	  			@Param("category2") String category2);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
@@ -136,4 +141,12 @@ public interface MemberMapper {
 	//쿠폰
 	public int couponcount();
 	public List<AllcouponDTO> couponList();
+	//유저가 보유한 쿠폰번호 추출
+	public List<String> getUserCouponid(String id);
+	//쿠폰 다운로드
+	public void downloadCoupon(@Param("id")String id, @Param("cdto")CouponDTO cdto);
+	//만료된 쿠폰 만료처리
+	public void checkUsableCoupon(String id);
+	//유저 쿠폰 가져오기
+	public List<CouponDTO> getUserCoupon(String id);
 }
