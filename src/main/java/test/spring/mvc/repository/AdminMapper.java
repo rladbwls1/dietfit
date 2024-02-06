@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
@@ -54,5 +55,8 @@ public interface AdminMapper {
 	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
 	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
 	public String findproduct(@Param("id") String id, @Param("num") int num);
+	public int findPrice(String productid);
+	
+	public DeliveryDTO getUserDelivery9(String id);
 
 }

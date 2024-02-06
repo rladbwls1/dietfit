@@ -253,6 +253,34 @@ public class AdminServiceImpl implements AdminService{
 		mapper.memberOrderDetail(id, orderdetail);
 	}
 
+	@Override
+	public int findprice(String productid) {
+		return mapper.findPrice(productid);
+	}
+	
+	
+
+//	@Override
+//	public List<Integer> findPrices(String id, String nums) {
+//	    String[] numsArray = new String[0];
+//	    if(nums != null) {
+//	        numsArray = nums.split(",");
+//	    }
+//	    List<Integer> numsList = new ArrayList<>();
+//	    for(String num : numsArray) {
+//	        numsList.add(Integer.parseInt(num.trim()));
+//	    }
+//	    List<Integer> productPrices = new ArrayList<>();
+//	    for(int productNum : numsList) {
+//	        int price = mapper.findPrice(id, productNum);
+//	        productPrices.add(price);
+//	    }
+//	    return productPrices;
+//	}
+
+
+	
+
 	
 	
 	

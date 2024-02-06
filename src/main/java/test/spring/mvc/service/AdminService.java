@@ -43,5 +43,7 @@ public interface AdminService {
 		public List<String> findproductId(String id, String nums);
 		public void createOrder(String id, OrderdetailDTO orderdetail);
 		
+		public int findprice(String productid);
+		
 		
 }

@@ -34,6 +34,8 @@ import org.vertx.java.core.json.JsonObject;
 import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
+import test.spring.mvc.repository.AdminMapper;
+import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.SurveyService;
@@ -50,6 +52,12 @@ public class DietfitController {
 	
 	@Autowired
 	private Admin1ServiceImpl aservice1;
+	
+	@Autowired
+	private AdminMapper mapper;
+	
+	@Autowired
+	private MemberMapper mmapper;
 	
 	@RequestMapping("main")
 	public String main() {
@@ -162,22 +170,11 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product) {
 		String id = pri.getName();
 		String orderid = aservice.generateOrderId(pri);
-//		List<String> productIdList = aservice.findproductId(id, nums);
-//		for(String productId: productIdList) {
-//		    OrderdetailDTO orderdetail = new OrderdetailDTO();
-//		    orderdetail.setOrderid(orderid);
-//		    orderdetail.setPurdate(new Date());
-//		    orderdetail.setQuantity(totalQuantity);
-//		    orderdetail.setPrice(amout);
-//		    orderdetail.setDiscount(0); //할인정보
-//		    orderdetail.setPay(10); //카카오페이
-//	    	orderdetail.setProductid(productId);
-//	    	orderdetail.setMemberid(id);
-//	    	aservice.createOrder(id, orderdetail);
-//	    }
+		model.addAttribute("id", id);
+		model.addAttribute("delivery", mapper.getUserDelivery9(id));
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
@@ -186,6 +183,16 @@ public class DietfitController {
 		model.addAttribute("taxfree", taxfree);
 		return "admin/order";
 	}
+	
+	@RequestMapping("orderDelivery")
+	public String orderDelivery(Principal pri, Model model) {
+		model.addAttribute("id",pri.getName());
+		model.addAttribute("list",mmapper.getUserDelivery(pri.getName()));
+		return "admin/orderDelivery";
+	}
+	
+	
+	
 	
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, String nums, 
@@ -202,13 +209,14 @@ public class DietfitController {
 		String id = pri.getName();
 		String orderid = partner_order_id;
 		List<String> productIds = aservice.findproductId(id, nums);
+		
 		System.out.println(productIds);
 		for(String productId: productIds) {
 		    OrderdetailDTO orderdetail = new OrderdetailDTO();
 		    orderdetail.setOrderid(orderid);
 		    orderdetail.setPurdate(new Date());
 		    orderdetail.setQuantity(quantity);
-		    orderdetail.setPrice(total_amount);
+		    orderdetail.setPrice(aservice.findprice(productId));
 		    orderdetail.setDiscount(0); //할인정보
 		    orderdetail.setPay(10); //카카오페이
 	    	orderdetail.setProductid(productId);

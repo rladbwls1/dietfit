@@ -5,9 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="/resources/js/findIdPw.js"></script>
 <script src="/resources/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 
@@ -17,10 +19,22 @@ ${nums }
 
 	<h2>주문/결제</h2>
         
-	<p>배송지 - delivery 테이블</p>
-	<p>주문상품 - orderdetail 테이블</p>
-	주문번호 : ${orderid }
-	상품명 : 
+	<button onclick="toggleDeliveryInfo()">기본 배송지</button>
+		<div id="deliveryInfoDiv" style="display: none;">
+		    <input type="text" name="sample6_postcode" id="sample6_postcode" value="${delivery.postnum}" /> <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br />
+		    <input type="text" name="sample6_address" id="sample6_address" value="${delivery.addr1}"/> <br />
+		    <input type="text" name="sample6_detailAddress" id="sample6_detailAddress" value="${delivery.addr2}"/> <br />
+		</div>
+
+	
+	<button type="button" onclick="toOrderDelivery()">배송지 변경</button>
+	
+	<div id="deliveryPopup" style="display: none;">
+    <!-- 배송지 목록 및 선택 기능을 포함한 코드를 넣어주세요 -->
+</div>
+	
+	<p>주문상품 </p>
+	주문번호 : ${orderid } <br />
 	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
 	<p>쿠폰</p>
@@ -29,7 +43,7 @@ ${nums }
 	
 	<h4>결제금액</h4>
 	<p>총 상품 : ${quantity } 개 </p>
-	<p>상품금액:  ${price }   원 </p>
+	<p>상품금액:  ${amount }   원 </p>
 	<p>배송비:      원</p>
 	<p>할인금액:(-)  ${discount }   원 </p>
 	<b>총 결제금액 </b>
@@ -39,7 +53,7 @@ ${nums }
 	<form id="kakaoPayForm" >
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
-		<input type="text" name="partner_order_id" value="${orderid }" />
+		<input type="hidden" name="partner_order_id" value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
         <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
         <input type="hidden" name="quantity" value="${quantity }" />
@@ -119,6 +133,26 @@ function submitForm() {
     }
 }
 
+
+function toOrderDelivery(){
+	window.open("/dietfit/orderDelivery","배송지", "width = 600, height = 800, top = 100, left = 200, location = no");
+}
+
+function toggleDeliveryInfo() {
+    var deliveryInfoDiv = document.getElementById('deliveryInfoDiv');
+    if (deliveryInfoDiv.style.display === 'none') {
+        deliveryInfoDiv.style.display = 'block';
+    } else {
+        deliveryInfoDiv.style.display = 'none';
+    }
+}
+
+function confirmDeliveryChange(selectedAddress) {
+    // 선택된 배송지 정보를 해당 input 요소에 할당
+    document.getElementById('sample6_address').value = selectedAddress;
+    // 팝업 닫기
+    $('#deliveryPopup').hide();
+}
 </script>
 
 </html>
