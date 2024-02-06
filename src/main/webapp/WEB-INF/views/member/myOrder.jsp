@@ -10,6 +10,7 @@
 <script src="/resources/js/member3.js"></script>
 </head>
 
+<body>
 
 <br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기</button>
 <table>
@@ -57,8 +58,5 @@
 
 
 
-
-
-<body>
 </body>
 </html>

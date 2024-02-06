@@ -476,6 +476,21 @@ public class MemberServiceImpl implements MemberService{
 		}
 		model.addAttribute("list",list);
 	}
+
+	@Override
+	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
+		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
+		ProductDTO dto=new ProductDTO();
+		for(OrderdetailDTO odto:list) {
+			String productid=odto.getProductid();
+			dto.setCompanyid(productid.substring(0,2));
+			dto.setCategory(productid.substring(2,4));
+			dto.setCategory2(productid.substring(4,6));
+			dto.setFlavor(productid.substring(6,8));
+			odto.setProduct(mapper.getProductnameByProductcode(dto));
+		}
+		model.addAttribute("list",list);
+	}
 	
 	
 	

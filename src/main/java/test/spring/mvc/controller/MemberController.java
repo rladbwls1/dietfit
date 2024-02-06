@@ -365,6 +365,12 @@ public class MemberController {
 		service.getUserOrder(pri.getName(),model);
 		return "member/myOrder";
 	}
-	
+	@RequestMapping("myOrderDetail")
+	public String myOrderDetail(String id, String orderid,Model model) {
+		model.addAttribute("orderid",orderid);
+		model.addAttribute("dto",mapper.getDeliveryByOrderid(id, orderid));
+		service.getOrderDetailByOrderid(id, orderid,model);
+		return "member/myOrderDetail";
+	}
 	
 }

@@ -189,11 +189,11 @@
 	</insert>
 	<!-- 유저 배송지 정보 가져오기 -->
 	<select id="getUserDelivery">
-		select * from ${id}_delivery order by DEFAULTADDR desc, NICADDR asc
+		select * from ${id}_delivery where orderid is null order by DEFAULTADDR desc, NICADDR asc
 	</select>
 	<!-- 유저 배송지에서 동일 별명 유무 판단 -->
 	<select id="checkNicaddr">
-		select count(*) from ${id}_delivery where nicaddr=#{nicaddr}
+		select count(*) from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
 	</select>
 	<!-- 사용자 배송지, 기본 배송지 없앰 -->
 	<update id="removeDefaultDelivery">
@@ -237,8 +237,16 @@
 		select * from ${id}_orderdetail order by purdate desc
 	</select>
 	<!-- 상품 코드로 상품명 검색 -->
-	<select id="getProductnameByProductcode">
+	<select id="getProductnameByProductcode" resultType="String">
 		select product from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor} 
+	</select>
+	<!-- 주문번호로 배송지 정보 가져오기 -->
+	<select id="getDeliveryByOrderid">
+		select * from ${id}_delivery where orderid =#{orderid}
+	</select>
+	<!-- 주문번호와 아이디로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderid">
+		select * from ${id}_orderdetail where orderid =#{orderid}
 	</select>
 	
 	
@@ -290,7 +298,8 @@
 			num number default ${id}_cart_seq.nextval primary key,
 			product varchar2(100) not null,
 			price number not null,
-			quantity number not null
+			quantity number not null,
+			delivery number default 0
 		)
 	</update>
 		<update id="newCartSeq">
@@ -304,7 +313,7 @@
 			QUANTITY number not null,
 			DISCOUNT number,
 			PURDATE date default sysdate not null,
-			PAY varchar2(100) not null,
+			PAY number not null,
 			PURCHASE number default 0 not null,
 			PRODUCTID varchar2(100),
 			TRACKING varchar2(100),
@@ -321,7 +330,8 @@
 			DEFAULTADDR number default 0,
 			NICADDR varchar2(100),
 			POSTNUM varchar2(100) NOT NULL,
-			RECEIVER varchar2(20) NOT NULL
+			RECEIVER varchar2(20) NOT NULL,
+			ORDERID varchar2(100)
 		)
 	</update>
 	

@@ -89,5 +89,7 @@ public interface MemberService {
 	public List<CouponDTO> getUserCoupon(String id);
 	//유저 주문/배송 정보 가져오기 
 	public void getUserOrder(String id,Model model);
+	//유저의 주문번호로 주문상세 가져오기
+	public void getOrderDetailByOrderid(String id,String orderid,Model model);
 
 }

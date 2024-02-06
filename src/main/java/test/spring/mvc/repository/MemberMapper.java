@@ -154,4 +154,9 @@ public interface MemberMapper {
 	public List<OrderdetailDTO> getUserOrder(String id);
 	//상품코드로 상품명 검색
 	public String getProductnameByProductcode(ProductDTO dto);
+	//주문번호로 사용자의 배송지 정보 가져오기
+	public DeliveryDTO getDeliveryByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호로 주문상세 가져오기
+	public List<OrderdetailDTO> getOrderDetailByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	
 }
