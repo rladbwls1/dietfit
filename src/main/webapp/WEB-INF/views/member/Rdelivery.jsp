@@ -29,6 +29,7 @@
 </tr>
 <c:set var="i" value="0"/>
 <c:forEach var="cart" items="${list }" >
+<c:if test="${cart.delivery == 1}">
 <tr id="${cart.num }" >
 	<td><input type="checkbox" name="num" id="num" onclick="cartUpdateCheckAll()" value="${cart.num }"></td>
 	<td>
@@ -49,8 +50,9 @@
 	</td>
 	<td><a href="javascript:void(0);" onclick="deleteCart('${cart.num}')" ><img src="/resources/img/free-icon-x-mark-11147352.png" width=15 /></a> </td>
 </tr>
+</c:if>
 <c:set var="i" value="${i+1 }"/>
-
+<input type="hidden" id="delivery" value="1"/>
 </c:forEach>
 <tr><td></td> 
 <td colspan="1">총 상품 : <span id="totalQuantity"> 0</span></td>

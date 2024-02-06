@@ -109,14 +109,16 @@
 	        	flavor: flavor},
 	        success: function (product) {
 	          
-	        	content = `<h2>Product Details</h2>
+	        	content = `<h2>Product Details</h2>`;
+	        	for (var i = 0; i < product.thumimg.length; i++) {
+				    content += '<img class="images" src="' + product.thumimg[i] + '">';
+  				}
+	        	content +=`
 	            <button onclick="openCart('`+product.companyid+`','`+product.category+`','`+product.category2+`','`+product.price+`')">장바구니</button>
 	                <table>
 	                	<tr>
 	                		<td>
-	                		 for (var i = 0; i < product.thumimg.length; i++) {
-	         				    <img src="' + product.thumimg[i] + '">
-	         				}
+	                		
 	                		</td>
 	                	</tr>	
 	                    <tr>
@@ -165,6 +167,7 @@
     
     function cartSelectedItems2(){
     	var selectedItems = [];
+        var chk = $('#chk').is(':checked') ? 1 : 0;
 
         $('input[name="fonum"]').each(function() {
             selectedItems.push($(this).val());
@@ -173,7 +176,7 @@
 			url:'addCartMore1',
 			type:'post',
 			async:false,
-			data:{products:selectedItems.join(",")},
+			data:{products:selectedItems.join(","), delivery:chk},
 			success:function(a){
 				if(confirm('장바구니에 추가 되었습니다.')){
 					window.location.reload();
@@ -270,6 +273,7 @@
         </div>
     </div>
 </div>
+<input type="checkbox" id="chk">정기배송으로 받아보시겠어요?
 <button onclick="cartSelectedItems2();">전체 상품 장바구니 담기</button>
 <script>
 /*

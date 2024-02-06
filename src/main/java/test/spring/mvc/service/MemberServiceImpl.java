@@ -1,7 +1,6 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +22,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
@@ -373,10 +371,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void addCartOne(String id,String product, int quantity, int price) {
+	public void addCartOne(String id, String product, int quantity, int price, int delivery) {
 		int check=mapper.isCart(id, product);
 		if(check==0) {
-			mapper.addCartOne(id, product, quantity, price);
+			mapper.addCartOne(id, product, quantity, price, delivery);
 		}
 	}
 
@@ -385,7 +383,7 @@ public class MemberServiceImpl implements MemberService{
 		for(String num:products.split(",")) {
 			String product=mapper.getProductByNum(id, Integer.parseInt(num));
 			int price=mapper.getPriceByProductName(product);
-			addCartOne(id,product,1,price);
+			addCartOne(id,product,1,price,0);
 		}
 	}
 
@@ -394,6 +392,7 @@ public class MemberServiceImpl implements MemberService{
 		List<CartDTO> list=mapper.getCartList(id);
 		model.addAttribute("list",list);
 		List<String> imgPaths=new ArrayList<>();
+		CartDTO cart = new CartDTO();
 		for(CartDTO dto:list) {
 			ProductDTO pdto=mapper.getProductCodeByProductName(dto.getProduct());
 			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
@@ -406,6 +405,7 @@ public class MemberServiceImpl implements MemberService{
                 imgPaths.add(imagePath);
             }
 		}
+		model.addAttribute("dto", cart);
 		model.addAttribute("imgPaths",imgPaths);
 	}
 

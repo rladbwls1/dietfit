@@ -116,7 +116,7 @@ public interface MemberMapper {
 	public int isCart(@Param("id")String id, @Param("product") String product);
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
-			@Param("quantity")int quantity, @Param("price")int price);
+			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
 	//장바구니 목록 가져오기
 	public List<CartDTO> getCartList(String id);
 	//장바구니 개수 수정

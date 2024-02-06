@@ -156,10 +156,11 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(String nums, Model model, Integer amout, Integer totalQuantity) {
+	public String order(String nums, Model model, Integer amout, Integer totalQuantity, int delivery) {
 		model.addAttribute("nums",nums);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
+		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		System.out.println(taxfree);
 		model.addAttribute("taxfree", taxfree);

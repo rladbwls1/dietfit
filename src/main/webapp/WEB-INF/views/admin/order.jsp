@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>     
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,59 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 </head>
+<script>
+	function week(day){
+		var num = $("#day").val();
+		$.ajax({
+			url:'/member/week',
+			type:'post',
+			data:{day: day,
+				  num: num},
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success:function(data){
+				var dateParts = data.split(" ")[0].split("."); // 날짜 부분 파싱
+	            var year = parseInt(dateParts[0]);
+	            var month = parseInt(dateParts[1]) - 1; // JavaScript에서는 월이 0부터 시작하므로 -1
+	            var day = parseInt(dateParts[2]);
+
+	            // 날짜 객체 생성
+	            var currentDate = new Date(year, month, day);
+
+	            // 일주일 뒤의 날짜 계산
+	            var nextWeek = new Date(currentDate);
+	            nextWeek.setDate(nextWeek.getDate() + 7);
+
+	            // 계산된 날짜를 yyyy.MM.dd 형식으로 변환
+	            var nextWeekFormatted = nextWeek.getFullYear() + "." +
+	                                    (nextWeek.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                                    nextWeek.getDate().toString().padStart(2, '0');
+
+	            nextWeek.setDate(nextWeek.getDate() + 7);
+	            var next = nextWeek.getFullYear() + "." +
+	                                    (nextWeek.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                                    nextWeek.getDate().toString().padStart(2, '0');
+	            
+	            // 결과를 출력
+	            $("#calendar").html("<b>정기배송 첫 출고일</b> " + data + "<br/>" +
+	                "<b>정기배송 두번째 출고일</b> " + nextWeekFormatted + "<br/>" +
+	                "<b>정기배송 세번째 출고일</b> " + next);
+	        }
+		});
+	}
+	
+	function bott_box(num){
+	    $("#days").html("<h5>배송 요일</h5>"+
+	            "<input type='hidden' value="+num+" id='day'/>"+
+	    		"<button onclick=\"week('Monday')\">월</button>"+
+	            "<button onclick=\"week('Tuesday')\">화</button>"+
+	            "<button onclick=\"week('Wednesday')\">수</button>"+
+	            "<button onclick=\"week('Thursday')\">목</button>"+
+	            "<button onclick=\"week('Friday')\">금</button>"+
+	            "<button onclick=\"week('Saturday')\">토</button>"+
+	            "<div id='calendar'></div>");
+	}
+
+</script>
 <body>
 
 <hr/>
@@ -23,6 +77,16 @@ ${nums }
 	상품명 : 
 	상품 수량 : 
 	상품 비과세 금액 : 
+	<c:if test="${delivery == 1}">
+	<h4>정기배송일</h4>
+	<h5>배송주기</h5>
+	<div style="display:flex;">
+		<button onclick="bott_box(0)">1주에 1번</button>
+		<button onclick="bott_box(1)">2주에 1번</button>
+		<button onclick="bott_box(2)">한달에 1번</button>
+	</div>
+	<div id="days"></div>
+	</c:if>
 	<h4>할인적용</h4>
 	<p>쿠폰</p>
 	<p>포인트</p>

@@ -52,6 +52,7 @@
 </tr>
 </c:if>
 <c:set var="i" value="${i+1 }"/>
+<input type="hidden" id="delivery" value="0"/>
 
 </c:forEach>
 <tr><td></td> 

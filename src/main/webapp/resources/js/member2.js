@@ -260,7 +260,6 @@ function quantityDown(){
 }
 function addCartFromList(){
 	 var chk = $('#chk').is(':checked') ? 1 : 0;
-
 	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
 		alert("개수를 입력해주세요.");
 	}else{
@@ -411,6 +410,11 @@ function toOrder(){
 		obj3.setAttribute('name','totalQuantity');
 		obj3.setAttribute('value',$('#totalQuantity').text());
 		f.appendChild(obj3);
+		obj4=document.createElement('input');
+		obj4.setAttribute('type','hidden');
+		obj4.setAttribute('name','delivery');
+		obj4.setAttribute('value',$('#delivery').val());
+		f.appendChild(obj4);
 		f.setAttribute('method','post');
 		f.setAttribute('action','/dietfit/order');
 		document.body.appendChild(f);

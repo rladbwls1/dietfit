@@ -164,7 +164,7 @@
 	</select>
 	<!-- 장바구니에 하나의 상품 추가 -->
 	<insert id="addCartOne">
-		insert into ${id}_cart (product, price, quantity) values (#{product},#{price},#{quantity})
+		insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},#{delivery})
 	</insert>
 	<!-- 장바구니 목록 가져오기 -->
 	<select id="getCartList">

@@ -279,15 +279,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping("addCartOne")
-	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price, int chk) {
-		CartDTO dto = null;
-		if (chk == 1) {
+	public @ResponseBody String addCartOne(Principal pri ,CartDTO dto, int chk) {
+		if(chk == 1) {
 			dto.setDelivery(1);
 		}
-		else {
-			dto.setDelivery(0);
-		}
-		service.addCartOne(pri.getName(),product,quantity,price);
+		service.addCartOne(pri.getName(),dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
 		return "hi";
 	}
 	@RequestMapping("addCartMore")
@@ -300,6 +296,11 @@ public class MemberController {
 	public String cartList(Model model,Principal pri) {
 		service.getCartList(model, pri.getName());
 		return "member/cartList";
+	}
+	@RequestMapping("Rdelivery")
+	public String Rdelivery(Model model,Principal pri) {
+		service.getCartList(model, pri.getName());
+		return "member/Rdelivery";
 	}
 	@RequestMapping("updateCartQuantity")
 	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
@@ -366,6 +367,4 @@ public class MemberController {
 		model.addAttribute("list",service.getUserCoupon(pri.getName()));
 		return "member/myCoupon";
 	}
-	
-	
 }

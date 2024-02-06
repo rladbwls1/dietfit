@@ -1,20 +1,23 @@
 package test.spring.mvc.controller;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -172,13 +175,32 @@ public class FoodController {
 	}
 	
 	@RequestMapping("addCartMore1")
-	public @ResponseBody String addCartMore(Principal pri ,String products) {
-		service.addCartMore(pri.getName(),products);
+	public @ResponseBody String addCartMore(Principal pri ,String products, int delivery) {
+		System.out.println(delivery+"__34381570475180475897897");
+		service.addCartMore(pri.getName(),products, delivery);
 		return "hi";
 	}
+	
+	@RequestMapping(value ="week", produces = "text/plain;charset=UTF-8")
+	public @ResponseBody String week(String day, int num) {
+	    LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-	@RequestMapping("Rdelivery")
-	public String Rdelivery() {
-		return "/member/Rdelivery";
+        Map<String, String> nextDays = getNextDays(currentDate, formatter, num);
+        return nextDays.get(day);
 	}
+	
+	private static Map<String, String> getNextDays(LocalDate currentDate, DateTimeFormatter formatter, int num) {
+		
+		LocalDate nextMonday = currentDate.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+   
+        Map<String, String> nextDays = new HashMap<>();
+        nextDays.put("Monday", nextMonday.format(formatter) + " (월)");
+        nextDays.put("Tuesday", nextMonday.plusDays(1).format(formatter) + " (화)");
+        nextDays.put("Wednesday", nextMonday.plusDays(2).format(formatter) + " (수)");
+        nextDays.put("Thursday", nextMonday.plusDays(3).format(formatter) + " (목)");
+        nextDays.put("Friday", nextMonday.plusDays(4).format(formatter) + " (금)");
+        nextDays.put("Saturday", nextMonday.plusDays(5).format(formatter) + " (토)");
+        return nextDays;
+    }
 }
