@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="test.spring.mvc.repository.ReviewMapper">
+	
+	<!-- 리뷰 게시판 전체 글 목록 -->
+	<select id = "list">
+		select * from review 
+	</select>
+	
+	<!-- 리뷰 게시판 해당 글 이미지 목록  -->
+	<select id = "img">
+		select * from allimg where type = 4 and NOTIFYNUM = {num}
+	</select>
+	
+	<!-- 리뷰 글 -->
+	<insert id = "write">
+		insert into(num,starscore,content,isfile,reg) value(review_seq.nextval,#{starscore},#{content},#{isfile},sysdate)
+	</insert>
+	<!-- 리뷰 이미지 저장 -->
+	<insert id = "writeimg">
+		insert into(num,  type, notifynum, attach) value(allimg_SEQ.nextval,4,#{notifynum},#{attach})
+	</insert>
+
+	<!-- 리뷰 글 수정 -->
+	<!-- 리뷰 이미지 수정 -->
+	
+	<!-- 리뷰 글 삭제 -->
+	<!-- 리뷰 이미지 삭제 -->
+</mapper>
