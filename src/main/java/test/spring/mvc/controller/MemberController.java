@@ -197,7 +197,6 @@ public class MemberController {
 	}	
 	@RequestMapping("deletePro2")
 	public String deletePro2(String id, HttpSession session){
-		System.out.println("deletePro2³Ñ¾î¿È");
 		return "redirect:/dietfit/main";
 	}	
 	

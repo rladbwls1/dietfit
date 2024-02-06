@@ -197,15 +197,15 @@
 	</select>
 	<!-- 사용자 배송지, 기본 배송지 없앰 -->
 	<update id="removeDefaultDelivery">
-		update ${id}_delivery set defaultaddr=0
+		update ${id}_delivery set defaultaddr=0 where orderid is null
 	</update>
 	<!-- 사용자 배송지, 기본 배송지 설정 -->
 	<update id="setDefaultDelivery">
-		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr}
+		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr} and orderid is null
 	</update>
 	<!-- 사용자 배송지 삭제 -->
 	<delete id="deleteDelivery">
-		delete from ${id}_delivery where nicaddr=#{nicaddr}
+		delete from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
 	</delete>
  	<!-- 쿠폰 -->
     <select id="couponcount" resultType="int">
@@ -233,8 +233,8 @@
 		select * from ${id}_coupon where status=0
 	</select>
 	<!-- 유저 주문 정보 가져오기 -->
-	<select id="getUserOrder" resultType="test.spring.mvc.bean.OrderdetailDTO">
-		select * from ${id}_orderdetail order by purdate desc
+	<select id="getUserOrder" resultType="Map">
+		select * from ${id}_orderdetail o left outer join courier c on o.courier=c.key order by purdate desc
 	</select>
 	<!-- 상품 코드로 상품명 검색 -->
 	<select id="getProductnameByProductcode" resultType="String">

@@ -151,7 +151,7 @@ public interface MemberMapper {
 	//유저 쿠폰 가져오기
 	public List<CouponDTO> getUserCoupon(String id);
 	//유저 주문 정보 가져오기
-	public List<OrderdetailDTO> getUserOrder(String id);
+	public List<Map<String,Object>> getUserOrder(String id);
 	//상품코드로 상품명 검색
 	public String getProductnameByProductcode(ProductDTO dto);
 	//주문번호로 사용자의 배송지 정보 가져오기
