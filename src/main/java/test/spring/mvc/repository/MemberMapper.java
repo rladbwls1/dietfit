@@ -12,6 +12,7 @@ import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 
@@ -149,4 +150,13 @@ public interface MemberMapper {
 	public void checkUsableCoupon(String id);
 	//유저 쿠폰 가져오기
 	public List<CouponDTO> getUserCoupon(String id);
+	//유저 주문 정보 가져오기
+	public List<OrderdetailDTO> getUserOrder(String id);
+	//상품코드로 상품명 검색
+	public String getProductnameByProductcode(ProductDTO dto);
+	//주문번호로 사용자의 배송지 정보 가져오기
+	public DeliveryDTO getDeliveryByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호로 주문상세 가져오기
+	public List<OrderdetailDTO> getOrderDetailByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	
 }
