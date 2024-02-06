@@ -42,3 +42,43 @@ function checkNicaddr(){
 		return false;
 	}
 }
+
+//------------------------------------------------myOrder
+function toOderDetail(orderid,memberid){
+	let f=document.createElement('form');
+	let obj;
+	let obj2;
+	obj=document.createElement('input');
+	obj.setAttribute('type','hidden');
+	obj.setAttribute('name','orderid');
+	obj.setAttribute('value',orderid);
+	obj2=document.createElement('input');
+	obj2.setAttribute('type','hidden');
+	obj2.setAttribute('name','id');
+	obj2.setAttribute('value',memberid);
+	f.appendChild(obj);
+	f.appendChild(obj2);
+	f.setAttribute('method','post');
+	f.setAttribute('action','/member/myOrderDetail');
+	document.body.appendChild(f);
+	f.submit();
+}
+function toChatByOrderdateil(product,companyid){
+	let f=document.createElement('form');
+	let obj;
+	let obdj2;
+	obj=document.createElement('input');
+	obj.setAttribute('type','hidden');
+	obj.setAttribute('name','product');
+	obj.setAttribute('value',product);
+	obj2=document.createElement('input');
+	obj2.setAttribute('type','hidden');
+	obj2.setAttribute('name','companyid');
+	obj2.setAttribute('value',companyid);
+	f.appendChild(obj);
+	f.appendChild(obj2);
+	f.setAttribute('method','post');
+	f.setAttribute('action','/sellerchat/chat');
+	document.body.appendChild(f);
+	f.submit();
+}

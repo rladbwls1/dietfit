@@ -359,6 +359,18 @@ public class MemberController {
 		model.addAttribute("list",service.getUserCoupon(pri.getName()));
 		return "member/myCoupon";
 	}
-	
+	//주문,배송
+	@RequestMapping("myOrder")
+	public String myOrder(Principal pri,Model model) {
+		service.getUserOrder(pri.getName(),model);
+		return "member/myOrder";
+	}
+	@RequestMapping("myOrderDetail")
+	public String myOrderDetail(String id, String orderid,Model model) {
+		model.addAttribute("orderid",orderid);
+		model.addAttribute("dto",mapper.getDeliveryByOrderid(id, orderid));
+		service.getOrderDetailByOrderid(id, orderid,model);
+		return "member/myOrderDetail";
+	}
 	
 }
