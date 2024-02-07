@@ -123,6 +123,14 @@
 		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
 		)
 	</insert>
+	<insert id="memberDelivery" parameterType="test.spring.mvc.bean.DeliveryDTO">
+    	INSERT INTO ${id}_delivery (
+		    addr1, addr2, postnum, phone, nicaddr, receiver, orderid
+		) VALUES (
+		    #{delivery.addr1}, #{delivery.addr2}, #{delivery.postnum}, #{delivery.phone},
+		    #{delivery.nicaddr}, #{delivery.receiver}, #{delivery.orderid}
+		)
+	</insert>
 	<select id="findOrderId" resultType="int">
 		select count(*) from ${id}_orderdetail where orderid = #{orderid}
 	</select>
@@ -134,5 +142,8 @@
 	</select>
 	<select id="getUserDelivery9">
 		select * from ${id}_delivery where defaultaddr=9
+	</select>
+	<select id="getDeliveryByNicaddr">
+		select * from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
 	</select>
 </mapper>

@@ -19,12 +19,12 @@ ${nums }
 
 	<h2>주문/결제</h2>
         
-	<button onclick="toggleDeliveryInfo()">기본 배송지</button>
-		<div id="deliveryInfoDiv" style="display: none;">
-		    <input type="text" name="sample6_postcode" id="sample6_postcode" value="${delivery.postnum}" /> <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br />
-		    <input type="text" name="sample6_address" id="sample6_address" value="${delivery.addr1}"/> <br />
-		    <input type="text" name="sample6_detailAddress" id="sample6_detailAddress" value="${delivery.addr2}"/> <br />
-		</div>
+		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery.nicaddr}"/> <br />
+		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery.receiver}"/> <br />
+		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery.phone}"/> <br />
+	    우편번호 : <input type="text" name="postcode" id="sample6_postcode" value="${delivery.postnum}" /><br />
+	    주소지 : <input type="text" name="address1" id="sample6_address" value="${delivery.addr1}"/> <br />
+	    상세주소 : <input type="text" name="address2" id="sample6_detailAddress" value="${delivery.addr2}"/> <br />
 
 	
 	<button type="button" onclick="toOrderDelivery()">배송지 변경</button>
@@ -53,17 +53,27 @@ ${nums }
 	<form id="kakaoPayForm" >
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
-		<input type="hidden" name="partner_order_id" value="${orderid }" />
+		
+	    <input type="text" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
+	    <input type="text" name="address2" id="dbaddress2" value="${delivery.addr2}"/> 
+		<input type="text" name="phone" id="dbphone" value="${delivery.phone}"/> 
+		<input type="text" name="nicaddr" id="dbnicaddr" value="${delivery.nicaddr}"/> 
+	    <input type="text" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
+		<input type="text" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
+		
+		
+		<input type="hidden" name="partner_order_id"  value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
         <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
-        <input type="hidden" name="quantity" value="${quantity }" />
-        <input type="hidden" name="total_amount" value="${amount }" />
+        <input type="hidden" name="quantity"  value="${quantity }" />
+        <input type="hidden" name="total_amount" id="total_amount" value="${amount }" />
         <input type="hidden" name="tax_free_amount" value="${taxfree }" />
+        
         <input type="hidden" name="command" value="ready" />
         <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">
@@ -134,25 +144,14 @@ function submitForm() {
 }
 
 
-function toOrderDelivery(){
-	window.open("/dietfit/orderDelivery","배송지", "width = 600, height = 800, top = 100, left = 200, location = no");
+
+function toOrderDelivery() {
+    // 배송지 변경 팝업 띄우기
+    window.open("/dietfit/orderDelivery", "배송지", "width=600, height=800, top=100, left=200, location=no");
 }
 
-function toggleDeliveryInfo() {
-    var deliveryInfoDiv = document.getElementById('deliveryInfoDiv');
-    if (deliveryInfoDiv.style.display === 'none') {
-        deliveryInfoDiv.style.display = 'block';
-    } else {
-        deliveryInfoDiv.style.display = 'none';
-    }
-}
 
-function confirmDeliveryChange(selectedAddress) {
-    // 선택된 배송지 정보를 해당 input 요소에 할당
-    document.getElementById('sample6_address').value = selectedAddress;
-    // 팝업 닫기
-    $('#deliveryPopup').hide();
-}
+
 </script>
 
 </html>

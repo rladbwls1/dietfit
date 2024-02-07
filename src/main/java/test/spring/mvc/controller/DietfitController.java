@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vertx.java.core.json.JsonObject;
 
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
@@ -170,7 +171,8 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
+			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
 		String id = pri.getName();
 		String orderid = aservice.generateOrderId(pri);
 		model.addAttribute("id", id);
@@ -181,6 +183,12 @@ public class DietfitController {
 		model.addAttribute("quantity", totalQuantity);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
+		model.addAttribute("nicaddr", nicaddr);
+		model.addAttribute("phone", phone);
+		model.addAttribute("receiver", receiver);
+		model.addAttribute("address1", address1);
+		model.addAttribute("address2", address2);
+		model.addAttribute("postcode", postcode);
 		return "admin/order";
 	}
 	
@@ -191,11 +199,15 @@ public class DietfitController {
 		return "admin/orderDelivery";
 	}
 	
-	
-	
+	@RequestMapping("getDelivery")
+	public @ResponseBody DeliveryDTO getDelivery(String nicaddr,Principal pri) {
+		DeliveryDTO dto=mapper.getDeliveryByNicaddr(pri.getName(), nicaddr);
+		return dto;
+	}
 	
 	@RequestMapping("kakaopaygo")
-	public @ResponseBody String kakaopaygo(Principal pri, String nums, 
+	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
+			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
 			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
@@ -208,26 +220,37 @@ public class DietfitController {
 		//orderdetail DTO 저장
 		String id = pri.getName();
 		String orderid = partner_order_id;
-		List<String> productIds = aservice.findproductId(id, nums);
-		
-		System.out.println(productIds);
-		for(String productId: productIds) {
-		    OrderdetailDTO orderdetail = new OrderdetailDTO();
-		    orderdetail.setOrderid(orderid);
-		    orderdetail.setPurdate(new Date());
-		    orderdetail.setQuantity(quantity);
-		    orderdetail.setPrice(aservice.findprice(productId));
-		    orderdetail.setDiscount(0); //할인정보
-		    orderdetail.setPay(10); //카카오페이
-	    	orderdetail.setProductid(productId);
-	    	orderdetail.setMemberid(id);
-	    	
-	    	System.out.println("OrderdetailDTO 정보: " + orderdetail);
-	    	
-	    	aservice.createOrder(id, orderdetail);
-	    }
 		
 		try {
+			List<String> productIds = aservice.findproductId(id, nums);
+			
+			System.out.println(productIds);
+			for(String productId: productIds) {
+				OrderdetailDTO orderdetail = new OrderdetailDTO();
+				orderdetail.setOrderid(orderid);
+				orderdetail.setPurdate(new Date());
+				orderdetail.setQuantity(quantity);
+				orderdetail.setPrice(aservice.findprice(productId));
+				orderdetail.setDiscount(0); //할인정보
+				orderdetail.setPay(10); //카카오페이
+				orderdetail.setProductid(productId);
+				orderdetail.setMemberid(id);
+				
+				System.out.println("OrderdetailDTO 정보: " + orderdetail);
+				
+				aservice.createOrder(id, orderdetail);
+			}
+			
+			DeliveryDTO delivery = new DeliveryDTO();
+			delivery.setAddr1(address1);
+			delivery.setAddr2(address2);
+			delivery.setPhone(phone);
+			delivery.setNicaddr(nicaddr);
+			delivery.setPostnum(postcode);
+			delivery.setReceiver(receiver);
+			delivery.setOrderid(orderid);
+			System.out.println("DeliveryDTO 정보: " + delivery);
+			aservice.createDelivery(id, delivery);
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");
 			HttpURLConnection connection = (HttpURLConnection) address.openConnection();
 			connection.setDoOutput(true);
@@ -247,6 +270,7 @@ public class DietfitController {
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
 			
+			model.addAttribute("total_amount", total_amount);
 			//주문번호, 회사ID(dietfit), product, quantity, price, tax_free_amount는 계산으로 
 			
 			 // 파라미터를 UTF-8로 인코딩하여 전송

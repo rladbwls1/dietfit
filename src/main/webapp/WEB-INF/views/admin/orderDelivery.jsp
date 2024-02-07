@@ -25,7 +25,6 @@
 	</c:if>
 	<c:if test="${!empty list}">
 		기본 배송지를 설정하면 주문시 자동으로 입력됩니다. 
-		<form onsubmit="confirmDeliveryChange(); return false;" > 
 			<table border="1">
 				<c:forEach var="dto" items="${list}">
 					<tr>
@@ -43,12 +42,46 @@
 					</tr>
 				</c:forEach>
 				<tr>
-					<td colspan="3"><button type="submit" >확인</button></td>
+					<td colspan="3"><button type="button" onclick="return updateDeliveryInfo()">확인</button></td>
 				</tr>
 			</table>
-		</form>
-	
 	</c:if>
-
 </body>
+<script>
+function updateDeliveryInfo() {
+	//라디오 버튼 체크 안됐으면 취소
+	if(!$('#nicaddr:checked').val()){
+		alert("배송지를 선택해주세요.");
+		return false;
+	}else{
+		//라디오 버튼 체크된 거의 별명
+		var nicaddr=$('#nicaddr:checked').val();
+		$.ajax({
+			url:'/dietfit/getDelivery',
+			type:'post',
+			async:false,
+			data:{nicaddr:nicaddr},
+			success:function(dto){
+				 opener.document.getElementById("nicaddr").value=dto.nicaddr; 
+				 opener.document.getElementById("receiver").value=dto.receiver; 
+				 opener.document.getElementById("phone").value=dto.phone; 
+				 opener.document.getElementById("sample6_address").value=dto.addr1; 
+				 opener.document.getElementById("sample6_postcode").value=dto.postnum; 
+				 opener.document.getElementById("sample6_detailAddress").value=dto.addr2; 
+				 
+				 opener.document.getElementById("dbnicaddr").value=dto.nicaddr; 
+				 opener.document.getElementById("dbreceiver").value=dto.receiver; 
+				 opener.document.getElementById("dbphone").value=dto.phone; 
+				 opener.document.getElementById("dbaddress").value=dto.addr1; 
+				 opener.document.getElementById("dbpostcode").value=dto.postnum; 
+				 opener.document.getElementById("dbaddress2").value=dto.addr2; 
+				 window.close();
+			}
+		});
+			
+		
+	}
+
+}
+</script>
 </html>
