@@ -82,3 +82,17 @@ function toChatByOrderdateil(product,companyid){
 	document.body.appendChild(f);
 	f.submit();
 }
+function defintePurchase(orderid,productid){
+	//orderdetail에서 구매확정 9로 변경, 그리고 ~ 구매확정으로 바꿔주기 
+	$.ajax({
+		url:'defintePurchase',
+		type:'post',
+		async:false,
+		data:{orderid:orderid, productid:productid},
+		success:function(a){
+			$('#afterClick').text("구매 확정");
+		}
+	});
+	
+	
+}

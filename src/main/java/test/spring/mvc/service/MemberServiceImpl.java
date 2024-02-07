@@ -492,6 +492,11 @@ public class MemberServiceImpl implements MemberService{
 		}
 		model.addAttribute("list",list);
 	}
+
+	@Override
+	public void defintePurchase(String id, String orderid, String productid) {
+		mapper.defintePurchase(id,orderid,productid);
+	}
 	
 	
 	

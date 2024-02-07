@@ -91,5 +91,8 @@ public interface MemberService {
 	public void getUserOrder(String id,Model model);
 	//유저의 주문번호로 주문상세 가져오기
 	public void getOrderDetailByOrderid(String id,String orderid,Model model);
-
+	
+	//적립금
+	//구매확정
+	public void defintePurchase(String id, String orderid, String productid);
 }
