@@ -63,8 +63,17 @@
 	</style>
 	</head>
 	<body>
-		<form action="review/writePro" method="post" enctype="multipart/form-data">
+		회사${rdto.companyid }<br>
+		카테${rdto.category }<br>
+		임의${rdto.category2 }<br>
+		맛${rdto.flavor }<br>
+		
+		<form action="writepro" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input type="hidden" name="companyid" value="${rdto.companyid}">
+			<input type="hidden" name="category" value="${rdto.category}">
+			<input type="hidden" name="category2" value="${rdto.category2}">
+			<input type="hidden" name="flavor" value="${rdto.flavor }">
 			<table>
 				<tr>
 					<td>리뷰내용</td>
@@ -83,15 +92,15 @@
 					<td>별점</td>
 					<td>
 						<div class="rating">
-				            <input id="star5" name="rating" type="radio" value="5" class="star"/>
+				            <input id="star5" name="starscore" type="radio" value="5" class="star"/>
 				            <label for="star5" class="star">&#9733;</label>
-				            <input id="star4" name="rating" type="radio" value="4" class="star"/>
+				            <input id="star4" name="starscore" type="radio" value="4" class="star"/>
 				            <label for="star4" class="star">&#9733;</label>
-				            <input id="star3" name="rating" type="radio" value="3" class="star"/>
+				            <input id="star3" name="starscore" type="radio" value="3" class="star"/>
 				            <label for="star3" class="star">&#9733;</label>
-				            <input id="star2" name="rating" type="radio" value="2" class="star"/>
+				            <input id="star2" name="starscore" type="radio" value="2" class="star"/>
 				            <label for="star2" class="star">&#9733;</label>
-				            <input id="star1" name="rating" type="radio" value="1" class="star"/>
+				            <input id="star1" name="starscore" type="radio" value="1" class="star"/>
 				            <label for="star1" class="star">&#9733;</label>
 				        </div>
 					</td>

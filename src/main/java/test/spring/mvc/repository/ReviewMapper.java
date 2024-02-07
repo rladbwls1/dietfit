@@ -6,14 +6,10 @@ import test.spring.mvc.bean.AllimgDTO;
 import test.spring.mvc.bean.ReviewDTO;
 
 public interface ReviewMapper {
-	// 리뷰 전체 글
-	public List<ReviewDTO> list();
+	public List<ReviewDTO> listimg();
 	
-	// 리뷰 이미지
-	public List<AllimgDTO> img(int num);
-	
-	// 리뷰 글 작성
-	public ReviewDTO write(ReviewDTO rdto);
-	
-	public AllimgDTO writeimg(AllimgDTO adto);
+	// 리뷰 글 저장
+	public void write(ReviewDTO rdto);
+	// 리뷰 이미지 저장 
+	public void writeimg(AllimgDTO adto);
 }

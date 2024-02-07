@@ -82,3 +82,38 @@ function toChatByOrderdateil(product,companyid){
 	document.body.appendChild(f);
 	f.submit();
 }
+function toReviewForm(productid){
+	var companyid=productid.substring(0,2);
+	var category=productid.substring(2,4);
+	var category2=productid.substring(4,6);
+	var flavor=productid.substring(6,8);
+	let f=document.createElement('form');
+	let obj;
+	let obdj2;
+	let obdj3;
+	let obdj4;
+	obj=document.createElement('input');
+	obj.setAttribute('type','hidden');
+	obj.setAttribute('name','companyid');
+	obj.setAttribute('value',companyid);
+	obj2=document.createElement('input');
+	obj2.setAttribute('type','hidden');
+	obj2.setAttribute('name','category');
+	obj2.setAttribute('value',category);
+	obj3=document.createElement('input');
+	obj3.setAttribute('type','hidden');
+	obj3.setAttribute('name','category2');
+	obj3.setAttribute('value',category2);
+	obj4=document.createElement('input');
+	obj4.setAttribute('type','hidden');
+	obj4.setAttribute('name','flavor');
+	obj4.setAttribute('value',flavor);
+	f.appendChild(obj);
+	f.appendChild(obj2);
+	f.appendChild(obj3);
+	f.appendChild(obj4);
+	f.setAttribute('method','post');
+	f.setAttribute('action','/review/write');
+	document.body.appendChild(f);
+	f.submit();
+}

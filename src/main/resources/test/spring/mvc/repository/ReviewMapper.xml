@@ -3,25 +3,31 @@
     
 <mapper namespace="test.spring.mvc.repository.ReviewMapper">
 	
-	<!-- 리뷰 게시판 전체 글 목록 -->
-	<select id = "list">
-		select * from review 
-	</select>
-	
-	<!-- 리뷰 게시판 해당 글 이미지 목록  -->
-	<select id = "img">
-		select * from allimg where type = 4 and NOTIFYNUM = {num}
+	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
+	SELECT r.*, a.*
+FROM review r
+LEFT JOIN allimg a ON a.notifynum = r.num AND a.type = 4
+LEFT JOIN (
+    SELECT notifynum, MIN(num) AS min_num
+    FROM allimg
+    WHERE type = 4
+    GROUP BY notifynum
+) min_a ON a.notifynum = min_a.notifynum AND a.num = min_a.min_num
+ORDER BY r.num ASC
 	</select>
 	
 	<!-- 리뷰 글 -->
-	<insert id = "write">
-		insert into(num,starscore,content,isfile,reg) value(review_seq.nextval,#{starscore},#{content},#{isfile},sysdate)
+	<insert id = "write" parameterType="test.spring.mvc.bean.ReviewDTO">
+		insert into review (num, companyid, category, category2, flavor, id, writer, starscore,content,isfile,reg) 
+			values (review_seq.nextval, #{companyid}, #{category}, #{category2}, #{flavor}, #{id}, #{writer}, #{starscore}, #{content}, #{isfile}, sysdate)
 	</insert>
 	<!-- 리뷰 이미지 저장 -->
-	<insert id = "writeimg">
-		insert into(num,  type, notifynum, attach) value(allimg_SEQ.nextval,4,#{notifynum},#{attach})
+	<insert id = "writeimg" parameterType="test.spring.mvc.bean.AllimgDTO">
+		<selectKey keyProperty="notifynum" resultType="int" order="BEFORE">
+	        select review_seq.CURRVAL as notifynum from dual
+	    </selectKey>
+		insert into allimg (num, id, type, notifynum, attatch) values(allimg_SEQ.nextval, #{id}, 4, #{notifynum}, #{attatch})
 	</insert>
-
 	<!-- 리뷰 글 수정 -->
 	<!-- 리뷰 이미지 수정 -->
 	

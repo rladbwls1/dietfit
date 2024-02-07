@@ -30,10 +30,6 @@
     <input type="hidden" name="category" value="${product.category}"/>
     <input type="hidden" name="category2" value="${product.category2}"/>
     <input type="hidden" name="flavor" value="${product.flavor}"/>
-<<<<<<< HEAD
-    <table>
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     <input type="hidden" name="companyid" value="${companyid}">
     <table>	
         <thead>

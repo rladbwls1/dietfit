@@ -1,6 +1,5 @@
 package test.spring.mvc.service;
 
-
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
@@ -21,34 +20,39 @@ public class ReviewServiceImpl implements ReviewService{
 	private ReviewMapper mapper;
 	
 	@Override
-	public List<ReviewDTO> list() {
-		return mapper.list();
+	public List<ReviewDTO> listimg() {
+		return mapper.listimg();
 	}
 
 	@Override
-	public List<AllimgDTO> img(int num) {
-		return mapper.img(num);
+	public void write(ReviewDTO rdto) {
+		mapper.write(rdto);
+		
 	}
-
+	
 	@Override
-	public ReviewDTO write(ReviewDTO rdto) {
-		return mapper.write(rdto);
+	public void writeimg(AllimgDTO adto) {
+		mapper.writeimg(adto);
 	}
-
-	@Override
-	public AllimgDTO writeimg(AllimgDTO adto) {
-		return mapper.writeimg(adto);
-	}
-
+	
 	@Override
 	public String fileupload(MultipartFile file, String path) {
-	    String uuid = UUID.randomUUID().toString();
+	    String originalFilename = file.getOriginalFilename();
+	    String extension = "";
+	    if (originalFilename != null && originalFilename.contains(".")) {
+	        extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+	    }
+
+	    // UUID를 사용하여 새 파일명 생성 (확장자 포함)
+	    String uuid = UUID.randomUUID().toString() + extension;
 	    File saveFile = new File(path, uuid);
+	    
 	    try {
-	        file.transferTo(saveFile);
+	        file.transferTo(saveFile); // 파일 저장
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-	    return uuid;
+	    return uuid; // 저장된 파일명 반환 (UUID + 확장자)
 	}
+
 }
