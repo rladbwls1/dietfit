@@ -226,7 +226,7 @@
 						        <div class="row">
 						            <div class="column">
 						                <label for="expiry">유통기한</label>
-						                <input type="date" name="expiry">
+						                <input type="date" name="expiry" pattern='yyyy-MM-dd'>
 						            </div>
 						            <div class="column">
 						                <label for="delivery">배송정보</label>

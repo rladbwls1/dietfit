@@ -267,7 +267,6 @@ public class Seller1Controller {
 	                             RedirectAttributes redirectAttributes,
 	                             Model model,
 	                             HttpServletRequest request) {
- 		 System.out.println(companyid);
 	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
          // 상품 및 관련 이미지 삭제
          service.deleteProduct(companyid, category, category2, flavor);
@@ -417,7 +416,7 @@ public class Seller1Controller {
 	     model.addAttribute("category", dto.getCategory());
 	     model.addAttribute("category2", dto.getCategory2());
 	     model.addAttribute("flavor", dto.getFlavor());
-		 return "redirect:/seller/store/Update";
+		 return "/seller/thumbnailUpdatePro";
 	 }
 	 
 	 
@@ -483,7 +482,7 @@ public class Seller1Controller {
 	     model.addAttribute("category", dto.getCategory());
 	     model.addAttribute("category2", dto.getCategory2());
 	     model.addAttribute("flavor", dto.getFlavor());
-		 return "redirect:/seller/store/Update";
+		 return "/seller/productImageUpdatePro";
 	 }
 	 
 	 @RequestMapping("productImageDelete")
