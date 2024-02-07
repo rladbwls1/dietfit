@@ -94,5 +94,7 @@ public interface MemberService {
 	
 	//적립금
 	//구매확정
-	public void defintePurchase(String id, String orderid, String productid);
+	public void defintePurchase(String id, String orderid, String productid,int price);
+	//보유 적립금 가져오기
+	public int getPoint(String id);
 }

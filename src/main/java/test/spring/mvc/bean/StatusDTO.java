@@ -6,4 +6,5 @@ import lombok.Data;
 public class StatusDTO {
 	private int key;
 	private String value;
+	private int bonus;
 }

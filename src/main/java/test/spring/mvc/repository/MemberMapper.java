@@ -165,6 +165,8 @@ public interface MemberMapper {
 	//구매확정
 	public void defintePurchase(@Param("id")String id, 
 			@Param("orderid")String orderid,@Param("productid")String productid);
+	//보유 적립금이 null이면 0, 아니면 1
+	public int isPoint(String id);
 	//회원의 현재 보유 적립금 가져오기
 	public int getPoint(String id);
 	//적립금 적립
@@ -173,4 +175,7 @@ public interface MemberMapper {
 	public void deletePoint(@Param("id")String id,@Param("point")PointDTO point);
 	//적립금 사용
 	public void usePoint(@Param("id")String id,@Param("point")PointDTO point);
+	//회원의 적립 % 가져오기
+	public double getBonus(String id);
+	
 }

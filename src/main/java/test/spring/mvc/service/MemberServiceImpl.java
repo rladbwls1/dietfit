@@ -34,6 +34,7 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
@@ -494,10 +495,38 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void defintePurchase(String id, String orderid, String productid) {
+	public void defintePurchase(String id, String orderid, String productid,int price) {
 		mapper.defintePurchase(id,orderid,productid);
-	}
+		int point=getPoint(id);					//회원 보유 적립금 가져오기
+		double bonus=mapper.getBonus(id);		//회원 등급에 따른 적립 정도
+		int change=(int)(price*bonus);			//적립금
+
+		PointDTO dto=new PointDTO();
+		dto.setChange(change);
+		dto.setPoint(point+change);
+		dto.setOrderid(orderid);
+		
+		mapper.addPoint(id, dto);
 	
+	}
+	//회원 보유 적립금 가져오기
+	@Override
+	public int getPoint(String id) {
+		int point=0;
+		if(mapper.isPoint(id)==1) {
+			point=mapper.getPoint(id);
+		}
+		return point;
+	}
+	//적립금 사용
+	public void usePoint(String id,String orderid, int point) {
+		int expoint=getPoint(id);
+		PointDTO pdto=new PointDTO();
+		pdto.setChange(point);
+		pdto.setPoint(expoint-point);
+		pdto.setOrderid(orderid);
+		mapper.usePoint(id, pdto);
+	}
 	
 	
 	
