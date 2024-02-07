@@ -43,10 +43,13 @@ public class SellerController {
 	private Seller1Service service2;
 	
 	@RequestMapping("/home")
-	public String home() {
+	public String home(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+	    model.addAttribute("companyid", companyid);
 		return "sellermain";
 	}
-	
 	
 	@RequestMapping("/store/home")
 	public String main() {
@@ -112,7 +115,6 @@ public class SellerController {
 	        }
 	        model.addAttribute("chat", chat);
 	    }
-
 	    model.addAttribute("product", product);
 	    model.addAttribute("sellerid", sellerid);
 	    model.addAttribute("roomnum", roomnum);
@@ -122,8 +124,11 @@ public class SellerController {
 	@RequestMapping("/sellerchatlist")
 	public String sellerchatlist(Principal pri, Model model) {
 		String sellerid = pri.getName();
+		String companyid = service.findcompanyid(sellerid);
+		
 		model.addAttribute("sellerid", sellerid);
-		model.addAttribute("chatlist", service.findnotreadchat(0));
+		model.addAttribute("companyid", companyid);
+		model.addAttribute("chatlist", service.findnotreadchat(0,companyid));
 		return "/seller2/sellerchatlist";
 	}
 	@RequestMapping("/chatreport")
@@ -229,7 +234,14 @@ public class SellerController {
 		service.sellerstockupdate(productdto);
 		String id = pri.getName();
 		model.addAttribute("id", id);
-		return "redirect:/seller/mypage";
+		return "/seller2/addStock";
+	}
+	@RequestMapping("/addstockpro")
+	public String addstockpro(Principal pri, Model model, ProductDTO productdto) {
+		service.sellerstockupdate(productdto);
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		return "/seller2/addstockpro";
 	}
 	
 	@RequestMapping("/productdelete")
@@ -240,10 +252,6 @@ public class SellerController {
 	                             RedirectAttributes redirectAttributes,
 	                             Principal pri,Model model,
 	                             HttpServletRequest request) {
-		System.out.println(companyid);
-		System.out.println(category);
-		System.out.println(category2);
-		System.out.println(flavor);
 	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
         // 상품 및 관련 이미지 삭제
         service2.deleteProduct(companyid, category, category2, flavor);

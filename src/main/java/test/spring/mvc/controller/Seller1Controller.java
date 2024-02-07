@@ -34,10 +34,15 @@ public class Seller1Controller {
 	@Autowired
     private Seller1Service service;
 	@Autowired
+	private SellerService service2;
+	@Autowired
 	private Seller1Mapper mapper;
 	
 	@RequestMapping("store")
-	public String getProductsByCompanyId(@RequestParam("companyid") String companyid, Model model) {
+	public String getProductsByCompanyId(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service2.findcompanyid(id);
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
 	    if (products != null) {
 	        for (ProductDTO product : products) {
