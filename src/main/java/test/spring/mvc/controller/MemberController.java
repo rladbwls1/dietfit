@@ -373,9 +373,15 @@ public class MemberController {
 	}
 	//구매확정
 	@RequestMapping("defintePurchase")
-	public @ResponseBody String defintePurchase(Principal pri,String orderid,String productid) {
-		service.defintePurchase(pri.getName(),orderid,productid);
+	public @ResponseBody String defintePurchase(Principal pri,
+			String orderid,String productid,int price) {
+		service.defintePurchase(pri.getName(),orderid,productid,price);
 		return "bye";
+	}
+	@RequestMapping("testPoint")
+	public String testPoint(Principal pri,Model model) {
+		model.addAttribute("mypoint",service.getPoint(pri.getName()));
+		return "member/miniPoint";
 	}
 	
 }
