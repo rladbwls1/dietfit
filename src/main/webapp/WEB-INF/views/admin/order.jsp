@@ -37,8 +37,7 @@ ${nums }
 	주문번호 : ${orderid } <br />
 	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
-	<p>쿠폰</p>
-	<p>포인트</p>
+	<p>쿠폰</p> <button type="button" onclick="toMyCoupon()">내 쿠폰함 </button>
 	<p>마일리지</p>
 	
 	<h4>결제금액</h4>
@@ -148,6 +147,11 @@ function submitForm() {
 function toOrderDelivery() {
     // 배송지 변경 팝업 띄우기
     window.open("/dietfit/orderDelivery", "배송지", "width=600, height=800, top=100, left=200, location=no");
+}
+
+function toMyCoupon() {
+    // 배송지 변경 팝업 띄우기
+    window.open("/member/myCoupon", "쿠폰함", "width=500, height=600, top=100, left=200, location=no");
 }
 
 
