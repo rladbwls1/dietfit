@@ -1,9 +1,12 @@
 package test.spring.mvc.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -61,5 +64,8 @@ public interface AdminMapper {
 	public DeliveryDTO getUserDelivery9(String id);
 	//배송지 별명으로 배송정보 가져오기
 	public DeliveryDTO getDeliveryByNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
-
+	public List<Map<String, Object>> getUserCoupon(@Param("id") String id);
+	
+//	public AllcouponDTO getUserCouponInfo(@Param("id") String id, @Param("couponid") String couponid);
+	public Map<String, Object> getMyCart(@Param("id") String id, @Param("num") int num);
 }

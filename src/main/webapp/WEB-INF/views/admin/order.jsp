@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,16 +37,20 @@ ${nums }
 	
 	<p>주문상품 </p>
 	주문번호 : ${orderid } <br />
+	${cartList } <br />
 	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
-	<p>쿠폰</p> <button type="button" onclick="toMyCoupon()">내 쿠폰함 </button>
-	<p>마일리지</p>
+	<p>쿠폰</p> 
+	적용 쿠폰 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
+	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button>
+
+	<p>적립금</p>
 	
 	<h4>결제금액</h4>
 	<p>총 상품 : ${quantity } 개 </p>
 	<p>상품금액:  ${amount }   원 </p>
 	<p>배송비:      원</p>
-	<p>할인금액:(-)  ${discount }   원 </p>
+	<p>할인금액:(-) <input type="text" name="discount" id="discount"  />   원 </p>
 	<b>총 결제금액 </b>
 	
 	
@@ -53,12 +59,12 @@ ${nums }
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
 		
-	    <input type="text" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
-	    <input type="text" name="address2" id="dbaddress2" value="${delivery.addr2}"/> 
-		<input type="text" name="phone" id="dbphone" value="${delivery.phone}"/> 
-		<input type="text" name="nicaddr" id="dbnicaddr" value="${delivery.nicaddr}"/> 
-	    <input type="text" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
-		<input type="text" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
+	    <input type="hidden" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
+	    <input type="hidden" name="address2" id="dbaddress2" value="${delivery.addr2}"/> 
+		<input type="hidden" name="phone" id="dbphone" value="${delivery.phone}"/> 
+		<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery.nicaddr}"/> 
+	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
+		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
 		
 		
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
@@ -149,9 +155,9 @@ function toOrderDelivery() {
     window.open("/dietfit/orderDelivery", "배송지", "width=600, height=800, top=100, left=200, location=no");
 }
 
-function toMyCoupon() {
+function toMyCoupon(a) {
     // 배송지 변경 팝업 띄우기
-    window.open("/member/myCoupon", "쿠폰함", "width=500, height=600, top=100, left=200, location=no");
+    window.open("/dietfit/myCouponList?nums="+a, "쿠폰함", "width=500, height=600, top=100, left=200, location=no");
 }
 
 

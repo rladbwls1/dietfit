@@ -197,15 +197,15 @@
 	</select>
 	<!-- 사용자 배송지, 기본 배송지 없앰 -->
 	<update id="removeDefaultDelivery">
-		update ${id}_delivery set defaultaddr=0
+		update ${id}_delivery set defaultaddr=0 where orderid is null
 	</update>
 	<!-- 사용자 배송지, 기본 배송지 설정 -->
 	<update id="setDefaultDelivery">
-		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr}
+		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr} and orderid is null
 	</update>
 	<!-- 사용자 배송지 삭제 -->
 	<delete id="deleteDelivery">
-		delete from ${id}_delivery where nicaddr=#{nicaddr}
+		delete from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
 	</delete>
  	<!-- 쿠폰 -->
     <select id="couponcount" resultType="int">
@@ -214,7 +214,7 @@
     <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
     	select * from allcoupon where deletedate > sysdate
     </select>
-    <!-- 유저가 갖고있는 쿠폰의 쿠폰번호 가져오기 -->
+    <!-- 유저가 갖고있는 모든 쿠폰의 쿠폰번호 가져오기 -->
     <select id="getUserCouponid">
     	select couponid from ${id}_coupon
     </select>
@@ -228,13 +228,13 @@
 		update ${id}_coupon set status=99 where deletedate < sysdate
 	]]>
 	</update>
-	<!-- 유저 쿠폰 가져오기 -->
+	<!-- 사용하지 않은 유저 쿠폰 가져오기 -->
 	<select id="getUserCoupon" resultType="test.spring.mvc.bean.CouponDTO">
 		select * from ${id}_coupon where status=0
 	</select>
 	<!-- 유저 주문 정보 가져오기 -->
-	<select id="getUserOrder" resultType="test.spring.mvc.bean.OrderdetailDTO">
-		select * from ${id}_orderdetail order by purdate desc
+	<select id="getUserOrder" resultType="Map">
+		select * from ${id}_orderdetail o left outer join courier c on o.courier=c.key order by purdate desc
 	</select>
 	<!-- 상품 코드로 상품명 검색 -->
 	<select id="getProductnameByProductcode" resultType="String">
@@ -248,8 +248,26 @@
 	<select id="getOrderDetailByOrderid">
 		select * from ${id}_orderdetail where orderid =#{orderid}
 	</select>
-	
-	
+	<!-- 구매확정 -->
+	<update id="defintePurchase">
+		update ${id}_orderdetail set purchase=9 where orderid=#{orderid} and productid=#{productid}
+	</update>
+	<!-- 회원의 현재 보유 적립금 가져오기 -->
+	<select id="getPoint">
+		select point from ${id}_point where num=(select max(num) from ${id}_point)
+	</select>
+	<!-- 적립금 적립 -->
+	<insert id="addPoint">
+		insert into ${id}_point (opt,change,createdate,duedate,orderid,point) values (0, #{change}, sysdate, sysdate+365,#{orderid},#{point});
+	</insert>
+	<!-- 적립금 소멸 -->
+	<insert id="deletePoint">
+		insert into ${id}_point (opt,change,orderid,point,deletedate) values (1, #{change},#{orderid},#{point},sysdate);
+	</insert>
+	<!-- 적립금 사용 -->
+	<insert id="usePoint">
+		insert into ${id}_point (opt,change,orderid,point,deletedate) values (10, #{change},#{orderid},#{point},sysdate);
+	</insert>
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >

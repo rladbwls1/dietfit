@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -464,15 +465,15 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getUserOrder(String id,Model model) {
-		List<OrderdetailDTO> list=mapper.getUserOrder(id);
+		List<Map<String,Object>> list=mapper.getUserOrder(id);
 		ProductDTO dto=new ProductDTO();
-		for(OrderdetailDTO odto:list) {
-			String productid=odto.getProductid();
+		for(Map<String,Object> map:list) {
+			String productid=map.get("PRODUCTID").toString();
 			dto.setCompanyid(productid.substring(0,2));
 			dto.setCategory(productid.substring(2,4));
 			dto.setCategory2(productid.substring(4,6));
 			dto.setFlavor(productid.substring(6,8));
-			odto.setProduct(mapper.getProductnameByProductcode(dto));
+			map.put("PRODUCT", mapper.getProductnameByProductcode(dto));
 		}
 		model.addAttribute("list",list);
 	}
@@ -490,6 +491,11 @@ public class MemberServiceImpl implements MemberService{
 			odto.setProduct(mapper.getProductnameByProductcode(dto));
 		}
 		model.addAttribute("list",list);
+	}
+
+	@Override
+	public void defintePurchase(String id, String orderid, String productid) {
+		mapper.defintePurchase(id,orderid,productid);
 	}
 	
 	

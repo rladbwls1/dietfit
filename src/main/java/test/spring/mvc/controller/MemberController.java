@@ -197,7 +197,6 @@ public class MemberController {
 	}	
 	@RequestMapping("deletePro2")
 	public String deletePro2(String id, HttpSession session){
-		System.out.println("deletePro2넘어옴");
 		return "redirect:/dietfit/main";
 	}	
 	
@@ -371,6 +370,12 @@ public class MemberController {
 		model.addAttribute("dto",mapper.getDeliveryByOrderid(id, orderid));
 		service.getOrderDetailByOrderid(id, orderid,model);
 		return "member/myOrderDetail";
+	}
+	//구매확정
+	@RequestMapping("defintePurchase")
+	public @ResponseBody String defintePurchase(Principal pri,String orderid,String productid) {
+		service.defintePurchase(pri.getName(),orderid,productid);
+		return "bye";
 	}
 	
 }

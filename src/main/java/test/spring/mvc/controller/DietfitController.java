@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vertx.java.core.json.JsonObject;
 
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -39,6 +42,7 @@ import test.spring.mvc.repository.AdminMapper;
 import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.AdminService;
+import test.spring.mvc.service.MemberService;
 import test.spring.mvc.service.SurveyService;
 
 @Controller
@@ -53,6 +57,9 @@ public class DietfitController {
 	
 	@Autowired
 	private Admin1ServiceImpl aservice1;
+	
+	@Autowired
+	private MemberService mservice;
 	
 	@Autowired
 	private AdminMapper mapper;
@@ -173,10 +180,10 @@ public class DietfitController {
 	@RequestMapping("order")
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
 			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
-		String id = pri.getName();
+		
 		String orderid = aservice.generateOrderId(pri);
-		model.addAttribute("id", id);
-		model.addAttribute("delivery", mapper.getUserDelivery9(id));
+//		model.addAttribute("id", pri.getName());
+		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
@@ -189,6 +196,16 @@ public class DietfitController {
 		model.addAttribute("address1", address1);
 		model.addAttribute("address2", address2);
 		model.addAttribute("postcode", postcode);
+		
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        List<Map<String,Object>> cartList=new ArrayList<>();
+        for (String num : numsArray) {
+             cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
+        }
+        model.addAttribute("cartList",cartList);
 		return "admin/order";
 	}
 	
@@ -204,6 +221,48 @@ public class DietfitController {
 		DeliveryDTO dto=mapper.getDeliveryByNicaddr(pri.getName(), nicaddr);
 		return dto;
 	}
+	
+	@RequestMapping("myCouponList")
+	public String myCouponList(Principal pri, Model model,String nums) {
+		model.addAttribute("list", mapper.getUserCoupon(pri.getName()));
+		
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        ArrayList<Map<String, Object>> cartList = new ArrayList<>();
+        for (String num : numsArray) {
+             cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
+        }
+        model.addAttribute("cartList",cartList);
+        
+        //companyid 와 그에 따른 총 가격
+        Map<String, Integer> companyPrice = new HashMap<String, Integer>();
+        for (Map<String, Object> cartItem : cartList) {
+            String companyId = (String) cartItem.get("COMPANYID");
+            int price = Integer.parseInt(cartItem.get("PRICE").toString()) * Integer.parseInt(cartItem.get("QUANTITY").toString());
+            if(companyPrice.containsKey(companyId)) {
+        		//해당 회사 ID가 있는 경우에는 더해줌
+            	
+        		if (companyId != null && price!=0) {
+        			companyPrice.put(companyId, companyPrice.get(companyId)+price);
+        		}
+            }else {
+            	// 추출된 값이 null이 아닌지 확인 후, 맵에 추가
+	            if (companyId != null && price!=0) {
+	                companyPrice.put(companyId, price);
+	            }
+            }
+        }
+        model.addAttribute("companyPrice", companyPrice);
+		return "admin/myCouponList";
+	}
+	
+//	@RequestMapping("getCoupon")
+//	public @ResponseBody String getCoupon(Principal pri, String coupon) {
+//		String couponid = mapper.getCouponIdByCoupon(pri.getName(), coupon);
+//		return couponid;
+//	}
 	
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
