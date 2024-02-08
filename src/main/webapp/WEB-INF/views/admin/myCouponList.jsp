@@ -62,38 +62,31 @@ function useCouponInfo(){
 	}else{
 		//라디오 버튼 체크
 		var selectedCoupon = $('#selectedCoupon:checked').val();
-		var discount = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(3)').text();
+		var couponDiscount = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(3)').text();
+		var canuseCompany = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(2)').text();
 		
 		var companyPriceData = {
-				<c:forEach var="entry" items="${companyPrice}" varStatus="loop">
-			        "${entry.key}": ${entry.value}<c:if test="${!loop.last}">,</c:if>
-			    </c:forEach>	
+				<c:forEach var="entry" items="${companyPrice}">
+					"${entry.key}": ${entry.value},
+				</c:forEach>
 		};
-		var price = 0;
+		
+		var couponPrice = 0 ;
 		for(var companyId in companyPriceData){
-			if(companyPriceData.hasOwnProperty(companyId)){
-				price = companyPriceData[companyId] * (1 - parseFloat(discount) / 100);
+			if(companyPriceData.hasOwnProperty(companyId)){ //객체 있는지 확인
+				couponPrice = companyPriceData[canuseCompany] * (couponDiscount / 100);
 				break;
 			}
 		}
+		
 		opener.document.getElementById("useCoupon").value=selectedCoupon;
-		opener.document.getElementById("discount").value=price;
+		opener.document.getElementById("coupon").value=couponPrice;
+		
+		var amount = opener.document.getElementById("amount").value;
+		var coupon =  opener.document.getElementById("coupon").value;
+		var point = opener.document.getElementById("point").value;
+		opener.document.getElementById("totalAmount").value=amount-coupon-point;
 		window.close();
-		
-		/*
-		$.ajax({
-			url:'/dietfit/getCoupon',
-			type:'post',
-			async:false,
-			data:{selectedCoupon:selectedCoupon},
-			success:function(coupon){
-				var useCouponInput = opener.document.getElementById("useCoupon");
-	            useCouponInput.value = couponid;
-				window.close();
-			}
-		});
-		*/
-		
 	}
 }
 </script>

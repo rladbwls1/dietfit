@@ -184,6 +184,7 @@ public class DietfitController {
 		String orderid = aservice.generateOrderId(pri);
 //		model.addAttribute("id", pri.getName());
 		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
+		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);

@@ -82,15 +82,15 @@ function toChatByOrderdateil(product,companyid){
 	document.body.appendChild(f);
 	f.submit();
 }
-function defintePurchase(orderid,productid){
-	//orderdetail에서 구매확정 9로 변경, 그리고 ~ 구매확정으로 바꿔주기 
+function defintePurchase(orderid,productid,price){
+	//orderdetail에서 구매확정 9로 변경, 적립금 적립 그리고 ~ 구매확정으로 바꿔주기 
 	$.ajax({
 		url:'defintePurchase',
 		type:'post',
 		async:false,
-		data:{orderid:orderid, productid:productid},
+		data:{orderid:orderid, productid:productid,price:price},
 		success:function(a){
-			$('#afterClick').text("구매 확정");
+			$('#'+orderid+productid+'afterClick').text("구매 확정");
 		}
 	});
 	

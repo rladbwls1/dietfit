@@ -49,7 +49,7 @@ public interface MemberService {
 	//상품 목록 가져오기 + 페이지
 	public void getallproduct(Model model,int currentPage);
 	//상품의 상세 설명 model로 넘김
-	public void getProductDetail(String companyid, String category,
+	public List<String> getProductDetail(String companyid, String category,
 			String category2,String flavor, Model model);
 	//상품목록에서 하트 아이콘 눌러서 관심상품에 추가하는 경우
 	public void addWishOne(String product,String id);
@@ -94,5 +94,12 @@ public interface MemberService {
 	
 	//적립금
 	//구매확정
-	public void defintePurchase(String id, String orderid, String productid);
+	public void defintePurchase(String id, String orderid, String productid,int price);
+	//보유 적립금 가져오기
+	public int getPoint(String id);
+	
+	//최근 본 상품
+	//쿠키로 상품 정보 꺼내기
+    public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
+    
 }

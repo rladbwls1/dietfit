@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="/resources/js/findIdPw.js"></script>
+<script src="/resources/js/order.js"></script>
 <script src="/resources/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
@@ -40,18 +41,20 @@ ${nums }
 	${cartList } <br />
 	상품 수량 : 총 ${quantity }건
 	<h4>할인적용</h4>
-	<p>쿠폰</p> 
-	적용 쿠폰 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
-	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button>
-
-	<p>적립금</p>
+	쿠폰적용 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
+	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button> <br />
+	보유 적립금: ${mypoint }
+	<button type="button" onclick="useAllPoint('${mypoint }')" >적립금 모두 사용하기</button>
+	
+	<hr />
 	
 	<h4>결제금액</h4>
 	<p>총 상품 : ${quantity } 개 </p>
-	<p>상품금액:  ${amount }   원 </p>
+	<p>상품금액: <input type="text" id="amount" value="${amount }" />원 </p>
 	<p>배송비:      원</p>
-	<p>할인금액:(-) <input type="text" name="discount" id="discount"  />   원 </p>
-	<b>총 결제금액 </b>
+	<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" oninput="totalAmount()"/>   원 </p>
+	<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');"/> </p>
+	<b>총 결제금액 <input type="text" id="totalAmount" /> 원</b>
 	
 	
 	<h4>결제방식</h4>
@@ -65,7 +68,6 @@ ${nums }
 		<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery.nicaddr}"/> 
 	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
 		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
-		
 		
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
@@ -93,75 +95,6 @@ ${nums }
 	<br />
 	<button type="button" onclick="submitForm()">결제하기</button>
 </body>
-<script>
-function showPaymentOptions() {
-    // 선택된 결제 유형 가져오기
-    var paymentType = document.querySelector('input[name="chk_info"]:checked').value;
 
-    // 결제 옵션들을 감싸는 부모 엘리먼트 가져오기
-    var paymentOptions = document.getElementById('paymentOptions');
-
-    // 결제 유형에 따라 옵션들을 동적으로 생성하고 보이게 함
-    if (paymentType === '일반결제') {
-        paymentOptions.innerHTML = `
-            <h5>일반결제 옵션</h5>
-            <label><input type="radio" name="normalPayment" value="신용/체크카드"> 신용/체크카드</label>
-            <label><input type="radio" name="normalPayment" value="무통장"> 무통장</label>
-            <label><input type="radio" name="normalPayment" value="휴대폰"> 휴대폰</label>
-        `;
-        paymentOptions.style.display = 'block';
-    } else {
-        paymentOptions.innerHTML = ''; // 다른 결제 방식일 경우 내용을 지움
-        paymentOptions.style.display = 'none';
-    }
-}
-
-function submitForm() {
-    // 선택된 결제 유형 가져오기
-    var paymentType = document.querySelector('input[name="chk_info"]:checked').value;
-
-    // 결제 유형에 따라 동적으로 폼 제출 또는 카카오페이 API 호출
-    if (paymentType === '카카오페이') {
-        $.ajax({
-            url: 'kakaopaygo',
-            type: 'POST',
-            data: $('#kakaoPayForm').serialize(),
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
-                if (data.next_redirect_pc_url) {
-                    location.href = data.next_redirect_pc_url;
-                } else {
-                    console.error('리다이렉트 URL이 정의되지 않았습니다.');
-                    alert('카카오페이 요청 중 오류가 발생했습니다.');
-                }
-            },
-            error: function (error) {
-                console.error(error);
-                alert('카카오페이 요청 중 오류가 발생했습니다.');
-            }
-        });
-    } else if (paymentType === '계좌 간편결제') {
-        document.getElementById('accountPaymentForm').submit();
-    } else if (paymentType === '일반결제') {
-        document.getElementById('normalPaymentForm').submit();
-    }
-}
-
-
-
-function toOrderDelivery() {
-    // 배송지 변경 팝업 띄우기
-    window.open("/dietfit/orderDelivery", "배송지", "width=600, height=800, top=100, left=200, location=no");
-}
-
-function toMyCoupon(a) {
-    // 배송지 변경 팝업 띄우기
-    window.open("/dietfit/myCouponList?nums="+a, "쿠폰함", "width=500, height=600, top=100, left=200, location=no");
-}
-
-
-
-</script>
 
 </html>
