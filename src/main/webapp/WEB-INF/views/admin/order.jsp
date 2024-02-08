@@ -25,27 +25,36 @@
 	            var month = parseInt(dateParts[1]) - 1; // JavaScript에서는 월이 0부터 시작하므로 -1
 	            var day = parseInt(dateParts[2]);
 
-	            // 날짜 객체 생성
 	            var currentDate = new Date(year, month, day);
 
-	            // 일주일 뒤의 날짜 계산
-	            var nextWeek = new Date(currentDate);
-	            nextWeek.setDate(nextWeek.getDate() + 7);
+	            // 주차에 따른 날짜 간격 계산 함수
+	            function calculateDateInterval(weeks) {
+	                return weeks * 7; // 주차에 따른 일수 변환
+	            }
 
-	            // 계산된 날짜를 yyyy.MM.dd 형식으로 변환
-	            var nextWeekFormatted = nextWeek.getFullYear() + "." +
-	                                    (nextWeek.getMonth() + 1).toString().padStart(2, '0') + "." +
-	                                    nextWeek.getDate().toString().padStart(2, '0');
-
-	            nextWeek.setDate(nextWeek.getDate() + 7);
-	            var next = nextWeek.getFullYear() + "." +
-	                                    (nextWeek.getMonth() + 1).toString().padStart(2, '0') + "." +
-	                                    nextWeek.getDate().toString().padStart(2, '0');
+	            // 출력할 날짜 개수 설정
+	            var dateCount = 3;
 	            
 	            // 결과를 출력
-	            $("#calendar").html("<b>정기배송 첫 출고일</b> " + data + "<br/>" +
-	                "<b>정기배송 두번째 출고일</b> " + nextWeekFormatted + "<br/>" +
-	                "<b>정기배송 세번째 출고일</b> " + next);
+	            var output = "<b>정기배송 첫 출고일</b> " +
+	            currentDate.getFullYear() + "." +
+	                (currentDate.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                currentDate.getDate().toString().padStart(2, '0') + "<br/>";
+
+	            for (var i = 1; i < dateCount; i++) {
+	                var interval = calculateDateInterval(num * i);
+	                var nextDate = new Date(currentDate);
+	                nextDate.setDate(currentDate.getDate() + interval);
+
+	                // 계산된 날짜를 yyyy.MM.dd 형식으로 변환하여 결과에 추가
+	                output += "<b>정기배송 " + (i + 1) + "번째 출고일</b> " +
+	                    nextDate.getFullYear() + "." +
+	                    (nextDate.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                    nextDate.getDate().toString().padStart(2, '0') + "<br/>";
+	            }
+
+	            // 결과를 출력
+	            $("#calendar").html(output);
 	        }
 		});
 	}
@@ -81,9 +90,9 @@ ${nums }
 	<h4>정기배송일</h4>
 	<h5>배송주기</h5>
 	<div style="display:flex;">
-		<button onclick="bott_box(0)">1주에 1번</button>
-		<button onclick="bott_box(1)">2주에 1번</button>
-		<button onclick="bott_box(2)">한달에 1번</button>
+		<button onclick="bott_box(1)">1주에 1번</button>
+		<button onclick="bott_box(2)">2주에 1번</button>
+		<button onclick="bott_box(3)">3주에 1번</button>
 	</div>
 	<div id="days"></div>
 	</c:if>
@@ -108,6 +117,7 @@ ${nums }
         <input type="text" name="quantity" value="${quantity }"><br>
         <input type="text" name="total_amount" value="${amount }"><br>
         <input type="text" name="tax_free_amount" value="${taxfree }"><br>
+        <input type="text" name="delivery" value="${delivery}">
         <input type="hidden" name="command" value="ready">
         <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly">
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">

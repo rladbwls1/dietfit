@@ -9,9 +9,28 @@
 <title>member_management</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<style>
+	#content{
+		padding: 0 15px;
+	}
+	#user{
+		background-color: #294B29;
+		color: white;
+		padding: 3px 0 3px 10px;
+		margin: 0 0 20px 0;
+	}
+	#mem_basic, #register{
+		width: 100%;
+	}
+	#mem_basic td, #register td,
+	#mem_basic th, #register th{
+		border: 1px solid gray;
+	}
+</style>
 </head>
 <body>
-<div>${info.id}(${info.name}) 님의 회원정보입니다.</div>
+<div id="user">${info.id}(${info.name}) 님의 회원정보입니다.</div>
+<div id="content">
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="/admin/management?id=${info.id}">회원정보</a>
@@ -23,7 +42,7 @@
   </c:if>
 </ul>
 <h2>회원 기본 정보</h2>
-	<table border="1" style="border-collapse:collapse;">
+	<table id="mem_basic" border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>아이디</th>
 			<td>${info.id}</td>
@@ -57,7 +76,7 @@
 	<button type="button" onclick="modify_info('${info.id}')">정보 수정</button>
 	
 <h2>사이트 가입 정보</h2>
-	<table border="1" style="border-collapse:collapse;">
+	<table id="register" border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>주소</th>
 			<td>${mem_info.addr1} ${mem_info.addr2}</td>
@@ -83,6 +102,7 @@
 			</td>
 		</tr>
 	</table>	
+	</div>
 </body>
 <script>
 function modify_info(id){

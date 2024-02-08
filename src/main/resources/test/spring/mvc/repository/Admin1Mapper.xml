@@ -170,7 +170,7 @@
 		</select>
 		<!-- 장바구니에 하나의 상품 추가 -->
 		<insert id="addCartOne">
-			insert into ${id}_cart (product, price, quantity) values (#{product},#{price},#{quantity})
+			insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},${delivery})
 		</insert>
 		<select id="Productid" resultType="product">
 			select * from all_product where companyid || category || category2 || flavor = #{productid}

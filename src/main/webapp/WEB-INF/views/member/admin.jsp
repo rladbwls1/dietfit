@@ -7,3 +7,4 @@
 </form>
 	<button onclick="javascript:window.location='/admin/companylist'">판매자리스트</button>
 	<button onclick="javascript:window.location='/admin/adminChat'">채팅</button>
+	<button onclick="javascript:window.location='/admin/mList'">회원리스트(전체)</button>

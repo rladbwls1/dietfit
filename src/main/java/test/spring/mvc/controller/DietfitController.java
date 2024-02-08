@@ -173,7 +173,8 @@ public class DietfitController {
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
-	        @RequestParam Integer tax_free_amount) {
+	        @RequestParam Integer tax_free_amount,
+	        @RequestParam Integer delivery) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		

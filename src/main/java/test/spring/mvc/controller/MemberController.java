@@ -33,6 +33,7 @@ import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -42,6 +43,8 @@ public class MemberController {
 	private MemberService service;
 	@Autowired
 	private MemberMapper mapper;
+	@Autowired
+	private Admin1ServiceImpl admin;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -55,6 +58,68 @@ public class MemberController {
 	@RequestMapping("admin")
 	public String admin() {
 		return "member/admin";
+	}
+	
+	// 베스트 상품 월간
+	@RequestMapping("best")
+	public String best(Model model) {
+		List<ProductDTO> dto = admin.best();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "member/best";
+	}
+	
+	// 베스트 상품 주간
+	@RequestMapping("best2")
+	public String best2(Model model) {
+		List<ProductDTO> dto = admin.best2();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "/member/best2";
+	}
+	
+	// 오늘의 특가 상품
+	@RequestMapping("discount")
+	public String discount(Model model) {
+		List<ProductDTO> dto = admin.discount();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				int sale = admin.sale(pd.getNum());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	               pd.setSale(sale);
+	            }
+			}
+		}
+		model.addAttribute("discount", dto);
+		return "/member/discount";
 	}
 	
 	

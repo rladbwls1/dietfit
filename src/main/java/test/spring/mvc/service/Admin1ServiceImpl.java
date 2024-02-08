@@ -229,6 +229,7 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 	
 	public void addCartMore(String id, String products, int delivery) {
+		System.out.println("35353535353535353"+delivery);
 		for(String productid:products.split(",")) {
 			ProductDTO pro = mapper.Productid(productid);
 			String product = pro.getProduct();

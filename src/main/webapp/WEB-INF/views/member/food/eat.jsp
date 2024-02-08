@@ -24,6 +24,15 @@
 	.images{
 	    width: -webkit-fill-available;
 	}
+	.image{
+	    width: 100%;
+	}
+	#top_Con{
+		display: flex;
+	}
+	#top_Div{
+	    width: 50%;
+	}
 </style>
 <script>
 	function modify(minkcal, maxkcal, mo, type, catogory){
@@ -40,7 +49,7 @@
 	        success: function (data) {
 	            // 모달 내용 초기화
 	            $("#modalBody").empty();
-
+				var content = "<ul class='list-unstyled row'>";
 				if(data.length > 0){
 	            for (var i = 0; i < data.length; i++) {
 	                var food = data[i];
@@ -50,12 +59,14 @@
 	                var productid = food.productinfo.productid;
 	                var product = food.product;
 	                // 모달 내용에 추가
-	                $("#modalBody").append("<li class='col-md-4'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"' data-price='"+price+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
+	                content += "<li class='col-md-3'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"' data-price='"+price+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
 	                		"style='width:120px; text-align:center;'><img style='width:120px; height: 120px;' src='/resources/p_img/" + img + "'/></div>" +
 	                    "<div>" + product + "</div>"+
-	                    "<div>칼로리 : " + kcal + "</div></li>");
+	                    "<div>칼로리 : " + kcal + "</div></li>";
 					}
-	            }else{
+	            content += "</ul>";
+	            $("#modalBody").append(content);
+				}else{
 						$("#modalBody").append("해당 제품은 대체 상품이 없습니다!");
 	            }
 	            // 모달 열기
@@ -109,11 +120,11 @@
 	        	flavor: flavor},
 	        success: function (product) {
 	          
-	        	content = `<h2>Product Details</h2>`;
+	        	content = `<div id="top_Con"><div id="top_Div">`;
 	        	for (var i = 0; i < product.thumimg.length; i++) {
-				    content += '<img class="images" src="' + product.thumimg[i] + '">';
+				    content += '<img class="image" src="' + product.thumimg[i] + '">';
   				}
-	        	content +=`
+	        	content +=`</div>
 	            <button onclick="openCart('`+product.companyid+`','`+product.category+`','`+product.category2+`','`+product.price+`')">장바구니</button>
 	                <table>
 	                	<tr>
@@ -122,39 +133,27 @@
 	                		</td>
 	                	</tr>	
 	                    <tr>
-	                        <td>상품이름:</td>
 	                        <td>`+product.product+`</td>
 	                    </tr>
 	                    <tr>
-	                        <td>가격:</td>
 	                        <td>`+product.price+`</td>
 	                    </tr>
 	                    <tr>
-	                        <td>배송정보:</td>
-	                        <td></td>
-	                    </tr>
-	                    <tr>
-	                        <td>조회수:</td>
-	                        <td>`+product.count+`</td>
-	                    </tr>
-	                    <tr>
-	                        <td>유통기한:</td>
-	                        <td>
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <td colspan="2">
-	                            <form action="/sellerchat/chat" method="post">
-	                            	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	                                <input type="hidden" name="product" value="${product.product}">
-	                                <input type="hidden" name="companyid" value="${product.companyid}">
-	                                <button type="submit">상품 문의</button>
-	                            </form>
-	                        </td>
+	                        <td>`;
+	                        if (product.delivery == 0) {
+	                        content += '일반배송, 정기배송';
+	                    } else if (product.delivery == 1) {
+	                        content += '일반배송';
+	                    } else {
+	                        content += '기타 배송 옵션';
+	                    }
+					    content += `
+						    </td>
 	                    </tr>
 	                </table>
+	                </div>
 	            `;
-				content += `<div>상세정보</div><hr>`;
+				content += `<div>제품정보</div><hr>`;
 				for (var i = 0; i < product.img.length; i++) {
 				    content += '<img class="images" src="' + product.img[i] + '">';
 				}
@@ -266,9 +265,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-             	<ul id="modalBody" class="list-unstyled row">
-             	</ul>	
+            <div class="modal-body" id="modalBody">
             </div>
         </div>
     </div>
