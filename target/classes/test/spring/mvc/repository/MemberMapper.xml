@@ -212,7 +212,7 @@
     	select count(*) from allcoupon where deletedate > sysdate 
     </select>
     <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
-    	select * from allcoupon where deletedate > sysdate
+    	select * from allcoupon where deletedate > sysdate and admincheck=1
     </select>
     <!-- 유저가 갖고있는 모든 쿠폰의 쿠폰번호 가져오기 -->
     <select id="getUserCouponid">
