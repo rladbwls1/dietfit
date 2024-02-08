@@ -1,6 +1,12 @@
 package test.spring.mvc.service;
 
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +18,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
-import lombok.RequiredArgsConstructor;
-import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 
@@ -209,9 +211,67 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.getCompanyEmail(companyid);
 	}
 
+	@Override
+	public String generateOrderId(Principal pri) {
+        // 여기에서 주문 ID 생성 로직을 구현
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String datePart = dateFormat.format(new Date());
+
+        String id = pri.getName();
+        String orderId;
+        boolean isDuplicate;
+        
+        do {
+        	orderId = datePart + String.format("%04d", (int) (Math.random() * 10000));
+        	isDuplicate = mapper.findOrderId(id, orderId) > 0;
+        } while (isDuplicate);
+        // 예시: 날짜 + 4자리 랜덤 숫자
+        return orderId;
+    }
+
+	@Override
+	public List<String> findproductId(String id, String nums) {
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        List<Integer> numsList = new ArrayList<>();
+        for (String num : numsArray) {
+            numsList.add(Integer.parseInt(num.trim()));
+        }
+
+        List<String> productIds = new ArrayList<>();
+        for (int productNum : numsList) {
+            String product = mapper.findproduct(id, productNum);
+            String productId = mapper.getProductId(product);
+            productIds.add(productId);
+        }
+        return productIds;
+    }
+
+	@Override
+	public void createOrder(String id, OrderdetailDTO orderdetail) {
+		mapper.memberOrderDetail(id, orderdetail);
+	}
+
+	
+	@Override
+	public void createDelivery(String id, DeliveryDTO delivery) {
+		mapper.memberDelivery(id, delivery);
+	}
+
+	@Override
+	public int findprice(String productid) {
+		return mapper.findPrice(productid);
+	}
+	
+	
+
 
 	
 
+	
+	
 	
 	
 }
