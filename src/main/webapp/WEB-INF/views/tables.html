@@ -13,33 +13,11 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <style>
-        	/* 버튼 기본 스타일 */
-			button {
-			    display: inline-block;
-			    padding: 8px 18px;
-			    font-size: 13px;
-			    text-align: center;
-			    text-decoration: none;
-			    cursor: pointer;
-			    border: none;
-			    color: #fff;
-			    background-color: #355FAD;
-			    border-radius: 5px;
-			    transition: background-color 0.3s, color 0.3s;
-			}
-			
-			/* 버튼 호버 효과 */
-			button:hover {
-			    background-color: #2B4C8A;
-			    color: #fff;
-			}
-        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/seller/home">판매자 관리 페이지</a>
+            <a class="navbar-brand ps-3" href="index.html">판매자 관리 페이지</a>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -71,18 +49,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 상품목록
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            <a class="nav-link" href="/seller/calculate">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 정산
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/seller/sales">순매출현황</a>
-                                    <a class="nav-link" href="/seller/salesranking">판매량순위</a>
-                                </nav>
-                            </div>
-                             <a class="nav-link" href="/seller/commercailhome">
+                            <a class="nav-link" href="tables.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 광고 신청
                             </a>
@@ -93,11 +64,16 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">할인 설정</h1>
+                        <h1 class="mt-4">할인율 설정</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                할인
+                                DataTable Example
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -115,80 +91,7 @@
 							            <c:forEach var="product" items="${companyProducts}">
 							                <tr>
 							                    <td>${product.product}</td>
-							                    <c:choose>
-								                    <c:when test="${product.category == 11}">
-								                         <td>도시락</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 12}">
-								                         <td>밥</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 13}">
-								                         <td>죽</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 14}">
-								                         <td>면</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 15}">
-								                         <td>밀키트</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 21}">
-								                         <td>샐러드</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 22}">
-								                         <td>닭가슴살</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 23}">
-								                         <td>가공품(핫바/소시지/핫도그)</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 24}">
-								                         <td>분식,만두</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 25}">
-								                         <td>식재료</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 26}">
-								                         <td>계란</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 29}">
-								                         <td>식사대용 기타</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 31}">
-								                         <td>쿠키, 칩등</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 32}">
-								                         <td>초콜릿</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 33}">
-								                         <td>떡</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 34}">
-								                         <td>빵</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 35}">
-								                         <td>구황작물</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 36}">
-								                         <td>프로틴바 등 견과류(오트밀)</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 39}">
-								                         <td>간식 기타</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 41}">
-								                         <td>쉐이크</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 42}">
-								                         <td>주스</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 43}">
-								                         <td>티</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 44}">
-								                         <td>탄산수</td>
-								                    </c:when>
-								                    <c:when test="${product.category == 49}">
-								                         <td>음료 기타</td>
-								                    </c:when>
-								                </c:choose>
+							                    <td>${product.category}</td>
 							                    <td>${product.stock}</td>
 							                    <td>
 							                        <fmt:formatDate value="${product.expiry}" pattern="yyyy-MM-dd"/>
@@ -214,10 +117,17 @@
 	        function openDiscountFormPopup(num) {
 	            var popupUrl = '/seller/discountForm?num=' + num;
 	            var popupWindow = window.open(popupUrl, '_blank', 'width=600, height=450, scrollbars=yes');
-	            
 	            if (popupWindow) {
 	                popupWindow.focus();
 	            }
+	        }
+	
+	        function closewindow2() {
+	            window.location.href="/seller/productdiscount";
+	        }
+	     // my페이지로 이동하는 함수
+	        function goToMyPage() {
+	            window.location.href = '/seller/mypage'; // 원하는 경로로 변경
 	        }
 	    </script>
     </body>
