@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +37,7 @@ import org.vertx.java.core.json.JsonObject;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 import test.spring.mvc.repository.AdminMapper;
@@ -268,6 +270,7 @@ public class DietfitController {
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
 			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
+			String couponid, int usepoint, int discount,
 			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
@@ -283,24 +286,40 @@ public class DietfitController {
 		
 		try {
 			List<String> productIds = aservice.findproductId(id, nums);
-			
 			System.out.println(productIds);
+			
+//			개인 orderdetail 테이블 저장
 			for(String productId: productIds) {
 				OrderdetailDTO orderdetail = new OrderdetailDTO();
 				orderdetail.setOrderid(orderid);
 				orderdetail.setPurdate(new Date());
 				orderdetail.setQuantity(quantity);
 				orderdetail.setPrice(aservice.findprice(productId));
-				orderdetail.setDiscount(0); //할인정보
-				orderdetail.setPay(10); //카카오페이
+				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
+				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
 				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				
 				aservice.createOrder(id, orderdetail);
+				aservice.changeCoupon(orderid, couponid);
+				mservice.usePoint(id, orderid, usepoint);
 			}
 			
+//			주문 요약본(전체 회원 테이블) 저장
+			OrdersumDTO ordersum = new OrdersumDTO();
+			ordersum.setId(id);
+			ordersum.setOrderid(orderid);
+			ordersum.setPoint(usepoint);
+			ordersum.setCouponid(couponid);
+			ordersum.setDiscount(discount);
+			ordersum.setTotalamount(total_amount);
+			System.out.println("OrdersumDTO 정보 :" + ordersum);
+			aservice.createOrderSum(ordersum);
+			
+			
+//			Delivery 테이블 저장
 			DeliveryDTO delivery = new DeliveryDTO();
 			delivery.setAddr1(address1);
 			delivery.setAddr2(address2);
@@ -311,6 +330,8 @@ public class DietfitController {
 			delivery.setOrderid(orderid);
 			System.out.println("DeliveryDTO 정보: " + delivery);
 			aservice.createDelivery(id, delivery);
+			
+//			카카오페이 결제 ==================================================
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");
 			HttpURLConnection connection = (HttpURLConnection) address.openConnection();
 			connection.setDoOutput(true);
