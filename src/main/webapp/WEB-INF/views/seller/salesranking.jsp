@@ -10,8 +10,8 @@
 	<h2>하루 판매량 순위</h2>
     <table>
 		<tr>
-			<td>상품 이름</td>
-			<td>판매 수량</td>
+			<td>상품</td>
+			<td>수량</td>
 		</tr>
         <c:forEach var="item" items="${dailySalesRank}">
             <tr>
@@ -24,8 +24,8 @@
     <h2>일주일 판매량 순위</h2>
     <table>
     	<tr>
-			<td>상품 이름</td>
-			<td>판매 수량</td>
+			<td>상품</td>
+			<td>수량</td>
 		</tr>
         <c:forEach var="item" items="${weeklySalesRank}">
             <tr>
@@ -38,8 +38,8 @@
     <h2>한달 판매량 순위</h2>
     <table>
     	<tr>
-			<td>상품 이름</td>
-			<td>판매 수량</td>
+			<td>상품</td>
+			<td>수량</td>
 		</tr>
         <c:forEach var="item" items="${monthlySalesRank}">
             <tr>
@@ -52,8 +52,8 @@
     <h2>전체 판매량 순위</h2>
     <table>
     	<tr>
-			<td>상품 이름</td>
-			<td>판매 수량</td>
+			<td>상품</td>
+			<td>수량</td>
 		</tr>
         <c:forEach var="item" items="${allSalesRank}">
             <tr>

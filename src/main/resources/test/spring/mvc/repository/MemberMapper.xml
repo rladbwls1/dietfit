@@ -248,10 +248,19 @@
 	<select id="getOrderDetailByOrderid">
 		select * from ${id}_orderdetail where orderid =#{orderid}
 	</select>
-	<!-- 구매확정 -->
+	<!-- 주문번호와 상품코드로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderidAndProductid">
+		select * from ${id}_orderdetail where orderid=#{orderid} and productid=#{productid}
+	</select>
+	<!-- 구매확정 orderdetail 컬럼 수정 -->
 	<update id="defintePurchase">
 		update ${id}_orderdetail set purchase=9 where orderid=#{orderid} and productid=#{productid}
 	</update>
+	<!-- 구매확정 buyproduct 레코드 추가 -->
+	<insert id="addDefintePurchaseToBuyproduct">
+		insert into buyproduct (num, companyid,category,category2,flavor,id,orderid,quantity,price) values
+				(buyproduct_seq.nextval,#{companyid},#{category},#{category2},#{flavor},#{id},#{orderid},#{quantity},#{price})
+	</insert>
 	<!-- 보유 적립금이 null인지 판단, 1이면 null아님, 0이면 null임 -->
 	<select id="isPoint">
 		select count(*) from ${id}_point
@@ -266,7 +275,7 @@
 	</insert>
 	<!-- 적립금 소멸 -->
 	<insert id="deletePoint">
-		insert into ${id}_point (opt,change,orderid,point,deletedate) values (1, #{point.change},#{point.orderid},#{point.point},sysdate)
+		insert into ${id}_point (opt,change,point,deletedate) values (1, #{point.change},#{point.point},sysdate)
 	</insert>
 	<!-- 적립금 사용 -->
 	<insert id="usePoint">
@@ -275,6 +284,16 @@
 	<!-- 회원의 적립 % 가져오기 -->
 	<select id="getBonus">
 		select bonus from status s left outer join member_basic m on s.key=m.status where m.id=#{id}
+	</select>
+	<!-- 회원의 적립금 내역 가져오기 -->
+	<select id="getPointList">
+		select * from ${id}_point order by num desc
+	</select>
+	<!-- 만료된 적립금 가져오기 -->
+	<select id="getDuePointNum">
+	<![CDATA[	
+		select * from ${id}_point where duedate < sysdate
+	]]>
 	</select>
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->

@@ -34,10 +34,15 @@ public class Seller1Controller {
 	@Autowired
     private Seller1Service service;
 	@Autowired
+	private SellerService service2;
+	@Autowired
 	private Seller1Mapper mapper;
 	
 	@RequestMapping("store")
-	public String getProductsByCompanyId(@RequestParam("companyid") String companyid, Model model) {
+	public String getProductsByCompanyId(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service2.findcompanyid(id);
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
 	    if (products != null) {
 	        for (ProductDTO product : products) {
@@ -262,7 +267,6 @@ public class Seller1Controller {
 	                             RedirectAttributes redirectAttributes,
 	                             Model model,
 	                             HttpServletRequest request) {
- 		 System.out.println(companyid);
 	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
          // 상품 및 관련 이미지 삭제
          service.deleteProduct(companyid, category, category2, flavor);
@@ -412,7 +416,7 @@ public class Seller1Controller {
 	     model.addAttribute("category", dto.getCategory());
 	     model.addAttribute("category2", dto.getCategory2());
 	     model.addAttribute("flavor", dto.getFlavor());
-		 return "redirect:/seller/store/Update";
+		 return "/seller/thumbnailUpdatePro";
 	 }
 	 
 	 
@@ -478,7 +482,7 @@ public class Seller1Controller {
 	     model.addAttribute("category", dto.getCategory());
 	     model.addAttribute("category2", dto.getCategory2());
 	     model.addAttribute("flavor", dto.getFlavor());
-		 return "redirect:/seller/store/Update";
+		 return "/seller/productImageUpdatePro";
 	 }
 	 
 	 @RequestMapping("productImageDelete")
