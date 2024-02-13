@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PointDTO {
 	private int num;
-	private int option;
+	private int opt;
 	private int change;
 	private Date createdate;
 	private Date duedate;

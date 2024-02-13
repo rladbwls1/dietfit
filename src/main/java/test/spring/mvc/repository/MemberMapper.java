@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.BuyproductDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
@@ -160,11 +161,16 @@ public interface MemberMapper {
 	public DeliveryDTO getDeliveryByOrderid(@Param("id")String id, @Param("orderid")String orderid);
 	//주문번호로 주문상세 가져오기
 	public List<OrderdetailDTO> getOrderDetailByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호와 상품코드로 주문상세 가져오기
+	public OrderdetailDTO getOrderDetailByOrderidAndProductid(@Param("id")String id, 
+			@Param("orderid")String orderid,@Param("productid")String productid);
 	
 	//적립금
-	//구매확정
+	//구매확정 orderdetail 컬럼 수정
 	public void defintePurchase(@Param("id")String id, 
 			@Param("orderid")String orderid,@Param("productid")String productid);
+	//구매확정 buyproduct 레코드 추가
+	public void addDefintePurchaseToBuyproduct(BuyproductDTO dto);
 	//보유 적립금이 null이면 0, 아니면 1
 	public int isPoint(String id);
 	//회원의 현재 보유 적립금 가져오기
@@ -177,5 +183,10 @@ public interface MemberMapper {
 	public void usePoint(@Param("id")String id,@Param("point")PointDTO point);
 	//회원의 적립 % 가져오기
 	public double getBonus(String id);
+	//회원의 적립 내역 가져오기
+	public List<PointDTO> getPointList(String id);
+	//만료된 적립금 num 가져오기
+	public List<PointDTO> getDuePointNum(String id);
+	
 	
 }

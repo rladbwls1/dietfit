@@ -93,11 +93,12 @@ public interface MemberService {
 	public void getOrderDetailByOrderid(String id,String orderid,Model model);
 	
 	//적립금
-	//구매확정
+	//구매확정과 적립금 적립
 	public void defintePurchase(String id, String orderid, String productid,int price);
 	//보유 적립금 가져오기
 	public int getPoint(String id);
-	
+	//적립금 사용
+	public void usePoint(String id,String orderid,int point);
 	//최근 본 상품
 	//쿠키로 상품 정보 꺼내기
     public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
