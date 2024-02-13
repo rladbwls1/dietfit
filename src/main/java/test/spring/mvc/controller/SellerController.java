@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.ChatDTO;
@@ -25,6 +29,7 @@ import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
+import test.spring.mvc.service.Seller1Service;
 import test.spring.mvc.service.SellerService;
 
 
@@ -34,6 +39,17 @@ public class SellerController {
 	
 	@Autowired
 	private SellerService service;
+	@Autowired
+	private Seller1Service service2;
+	
+	@RequestMapping("/home")
+	public String home(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+	    model.addAttribute("companyid", companyid);
+		return "sellermain";
+	}
 	
 	@RequestMapping("/store/home")
 	public String main() {
@@ -71,35 +87,48 @@ public class SellerController {
 	
 	@RequestMapping("/mypage")
 	public String mypage(Principal pri, Model model) {
-		model.addAttribute("id", pri.getName());
-		return "/seller2/mypage";
+	    String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+	    model.addAttribute("companyid", companyid);
+	    return "/seller2/mypage";
 	}
+
 	
 	@RequestMapping("/SELLERCHAT")
-	public String SELLERCHAT(Principal pri, Model model, int roomnum)throws Exception {
-		String sellerid = pri.getName();
-		String product = service.findallbyroomnum(roomnum);
-	      String path = "D://chat//" + roomnum + ".txt";
-	      File file = new File(path);
-	      if(file.isFile()) {
-	    	  Scanner s = new Scanner(file);
-	    	  String chat = "";
-	    	  while(s.hasNextLine()) {
-	    		  chat += (s.nextLine()+"<br>");
-	    	  }
-	    	  model.addAttribute("chat",chat);
-	      }
+	public String SELLERCHAT(Principal pri, Model model, int roomnum, HttpServletRequest request) throws Exception {
+	    String sellerid = pri.getName();
+	    String product = service.findallbyroomnum(roomnum);
+
+	    // 서버의 실제 경로
+	    ServletContext servletContext = request.getServletContext();
+	    String realPath2 = servletContext.getRealPath("/resources/chat/");
+	    String realPath = realPath2 + roomnum+".txt";
+
+	    File file = new File(realPath);
+
+	    if (file.isFile()) {
+	        Scanner s = new Scanner(file);
+	        String chat = "";
+	        while (s.hasNextLine()) {
+	            chat += (s.nextLine() + "<br>");
+	        }
+	        model.addAttribute("chat", chat);
+	    }
 	    model.addAttribute("product", product);
-		model.addAttribute("sellerid", sellerid);
-		model.addAttribute("roomnum",roomnum);
-		return "/seller2/SELLERCHAT";
+	    model.addAttribute("sellerid", sellerid);
+	    model.addAttribute("roomnum", roomnum);
+	    return "/seller2/SELLERCHAT";
 	}
 	
 	@RequestMapping("/sellerchatlist")
 	public String sellerchatlist(Principal pri, Model model) {
 		String sellerid = pri.getName();
+		String companyid = service.findcompanyid(sellerid);
+		
 		model.addAttribute("sellerid", sellerid);
-		model.addAttribute("chatlist", service.findnotreadchat(0));
+		model.addAttribute("companyid", companyid);
+		model.addAttribute("chatlist", service.findnotreadchat(0,companyid));
 		return "/seller2/sellerchatlist";
 	}
 	@RequestMapping("/chatreport")
@@ -112,6 +141,7 @@ public class SellerController {
 	
 	@RequestMapping("/chatreportpro")
 	public String chatreportpro(ChatreportDTO chatreportdto,int roomnum) {
+		
 		service.chatreport(chatreportdto);
 		service.chatreportdelete(roomnum);
 		return "/seller2/chatreportpro";
@@ -123,7 +153,8 @@ public class SellerController {
 		return "/seller2/productdiscount";
 	}
 	@RequestMapping("/discountForm")
-	public String discountForm(int num, Model model) {
+	public String discountForm(int num, Model model,Principal pri) {
+		model.addAttribute("id", pri.getName());
 		model.addAttribute("num",num);
 		return "/seller2/discountForm";
 	}
@@ -132,7 +163,8 @@ public class SellerController {
     public String addDiscount(@RequestParam("start") String start,
                               @RequestParam("end") String end,
                               @RequestParam("sale") int sale,
-                              @RequestParam("num") String num) {
+                              @RequestParam("num") String num,
+                              Principal pri, Model model) {
         DiscountDTO discountDTO = new DiscountDTO();
         discountDTO.setNum(Integer.parseInt(num));
      // 문자열을 Date로 변환
@@ -150,8 +182,9 @@ public class SellerController {
 
         // 할인 정보를 데이터베이스에 추가
         service.updatediscount(discountDTO);
-        
-        return "redirect:/seller/productdiscount";
+        String id = pri.getName();
+		model.addAttribute("id", id);
+        return "/seller2/addDiscount";
     }
 	@RequestMapping("/modify")
 	public String modify(Principal pri, Model model) {
@@ -165,8 +198,9 @@ public class SellerController {
 	}
 	
 	@RequestMapping("/sellerstock")
-	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model) {
+	public String sellerstock(@RequestParam(name = "productId", required = false) String productId, Model model, String productname) {
 	    model.addAttribute("productId", productId);
+	    
 	    if (productId != null && productId.length() >= 8) {
 	        // 앞에서부터 2글자씩 잘라내어 각 변수에 저장
 	        String companyid = productId.substring(0, 2).trim();
@@ -189,16 +223,43 @@ public class SellerController {
 	}
 
 	@RequestMapping("/modifyPro")
-	public String modifyPro(Member_basicDTO Member_basicDTO) {
+	public String modifyPro(Principal pri, Model model, Member_basicDTO Member_basicDTO) {
+		String id = pri.getName();
+		model.addAttribute("id", id);
 		service.sellermodifyupdate(Member_basicDTO);
 		return "/seller2/mypage";
 	}
 	@RequestMapping("/addStock")
-	public String addStock(ProductDTO productdto) {
-		System.out.println(productdto.getCompanyid());
-		
+	public String addStock(Principal pri, Model model, ProductDTO productdto) {
 		service.sellerstockupdate(productdto);
-		return "redirect:/seller/mypage";
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		return "/seller2/addStock";
 	}
+	@RequestMapping("/addstockpro")
+	public String addstockpro(Principal pri, Model model, ProductDTO productdto) {
+		service.sellerstockupdate(productdto);
+		String id = pri.getName();
+		model.addAttribute("id", id);
+		return "/seller2/addstockpro";
+	}
+	
+	@RequestMapping("/productdelete")
+	 public String deleteProduct(@RequestParam("companyid") String companyid,
+	                             @RequestParam("category") String category,
+	                             @RequestParam("category2") String category2,
+	                             @RequestParam("flavor") String flavor,
+	                             RedirectAttributes redirectAttributes,
+	                             Principal pri,Model model,
+	                             HttpServletRequest request) {
+	 	 String path = request.getServletContext().getRealPath("/resources/p_img/");
+        // 상품 및 관련 이미지 삭제
+        service2.deleteProduct(companyid, category, category2, flavor);
+        service2.deleteProductimg(companyid, category, category2, flavor);
+        service2.fileDelete(companyid, category, category2, flavor,path);
+        redirectAttributes.addFlashAttribute("상품이 성공적으로 삭제되었습니다.");
+        model.addAttribute("companyid", companyid);
+        return "redirect:/seller/store?companyid="+companyid;
+	 }
 }
 

@@ -63,7 +63,11 @@
         </tbody>
     </table>
     
-    <!-- protein ${protein}으로 고치기  -->
-    <button onclick="location.href='/dietfit/surveymenu?protein=10'">식단보기</button>
+    <br />
+    <form action="/dietfit/eat" method="post">
+		<input type="hidden" name="kcal"  value="${diettdee }"/>
+		<button type="submit">식단보기</button>
+	</form>
+	
 </body>
 </html>

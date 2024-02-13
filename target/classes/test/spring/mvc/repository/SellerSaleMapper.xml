@@ -6,65 +6,145 @@
 	
 	<!-- 주문 목록 -->
 	<select id = "orderproduct" parameterType="test.spring.mvc.bean.OrderdetailDTO">
-		select * from all_product ap join OOOO_orderdetail op on ap.companyid || ap.category || ap.category2 || ap.flavor = op.PRODUCTID where companyid = #{companyid}
+		select * from all_product ap join ${memberid}_orderdetail op on ap.companyid || ap.category || ap.category2 || ap.flavor = op.PRODUCTID where companyid = #{companyid}
 	</select>
 	
-	<!-- 송장번호 업데이트 -->
-	<update id="updateTrackingAndCourier">
-    	update OOOO_orderdetail
-	    set tracking = #{tracking}, courier = #{courier}
-	    where orderid = #{orderid}  and PRODUCTID like #{companyid}
+	<!-- 상품 송장번호 업데이트 -->
+	<update id = "updateTrackingAndCourier">
+		update ${memberid}_orderdetail set tracking = #{tracking}, courier = #{courier}  where orderid = #{orderid}  and productid like #{companyid}
 	</update>
-	
+
 	<!-- 오늘 매출액 -->
 	<select id = "getTodaySales" resultType="int">
-		select sum(price * quantity) as totalSales from OOOO_orderdetail where PRODUCTID like #{companyid}
-  		and purchase = 1  and TRUNC(purdate) = TRUNC(SYSDATE)
+		select sum(price * amount) as totalSales from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)
 	</select>
 	
 	<!-- 일주일 매출액 -->
 	<select id = "getWeeklySales" resultType="int">
-		select sum(price * quantity) as totalSales from OOOO_orderdetail where PRODUCTID like #{companyid}
-  		and purchase = 1 and purdate >= TRUNC(SYSDATE) - 7
+		SELECT SUM(price * amount) AS totalSales FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1
 	</select>
 	
 	<!-- 한달 매출액 -->
 	<select id = "getMonthlySales" resultType="int">
-		select sum(price * quantity) as totalSales from OOOO_orderdetail where PRODUCTID like #{companyid}
-	  	and purchase = 1 and purdate >= ADD_MONTHS(TRUNC(SYSDATE), -1)
+		SELECT SUM(price * amount) AS totalSales FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE)
 	</select>
 	
 	<!-- 오늘 순수익 -->
 	<select id = "todayNetSales" resultType="int">
-		select sum(price * quantity) - sum(price * quantity * 0.1) as netSales from OOOO_orderdetail 
-			where PRODUCTID like #{companyid} and purchase = 1  and TRUNC(purdate) = TRUNC(SYSDATE)
+		select sum(price * amount) - sum(price * amount * 0.1) as netSales from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)
 	</select>
 	
 	<!-- 일주일 순수익 -->
 	<select id = "weeklyNetSales" resultType="int">
-		select sum(price * quantity) - sum(price * quantity * 0.1) as netSales from OOOO_orderdetail 
-		where PRODUCTID like #{companyid}  and purchase = 1  and TRUNC(purdate) >= TRUNC(SYSDATE) - 7	
+		select sum(price * amount) - sum(price * amount * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1	
 	</select>
 	
 	<!-- 한달 순수익 -->
 	<select id = "monthlyNetSales" resultType="int">
-		select sum(price * quantity) - sum(price * quantity * 0.1) as netSales from OOOO_orderdetail 
-			where PRODUCTID like #{companyid} and purchase = 1 and TRUNC(purdate) >= ADD_MONTHS(TRUNC(SYSDATE), -1)
+		select sum(price * amount) - sum(price * amount * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE)
 	</select>
 	
 	<!-- 오늘 수수료 -->
 	<select id = "todayFee">
-		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail where PRODUCTID like #{companyid}  
-			and purchase = 1  and TRUNC(purdate) = TRUNC(SYSDATE)  
+		select sum(price * amount * 0.1) as Fee from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)	
 	</select>
+	
 	<!-- 일주일 수수료 -->
 	<select id = "weeklyFee">
-		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail  where PRODUCTID like #{companyid}  
-		and purchase = 1  and TRUNC(purdate) >= TRUNC(SYSDATE) - 7
+		select sum(price * amount * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1	
 	</select>
+	
 	<!-- 한달 수수료 -->
 	<select id = "monthlyFee">
-		select sum(price * quantity * 0.1) as Fee from OOOO_orderdetail  where PRODUCTID like #{companyid} 
-		and purchase = 1 and TRUNC(purdate) >= ADD_MONTHS(TRUNC(SYSDATE), -1)
-	</select>			
+		select sum(price * amount * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE)
+	</select>
+	
+	<!-- 판매량 순위 하루 -->
+	<select id="dailySalesRank" resultType = "test.spring.mvc.bean.OrderdetailDTO">
+    select ap.product, bp.companyid, sum(bp.amount) as totalsold, bp.price 
+    from all_product ap  
+    join buyproduct bp on ap.companyid = bp.companyid 
+        and ap.category = bp.category  
+        and ap.category2 = bp.category2  
+        and ap.flavor = bp.flavor
+    where bp.companyid = #{companyid} and trunc(bp.setdate) = trunc(sysdate)
+    group by ap.product, bp.companyid, bp.price 
+    order by totalsold desc FETCH FIRST 5 ROWS ONLY
+	</select>
+
+	<!-- 판매량 순위 일주일 -->
+	<select id="weeklySalesRank" resultType = "test.spring.mvc.bean.OrderdetailDTO">
+    select ap.product, bp.companyid, sum(bp.amount) as totalsold, bp.price 
+    from all_product ap  
+    join buyproduct bp on ap.companyid = bp.companyid 
+        and ap.category = bp.category  
+        and ap.category2 = bp.category2  
+        and ap.flavor = bp.flavor
+    where bp.companyid = #{companyid} and bp.setdate between trunc(sysdate) - 7 and trunc(sysdate) + 1
+    group by ap.product, bp.companyid, bp.price 
+    order by totalsold desc FETCH FIRST 5 ROWS ONLY
+	</select>
+	
+	<!-- 판매량 순위 한달 -->
+	<select id="monthlySalesRank" resultType = "test.spring.mvc.bean.OrderdetailDTO">
+    select ap.product, bp.companyid, sum(bp.amount) as totalsold, bp.price 
+    from all_product ap  
+    join buyproduct bp on ap.companyid = bp.companyid 
+        and ap.category = bp.category  
+        and ap.category2 = bp.category2  
+        and ap.flavor = bp.flavor
+    where bp.companyid = #{companyid} and bp.setdate between add_months(trunc(sysdate), -1) and trunc(sysdate)
+    group by ap.product, bp.companyid, bp.price 
+    order by totalsold desc FETCH FIRST 5 ROWS ONLY
+</select>
+
+	<!-- 판매량 전체 순위 -->
+	<select id = "allSalesRank" resultType = "test.spring.mvc.bean.OrderdetailDTO">
+		 select ap.product, bp.companyid, sum(bp.amount) as totalsold, bp.price 
+    from all_product ap  
+    join buyproduct bp on ap.companyid = bp.companyid 
+        and ap.category = bp.category  
+        and ap.category2 = bp.category2  
+        and ap.flavor = bp.flavor
+    where bp.companyid = #{companyid} 
+    group by ap.product, bp.companyid, bp.price 
+    order by totalsold desc	FETCH FIRST 5 ROWS ONLY
+	</select>
+	
+	<!-- 광고 신청 내역 -->
+	<select id="selectcommercial">
+	    select * from commercials where companyid = #{companyid}
+	</select>
+
+	<!-- 광고 신청 -->
+	<insert id="insertCommercial" parameterType="test.spring.mvc.bean.CommercailDTO">
+	    insert into commercials (NUM, COMNAME, COMPANYID, COMFILE, ADMINCHECK, STARTDATE, ENDDATE)
+	    values (com_seq.NEXTVAL, #{comname}, #{companyid}, #{comfile}, 0, #{startdate}, #{enddate})
+	</insert>
+	
+	<!-- 광고 취소 -->
+	<delete  id = "commdelect">
+    	delete from commercials where num = ${num}
+	</delete >
+	
+	<!-- 광고 내역 -->
+	<select id = "commercial"  parameterType="test.spring.mvc.bean.CommercailDTO">
+		select * from commercials where num = ${num}
+	</select>
+	
+	<!-- 광고 수정 -->
+	<update id="commupdate" parameterType="test.spring.mvc.bean.CommercailDTO">
+	    update commercials
+	    set comname = #{comname},
+	        startdate = #{startdate},
+	        enddate = #{enddate},
+	        comfile = CASE WHEN #{comfile} IS NOT NULL THEN #{comfile} ELSE comfile END
+	    where num = #{num}
+	</update>
+	
+	<!-- 전체 회원 아이디 -->
+	<select id ="allmember" resultType="String">
+		select id from member_basic where status in (1, 2, 3, 4)
+	</select>
+
 </mapper>

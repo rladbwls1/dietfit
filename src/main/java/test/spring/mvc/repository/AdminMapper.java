@@ -1,11 +1,17 @@
 package test.spring.mvc.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 
@@ -25,6 +31,14 @@ public interface AdminMapper {
 	public int allProductcount();
 	public List<ProductDTO> allProduct();
 	
+	public int stocklesscount(int stock);
+	public List<ProductDTO> stockless(int stock);
+	public int getStock(String product);
+	public String getCompanyid(String productname);
+	public String getCategory(String productname);
+	public String getCategory2(String productname);
+	public String getFlavor(String productname);
+	
 	public int productcount(String companyid);
 	public List<ProductDTO> productList(String companyid);
 	
@@ -34,7 +48,6 @@ public interface AdminMapper {
 			@Param("category") String category, 
 			@Param("category2") String category2,
 			@Param("flavor") String flavor);
-	public int getProductStock(String product);
 	public String getCompanyEmail(String companyid);
 	
 	//식단!!!!
@@ -42,5 +55,22 @@ public interface AdminMapper {
 	
 	public int detailCount();
 	public List<ProductinfoDTO> allProductDetail();
-
+	
+	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
+	public void orderSummary(@Param("ordersum") OrdersumDTO ordersum);
+	public void changeCounpon(@Param("id") String id, @Param("couponid") String couponid);
+	
+	public void memberDelivery(@Param("id") String id, @Param("delivery") DeliveryDTO delivery);
+	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
+	public String findproduct(@Param("id") String id, @Param("num") int num);
+	public int findPrice(String productid);
+	
+	public DeliveryDTO getUserDelivery9(String id);
+	//배송지 별명으로 배송정보 가져오기
+	public DeliveryDTO getDeliveryByNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	public List<Map<String, Object>> getUserCoupon(@Param("id") String id);
+	
+//	public String findCoupon(@Param("id") String id, String couponid);
+//	public AllcouponDTO getUserCouponInfo(@Param("id") String id, @Param("couponid") String couponid);
+	public Map<String, Object> getMyCart(@Param("id") String id, @Param("num") int num);
 }

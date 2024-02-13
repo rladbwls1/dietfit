@@ -5,10 +5,16 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.BuyproductDTO;
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 
@@ -73,6 +79,10 @@ public interface MemberMapper {
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
 							     	  @Param("category2") String category2);
+	//조회수 올리기
+	public void countUp(@Param("companyid") String companyid, 
+	     	  			@Param("category") String category,
+	     	  			@Param("category2") String category2);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
@@ -118,4 +128,65 @@ public interface MemberMapper {
 	public void deleteCart(@Param("id")String id, @Param("num")int num );
 	//장바구니에서 개수 수정한 목록만 가져오기
 	public CartDTO getCartListByNum(@Param("id")String id, @Param("num")int num );
+	//사용자 배송지에 새 배송지 추가
+	public void addDelivery(@Param("dto")DeliveryDTO dto,@Param("id")String id);
+	//사용자 배송지 목록 가져오기
+	public List<DeliveryDTO> getUserDelivery(String id);
+	//사용자 배송지에서 동일 별명 유무 판단, 1이면 있음 0이면 없음
+	public int checkNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지, 기본 배송지 없앰
+	public void removeDefaultDelivery(String id);
+	//사용자 배송지, 기본 배송지 설정
+	public void setDefaultDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지 삭제
+	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	
+	//쿠폰
+	//쿠폰개수
+	public int couponcount();
+	public List<AllcouponDTO> couponList();
+	//유저가 보유한 쿠폰번호 추출
+	public List<String> getUserCouponid(String id);
+	//쿠폰 다운로드
+	public void downloadCoupon(@Param("id")String id, @Param("cdto")CouponDTO cdto);
+	//만료된 쿠폰 만료처리
+	public void checkUsableCoupon(String id);
+	//유저 쿠폰 가져오기
+	public List<CouponDTO> getUserCoupon(String id);
+	//유저 주문 정보 가져오기
+	public List<Map<String,Object>> getUserOrder(String id);
+	//상품코드로 상품명 검색
+	public String getProductnameByProductcode(ProductDTO dto);
+	//주문번호로 사용자의 배송지 정보 가져오기
+	public DeliveryDTO getDeliveryByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호로 주문상세 가져오기
+	public List<OrderdetailDTO> getOrderDetailByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호와 상품코드로 주문상세 가져오기
+	public OrderdetailDTO getOrderDetailByOrderidAndProductid(@Param("id")String id, 
+			@Param("orderid")String orderid,@Param("productid")String productid);
+	
+	//적립금
+	//구매확정 orderdetail 컬럼 수정
+	public void defintePurchase(@Param("id")String id, 
+			@Param("orderid")String orderid,@Param("productid")String productid);
+	//구매확정 buyproduct 레코드 추가
+	public void addDefintePurchaseToBuyproduct(BuyproductDTO dto);
+	//보유 적립금이 null이면 0, 아니면 1
+	public int isPoint(String id);
+	//회원의 현재 보유 적립금 가져오기
+	public int getPoint(String id);
+	//적립금 적립
+	public void addPoint(@Param("id")String id,@Param("point")PointDTO point);
+	//적립금 소멸
+	public void deletePoint(@Param("id")String id,@Param("point")PointDTO point);
+	//적립금 사용
+	public void usePoint(@Param("id")String id,@Param("point")PointDTO point);
+	//회원의 적립 % 가져오기
+	public double getBonus(String id);
+	//회원의 적립 내역 가져오기
+	public List<PointDTO> getPointList(String id);
+	//만료된 적립금 num 가져오기
+	public List<PointDTO> getDuePointNum(String id);
+	
+	
 }

@@ -2,7 +2,8 @@ package test.spring.mvc.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
@@ -30,5 +31,6 @@ public interface Admin1Service{
 	public List<ProductDTO> discount();
 	public int sale(int num);
 	public List<ProductDTO> reco();
-	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model);
+	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category, HttpServletRequest request);
+	public List<ProductDTO> food_product(String productid);
 }

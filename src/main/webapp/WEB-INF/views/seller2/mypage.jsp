@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Seller mypage</title>
-</head>
-<body>
+<html lang="en">
+    
 <h1>seller mypage</h1>
 <p>${id}님 환영합니다.</p>
 <br>
@@ -25,19 +21,23 @@
     <input type="submit" value="상품문의 목록"/>
 </form>
 <br>
-<form action="/seller/orderhome" method="post">
+<form action="/seller/order" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
     <input type="submit" value="상품주문 목록"/>
 </form>
 <br>
-<form action="/seller/store/home" method="post">
+<form action="/seller/store" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
     <input type="submit" value="상품 목록"/>
 </form>
 <br>
-<form action="/seller/calculatehome" method="post">
+<form action="/seller/calculate" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
     <input type="submit" value="정산"/>
 </form>
 <br>
-<form action="/seller/Advertising" method="post">
+<form action="/seller/commercailhome" method="post">
+	<input type="hidden" name="companyid" value="${companyid}"/>
     <input type="submit" value="광고 신청"/>
 </form>
 </body>

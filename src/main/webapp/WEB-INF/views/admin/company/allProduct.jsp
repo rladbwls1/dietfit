@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="/resources/js/jquery-3.7.1.min.js"></script>
 <title>Dietfit - Allproduct</title>
 </head>
 <body>
@@ -14,8 +13,7 @@
 		<h5> 판매자가 없습니다. </h5>
 	</c:if>
 	<c:if test="${allProductcount > 0}">
-	<button type="button" id="checkStock">✔상품재고✔</button>
-	
+	<button type="button" onclick="location.href='/admin/stockless?stock=20'" > 재고 일정미만 모아보기</button>
 	<div id="result"></div>
 		<table>
 	        <thead>
@@ -47,20 +45,4 @@
     
 		
 </body>
-
-<script>
-$(document).ready(function(){
-	$("#checkStock").on("click", function(){
-		$.ajax({
-			url:"/admin/checkStock",
-			success:function(a){
-				$("#result").html(a);
-			}
-		});
-	});
-});
-
-
-</script>
-
 </html>

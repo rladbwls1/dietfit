@@ -23,17 +23,18 @@
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #355FAD;
             color: white;
             padding: 10px 15px;
             border: none;
             cursor: pointer;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
     <h2>재고 추가</h2>
-    <form action="/seller/addStock" method="post">
+    <form action="/seller/addstockpro" method="post">
     <input type="hidden" name="companyid" value="${companyid}"/>
     <input type="hidden" name="category" value="${category}"/>
     <input type="hidden" name="category2" value="${category2}"/>

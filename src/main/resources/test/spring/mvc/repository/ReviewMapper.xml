@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="test.spring.mvc.repository.ReviewMapper">
+	
+	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
+		SELECT r.*, a.*, ap.boardname
+			FROM review r
+			LEFT JOIN (
+			    SELECT allimg.*, min_allimg.min_num
+			    FROM allimg
+			    JOIN (
+			        SELECT notifynum, MIN(num) AS min_num
+			        FROM allimg
+			        WHERE type = 4
+			        GROUP BY notifynum
+			    ) min_allimg ON allimg.notifynum = min_allimg.notifynum AND allimg.num = min_allimg.min_num
+			) a ON r.num = a.notifynum
+			LEFT JOIN all_product ap ON r.companyid = ap.companyid 
+			                          AND r.category = ap.category 
+			                          AND r.category2 = ap.category2 
+			                          AND r.flavor = ap.flavor
+			ORDER BY r.num ASC
+	</select>
+	
+	<!-- 리뷰 글 -->
+	<insert id = "write" parameterType="test.spring.mvc.bean.ReviewDTO">
+		insert into review (num, companyid, category, category2, flavor, id, writer, starscore,content,isfile,reg) 
+			values (review_seq.nextval, #{companyid}, #{category}, #{category2}, #{flavor}, #{id}, #{writer}, #{starscore}, #{content}, #{isfile}, sysdate)
+	</insert>
+	<!-- 리뷰 이미지 저장 -->
+	<insert id = "writeimg" parameterType="test.spring.mvc.bean.AllimgDTO">
+		<selectKey keyProperty="notifynum" resultType="int" order="BEFORE">
+	        select review_seq.CURRVAL as notifynum from dual
+	    </selectKey>
+		insert into allimg (num, id, type, notifynum, attatch) values(allimg_SEQ.nextval, #{id}, 4, #{notifynum}, #{attatch})
+	</insert>
+	<!-- 리뷰 글 수정 -->
+	<!-- 리뷰 이미지 수정 -->
+	
+	<!-- 리뷰 글 삭제 -->
+	<!-- 리뷰 이미지 삭제 -->
+</mapper>

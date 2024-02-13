@@ -29,6 +29,9 @@
             </div>
 
             <button type="submit" onclick="return checkPwChange()"> <b> 변경 </b> </button>
+            <br/>
+            <br/>
+            <button type="button" onclick="window.location.href='modifyForm'"> <b> 취소 </b> </button>
         </form>
     </div>
 </body>

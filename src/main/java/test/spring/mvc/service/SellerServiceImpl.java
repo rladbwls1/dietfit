@@ -89,7 +89,7 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public int chatroomnum(ChatDTO chatDTO, Model model, String id, String product) {
+	public int chatroomnum(ChatDTO chatDTO, Model model, String id, String product, String companyid) {
 		String countidchat = mapper.countidchat(id,product);
 		int roomnum = 0;
 		if(countidchat == null) {
@@ -106,8 +106,8 @@ public class SellerServiceImpl implements SellerService{
 	}
 
 	@Override
-	public List<ChatDTO> findnotreadchat(int readcheck) {
-		return mapper.findnotreadchat(readcheck);
+	public List<ChatDTO> findnotreadchat(int readcheck,String companyid) {
+		return mapper.findnotreadchat(readcheck,companyid);
 	}
 
 	@Override
@@ -136,6 +136,10 @@ public class SellerServiceImpl implements SellerService{
 		return mapper.findidbyroomnum(roomnum);
 	}
 
-	
+	@Override
+	public String findproductbycompanyid(String product) {
+		return mapper.findproductbycompanyid(product);
+	}
+
 
 }

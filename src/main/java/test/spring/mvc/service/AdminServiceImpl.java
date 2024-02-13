@@ -1,18 +1,30 @@
 package test.spring.mvc.service;
 
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 
@@ -24,7 +36,6 @@ public class AdminServiceImpl implements AdminService{
 	 
 	@Autowired
 	private AdminMapper mapper;
-	
 	
 	@Override
 	public int companycount() {
@@ -120,6 +131,54 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
+	public int stocklesscount(int stock) {
+		return mapper.stocklesscount(stock);
+	}
+	
+	@Override
+	public void stockless(Model model, int stock) {
+		int stocklesscount = mapper.stocklesscount(stock);
+		List<ProductDTO> stockless = Collections.EMPTY_LIST;
+		stockless = mapper.stockless(stock);
+		
+		model.addAttribute("stocklesscount", stocklesscount);
+		model.addAttribute("stockless", stockless);
+	}
+	
+	@Override
+	public void checkstock(String product) {
+		for(String productname:product.split(",")) {
+				try {
+					String companyid = mapper.getCompanyid(productname);
+					String category = mapper.getCategory(productname);
+					String category2 = mapper.getCategory2(productname);
+					String flavor = mapper.getFlavor(productname);
+					eservice.sendMail(companyid, category, category2, flavor);
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			}
+		
+	}
+	
+//	@Override
+//	@Scheduled(cron = "0 0 10 * * ?")
+//	public void checkStock() {
+//		List<ProductDTO> allProduct = mapper.allProduct();
+//		for(ProductDTO product : allProduct) {
+//			int stock = mapper.getProductStock(product.getProduct());
+//			
+//			if(stock < 20) {
+//				try {
+//					eservice.sendMail(product.getCompanyid(), product.getCategory(), product.getCategory2(), product.getFlavor());
+//				} catch (MessagingException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//	}
+
+	@Override
 	public int productcount(String companyid) {
 		return mapper.productcount(companyid);
 	}
@@ -133,22 +192,6 @@ public class AdminServiceImpl implements AdminService{
 		model.addAttribute("productcount", productcount);
 	}
 
-	@Override
-	@Scheduled(cron = "0 0 10 * * ?")
-	public void checkStock() {
-		List<ProductDTO> allProduct = mapper.allProduct();
-		for(ProductDTO product : allProduct) {
-			int stock = mapper.getProductStock(product.getProduct());
-			
-			if(stock < 20) {
-				try {
-					eservice.sendMail(product.getCompanyid(), product.getCategory(), product.getCategory2(), product.getFlavor());
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 
 	@Override
 	public void getProductName(String companyid, String category, String category2, String flavor, Model model) {
@@ -158,16 +201,89 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 
-	@Override
-	public void getProductStock(String product, Model model) {
-		int stock = mapper.getProductStock(product);
-		model.addAttribute("stock", stock);
-	}
+//	@Override
+//	public void getProductStock(String product, Model model) {
+//		int stock = mapper.getProductStock(product);
+//		model.addAttribute("stock", stock);
+//	}
 
 	@Override
 	public String getCompanyEmail(String companyid) {
 		return mapper.getCompanyEmail(companyid);
 	}
 
+	@Override
+	public String generateOrderId(Principal pri) {
+        // 여기에서 주문 ID 생성 로직을 구현
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String datePart = dateFormat.format(new Date());
+
+        String id = pri.getName();
+        String orderId;
+        boolean isDuplicate;
+        
+        do {
+        	orderId = datePart + String.format("%04d", (int) (Math.random() * 10000));
+        	isDuplicate = mapper.findOrderId(id, orderId) > 0;
+        } while (isDuplicate);
+        // 예시: 날짜 + 4자리 랜덤 숫자
+        return orderId;
+    }
+
+	@Override
+	public List<String> findproductId(String id, String nums) {
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        List<Integer> numsList = new ArrayList<>();
+        for (String num : numsArray) {
+            numsList.add(Integer.parseInt(num.trim()));
+        }
+
+        List<String> productIds = new ArrayList<>();
+        for (int productNum : numsList) {
+            String product = mapper.findproduct(id, productNum);
+            String productId = mapper.getProductId(product);
+            productIds.add(productId);
+        }
+        return productIds;
+    }
+
+	@Override
+	public void createOrder(String id, OrderdetailDTO orderdetail) {
+		mapper.memberOrderDetail(id, orderdetail);
+	}
+
+	
+	@Override
+	public void createOrderSum(OrdersumDTO ordersum) {
+		mapper.orderSummary(ordersum);
+	}
+
+	
+	@Override
+	public void changeCoupon(String id, String couponid) {
+		mapper.changeCounpon(id, couponid);
+	}
+
+	@Override
+	public void createDelivery(String id, DeliveryDTO delivery) {
+		mapper.memberDelivery(id, delivery);
+	}
+
+	@Override
+	public int findprice(String productid) {
+		return mapper.findPrice(productid);
+	}
+	
+	
+
+
+	
+
+	
+	
+	
 	
 }

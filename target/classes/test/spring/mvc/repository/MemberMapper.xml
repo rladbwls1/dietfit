@@ -106,6 +106,10 @@
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
     	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
     </select>
+    <!-- 조회수 올리기 -->
+    <update id="countUp">
+    	update all_product set count=count+1 where companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2}
+    </update>
 	<!-- 관심상품에 상품 하나 추가하기 -->
 	<insert id="addWishOne">
 		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')
@@ -178,7 +182,119 @@
 	<select id="getCartListByNum">
 		select * from ${id}_cart where num=#{num}
 	</select>
-	
+	<!-- 유저 배송지에 새 배송지 추가 -->
+	<insert id="addDelivery">
+		insert into ${id}_delivery (addr1,addr2,phone,nicaddr,postnum,receiver) values
+			(#{dto.addr1},#{dto.addr2},#{dto.phone},#{dto.nicaddr},#{dto.postnum},#{dto.receiver})
+	</insert>
+	<!-- 유저 배송지 정보 가져오기 -->
+	<select id="getUserDelivery">
+		select * from ${id}_delivery where orderid is null order by DEFAULTADDR desc, NICADDR asc
+	</select>
+	<!-- 유저 배송지에서 동일 별명 유무 판단 -->
+	<select id="checkNicaddr">
+		select count(*) from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
+	</select>
+	<!-- 사용자 배송지, 기본 배송지 없앰 -->
+	<update id="removeDefaultDelivery">
+		update ${id}_delivery set defaultaddr=0 where orderid is null
+	</update>
+	<!-- 사용자 배송지, 기본 배송지 설정 -->
+	<update id="setDefaultDelivery">
+		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr} and orderid is null
+	</update>
+	<!-- 사용자 배송지 삭제 -->
+	<delete id="deleteDelivery">
+		delete from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
+	</delete>
+ 	<!-- 쿠폰 -->
+    <select id="couponcount" resultType="int">
+    	select count(*) from allcoupon where deletedate > sysdate 
+    </select>
+    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	select * from allcoupon where deletedate > sysdate and admincheck=1
+    </select>
+    <!-- 유저가 갖고있는 모든 쿠폰의 쿠폰번호 가져오기 -->
+    <select id="getUserCouponid">
+    	select couponid from ${id}_coupon
+    </select>
+    <!-- 쿠폰 다운로드 -->
+    <insert id="downloadCoupon">
+    	insert into ${id}_coupon (coupon,couponid,CREATEDATE,DELETEDATE,STATUS) values (#{cdto.coupon},#{cdto.couponid},#{cdto.createdate},#{cdto.deletedate},#{cdto.status})
+    </insert>
+	<!-- 만료된 쿠폰 만료처리 -->
+	<update id="checkUsableCoupon">
+	<![CDATA[	
+		update ${id}_coupon set status=99 where deletedate < sysdate
+	]]>
+	</update>
+	<!-- 사용하지 않은 유저 쿠폰 가져오기 -->
+	<select id="getUserCoupon" resultType="test.spring.mvc.bean.CouponDTO">
+		select * from ${id}_coupon where status=0
+	</select>
+	<!-- 유저 주문 정보 가져오기 -->
+	<select id="getUserOrder" resultType="Map">
+		select * from ${id}_orderdetail o left outer join courier c on o.courier=c.key order by purdate desc
+	</select>
+	<!-- 상품 코드로 상품명 검색 -->
+	<select id="getProductnameByProductcode" resultType="String">
+		select product from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor} 
+	</select>
+	<!-- 주문번호로 배송지 정보 가져오기 -->
+	<select id="getDeliveryByOrderid">
+		select * from ${id}_delivery where orderid =#{orderid}
+	</select>
+	<!-- 주문번호와 아이디로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderid">
+		select * from ${id}_orderdetail where orderid =#{orderid}
+	</select>
+	<!-- 주문번호와 상품코드로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderidAndProductid">
+		select * from ${id}_orderdetail where orderid=#{orderid} and productid=#{productid}
+	</select>
+	<!-- 구매확정 orderdetail 컬럼 수정 -->
+	<update id="defintePurchase">
+		update ${id}_orderdetail set purchase=9 where orderid=#{orderid} and productid=#{productid}
+	</update>
+	<!-- 구매확정 buyproduct 레코드 추가 -->
+	<insert id="addDefintePurchaseToBuyproduct">
+		insert into buyproduct (num, companyid,category,category2,flavor,id,orderid,quantity,price) values
+				(buyproduct_seq.nextval,#{companyid},#{category},#{category2},#{flavor},#{id},#{orderid},#{quantity},#{price})
+	</insert>
+	<!-- 보유 적립금이 null인지 판단, 1이면 null아님, 0이면 null임 -->
+	<select id="isPoint">
+		select count(*) from ${id}_point
+	</select>
+	<!-- 회원의 현재 보유 적립금 가져오기 -->
+	<select id="getPoint">
+		select point from ${id}_point where num=(select max(num) from ${id}_point)
+	</select>
+	<!-- 적립금 적립 -->
+	<insert id="addPoint">
+		insert into ${id}_point (opt,change,createdate,duedate,orderid,point) values (0, #{point.change}, sysdate, sysdate+365,#{point.orderid},#{point.point})
+	</insert>
+	<!-- 적립금 소멸 -->
+	<insert id="deletePoint">
+		insert into ${id}_point (opt,change,point,deletedate) values (1, #{point.change},#{point.point},sysdate)
+	</insert>
+	<!-- 적립금 사용 -->
+	<insert id="usePoint">
+		insert into ${id}_point (opt,change,orderid,point,deletedate) values (10, #{point.change},#{point.orderid},#{point.point},sysdate)
+	</insert>
+	<!-- 회원의 적립 % 가져오기 -->
+	<select id="getBonus">
+		select bonus from status s left outer join member_basic m on s.key=m.status where m.id=#{id}
+	</select>
+	<!-- 회원의 적립금 내역 가져오기 -->
+	<select id="getPointList">
+		select * from ${id}_point order by num desc
+	</select>
+	<!-- 만료된 적립금 가져오기 -->
+	<select id="getDuePointNum">
+	<![CDATA[	
+		select * from ${id}_point where duedate < sysdate
+	]]>
+	</select>
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
@@ -201,6 +317,7 @@
 		create table ${id}_coupon(
 			num number default ${id}_coupon_seq.nextval primary key,
 			coupon varchar2(100) not null,
+			couponid varchar2(100) not null,
 			CREATEDATE date not null,
 			DELETEDATE date not null,
 			STATUS number not null
@@ -226,7 +343,8 @@
 			num number default ${id}_cart_seq.nextval primary key,
 			product varchar2(100) not null,
 			price number not null,
-			quantity number not null
+			quantity number not null,
+			delivery number default 0
 		)
 	</update>
 		<update id="newCartSeq">
@@ -238,13 +356,14 @@
 			ORDERID varchar2(100) not null,
 			PRICE number not null,
 			QUANTITY number not null,
-			DISCOUNT number,
+			DELIVERY number,
 			PURDATE date default sysdate not null,
-			PAY varchar2(100) not null,
+			PAY number not null,
 			PURCHASE number default 0 not null,
 			PRODUCTID varchar2(100),
 			TRACKING varchar2(100),
-			COURIER varchar2(100)
+			COURIER varchar2(100),
+			MEMBERID varchar2(100) not null
 		)
 	</update>
 	
@@ -256,13 +375,17 @@
 			DEFAULTADDR number default 0,
 			NICADDR varchar2(100),
 			POSTNUM varchar2(100) NOT NULL,
+			RECEIVER varchar2(20) NOT NULL,
+			ORDERID varchar2(100)
 		)
 	</update>
 	
-	
-
  	<select id="findall">
  		select * from all_product
  	</select>
+	
+	
+
+
 	
 </mapper>

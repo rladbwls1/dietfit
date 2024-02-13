@@ -25,12 +25,16 @@
 	
 	<!-- 회사마다 전체 상품 -->
 	<select id="findallproductbycompanyid" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
-        select * from all_product where companyid =#{companyid}
+        select * from all_product where companyid =#{companyid} order by num ASC
     </select>
     
 	<!-- 상품 상세 내용 -->
 	<select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
+    </select>
+    <!-- all_product에서 num으로 상품코드 받기 -->
+    <select id="getProductCodeByNum">
+    	select companyid,category,category2,flavor from all_product where num=#{num}
     </select>
     
     <!-- 상품 리스트 썸네일 -->
@@ -43,7 +47,7 @@
 	    SELECT * FROM all_productimg WHERE companyid = #{companyid} and category = #{category} AND category2 = #{category2} and thum = 1
 	</select>
 	
-    <!-- 상품 상세  이미지-->
+    <!-- 상품 상세 이미지-->
     <select id="findimg" resultType="test.spring.mvc.bean.ProductimgDTO">
 	    SELECT * FROM all_productimg WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} and thum = 0
 	</select>
@@ -58,9 +62,12 @@
     	DELETE FROM all_productimg WHERE companyid = #{companyid} and category = #{category} and category2 = #{category2} and flavor = #{flavor}
     </delete>
     
-    <!-- 상품 이미지 찾기 -->
-    <select id = "imgfindupdate">
-    	select * from all_productimg where companyid =#{companyid}  and category = #{category} and category2 = #{category2} and flavor = #{flavor}
+    <!-- 상품 수정 페이지 이미지 가져오기-->
+    <select id = "update">
+    	select * from all_product where compnayid = #{companyid} and category = #{category} and category2 = #{categroy2} and flavor = #{flavor}
+    </select>
+    <select id = "updateimg">
+    	select * from all_productimg where compnayid = #{companyid} and category = #{category} and category2 = #{categroy2} and flavor = #{flavor}
     </select>
     
     <!-- 상품 정보 수정 -->
@@ -80,17 +87,41 @@
 	    where
 	        num = #{num} 
 	</update>
+
 	
-	<update id = "updateProductimg" parameterType="test.spring.mvc.bean.ProductimgDTO">
-		update all_productimg
-		set
-			companyid = #{companyid},
-			category = #{category},
-			category2 = #{category2},
-			flavor = #{flavor},
-			ext = #{ext},
-			thum = #{thum}
-		where
-			companyid = #{companyid}, category = #{category}, category2 = #{category2}, flavor = #{flavor}
-	</update>									
+	<!-- 상품 이미지 삭제 -->
+	<!-- 상품 이미지 썸네일 삭제 -->
+	<delete id="deleteProductthumimg">
+	    DELETE FROM all_productimg 
+	    WHERE num IN
+	    <foreach item="num" collection="thumnums" open="(" separator="," close=")">
+	        #{num}
+	    </foreach>
+	</delete>
+	
+	<!-- 상품 이미지 첨부파일 삭제 -->
+	<delete id="deleteProductimgnum">
+	    DELETE FROM all_productimg 
+	    WHERE num IN
+	    <foreach item="num" collection="imgnums" open="(" separator="," close=")">
+	        #{num}
+	    </foreach>
+	</delete>
+	
+	<!-- 이미지 파일 갯수 변경 -->
+	<update id="updateProductIsfile">
+		update all_product set isfile=#{isfile} where num=#{num}
+	</update>
+	
+	<delete id="thumbnailDelete">
+		delete from all_productimg where num=#{num}
+	</delete>
+	<update id="productIsfileDelete">
+		update all_product set isfile=isfile-1 where num=#{num}
+	</update>
 </mapper>
+
+
+
+
+

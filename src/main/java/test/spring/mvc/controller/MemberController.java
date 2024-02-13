@@ -4,6 +4,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -49,6 +53,10 @@ public class MemberController {
 	@RequestMapping("seller")
 	public String seller() {
 		return "member/seller";
+	}
+	@RequestMapping("admin")
+	public String admin() {
+		return "member/admin";
 	}
 	
 	
@@ -191,7 +199,6 @@ public class MemberController {
 	}	
 	@RequestMapping("deletePro2")
 	public String deletePro2(String id, HttpSession session){
-		System.out.println("deletePro2넘어옴");
 		return "redirect:/dietfit/main";
 	}	
 	
@@ -207,11 +214,95 @@ public class MemberController {
 	    return "member/productList";
 	}
 	@RequestMapping("productDetail")
-	public String productDetail(Model model,String companyid,String category,
-							String category2, String flavor) {
-		service.getProductDetail(companyid,category,category2,flavor,model);
+	public String productDetail(Model model,Principal pri,
+							String companyid,String category,
+							String category2, String flavor,
+							HttpServletRequest request,
+	                        HttpServletResponse response) {
+		List<String> thumbnailPaths=service.getProductDetail(companyid,category,category2,flavor,model);
+		// 로그인 한 경우, 최근 본 상품 정보를 쿠키에 추가
+        if(pri!=null) {
+		addRecentlyViewedProductToCookie(request, response, companyid + category + category2 + flavor, pri.getName(), 
+        		model, "/details/" + companyid + "/" + category + "/" + category2 + "/" + flavor, thumbnailPaths);
+        }
 		return "member/productDetail";
 	}
+	
+	//최근본상품 시작 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	@RequestMapping("RecentViewProduct")
+    public String recentViewProduct(Model model, Principal pri, HttpServletRequest request) {
+        String id = pri.getName(); // 사용자 ID 얻어오기
+
+        // 쿠키에서 최근 본 상품 정보를 읽어옴
+        String recentlyViewedProduct = getRecentlyViewedProductFromCookie(request, id);
+
+        // 최근 본 상품 정보를 리스트로 변환 (예시로 문자열로 표현)
+        List<String> recentlyViewedProducts = Arrays.asList(recentlyViewedProduct.split("/"));
+        service.getProductByCookie(recentlyViewedProducts,model);
+        
+        model.addAttribute("recentlyViewedProducts", recentlyViewedProducts);
+        model.addAttribute("id", id);
+
+        return "member/RecentViewProduct";
+    }	 
+	
+	private void addRecentlyViewedProductToCookie(HttpServletRequest request, HttpServletResponse response, String productId, String id, Model model, String productUrl, List<String> thumbnailPaths) {
+	        String recentlyViewedProduct = getRecentlyViewedProductFromCookie(request, id);
+
+	     // 기존 쿠키 값이 없으면 새로 생성
+	        if (recentlyViewedProduct == null) {
+	            recentlyViewedProduct = productId;
+	        } else {
+	            String[] productArray = splitProducts(recentlyViewedProduct);
+
+	            // 중복 체크
+	            if (!containsProduct(productArray, productId)) {
+	                recentlyViewedProduct += "/" + productId;
+	            }
+	        }
+
+	        // 쿠키 값 "/" 기준으로 나누기
+	        String[] productArray = splitProducts(recentlyViewedProduct);
+
+	        // JSP에 전달하기 위해 배열을 문자열로 조합
+	        String joinedProducts = String.join("/", productArray);
+
+	        Cookie cookie = new Cookie("recentlyViewed_" + id, joinedProducts);
+	        model.addAttribute("recentlyViewedProducts", joinedProducts);
+	        cookie.setMaxAge(24 * 60 * 60); // 쿠키의 유효 시간 (초 단위), 여기서는 1일로 설정
+	        //cookie.setMaxAge(60); // 1분으로 설정
+	        cookie.setPath("/"); // 쿠키의 경로 설정
+	        response.addCookie(cookie);
+    }
+	 private String[] splitProducts(String products) {
+        if (products != null && !products.isEmpty()) {
+            return products.split("/");
+        }
+        return new String[0];
+    }
+    private boolean containsProduct(String[] products, String productId) {
+        for (String product : products) {
+            if (product.equals(productId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private String getRecentlyViewedProductFromCookie(HttpServletRequest request, String id) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (("recentlyViewed_" + id).equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }	
+	//최근본상품 끝 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	
+	
+	
 	
 	@RequestMapping("addWishList")
 	public @ResponseBody String addWishList(Principal pri,String product) {
@@ -305,8 +396,85 @@ public class MemberController {
 		return "hi";
 	}
 	
-	
-	
+	@RequestMapping("addDelivery")
+	public String addDelivery() {
+		return "member/addDelivery";
+	}
+	@RequestMapping("addDeliveryPro")
+	public String addDeliveryPro(DeliveryDTO dto,Principal pri,Model model) {
+		int result=mapper.checkNicaddr(pri.getName(), dto.getNicaddr());
+		if(result!=1) {
+			service.addDelivery(dto,pri.getName());
+		}
+		model.addAttribute("result",result);
+		return "member/addDeliveryPro";
+	}
+	@RequestMapping("userDelivery")
+	public String userDelivery(Principal pri,Model model) {
+		model.addAttribute("id",pri.getName());
+		model.addAttribute("list",mapper.getUserDelivery(pri.getName()));
+		return "member/userDelivery";
+	}
+	@RequestMapping("setDefaultDelivery")
+	public String setDefaultDelivery(Principal pri,String nicaddr) {
+		service.setDefaultDelivery(pri.getName(),nicaddr);
+		return "redirect:/member/userDelivery";
+	}
+	@RequestMapping("deleteDelivery")
+	public @ResponseBody String deleteDelivery(Principal pri,String nicaddr) {
+		service.deleteDelivery(pri.getName(),nicaddr);
+		return "bye";
+	}
+	//쿠폰 다운로드 함
+	@RequestMapping("coupondownload")
+	public String coupondownload(Model model,Principal pri) {
+		service.couponList(model);
+		model.addAttribute("userList",mapper.getUserCouponid(pri.getName()));
+		return "admin/coupon/couponList";
+	}
+	@RequestMapping("coupondownloadPro")
+	public String coupondownloadPro(CouponDTO cdto,Principal pri) {
+			cdto.setStatus(0);
+			service.downloadCoupon(pri.getName(),cdto);
+		return "redirect:/member/coupondownload";
+	}
+	//내 쿠폰함
+	@RequestMapping("myCoupon")
+	public String myCoupon(Principal pri,Model model) {
+		model.addAttribute("list",service.getUserCoupon(pri.getName()));
+		return "member/myCoupon";
+	}
+	//주문,배송
+	@RequestMapping("myOrder")
+	public String myOrder(Principal pri,Model model) {
+		service.getUserOrder(pri.getName(),model);
+		return "member/myOrder";
+	}
+	@RequestMapping("myOrderDetail")
+	public String myOrderDetail(String id, String orderid,Model model) {
+		model.addAttribute("orderid",orderid);
+		model.addAttribute("dto",mapper.getDeliveryByOrderid(id, orderid));
+		service.getOrderDetailByOrderid(id, orderid,model);
+		return "member/myOrderDetail";
+	}
+	//구매확정
+	@RequestMapping("defintePurchase")
+	public @ResponseBody String defintePurchase(Principal pri,
+			String orderid,String productid,int price) {
+		service.defintePurchase(pri.getName(),orderid,productid,price);
+		return "bye";
+	}
+	@RequestMapping("testPoint")
+	public String testPoint(Principal pri,Model model) {
+		model.addAttribute("mypoint",service.getPoint(pri.getName()));
+		return "member/miniPoint";
+	}
+	@RequestMapping("myPoint")
+	public String myPoint(Principal pri,Model model) {
+		model.addAttribute("list", mapper.getPointList(pri.getName()));
+		model.addAttribute("myPoint",service.getPoint(pri.getName()));
+		return "member/myPoint";
+	}
 	
 	
 }

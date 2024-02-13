@@ -4,6 +4,9 @@ import java.io.FileWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
@@ -21,7 +24,12 @@ public class SellerChat extends DefaultEmbeddableVerticle {
 	
 	@Autowired
 	private SellerService service;
-
+	
+	private String realPath2;
+	public void setRealPath(String realPath2) {
+		this.realPath2 = realPath2;
+	}
+	
     private SocketIOServer io = null;
     private Map<String, SocketIOSocket> userSockets = new ConcurrentHashMap<>();
     private Map<String, String> userRooms = new ConcurrentHashMap<>();
@@ -58,11 +66,13 @@ public class SellerChat extends DefaultEmbeddableVerticle {
                         // roomnum 값 가져오기
                         String roomnum = event.getString("roomnum");
                         // 파일 이름에 roomnum 추가
-                        String fileName = "D://chat//" + roomnum + ".txt";
+                	    
+                        String realPath = realPath2 + roomnum+".txt";
+                        
                         
                         FileWriter writer = null;
                         try {
-                        	writer = new FileWriter(fileName, true);
+                        	writer = new FileWriter(realPath, true);
                             writer.write(msg+"\n");
                             writer.flush();
                         } catch (Exception e) {
