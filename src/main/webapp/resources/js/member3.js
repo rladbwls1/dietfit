@@ -82,7 +82,6 @@ function toChatByOrderdateil(product,companyid){
 	document.body.appendChild(f);
 	f.submit();
 }
-<<<<<<< HEAD
 function toReviewForm(productid){
 	var companyid=productid.substring(0,2);
 	var category=productid.substring(2,4);
@@ -118,7 +117,6 @@ function toReviewForm(productid){
 	document.body.appendChild(f);
 	f.submit();
 }
-=======
 function defintePurchase(orderid,productid,price){
 	//orderdetail에서 구매확정 9로 변경, 적립금 적립 그리고 ~ 구매확정으로 바꿔주기 
 	$.ajax({
@@ -133,4 +131,3 @@ function defintePurchase(orderid,productid,price){
 	
 	
 }
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
