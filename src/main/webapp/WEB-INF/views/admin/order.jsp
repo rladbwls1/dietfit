@@ -53,8 +53,8 @@ ${nums }
 	<p>상품금액: <input type="text" id="amount" value="${amount }" />원 </p>
 	<p>배송비:      원</p>
 	<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" oninput="totalAmount()"/>   원 </p>
-	<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');"/> </p>
-	<b>총 결제금액 <input type="text" id="totalAmount" /> 원</b>
+	<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');"/> 원</p>
+	<b>총 결제금액 <input type="text" id="totalAmount"  value="${amount }"/> 원</b>
 	
 	
 	<h4>결제방식</h4>
@@ -69,11 +69,17 @@ ${nums }
 	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
 		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
 		
+		<br />
+		쿠폰 아이디 <input type="text" name="couponid" id="couponid" value="null" />
+		적립금 사용 금액<input type="text" name="usepoint" id="usepoint"  value="0"/>
+		총 할인 금액<input type="text" name="discount" id="discount" value="0"/>
+		
+		
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
         <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
         <input type="hidden" name="quantity"  value="${quantity }" />
-        <input type="hidden" name="total_amount" id="total_amount" value="${amount }" />
+        총 금액 <input type="text" name="total_amount" id="total_amount" value="${amount }" />
         <input type="hidden" name="tax_free_amount" value="${taxfree }" />
         
         <input type="hidden" name="command" value="ready" />
