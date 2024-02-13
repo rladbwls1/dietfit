@@ -19,4 +19,5 @@ public class ReviewDTO {
 	private Date reg;				// 등록 
 	private int recommend;			// 추천수
 	private String attatch;			// 파일명
+	private String boardname;		// 상품 이름 
 }

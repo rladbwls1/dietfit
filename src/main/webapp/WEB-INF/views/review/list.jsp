@@ -4,30 +4,66 @@
 
 <html>
 <head>
+    <style>
+        .review-container {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .review-image {
+            float: left;
+            margin-right: 10px;
+        }
+        .review-details {
+            overflow: hidden;
+        }
+        .review-details div {
+            margin-bottom: 5px;
+        }
+        .clear-fix {
+            clear: both;
+        }
+        .star-rating .filled {
+            color: #FFC107;
+        }
+        .star-rating .empty {
+            color: #ccc; 
+        }
+    </style>
 </head>
 <body>
-    <table>
-        <c:forEach var="reviewImage" items="${reviewImages}"> 
-<tr>
-    <td>${reviewImage.num}</td>
-    <td>${reviewImage.id}</td>
-    <td>상품</td>
-    <td>${reviewImage.content}</td>
-    <td>${reviewImage.starscore}</td>
-    <td>
-        <c:choose>
-            <c:when test="${not empty reviewImage.attatch}">
-                <img src="/resources/review/${reviewImage.attatch}"/>
-            </c:when>
-            <c:otherwise>
-                <!-- 이미지가 없을 경우 보여줄 내용, 예: 기본 이미지 또는 텍스트 -->
-                No Image Available
-            </c:otherwise>
-        </c:choose>
-    </td>
-</tr>
-</c:forEach>
-
-    </table>
+    <c:forEach var="reviewImage" items="${reviewImages}">
+        <div class="review-container">
+            <div class="review-image">
+                <c:choose>
+                    <c:when test="${not empty reviewImage.attatch}">
+                        <img src="/resources/review/${reviewImage.attatch}" style="width: 100px; height: 100px;"/>
+                    </c:when>
+                    <c:otherwise>
+                        이미지 없음
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="review-details">
+                <div>${reviewImage.boardname }</div>
+                <div>평점: 
+                    <span class="star-rating">
+                        <c:forEach begin="1" end="5" var="i">
+                            <c:choose>
+                                <c:when test="${i <= reviewImage.starscore}">
+                                    <span class="filled">★</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="empty">☆</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </span>
+                </div>
+                <div>리뷰 내용: ${reviewImage.content}</div>
+            </div>
+            <div class="clear-fix"></div>
+        </div>
+    </c:forEach>
 </body>
 </html>

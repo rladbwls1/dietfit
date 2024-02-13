@@ -4,16 +4,23 @@
 <mapper namespace="test.spring.mvc.repository.ReviewMapper">
 	
 	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
-	SELECT r.*, a.*
-FROM review r
-LEFT JOIN allimg a ON a.notifynum = r.num AND a.type = 4
-LEFT JOIN (
-    SELECT notifynum, MIN(num) AS min_num
-    FROM allimg
-    WHERE type = 4
-    GROUP BY notifynum
-) min_a ON a.notifynum = min_a.notifynum AND a.num = min_a.min_num
-ORDER BY r.num ASC
+		SELECT r.*, a.*, ap.boardname
+			FROM review r
+			LEFT JOIN (
+			    SELECT allimg.*, min_allimg.min_num
+			    FROM allimg
+			    JOIN (
+			        SELECT notifynum, MIN(num) AS min_num
+			        FROM allimg
+			        WHERE type = 4
+			        GROUP BY notifynum
+			    ) min_allimg ON allimg.notifynum = min_allimg.notifynum AND allimg.num = min_allimg.min_num
+			) a ON r.num = a.notifynum
+			LEFT JOIN all_product ap ON r.companyid = ap.companyid 
+			                          AND r.category = ap.category 
+			                          AND r.category2 = ap.category2 
+			                          AND r.flavor = ap.flavor
+			ORDER BY r.num ASC
 	</select>
 	
 	<!-- 리뷰 글 -->
