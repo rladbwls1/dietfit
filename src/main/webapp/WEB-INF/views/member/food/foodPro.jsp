@@ -12,7 +12,6 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
-
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,17 +42,15 @@
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script src="/resources/js/food.js"></script>
     	<style>
-    		.boardname{
+    		#boardname{
 			    white-space: nowrap;
 			    overflow: hidden;
 			    text-overflow: ellipsis;
+			    max-width: 100%;
     		}
     		.wish{
     			text-align: right;
     		}
-    		.product{
-			    width: fit-content;
-			}
 			.images{
 			    width: -webkit-fill-available;
 			}
@@ -67,7 +64,6 @@
 			    width: 50%;
 			}
 			#content{
-				background: rgba(0,0,0,.03);
 				width: 100%;
 			}
 			#box{
@@ -75,9 +71,37 @@
 			}
 			.box_box{
 				flex: 1;
+				text-align: center;
+				width: 25%;
 			}
 			.product_img{
-				width: 80px;
+				width: 100px;
+				height: 100px;
+			}
+			#box > :not(:last-child) {
+				border-right: 1px solid lightgray;
+			}
+			.product_bg{
+				background: rgba(0,0,0,.03);
+				width: 80%;
+				margin: 20px auto 8px; 
+			}
+			#modify{
+				background-color: #50AB89;
+				border: none;
+				border-radius: 5px;
+				color: white;
+				padding: 2px 5px;
+			}
+			.title{
+				color: #FFDB58;
+			}
+			.product{
+			    width: 80%;
+			    margin: 0 auto;
+			}
+			#modal_tb{
+				margin-left: 20px;
 			}
     	</style>
     </head>
@@ -90,11 +114,9 @@
         </div>
         <!-- Spinner End -->
 
-
         <!-- Navbar start -->
         <jsp:include page="../../navbar.jsp"/>
         <!-- Navbar End -->
-
 
         <!-- Modal Search Start -->
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,7 +136,6 @@
             </div>
         </div>
         <!-- Modal Search End -->
-
 
         <!-- Hero Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
@@ -158,74 +179,82 @@
         	<div>
         	 <div class="container-fluid service py-5" style="padding-bottom: 0 !important;">
             	<div id="content" class="container py-5">
-            	<button onclick="window.location.href='/member/eat?kcal=${kc}'">전체 상품 변경</button>
+            	<button onclick="window.location.href='/member/foodPro?kcal=${kc}'">전체 상품 변경</button>
             	<div id="box">
             	<div class="box_box">
+			    <h2 class="title">아침</h2>
 				<c:forEach var="food" items="${mo_re}" varStatus="loop">
-				    <h2>아침</h2>
 				    <div id="mo_${loop.index}">
 				    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+				    <div class="product_bg">
 				    <img class="product_img" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-				    <div>${food.product}</div>
+				    </div>
+				    <div id="boardname">${food.product}</div>
 				    </div>
 				    <div id="mo_${loop.index}_m">${food.productinfo.kcal}</div>
-				    <div id="mo_${loop.index}_p">${food.price}</div>
+				    <div id="mo_${loop.index}_p"><fmt:formatNumber value="${food.price}" type="number" pattern="#,###원"/></div>
 				    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 				    </div>
-				    <div><button type="button" onclick="modify('${mo_minkcal}', '${mo_maxkcal}', '${food.productinfo.productid}','mo_${loop.index}', 'mo');" id="modify">다른 식품 추천</button></div>
+				    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${food.productinfo.productid}','br_${loop.index}', 'mo');" id="modify">식품 변경</button></div>
 				    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 				    <div id="result"></div>
 				</c:forEach>
 				</div>
 				<hr>
 				<div class="box_box">
+			    <h2 class="title">점심</h2>
 				<c:forEach var="food" items="${br_re}" varStatus="loop">
-				    <h2>점심</h2>
 				    <div id="br_${loop.index}">
 				    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+				    <div class="product_bg">
 				    <img class="product_img" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-				    <div>${food.product}</div>
+				    </div>
+				    <div id="boardname">${food.product}</div>
 				    </div>
 				    <div id="br_${loop.index}_m">${food.productinfo.kcal}</div>
-				    <div id="mo_${loop.index}_p">${food.price}</div>
+				    <div id="mo_${loop.index}_p"><fmt:formatNumber value="${food.price}" type="number" pattern="#,###원"/></div>
 				    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 				    </div>
-				    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${food.productinfo.productid}','br_${loop.index}', 'br');" id="modify">다른 식품 추천</button></div>
+				    <div><button type="button" onclick="modify('${br_minkcal}', '${br_maxkcal}', '${food.productinfo.productid}','br_${loop.index}', 'br');" id="modify">식품 변경</button></div>
 				    <input type="hidden" id="mo" value="${food.productinfo.productid}"/>
 				    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 				</c:forEach>
 				</div>
 				<hr>
 				<div class="box_box">
+			    <h2 class="title">저녁</h2>
 				<c:forEach var="food" items="${de_re}" varStatus="loop">
-				    <h2>저녁</h2>
 				    <div id="de_${loop.index}">
 				    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+				    <div class="product_bg">
 				    <img class="product_img" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-				    <div>${food.product}</div>
+				    </div>
+				    <div id="boardname">${food.product}</div>
 				    </div>
 				    <div id="de_${loop.index}_m">${food.productinfo.kcal}</div>
-				    <div id="mo_${loop.index}_p">${food.price}</div>
+				    <div id="mo_${loop.index}_p"><fmt:formatNumber value="${food.price}" type="number" pattern="#,###원"/></div>
 				    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 				    </div>
-				    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${food.productinfo.productid}','de_${loop.index}', 'de');" id="modify">다른 식품 추천</button></div>
+				    <div><button type="button" onclick="modify('${de_minkcal}', '${de_maxkcal}', '${food.productinfo.productid}','de_${loop.index}', 'de');" id="modify">식품 변경</button></div>
 				    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 				</c:forEach>
 				</div>
 				<hr>
 				<div class="box_box">
+			    <h2 class="title">간식</h2>
 				<c:forEach var="food" items="${se_re}" varStatus="loop">
-				    <h2>간식</h2>
 				    <div id="se_${loop.index}">
 				    <div class="product" onclick="management('${food.pimg.companyid}','${food.pimg.category}','${food.pimg.category2}','${food.pimg.flavor}');">
+				    <div class="product_bg">
 				    <img class="product_img" src="/resources/p_img/${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}F${food.pimg.num}${food.pimg.ext}"/>
-				    <div>${food.product}</div>
+				    </div>
+				    <div id="boardname">${food.product}</div>
 				    </div>
 				    <div id="se_${loop.index}_m">${food.productinfo.kcal}</div>
-				    <div id="mo_${loop.index}_p">${food.price}</div>
+				    <div id="mo_${loop.index}_p"><fmt:formatNumber value="${food.price}" type="number" pattern="#,###원"/></div>
 				    <input type="hidden" name="fonum" value="${food.pimg.companyid}${food.pimg.category}${food.pimg.category2}${food.pimg.flavor}">
 				    </div>
-				    <div><button type="button" onclick="modify('${se_minkcal}', '${se_maxkcal}', '${food.productinfo.productid}','se_${loop.index}', 'se');" id="modify">다른 식품 추천</button></div>
+				    <div><button type="button" onclick="modify('${se_minkcal}', '${se_maxkcal}', '${food.productinfo.productid}','se_${loop.index}', 'se');" id="modify">식품 변경</button></div>
 				    <c:set var="totalKcal" value="${totalKcal + food.productinfo.kcal}" scope="page" />
 				</c:forEach>
 				</div>
@@ -278,12 +307,8 @@
             </div>
         </div>
         <!-- Copyright End -->
-
-
-
         <!-- Back to Top -->
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-
         
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -307,5 +332,4 @@
       });
     </script>
     </body>
-
 </html>

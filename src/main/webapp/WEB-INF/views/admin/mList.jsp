@@ -9,6 +9,8 @@
 	<title>memberList</title>
  	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="/resources/css/adminx.css" media="screen" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <style>
     	#memList{
     		width: 100%;
@@ -18,18 +20,28 @@
     		border: 1px solid lightgray;
     		border-right: none;
     		border-left: none;
+    		height: 80%;
+    		text-align: center;
     	}
     	#memList td, #memList th{
     		border-left: none;
     		border-right: none;
-    		padding: 5px 12px;
+    		padding: 15px 12px;
     	}
-    	#memList th{
-    		background-color: 
+    	#memList td{
+    		border: 1px solid lightgray; 
+    		border-width: 1px 0;
+    	}
+    	.btn{
+    		padding: 3px 12px;
+    		border: none;
+    		border-radius: 5px;
+    		background-color: #007bff;
+    		color: white;
     	}
     </style>
 </head>
-<body>
+<body style="background-color: #f6f9fa !important;">
    <div class="adminx-container">
       <!-- nav 자리 -->
       <jsp:include page="top_bar.jsp"/>
@@ -66,6 +78,7 @@
 						<th>이메일</th>
 						<th>가입일자</th>
 						<th>등급</th>
+						<th></th>
 					</tr>
 					<c:forEach var="member" items="${memberlist}">
 						<tr>
@@ -84,7 +97,9 @@
 								<c:if test="${member.status==99}">탈퇴회원</c:if>
 								<c:if test="${member.status==888}">판매자</c:if>
 								<c:if test="${member.status==999}">관리자</c:if>
-								<button type="button" onclick="management('${member.id}');">관리</button>
+							</td>
+							<td>
+								<button type="button" class="btn" onclick="management('${member.id}');">관리</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -102,6 +117,23 @@
 				</c:if>
               
             </div>
+            <nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li class="page-item">
+			      <a class="page-link" href="#" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <li class="page-item"><a class="page-link" href="#">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#">3</a></li>
+			    <li class="page-item">
+			      <a class="page-link" href="#" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
 
             <div class="row">
             </div>

@@ -14,9 +14,9 @@
 		padding: 0 15px;
 	}
 	#user{
-		background-color: #294B29;
+		background-color: #007bff;
 		color: white;
-		padding: 3px 0 3px 10px;
+		padding: 5px 0 5px 10px;
 		margin: 0 0 20px 0;
 	}
 	#mem_basic, #register{
@@ -24,7 +24,23 @@
 	}
 	#mem_basic td, #register td,
 	#mem_basic th, #register th{
-		border: 1px solid gray;
+		border: 1px solid lightgray;
+		padding: 5px;
+	}
+	.title{
+		margin: 10px 0;
+	}
+	#btn{
+		padding: 5px 22px;
+   		border: none;
+   		border-radius: 5px;
+   		background-color: #007bff;
+   		color: white;
+   		margin-top: 8px;
+	}
+	#btn_bg{
+		width: 100%;
+		text-align: center;
 	}
 </style>
 </head>
@@ -41,7 +57,7 @@
 	  </li>
   </c:if>
 </ul>
-<h2>회원 기본 정보</h2>
+<h4 class="title">회원 기본 정보</h4>
 	<table id="mem_basic" border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>아이디</th>
@@ -73,9 +89,10 @@
 			<td><fmt:formatDate value="${info.reg}" pattern="yyyy-MM-dd HH:ss"/></td>
 		</tr>
 	</table>
-	<button type="button" onclick="modify_info('${info.id}')">정보 수정</button>
-	
-<h2>사이트 가입 정보</h2>
+	<div id="btn_bg">
+	<button type="button" id="btn" onclick="modify_info('${info.id}')">정보 수정</button>
+	</div>
+	<h4 class="title">사이트 가입 정보</h4>
 	<table id="register" border="1" style="border-collapse:collapse;">
 		<tr>
 			<th>주소</th>

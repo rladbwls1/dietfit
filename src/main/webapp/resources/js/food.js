@@ -88,13 +88,7 @@ function management(companyid, category, category2, flavor){
 			    content += '<img class="image" src="' + product.thumimg[i] + '">';
 			}
         	content +=`</div>
-            <button onclick="openCart('`+product.companyid+`','`+product.category+`','`+product.category2+`','`+product.price+`')">장바구니</button>
-                <table>
-                	<tr>
-                		<td>
-                		
-                		</td>
-                	</tr>	
+                <table id="modal_tb">
                     <tr>
                         <td>`+product.product+`</td>
                     </tr>
@@ -113,6 +107,24 @@ function management(companyid, category, category2, flavor){
 				    content += `
 					    </td>
                     </tr>
+                    <tr>
+                		<td>
+                			<input type="hidden" id="price" value="`+product.price+`" />
+							<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
+							    	<option value="`+product.product+`">`+product.product+`</option>
+							</select> <br/>
+							<button type="button" onclick="quantityDown()">-</button>
+							<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+							<button type="button" onclick="quantityUp()">+</button>
+							<br/>
+							<br/>
+							<br/>
+							가격 <span id="amout"><fmt:formatNumber value="`+product.price+`" type="number" pattern="#,###원"/></span><br/>
+							<button type="button" onclick="">즉시구매</button>
+							<input type="checkbox" id="chk">정기배송으로 받아보시겠어요?
+							<button type="button" onclick="addCartFromList()">장바구니</button>
+                		</td>
+                	</tr>
                 </table>
                 </div>
             `;
@@ -147,4 +159,25 @@ function cartSelectedItems2(){
 			}
 		}
 	});
+}
+
+function addCartFromList(){
+	 var chk = $('#chk').is(':checked') ? 1 : 0;
+	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
+		alert("개수를 입력해주세요.");
+	}else{
+	    $.ajax({
+    	url:'addCartOne',
+    	type:'post',
+    	async:false,
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val(), chk:chk},
+    	success:function(a){
+    		if(confirm("장바구니에 성공적으로 추가하였습니다. 장바구니로 가겠습니까?")){
+    			window.location.href="cartList";
+    		}else{
+    			window.close();
+    		}
+		}
+    	});
+	}
 }
