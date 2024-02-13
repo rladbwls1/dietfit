@@ -469,5 +469,12 @@ public class MemberController {
 		model.addAttribute("mypoint",service.getPoint(pri.getName()));
 		return "member/miniPoint";
 	}
+	@RequestMapping("myPoint")
+	public String myPoint(Principal pri,Model model) {
+		model.addAttribute("list", mapper.getPointList(pri.getName()));
+		model.addAttribute("myPoint",service.getPoint(pri.getName()));
+		return "member/myPoint";
+	}
+	
 	
 }
