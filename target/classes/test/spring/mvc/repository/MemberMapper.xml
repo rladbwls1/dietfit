@@ -356,7 +356,7 @@
 			ORDERID varchar2(100) not null,
 			PRICE number not null,
 			QUANTITY number not null,
-			DISCOUNT number,
+			DELIVERY number,
 			PURDATE date default sysdate not null,
 			PAY number not null,
 			PURCHASE number default 0 not null,
