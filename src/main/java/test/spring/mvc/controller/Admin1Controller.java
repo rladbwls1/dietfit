@@ -5,19 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.remoting.httpinvoker.SimpleHttpInvokerServiceExporter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +39,11 @@ public class Admin1Controller {
 	
 	@Autowired
 	private Seller1Service service1;
+	
+	@RequestMapping("main")
+	public String main() {
+		return "admin/adminMain";
+	}
 	
 	@RequestMapping("mList")
 	public String memberList(Model model, @RequestParam(value="pageNum", defaultValue="1") int pageNum) {
@@ -211,84 +211,84 @@ public class Admin1Controller {
 		return "/admin/food";
 	}
 	
-	@RequestMapping("foodPro")
-	public String foodPro(int kcal, Model model, HttpServletRequest request) {
-		List<ProductinfoDTO> lists = new ArrayList<>();
-		double [][] oper = {{0.23, 0.25}, {0.33, 0.35}, {0.28, 0.3}, {0.12, 0.15}};
-		String [] menu = {"mo","br","de","se"};
-		lists = new ArrayList<>();
-		List<ProductDTO> result = new ArrayList<>();
-		List<int[]> boundsList = new ArrayList<>();
-		Random random = new Random();
-		List<Integer> category = null;
-// 간식		, {0.1, 0.15}
-		for(int i = 0; i < oper.length; i++) {
-			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
-			if(i < 3) {
-				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
-				System.out.println("11111111111111111");
-			}
-			System.out.println(menu[i]);
-			String me = menu[i];
-			System.out.println((int)(oper[i][0] * kcal));
-			System.out.println((int)(oper[i][1] * kcal));
-
-			List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
-			lists.addAll(food);
-			List<ProductDTO> re = new ArrayList<>();
-			List<ProductDTO> aa = new ArrayList<>();
-			List<ProductDTO> selectedPair = new ArrayList<>();
-			List<List<ProductDTO>> groupedList = new ArrayList<>();
-			List<ProductDTO> pair = new ArrayList<>();
-			int check = (int) request.getAttribute("check");
-			System.out.println("check " + check);
-			for(ProductinfoDTO f: food) {
-			   result = service.food_product(f.getProductid());
-			   re.addAll(result);
-			}
-			if(check == 0) {
-			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
-                int index = new Random().nextInt(re.size());
-                System.out.println("Random Index: " + index);
-                ProductDTO pi = re.get(index);
-                aa.add(pi);
-            }
-			}else {
-//            	List<String> ccList = new ArrayList<>();
-//            	ccList.add("cc");
-				Collections.shuffle(re);
-				List<List<ProductDTO>> restOfGroupedList = new ArrayList<>();
-
-            	for (int j = 0; j < re.size(); j += 2) {
-            	    pair = new ArrayList<>();
-            	    pair.add(re.get(j));
-            	    if (j + 1 < re.size()) {
-            	        pair.add(re.get(j + 1));
-            	    }
-            	    groupedList.add(pair);
-            	    selectedPair = groupedList.get(0);
-            	    System.out.println("222222222222222222222" + selectedPair);
-            	}
-            	
-            	for (int j = 1; j < groupedList.size(); j++) {
-                    restOfGroupedList.add(groupedList.get(j));
-                }
-
-            	request.setAttribute("rest", restOfGroupedList);
-            	model.addAttribute(me+"_rest", restOfGroupedList);
-            	System.out.println(me+"~~~~~~~~~~"+restOfGroupedList);
-            	System.out.println(request.getAttribute("rest"));
-            }
-			model.addAttribute(me + "_check", check);
-			model.addAttribute(me + "_minkcal", (int)(oper[i][0] * kcal));
-			model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
-			model.addAttribute(me +"_re", aa);
-			model.addAttribute("list", lists);
-			model.addAttribute(me + "_group", selectedPair);
-			model.addAttribute("kcal", boundsList);
-		}
-		return "admin/foodPro";
-	}
+//	@RequestMapping("foodPro")
+//	public String foodPro(int kcal, Model model, HttpServletRequest request) {
+//		List<ProductinfoDTO> lists = new ArrayList<>();
+//		double [][] oper = {{0.23, 0.25}, {0.33, 0.35}, {0.28, 0.3}, {0.12, 0.15}};
+//		String [] menu = {"mo","br","de","se"};
+//		lists = new ArrayList<>();
+//		List<ProductDTO> result = new ArrayList<>();
+//		List<int[]> boundsList = new ArrayList<>();
+//		Random random = new Random();
+//		List<Integer> category = null;
+//// 간식		, {0.1, 0.15}
+//		for(int i = 0; i < oper.length; i++) {
+//			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
+//			if(i < 3) {
+//				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
+//				System.out.println("11111111111111111");
+//			}
+//			System.out.println(menu[i]);
+//			String me = menu[i];
+//			System.out.println((int)(oper[i][0] * kcal));
+//			System.out.println((int)(oper[i][1] * kcal));
+//
+//			List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
+//			lists.addAll(food);
+//			List<ProductDTO> re = new ArrayList<>();
+//			List<ProductDTO> aa = new ArrayList<>();
+//			List<ProductDTO> selectedPair = new ArrayList<>();
+//			List<List<ProductDTO>> groupedList = new ArrayList<>();
+//			List<ProductDTO> pair = new ArrayList<>();
+//			int check = (int) request.getAttribute("check");
+//			System.out.println("check " + check);
+//			for(ProductinfoDTO f: food) {
+//			   result = service.food_product(f.getProductid());
+//			   re.addAll(result);
+//			}
+//			if(check == 0) {
+//			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
+//                int index = new Random().nextInt(re.size());
+//                System.out.println("Random Index: " + index);
+//                ProductDTO pi = re.get(index);
+//                aa.add(pi);
+//            }
+//			}else {
+////            	List<String> ccList = new ArrayList<>();
+////            	ccList.add("cc");
+//				Collections.shuffle(re);
+//				List<List<ProductDTO>> restOfGroupedList = new ArrayList<>();
+//
+//            	for (int j = 0; j < re.size(); j += 2) {
+//            	    pair = new ArrayList<>();
+//            	    pair.add(re.get(j));
+//            	    if (j + 1 < re.size()) {
+//            	        pair.add(re.get(j + 1));
+//            	    }
+//            	    groupedList.add(pair);
+//            	    selectedPair = groupedList.get(0);
+//            	    System.out.println("222222222222222222222" + selectedPair);
+//            	}
+//            	
+//            	for (int j = 1; j < groupedList.size(); j++) {
+//                    restOfGroupedList.add(groupedList.get(j));
+//                }
+//
+//            	request.setAttribute("rest", restOfGroupedList);
+//            	model.addAttribute(me+"_rest", restOfGroupedList);
+//            	System.out.println(me+"~~~~~~~~~~"+restOfGroupedList);
+//            	System.out.println(request.getAttribute("rest"));
+//            }
+//			model.addAttribute(me + "_check", check);
+//			model.addAttribute(me + "_minkcal", (int)(oper[i][0] * kcal));
+//			model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
+//			model.addAttribute(me +"_re", aa);
+//			model.addAttribute("list", lists);
+//			model.addAttribute(me + "_group", selectedPair);
+//			model.addAttribute("kcal", boundsList);
+//		}
+//		return "admin/foodPro";
+//	}
 	
 	@RequestMapping("change")
 	public @ResponseBody List<ProductDTO> change(String mo, int minkcal, int maxkcal, Model model, int type, HttpServletRequest request) {
@@ -409,10 +409,10 @@ public class Admin1Controller {
 		return "admin/eat";
 	}
 	
-	@RequestMapping("main")
-	public String admin_main() {
-		return "/admin/admin_main";
-	}
+//	@RequestMapping("main")
+//	public String admin_main() {
+//		return "/admin/admin_main";
+//	}
 	
 	@GetMapping("/detail/{companyid}/{category}/{category2}/{flavor}")
     public String detail(@PathVariable("companyid") String companyid,

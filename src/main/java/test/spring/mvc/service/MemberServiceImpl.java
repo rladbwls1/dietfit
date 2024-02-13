@@ -3,6 +3,7 @@ package test.spring.mvc.service;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -21,9 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -80,7 +83,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public String getRamdomPassword() {
         char[] charSet = new char[] {
-                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'q', 'w', 'e', 'r', 't', 'y', '!' };
+                'q', 'w', 'e', 'r', 't', 'y', 'u' , 'a', 's', 'd', 'f', 'g', 'h' , 'z', 'x', 'c', 'v', 'b', 'n' };
         StringBuffer sb = new StringBuffer();
         SecureRandom sr = new SecureRandom();
         sr.setSeed(new Date().getTime());
@@ -244,6 +247,8 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
+		mapper.countUp(companyid,category,category2);
+		
 		ProductDTO product = sel1mapper.findproductdetail(companyid, category, category2, flavor);
 
         // ½æ³×ÀÏ ÀÌ¹ÌÁö Á¤º¸¸¦ °¡Á®¿È
@@ -366,10 +371,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void addCartOne(String id,String product, int quantity, int price) {
+	public void addCartOne(String id, String product, int quantity, int price, int delivery) {
 		int check=mapper.isCart(id, product);
 		if(check==0) {
-			mapper.addCartOne(id, product, quantity, price);
+			mapper.addCartOne(id, product, quantity, price, delivery);
 		}
 	}
 
@@ -378,7 +383,7 @@ public class MemberServiceImpl implements MemberService{
 		for(String num:products.split(",")) {
 			String product=mapper.getProductByNum(id, Integer.parseInt(num));
 			int price=mapper.getPriceByProductName(product);
-			addCartOne(id,product,1,price);
+			addCartOne(id,product,1,price,0);
 		}
 	}
 
@@ -387,6 +392,7 @@ public class MemberServiceImpl implements MemberService{
 		List<CartDTO> list=mapper.getCartList(id);
 		model.addAttribute("list",list);
 		List<String> imgPaths=new ArrayList<>();
+		CartDTO cart = new CartDTO();
 		for(CartDTO dto:list) {
 			ProductDTO pdto=mapper.getProductCodeByProductName(dto.getProduct());
 			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
@@ -399,6 +405,7 @@ public class MemberServiceImpl implements MemberService{
                 imgPaths.add(imagePath);
             }
 		}
+		model.addAttribute("dto", cart);
 		model.addAttribute("imgPaths",imgPaths);
 	}
 
@@ -411,6 +418,49 @@ public class MemberServiceImpl implements MemberService{
 	public void deleteCart(String id, int num) {
 		mapper.deleteCart(id, num);
 	}
+
+	@Override
+	public void addDelivery(DeliveryDTO dto, String id) {
+		mapper.addDelivery(dto,id);
+	}
+
+	@Override
+	public void setDefaultDelivery(String id, String nicaddr) {
+		mapper.removeDefaultDelivery(id);
+		mapper.setDefaultDelivery(id,nicaddr);
+	}
+
+	@Override
+	public void deleteDelivery(String id, String nicaddr) {
+		mapper.deleteDelivery(id,nicaddr);
+	}
+	
+	//ÄíÆù
+	@Override
+	public int couponcount() {
+		return mapper.couponcount();
+	}
+
+	@Override
+	public void couponList(Model model) {
+		int couponcount = mapper.couponcount();
+		List<AllcouponDTO> couponList = Collections.EMPTY_LIST;
+		couponList = mapper.couponList();
+		model.addAttribute("couponcount", couponcount);
+		model.addAttribute("couponList", couponList);
+	}
+
+	@Override
+	public void downloadCoupon(String id, CouponDTO cdto) {
+		mapper.downloadCoupon(id,cdto);
+	}
+
+	@Override
+	public List<CouponDTO> getUserCoupon(String id) {
+		mapper.checkUsableCoupon(id);
+		return mapper.getUserCoupon(id);
+	}
+	
 	
 	
 	

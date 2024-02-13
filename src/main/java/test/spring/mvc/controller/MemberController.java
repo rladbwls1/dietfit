@@ -26,11 +26,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -40,6 +43,8 @@ public class MemberController {
 	private MemberService service;
 	@Autowired
 	private MemberMapper mapper;
+	@Autowired
+	private Admin1ServiceImpl admin;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -49,6 +54,72 @@ public class MemberController {
 	@RequestMapping("seller")
 	public String seller() {
 		return "member/seller";
+	}
+	@RequestMapping("admin")
+	public String admin() {
+		return "member/admin";
+	}
+	
+	// 베스트 상품 월간
+	@RequestMapping("best")
+	public String best(Model model) {
+		List<ProductDTO> dto = admin.best();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "member/best";
+	}
+	
+	// 베스트 상품 주간
+	@RequestMapping("best2")
+	public String best2(Model model) {
+		List<ProductDTO> dto = admin.best2();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "/member/best2";
+	}
+	
+	// 오늘의 특가 상품
+	@RequestMapping("discount")
+	public String discount(Model model) {
+		List<ProductDTO> dto = admin.discount();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				int sale = admin.sale(pd.getNum());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	               pd.setSale(sale);
+	            }
+			}
+		}
+		model.addAttribute("discount", dto);
+		return "/member/discount";
 	}
 	
 	
@@ -273,8 +344,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping("addCartOne")
-	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
-		service.addCartOne(pri.getName(),product,quantity,price);
+	public @ResponseBody String addCartOne(Principal pri ,CartDTO dto, int chk) {
+		if(chk == 1) {
+			dto.setDelivery(1);
+		}
+		service.addCartOne(pri.getName(),dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
 		return "hi";
 	}
 	@RequestMapping("addCartMore")
@@ -287,6 +361,11 @@ public class MemberController {
 	public String cartList(Model model,Principal pri) {
 		service.getCartList(model, pri.getName());
 		return "member/cartList";
+	}
+	@RequestMapping("Rdelivery")
+	public String Rdelivery(Model model,Principal pri) {
+		service.getCartList(model, pri.getName());
+		return "member/Rdelivery";
 	}
 	@RequestMapping("updateCartQuantity")
 	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
@@ -305,8 +384,52 @@ public class MemberController {
 		return "hi";
 	}
 	
-	
-	
-	
-	
+	@RequestMapping("addDelivery")
+	public String addDelivery() {
+		return "member/addDelivery";
+	}
+	@RequestMapping("addDeliveryPro")
+	public String addDeliveryPro(DeliveryDTO dto,Principal pri,Model model) {
+		int result=mapper.checkNicaddr(pri.getName(), dto.getNicaddr());
+		if(result!=1) {
+			service.addDelivery(dto,pri.getName());
+		}
+		model.addAttribute("result",result);
+		return "member/addDeliveryPro";
+	}
+	@RequestMapping("userDelivery")
+	public String userDelivery(Principal pri,Model model) {
+		model.addAttribute("id",pri.getName());
+		model.addAttribute("list",mapper.getUserDelivery(pri.getName()));
+		return "member/userDelivery";
+	}
+	@RequestMapping("setDefaultDelivery")
+	public String setDefaultDelivery(Principal pri,String nicaddr) {
+		service.setDefaultDelivery(pri.getName(),nicaddr);
+		return "redirect:/member/userDelivery";
+	}
+	@RequestMapping("deleteDelivery")
+	public @ResponseBody String deleteDelivery(Principal pri,String nicaddr) {
+		service.deleteDelivery(pri.getName(),nicaddr);
+		return "bye";
+	}
+	//쿠폰 다운로드 함
+	@RequestMapping("coupondownload")
+	public String coupondownload(Model model,Principal pri) {
+		service.couponList(model);
+		model.addAttribute("userList",mapper.getUserCouponid(pri.getName()));
+		return "admin/coupon/couponList";
+	}
+	@RequestMapping("coupondownloadPro")
+	public String coupondownloadPro(CouponDTO cdto,Principal pri) {
+			cdto.setStatus(0);
+			service.downloadCoupon(pri.getName(),cdto);
+		return "redirect:/member/coupondownload";
+	}
+	//내 쿠폰함
+	@RequestMapping("myCoupon")
+	public String myCoupon(Principal pri,Model model) {
+		model.addAttribute("list",service.getUserCoupon(pri.getName()));
+		return "member/myCoupon";
+	}
 }

@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CartDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -73,6 +76,10 @@ public interface MemberMapper {
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
 							     	  @Param("category2") String category2);
+	//조회수 올리기
+	public void countUp(@Param("companyid") String companyid, 
+	     	  			@Param("category") String category,
+	     	  			@Param("category2") String category2);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
@@ -109,7 +116,7 @@ public interface MemberMapper {
 	public int isCart(@Param("id")String id, @Param("product") String product);
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
-			@Param("quantity")int quantity, @Param("price")int price);
+			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
 	//장바구니 목록 가져오기
 	public List<CartDTO> getCartList(String id);
 	//장바구니 개수 수정
@@ -118,4 +125,28 @@ public interface MemberMapper {
 	public void deleteCart(@Param("id")String id, @Param("num")int num );
 	//장바구니에서 개수 수정한 목록만 가져오기
 	public CartDTO getCartListByNum(@Param("id")String id, @Param("num")int num );
+	//사용자 배송지에 새 배송지 추가
+	public void addDelivery(@Param("dto")DeliveryDTO dto,@Param("id")String id);
+	//사용자 배송지 목록 가져오기
+	public List<DeliveryDTO> getUserDelivery(String id);
+	//사용자 배송지에서 동일 별명 유무 판단, 1이면 있음 0이면 없음
+	public int checkNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지, 기본 배송지 없앰
+	public void removeDefaultDelivery(String id);
+	//사용자 배송지, 기본 배송지 설정
+	public void setDefaultDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//사용자 배송지 삭제
+	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	
+	//쿠폰
+	public int couponcount();
+	public List<AllcouponDTO> couponList();
+	//유저가 보유한 쿠폰번호 추출
+	public List<String> getUserCouponid(String id);
+	//쿠폰 다운로드
+	public void downloadCoupon(@Param("id")String id, @Param("cdto")CouponDTO cdto);
+	//만료된 쿠폰 만료처리
+	public void checkUsableCoupon(String id);
+	//유저 쿠폰 가져오기
+	public List<CouponDTO> getUserCoupon(String id);
 }

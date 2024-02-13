@@ -7,9 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="/resources/js/member2.js"></script>
 </head>
 <body>
     <h2>Product Details</h2>
+    <button onclick="openCart('${product.companyid}','${product.category}','${product.category2}','${product.price}')">장바구니</button>
     <table>
     	<tr>
     		<td>

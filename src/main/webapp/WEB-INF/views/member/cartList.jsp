@@ -7,13 +7,14 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
 <meta charset="UTF-8">
-<title>장바구니</title>
+<title>일반배송 장바구니</title>
 </head>
 <body>
-<h1>장바구니</h1>
+<h1>일반배송 장바구니</h1>
 <br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기 </button>
 <br/><button type="button" onclick="javascript:window.location='/member/wishList'">관심상품</button>
 <br/><button type="button" onclick="javascript:window.location='/member/productList'">상품목록</button>
+<br/><button type="button" onclick="javascript:window.location='/member/Rdelivery'">정기배송</button>
 <br/>
 
 <c:if test="${empty list }">
@@ -28,6 +29,7 @@
 </tr>
 <c:set var="i" value="0"/>
 <c:forEach var="cart" items="${list }" >
+<c:if test="${cart.delivery == 0}">
 <tr id="${cart.num }" >
 	<td><input type="checkbox" name="num" id="num" onclick="cartUpdateCheckAll()" value="${cart.num }"></td>
 	<td>
@@ -48,11 +50,15 @@
 	</td>
 	<td><a href="javascript:void(0);" onclick="deleteCart('${cart.num}')" ><img src="/resources/img/free-icon-x-mark-11147352.png" width=15 /></a> </td>
 </tr>
+</c:if>
 <c:set var="i" value="${i+1 }"/>
+<input type="hidden" id="delivery" value="0"/>
 
 </c:forEach>
-<tr><td></td> <td colspan="3">총 가격 : <span id="amout">0</span></td>
-<td colspan="2"><button type="button">주문하기</button></td></tr>
+<tr><td></td> 
+<td colspan="1">총 상품 : <span id="totalQuantity"> 0</span></td>
+<td colspan="1">총 가격 : <span id="amout">0</span></td>
+<td colspan="2"><button type="button" onclick="toOrder()">주문하기</button></td></tr>
 </table>
 </c:if>
 </body>

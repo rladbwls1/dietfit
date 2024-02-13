@@ -68,6 +68,13 @@
     </div>
 
     <script>
+        var socket = io.connect("http://192.168.219.167:7777");
+        var userId = "${id}";
+        var sellercompany = "${sellercompany}";
+        var roomnum = '${roomnum}';
+        
+        
+        
     var socket = io.connect("http://192.168.219.167:7777");
     var userId = "${id}";
     var sellercompany = "${sellercompany}";
