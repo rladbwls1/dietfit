@@ -54,8 +54,60 @@
 		}
     }
 </script>
+<head>
+	<style>
+	    .image-wrapper {
+	        margin-bottom: 10px;
+	        border: 1px solid #ccc;
+	        padding: 5px;
+	        display: inline-block;
+	    }
+	
+	    .preview-image {
+	        max-width: 100px;
+	        height: auto;
+	        display: block;
+	        margin-bottom: 5px;
+	    }
+	
+	    button {
+	        background-color: #fff;
+	        color: #fff;
+	        border: none;
+	        padding: auto;
+	        cursor: pointer;
+	    }
+	
+	    button:hover {
+	        background-color: #FAB8B5;
+	    }
+	
+	    .fileAdd {
+	        background-color: #fff;
+	        color: #fff;
+	        border: none;
+	        padding: 8px 16px;
+	        cursor: pointer;
+	    }
+	
+	    .fileAdd:hover {
+	        background-color: #C3E0FA;
+	    }
+	
+	    input[type="submit"] {
+	        background-color: #355FAD;
+	        color: #fff;
+	        border: none;
+	        padding: 8px 16px;
+	        cursor: pointer;
+	    }
+	
+	    input[type="submit"]:hover {
+	        background-color: #2B4C8A;
+	    }
+	</style>
+</head>
 <form action="/seller/thumbnailUpdatePro" method="post" enctype="multipart/form-data">
-   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
    	<input type="hidden" name="companyid" value="${companyid}">
     <input type="hidden" name="num" value="${num}">
     <input type="hidden" name="isfile" value="${isfile}">
@@ -63,17 +115,16 @@
     <input type="hidden" name="category2" value="${category2}">
     <input type="hidden" name="flavor" value="${flavor}">
 	<div id="thumbnailSection">
-	    <label>썸네일:</label>
 	    <c:forEach items="${thumimages}" var="thumbImg">
 		    <div class="image-wrapper" id="thumbnailWrapper${thumbImg.num}">
 		        <img src="/resources/p_img/${thumbImg.fileName}" alt="Thumbnail" class="preview-image" width="100"/>
-		        <button type="button" onclick="removeImage('${thumbImg.num}','${num}','${thumbImg.fileName}')">삭제</button>
+		        <button type="button" onclick="removeImage('${thumbImg.num}','${num}','${thumbImg.fileName}')">❌</button>
 		        <input type="hidden" name="thumfileName" value="${thumbImg.fileName}">
 		        <input type="hidden" name="thumnum" value="${thumbImg.num}">
 		    </div>
 		</c:forEach>
 	</div>
-	<input type="button" class="fileAdd" value="썸네일 추가" onclick="fileAdd('thumbnails', '#thumbnailSection')">
+	<input type="button" class="fileAdd" value="➕" onclick="fileAdd('thumbnails', '#thumbnailSection')">
 	<br />
 	<input type="submit" value="수정" />
 </form>

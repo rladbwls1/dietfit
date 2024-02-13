@@ -69,7 +69,6 @@
 <body>
     <h2>할인율</h2>
     <form action="/seller/addDiscount" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <label for="start">시작날짜</label>
         <input type="date" id="start" name="start" required>
@@ -85,11 +84,5 @@
 
         <input type="submit" onclick="closewindow()" value="저장하기">
     </form>
-    <script>
-        function closewindow() {
-            window.close();
-            closewindow2();
-        }
-    </script>
 </body>
 </html>

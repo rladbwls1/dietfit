@@ -99,7 +99,6 @@ public class AdminController {
 		return "admin/adminChat";
 	}
 	
-	//쿠폰 === 일단 여기 컨트롤러에 할게욤
 		
 	
 	  

@@ -1,12 +1,16 @@
 package test.spring.mvc.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 
@@ -51,6 +55,17 @@ public interface AdminMapper {
 	public int detailCount();
 	public List<ProductinfoDTO> allProductDetail();
 	
+	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
+	public void memberDelivery(@Param("id") String id, @Param("delivery") DeliveryDTO delivery);
+	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
+	public String findproduct(@Param("id") String id, @Param("num") int num);
+	public int findPrice(String productid);
 	
-
+	public DeliveryDTO getUserDelivery9(String id);
+	//배송지 별명으로 배송정보 가져오기
+	public DeliveryDTO getDeliveryByNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	public List<Map<String, Object>> getUserCoupon(@Param("id") String id);
+	
+//	public AllcouponDTO getUserCouponInfo(@Param("id") String id, @Param("couponid") String couponid);
+	public Map<String, Object> getMyCart(@Param("id") String id, @Param("num") int num);
 }
