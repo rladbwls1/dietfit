@@ -261,6 +261,12 @@ public class AdminServiceImpl implements AdminService{
 		mapper.orderSummary(ordersum);
 	}
 
+	
+	@Override
+	public void changeCoupon(String id, String couponid) {
+		mapper.changeCounpon(id, couponid);
+	}
+
 	@Override
 	public void createDelivery(String id, DeliveryDTO delivery) {
 		mapper.memberDelivery(id, delivery);

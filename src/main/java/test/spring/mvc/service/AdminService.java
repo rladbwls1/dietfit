@@ -45,6 +45,7 @@ public interface AdminService {
 		public List<String> findproductId(String id, String nums);
 		public void createOrder(String id, OrderdetailDTO orderdetail);
 		public void createOrderSum(OrdersumDTO ordersum);
+		public void changeCoupon(String id, String couponid);
 		public void createDelivery(String id, DeliveryDTO delivery);
 		
 		public int findprice(String productid);

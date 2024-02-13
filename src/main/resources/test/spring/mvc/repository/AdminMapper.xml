@@ -131,6 +131,9 @@
 		    #{ordersum.couponid}, #{ordersum.discount}, #{ordersum.totalamount}
 		)
 	</insert>
+	<update id="changeCounpon" parameterType="String">
+		update ${id}_coupon set status = 1 where couponid=#{couponid}
+	</update>	
 	<insert id="memberDelivery" parameterType="test.spring.mvc.bean.DeliveryDTO">
     	INSERT INTO ${id}_delivery (
 		    addr1, addr2, postnum, phone, nicaddr, receiver, orderid
@@ -159,21 +162,7 @@
 			from allcoupon a, ${id}_coupon m 
 				where m.couponid=a.couponid and m.deletedate > sysdate and m.status = 0
 	</select>
-	
-	<!-- 
-	<select id="findCoupon" resultType="String">
-		select coupon from ${id}_coupon where couponid =#{couponid}
-	</select>
-	 -->
-	
-	<!-- 
-	<select id="getUserCouponInfo" resultType="test.spring.mvc.bean.AllcouponDTO">
-		select a.coupon, a.discount, a.companyid, a.minprice, a.couponid
-		    from allcoupon a, ${id}_coupon m
-		        where a.couponid = m.couponid and m.status = 0 and a.couponid = #{couponid}
-	</select>
-	 -->
-	
+
 	<select id="getMyCart" resultType="Map">
         select a.companyid,a.product,a.price,m.quantity 
 	        from all_product a, ${id}_cart m 

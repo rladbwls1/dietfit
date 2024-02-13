@@ -68,9 +68,18 @@ function toMyCoupon(a) {
 }
 
 
-function useAllPoint(mypoint){
-	$('#point').val(mypoint);
+function useAllPoint(mypoint) {
+    var point = parseInt(mypoint);
+
+    document.getElementById("point").value = point;
+    document.getElementById("usepoint").value = point;
+    
+    document.getElementById("discount").value=point;
+    var amount = parseInt(document.getElementById("amount").value);
+    document.getElementById("totalAmount").value=amount-point;
+	document.getElementById("total_amount").value=amount-point;
 }
+
 
 function checkPoint(mypoint){
 	if(parseInt($('#point').val())<0){
@@ -79,14 +88,22 @@ function checkPoint(mypoint){
 	if(parseInt($('#point').val())>parseInt(mypoint)){
 		$('#point').val(mypoint);
 	}
+	var point = parseInt($('#point').val());
+	if (isNaN(point) || point < 0) {
+	    point = 0;
+	}
 	
-	var amount = document.getElementById("amount").value;
-	var coupon = document.getElementById("coupon").value;
-	var point = document.getElementById("point").value;
+	document.getElementById("point").value=point;
+	document.getElementById("usepoint").value = point;
+
+	var amount = parseInt(document.getElementById("amount").value);
+	var couponValue = document.getElementById("coupon").value;
+	var coupon = couponValue ? parseInt(couponValue) : 0;
+	var discount = coupon + point;		
 	
 	
-	document.getElementById("usepoint").value=point;
-	document.getElementById("discount").value=coupon+point;
+	document.getElementById("discount").value=discount;
 	
 	document.getElementById("totalAmount").value=amount-coupon-point;
+	document.getElementById("total_amount").value=amount-coupon-point;
 }

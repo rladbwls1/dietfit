@@ -270,7 +270,7 @@ public class DietfitController {
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
 			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
-			String couponid, int point, int discount,
+			String couponid, int usepoint, int discount,
 			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
@@ -295,23 +295,28 @@ public class DietfitController {
 				orderdetail.setPurdate(new Date());
 				orderdetail.setQuantity(quantity);
 				orderdetail.setPrice(aservice.findprice(productId));
-				orderdetail.setDiscount(0); //할인정보
-				orderdetail.setPay(10); //카카오페이
+				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
+				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
 				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				
 				aservice.createOrder(id, orderdetail);
+				aservice.changeCoupon(orderid, couponid);
+				mservice.usePoint(id, orderid, usepoint);
 			}
 			
 //			주문 요약본(전체 회원 테이블) 저장
 			OrdersumDTO ordersum = new OrdersumDTO();
 			ordersum.setId(id);
 			ordersum.setOrderid(orderid);
-			ordersum.setPoint(point);
+			ordersum.setPoint(usepoint);
+			ordersum.setCouponid(couponid);
 			ordersum.setDiscount(discount);
 			ordersum.setTotalamount(total_amount);
+			System.out.println("OrdersumDTO 정보 :" + ordersum);
+			aservice.createOrderSum(ordersum);
 			
 			
 //			Delivery 테이블 저장

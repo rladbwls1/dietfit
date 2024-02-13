@@ -85,10 +85,11 @@ function useCouponInfo(){
 		opener.document.getElementById("coupon").value=couponPrice;
 		opener.document.getElementById("couponid").value=couponid;
 		
-		var amount = opener.document.getElementById("amount").value;
+		var amount = parseInt(opener.document.getElementById("amount").value);
 		var coupon = parseInt(opener.document.getElementById("coupon").value);
 		var point = parseInt(opener.document.getElementById("point").value);
-		var discount = parseInt(coupon + point);		
+		var discount = parseInt(coupon + point);
+		
 		opener.document.getElementById("point").value=point;
 		opener.document.getElementById("usepoint").value=point;
 		opener.document.getElementById("discount").value=discount;

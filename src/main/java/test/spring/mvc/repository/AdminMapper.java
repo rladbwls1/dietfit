@@ -58,6 +58,7 @@ public interface AdminMapper {
 	
 	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
 	public void orderSummary(@Param("ordersum") OrdersumDTO ordersum);
+	public void changeCounpon(@Param("id") String id, @Param("couponid") String couponid);
 	
 	public void memberDelivery(@Param("id") String id, @Param("delivery") DeliveryDTO delivery);
 	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
