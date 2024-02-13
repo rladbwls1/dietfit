@@ -100,7 +100,7 @@ public class SellerController {
 	    String sellerid = pri.getName();
 	    String product = service.findallbyroomnum(roomnum);
 
-	    // 서버의 실제 경로를 얻습니다.
+	    // 서버의 실제 경로
 	    ServletContext servletContext = request.getServletContext();
 	    String realPath2 = servletContext.getRealPath("/resources/chat/");
 	    String realPath = realPath2 + roomnum+".txt";
@@ -184,7 +184,7 @@ public class SellerController {
         service.updatediscount(discountDTO);
         String id = pri.getName();
 		model.addAttribute("id", id);
-        return "redirect:/seller/productdiscount";
+        return "/seller2/addDiscount";
     }
 	@RequestMapping("/modify")
 	public String modify(Principal pri, Model model) {
