@@ -8,4 +8,5 @@ public class ChatDTO {
 	private String id;
 	private String product;
 	private int readcheck;
+	private String companyid;
 }

@@ -1,5 +1,6 @@
 package test.spring.mvc.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,10 @@ public class SellersaleController {
 	
 	// 주문 목록
 	@RequestMapping("order")
-	public String order(@RequestParam("companyid") String companyid, Model model) {
+	public String order(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    // 모든 회원의 ID 조회
 	    List<String> memberIds = service.allmember();
 	    // 각 회원별 주문 상세 정보를 저장할 리스트
@@ -59,9 +63,12 @@ public class SellersaleController {
 	// 송장번호 입력
 	@RequestMapping("insertpurchase")
 	public String insertpurchase(@RequestParam("orderid") String orderid,
-								 @RequestParam("companyid") String companyid,
 								 @RequestParam("memberid") String memberid,
-								 Model model) {
+								 Principal pri,Model model) {
+		
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    model.addAttribute("orderid", orderid);
 		model.addAttribute("companyid", companyid);
 		model.addAttribute("memberid", memberid);
@@ -73,23 +80,34 @@ public class SellersaleController {
 	public String purchasepro(@RequestParam("orderid") String orderid,
 	                          @RequestParam("tracking") String tracking,
 	                          @RequestParam("courier") String courier,
-	                          @RequestParam("companyid") String companyid,
+	                          Principal pri,Model model,
 	                          @RequestParam("memberid") String memberid
 	                          ) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+	    
 	    service.updateTrackingAndCourier(tracking, courier, orderid, companyid,memberid);
 	    return "seller/purchasepro";
 	}
 	
 	// 판매량 + 정산 버튼
 	@RequestMapping("calculate")
-	public String calculate(@RequestParam("companyid") String companyid, Model model) {
+	public String calculate(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    model.addAttribute("companyid", companyid); 
 	    return "seller/calculate";
 	}
 	
 	// 정상 그래프
 	@RequestMapping("sales")
-	public String sales(@RequestParam("companyid") String companyid, Model model) {
+	public String sales(Principal pri, Model model) {
+		
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 
 	    // 판매 매출액
 		Integer todaySales = service.getTodaySales(companyid);
@@ -125,17 +143,16 @@ public class SellersaleController {
 
 	// 판매량
 	@RequestMapping("salesranking")
-	public String salesranking(@RequestParam("companyid") String companyid, Model model) {
-		System.out.println(companyid);
+	public String salesranking(Principal pri, Model model) {
+		
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+		
 		List<OrderdetailDTO> dailySalesRank = service.dailySalesRank(companyid);
 		List<OrderdetailDTO> weeklySalesRank =service.weeklySalesRank(companyid);
 		List<OrderdetailDTO> monthlySalesRank =service.monthlySalesRank(companyid);
 		List<OrderdetailDTO> allSalesRank =service.allSalesRank(companyid);
-		
-		System.out.println(dailySalesRank);
-		System.out.println(weeklySalesRank);
-		System.out.println(monthlySalesRank);
-		System.out.println(allSalesRank);
 		
 	    model.addAttribute("dailySalesRank", dailySalesRank);
 	    model.addAttribute("weeklySalesRank", weeklySalesRank);
@@ -147,7 +164,10 @@ public class SellersaleController {
 	
 	// 광고 신청 기록
 	@RequestMapping("commercailhome")
-	public String commercailhome(@RequestParam("companyid") String companyid, Model model) {
+	public String commercailhome(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 		List<CommercailDTO> commercail = service.selectcommercial(companyid);
 		model.addAttribute("commercail",commercail);
 	    model.addAttribute("companyid", companyid);
@@ -156,20 +176,25 @@ public class SellersaleController {
 	
 	// 광고 신청
 	@RequestMapping("commercail")
-	public String commercail(@RequestParam("companyid") String companyid, 
-							 Model model) {
+	public String commercail(Principal pri,Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    model.addAttribute("companyid", companyid);
 	    return "seller/commercail";
 	}
 	
 	@RequestMapping("commercailpro")
-	public String commercailpro(@RequestParam("companyid") String companyid,
+	public String commercailpro(Principal pri,
 	                            @RequestParam("comname") String comname,
 	                            @RequestParam("startdate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startdate,
 	                            @RequestParam("enddate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date enddate,
 	                            @RequestParam("comfile") MultipartFile file,
 	                            Model model,
 	                            HttpServletRequest request) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    CommercailDTO cdto = new CommercailDTO();
 	    cdto.setCompanyid(companyid);
 	    cdto.setComname(comname);
@@ -192,10 +217,13 @@ public class SellersaleController {
 	@RequestMapping("commdelect")
 	public String commdelect(@RequestParam("num") Integer num,
 							 @RequestParam("comfile") String comfile, 
-	                         @RequestParam("companyid") String companyid, 
+							 Principal pri,
 	                         RedirectAttributes redirectAttributes,
 	                         Model model,
 	                         HttpServletRequest request) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 	    service.commdelect(num);
 	    String path = request.getServletContext().getRealPath("/resources/comimg/");
 	    service.filedelete(comfile, path);
@@ -205,15 +233,18 @@ public class SellersaleController {
 	}
 	
 	@RequestMapping("commupdate")
-	public String commupdate(@RequestParam("num") Integer num,
-							 @RequestParam("companyid") String companyid,
+	public String commupdate(@RequestParam("num") Integer num,Principal pri,
 							 CommercailDTO cdto,
 							 HttpServletRequest request,
 							 Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
 		cdto = service.commercial(num);
 		String imagePath = "/resources/comimg/" + cdto.getComfile();
 		model.addAttribute("cdto", cdto);
 		model.addAttribute("imagePath", imagePath);
+		model.addAttribute("companyid", companyid);
 		return "seller/commupdate";
 	}
 	
@@ -223,10 +254,13 @@ public class SellersaleController {
 	                            @RequestParam("comfile") MultipartFile newComFile,
 	                            @RequestParam("startdate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startdate,
 	                            @RequestParam("enddate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date enddate,
-	                            @RequestParam("companyid") String companyid,
+	                            Principal pri,
 	                            HttpServletRequest request,
 	                            Model model) {
-
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service.findcompanyid(id);
+	    
 	    String path = request.getServletContext().getRealPath("/resources/comimg/");
 	    CommercailDTO existingCommercial = service.commercial(num);
 

@@ -14,7 +14,7 @@ public class OrderdetailDTO {
 	private int discount;		// 할인율
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date purdate;		// 결제 날짜
-	private String pay;			// 결제 방법
+	private int pay;			// 결제 방법 
 	private int purchase;		// 결제 여부
 	private String productid; 	// 상품 아이디
 	private String product; 	// 상품명

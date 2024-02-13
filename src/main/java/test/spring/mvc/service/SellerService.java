@@ -11,10 +11,10 @@ import test.spring.mvc.bean.ProductDTO;
 public interface SellerService {
     
     void addCoupon(AllcouponDTO couponDTO);
-    public int chatroomnum(ChatDTO chatDTO, Model model,String id, String product);
+    public int chatroomnum(ChatDTO chatDTO, Model model,String id, String product, String companyid);
     public String findcompanyid(String id);
     public String findcompanyidbyproductid(String companyid);
-    public List<ChatDTO> findnotreadchat(int readcheck);
+    public List<ChatDTO> findnotreadchat(int readcheck,String companyid);
     public List<ProductDTO> getCompanyProduct(String id);
     Member_basicDTO sellermodifyselect(String id);
     public void sellermodifyupdate(Member_basicDTO Member_basicDTO);
@@ -27,4 +27,5 @@ public interface SellerService {
     public void endchat(int roomnum);
     public void chatreport(ChatreportDTO chatreportdto);
     public void chatreportdelete(int roomnum);
+    public String findproductbycompanyid(String product);
 }
