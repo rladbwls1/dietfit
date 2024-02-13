@@ -24,6 +24,7 @@ import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 
@@ -255,6 +256,11 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	
+	@Override
+	public void createOrderSum(OrdersumDTO ordersum) {
+		mapper.orderSummary(ordersum);
+	}
+
 	@Override
 	public void createDelivery(String id, DeliveryDTO delivery) {
 		mapper.memberDelivery(id, delivery);

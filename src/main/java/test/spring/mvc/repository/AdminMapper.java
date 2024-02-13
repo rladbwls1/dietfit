@@ -11,6 +11,7 @@ import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
 
@@ -56,6 +57,8 @@ public interface AdminMapper {
 	public List<ProductinfoDTO> allProductDetail();
 	
 	public void memberOrderDetail(@Param("id") String id, @Param("orderdetail") OrderdetailDTO orderdetail);
+	public void orderSummary(@Param("ordersum") OrdersumDTO ordersum);
+	
 	public void memberDelivery(@Param("id") String id, @Param("delivery") DeliveryDTO delivery);
 	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
 	public String findproduct(@Param("id") String id, @Param("num") int num);
@@ -66,6 +69,7 @@ public interface AdminMapper {
 	public DeliveryDTO getDeliveryByNicaddr(@Param("id")String id, @Param("nicaddr")String nicaddr);
 	public List<Map<String, Object>> getUserCoupon(@Param("id") String id);
 	
+//	public String findCoupon(@Param("id") String id, String couponid);
 //	public AllcouponDTO getUserCouponInfo(@Param("id") String id, @Param("couponid") String couponid);
 	public Map<String, Object> getMyCart(@Param("id") String id, @Param("num") int num);
 }

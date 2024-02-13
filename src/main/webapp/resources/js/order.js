@@ -71,6 +71,7 @@ function toMyCoupon(a) {
 function useAllPoint(mypoint){
 	$('#point').val(mypoint);
 }
+
 function checkPoint(mypoint){
 	if(parseInt($('#point').val())<0){
 		$('#point').val(0);
@@ -82,5 +83,10 @@ function checkPoint(mypoint){
 	var amount = document.getElementById("amount").value;
 	var coupon = document.getElementById("coupon").value;
 	var point = document.getElementById("point").value;
+	
+	
+	document.getElementById("usepoint").value=point;
+	document.getElementById("discount").value=coupon+point;
+	
 	document.getElementById("totalAmount").value=amount-coupon-point;
 }

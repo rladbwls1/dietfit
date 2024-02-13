@@ -123,6 +123,14 @@
 		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
 		)
 	</insert>
+	<insert id="orderSummary" parameterType="test.spring.mvc.bean.OrdersumDTO">
+    	INSERT INTO ordersum (
+    		id, orderid, point, couponid, discount, totalamount
+		) VALUES (
+		    #{ordersum.id}, #{ordersum.orderid}, #{ordersum.point}, 
+		    #{ordersum.couponid}, #{ordersum.discount}, #{ordersum.totalamount}
+		)
+	</insert>
 	<insert id="memberDelivery" parameterType="test.spring.mvc.bean.DeliveryDTO">
     	INSERT INTO ${id}_delivery (
 		    addr1, addr2, postnum, phone, nicaddr, receiver, orderid
@@ -151,6 +159,12 @@
 			from allcoupon a, ${id}_coupon m 
 				where m.couponid=a.couponid and m.deletedate > sysdate and m.status = 0
 	</select>
+	
+	<!-- 
+	<select id="findCoupon" resultType="String">
+		select coupon from ${id}_coupon where couponid =#{couponid}
+	</select>
+	 -->
 	
 	<!-- 
 	<select id="getUserCouponInfo" resultType="test.spring.mvc.bean.AllcouponDTO">
