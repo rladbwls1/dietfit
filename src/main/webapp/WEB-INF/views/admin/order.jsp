@@ -59,7 +59,7 @@ ${nums }
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
-	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
+	    <input type="radio" name="chk_info" value="kakaopay" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
 		
 	    <input type="hidden" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
@@ -71,8 +71,9 @@ ${nums }
 		
 		<br />
 		쿠폰 아이디 <input type="text" name="couponid" id="couponid" value="null" />
+		쿠폰 할인 금액<input type="text" name="coupondiscount" id="coupondiscount" value="0"/>
 		적립금 사용 금액<input type="text" name="usepoint" id="usepoint"  value="0"/>
-		총 할인 금액<input type="text" name="discount" id="discount" value="0"/>
+		총 할인 금액 <input type="text"  id="totaldiscount" value="0" />
 		
 		
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
@@ -90,7 +91,7 @@ ${nums }
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="계좌 간편결제"> 계좌 간편결제
+	    <input type="radio" name="chk_info" value="easybank"> 계좌 간편결제
 	</form>
 	
 	<form id="normalPaymentForm" action="#" method="post">
