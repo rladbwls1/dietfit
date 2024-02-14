@@ -55,9 +55,4 @@ public class ReviewServiceImpl implements ReviewService{
 	    return uuid; // 저장된 파일명 반환 (UUID + 확장자)
 	}
 
-	@Override
-	public String writeproduct(ReviewDTO rdto) {
-		return mapper.writeproduct(rdto);
-	}
-
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -226,5 +227,39 @@ public class Admin1ServiceImpl implements Admin1Service{
 	@Override
 	public List<ProductDTO> food_product(String productid) {
 		return mapper.food_product(productid);
+	}
+	
+	public void addCartMore(String id, String products, int delivery) {
+		for(String productid:products.split(",")) {
+			ProductDTO pro = mapper.Productid(productid);
+			String product = pro.getProduct();
+			int price= Integer.parseInt(pro.getPrice());
+			addCartOne(id,product,1,price, delivery);
+		}
+	}
+
+	@Override
+	public void addCartOne(String id, String product, int quantity, int price, int delivery) {
+		int check=mapper.isCart(id, product);
+		if(check==0) {
+			mapper.addCartOne(id, product, quantity, price, delivery);
+		}
+	}
+
+	@Override
+	public void rdCart(String id, String num) {
+		for(String n : num.split(",")) {
+			mapper.rdCart(id, 1, Integer.parseInt(n));
+		}
+	}
+
+	@Override
+	public List<CommercailDTO> comm() {
+		return mapper.comm();
+	}
+
+	@Override
+	public int commCheck(int admincheck, int num) {
+		return mapper.commCheck(admincheck, num);
 	}
 }

@@ -8,8 +8,6 @@ import test.spring.mvc.bean.AllimgDTO;
 import test.spring.mvc.bean.ReviewDTO;
 
 public interface ReviewService {
-	// 府轰 累己 惑前
-	public String writeproduct(ReviewDTO rdto);
 	// 府轰 府胶飘 
 	public List<ReviewDTO> listimg();
 	// 府轰 臂 累己

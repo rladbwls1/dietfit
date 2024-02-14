@@ -54,7 +54,7 @@
     		SELECT ap.*
 				FROM all_product ap
 				JOIN (
-				  SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+				  SELECT companyid, category, category2, flavor, SUM(quantity) AS total_amount
 				  FROM buyproduct
 				  WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM')
 				  GROUP BY companyid, category, category2, flavor
@@ -68,7 +68,7 @@
     		SELECT ap.*
 			FROM all_product ap
 			    JOIN (
-			    SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+			    SELECT companyid, category, category2, flavor, SUM(quantity) AS total_amount
 			    FROM buyproduct
 			    WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - INTERVAL '7' DAY, 'YYYY-MM-DD')
 			    GROUP BY companyid, category, category2, flavor
@@ -89,10 +89,11 @@
     	</select>
     	<select id="discount" resultType="product">
     		SELECT all_product.*
-			FROM all_product
-			JOIN discount ON all_product.num = discount.num
-			WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
-			ORDER BY discount.sale DESC
+				FROM all_product
+				JOIN discount ON all_product.num = discount.num
+				WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
+				ORDER BY discount.sale DESC
+				FETCH FIRST 16 ROWS ONLY;
     	</select>
     	<select id="sale">
     		select sale from discount where num=#{num}
@@ -121,14 +122,14 @@
                 IN ('21', '22', '23', '24', '25', '26')
     	</select>
     	
-    	<resultMap type="product" id="product">
+    	<resultMap type="test.spring.mvc.bean.ProductDTO" id="product">
     		<result column="product" property="product"/>
     		<result column="price" property="price"/>
     		<collection property="pimg" resultMap="pimg"/>
     		<collection property="productinfo" resultMap="productinfo"/>
     	</resultMap>
     	
-    	<resultMap type="pimg" id="pimg">
+    	<resultMap type="test.spring.mvc.bean.ProductimgDTO" id="pimg">
     		<result column="companyid" property="companyid"/>
     		<result column="category" property="category"/>
     		<result column="category2" property="category2"/>
@@ -137,7 +138,7 @@
     		<result column="ext" property="ext"/>
     	</resultMap>
 
-    	<resultMap type="productinfo" id="productinfo">
+    	<resultMap type="test.spring.mvc.bean.ProductinfoDTO" id="productinfo">
     		<result column="onesize" property="onesize"/>
     		<result column="kcal" property="kcal"/>
     		<result column="protein" property="protein"/>
@@ -163,4 +164,28 @@
 			WHERE ap.companyid || ap.category || ap.category2 || ap.flavor = #{productid} and api.thum = 1
 			ORDER BY api.num ASC
     	</select>
+    	
+    	<!-- 장바구니에 상품이 이미 있나 확인 -->
+		<select id="isCart">
+			select count(*) from ${id}_cart where product=#{product}
+		</select>
+		<!-- 장바구니에 하나의 상품 추가 -->
+		<insert id="addCartOne">
+			insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},${delivery})
+		</insert>
+		
+		<select id="Productid" resultType="product">
+			select * from all_product where companyid || category || category2 || flavor = #{productid}
+		</select>
+		
+		<update id="rdCart">
+			update ${id}_cart set delivery = #{delivery} where num = #{num} 
+		</update>
+		
+		<select id="comm" resultType="comm">
+			select * from commercials order by num asc
+		</select>
+		<update id="commCheck">
+    		update commercials set admincheck = #{admincheck} where num=#{num}
+    	</update>
     </mapper>

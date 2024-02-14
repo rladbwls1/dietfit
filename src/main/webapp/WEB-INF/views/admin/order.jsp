@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>   
+=======
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>     
+>>>>>>> refs/remotes/origin/rladbwls1
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +18,68 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
+<script>
+	function week(day){
+		var num = $("#day").val();
+		$.ajax({
+			url:'/member/week',
+			type:'post',
+			data:{day: day,
+				  num: num},
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			success:function(data){
+				var dateParts = data.split(" ")[0].split("."); // 날짜 부분 파싱
+	            var year = parseInt(dateParts[0]);
+	            var month = parseInt(dateParts[1]) - 1; // JavaScript에서는 월이 0부터 시작하므로 -1
+	            var day = parseInt(dateParts[2]);
+
+	            var currentDate = new Date(year, month, day);
+
+	            // 주차에 따른 날짜 간격 계산 함수
+	            function calculateDateInterval(weeks) {
+	                return weeks * 7; // 주차에 따른 일수 변환
+	            }
+
+	            // 출력할 날짜 개수 설정
+	            var dateCount = 3;
+	            
+	            // 결과를 출력
+	            var output = "<b>정기배송 첫 출고일</b> " +
+	            currentDate.getFullYear() + "." +
+	                (currentDate.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                currentDate.getDate().toString().padStart(2, '0') + "<br/>";
+
+	            for (var i = 1; i < dateCount; i++) {
+	                var interval = calculateDateInterval(num * i);
+	                var nextDate = new Date(currentDate);
+	                nextDate.setDate(currentDate.getDate() + interval);
+
+	                // 계산된 날짜를 yyyy.MM.dd 형식으로 변환하여 결과에 추가
+	                output += "<b>정기배송 " + (i + 1) + "번째 출고일</b> " +
+	                    nextDate.getFullYear() + "." +
+	                    (nextDate.getMonth() + 1).toString().padStart(2, '0') + "." +
+	                    nextDate.getDate().toString().padStart(2, '0') + "<br/>";
+	            }
+
+	            // 결과를 출력
+	            $("#calendar").html(output);
+	        }
+		});
+	}
+	
+	function bott_box(num){
+	    $("#days").html("<h5>배송 요일</h5>"+
+	            "<input type='hidden' value="+num+" id='day'/>"+
+	    		"<button onclick=\"week('Monday')\">월</button>"+
+	            "<button onclick=\"week('Tuesday')\">화</button>"+
+	            "<button onclick=\"week('Wednesday')\">수</button>"+
+	            "<button onclick=\"week('Thursday')\">목</button>"+
+	            "<button onclick=\"week('Friday')\">금</button>"+
+	            "<button onclick=\"week('Saturday')\">토</button>"+
+	            "<div id='calendar'></div>");
+	}
+
+</script>
 <body>
 
 <hr/>
@@ -22,6 +88,7 @@ ${nums }
 
 	<h2>주문/결제</h2>
         
+<<<<<<< HEAD
 		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery.nicaddr}"/> <br />
 		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery.receiver}"/> <br />
 		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery.phone}"/> <br />
@@ -40,6 +107,24 @@ ${nums }
 	주문번호 : ${orderid } <br />
 	${cartList } <br />
 	상품 수량 : 총 ${quantity }건
+=======
+	<p>배송지 - delivery 테이블</p>
+	<p>주문상품 - orderdetail 테이블</p>
+	상품명 : 
+	상품명 : 
+	상품 수량 : 
+	상품 비과세 금액 : 
+	<c:if test="${delivery == 1}">
+	<h4>정기배송일</h4>
+	<h5>배송주기</h5>
+	<div style="display:flex;">
+		<button onclick="bott_box(1)">1주에 1번</button>
+		<button onclick="bott_box(2)">2주에 1번</button>
+		<button onclick="bott_box(3)">3주에 1번</button>
+	</div>
+	<div id="days"></div>
+	</c:if>
+>>>>>>> refs/remotes/origin/rladbwls1
 	<h4>할인적용</h4>
 	쿠폰적용 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
 	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button> <br />
@@ -59,7 +144,8 @@ ${nums }
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
-	    <input type="radio" name="chk_info" value="kakaopay" /> 카카오페이
+<<<<<<< HEAD
+	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
 		
 	    <input type="hidden" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
@@ -71,9 +157,8 @@ ${nums }
 		
 		<br />
 		쿠폰 아이디 <input type="text" name="couponid" id="couponid" value="null" />
-		쿠폰 할인 금액<input type="text" name="coupondiscount" id="coupondiscount" value="0"/>
 		적립금 사용 금액<input type="text" name="usepoint" id="usepoint"  value="0"/>
-		총 할인 금액 <input type="text"  id="totaldiscount" value="0" />
+		총 할인 금액<input type="text" name="discount" id="discount" value="0"/>
 		
 		
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
@@ -88,10 +173,25 @@ ${nums }
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
+=======
+	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이 <br />
+		<input type="text" name="partner_order_id" value="123"><br>
+        <input type="text" name="partner_user_id" value="dietfit"><br>
+        <input type="text" name="item_name" value="${quantity }"><br>
+        <input type="text" name="quantity" value="${quantity }"><br>
+        <input type="text" name="total_amount" value="${amount }"><br>
+        <input type="text" name="tax_free_amount" value="${taxfree }"><br>
+        <input type="text" name="delivery" value="${delivery}">
+        <input type="hidden" name="command" value="ready">
+        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly">
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly">
+        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly">
+>>>>>>> refs/remotes/origin/rladbwls1
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="easybank"> 계좌 간편결제
+	    <input type="radio" name="chk_info" value="계좌 간편결제"> 계좌 간편결제
 	</form>
 	
 	<form id="normalPaymentForm" action="#" method="post">

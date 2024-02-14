@@ -35,6 +35,7 @@ import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.MemberService;
 
 @Controller
@@ -44,6 +45,8 @@ public class MemberController {
 	private MemberService service;
 	@Autowired
 	private MemberMapper mapper;
+	@Autowired
+	private Admin1ServiceImpl admin;
 	
 	@RequestMapping("all")
 	public String doAll() {
@@ -57,6 +60,68 @@ public class MemberController {
 	@RequestMapping("admin")
 	public String admin() {
 		return "member/admin";
+	}
+	
+	// 베스트 상품 월간
+	@RequestMapping("best")
+	public String best(Model model) {
+		List<ProductDTO> dto = admin.best();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "member/best";
+	}
+	
+	// 베스트 상품 주간
+	@RequestMapping("best2")
+	public String best2(Model model) {
+		List<ProductDTO> dto = admin.best2();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	            }
+			}
+		}
+		model.addAttribute("best", dto);
+		return "/member/best2";
+	}
+	
+	// 오늘의 특가 상품
+	@RequestMapping("discount")
+	public String discount(Model model) {
+		List<ProductDTO> dto = admin.discount();
+		if(dto != null) {
+			for(ProductDTO pd : dto) {
+				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
+				int sale = admin.sale(pd.getNum());
+				if (img != null) {
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               pd.setImagePath(imagePath);
+	               pd.setSale(sale);
+	            }
+			}
+		}
+		model.addAttribute("discount", dto);
+		return "/member/discount";
 	}
 	
 	
@@ -364,8 +429,11 @@ public class MemberController {
 	}
 	
 	@RequestMapping("addCartOne")
-	public @ResponseBody String addCartOne(Principal pri ,String product, int quantity, int price) {
-		service.addCartOne(pri.getName(),product,quantity,price);
+	public @ResponseBody String addCartOne(Principal pri ,CartDTO dto, int chk) {
+		if(chk == 1) {
+			dto.setDelivery(1);
+		}
+		service.addCartOne(pri.getName(),dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
 		return "hi";
 	}
 	@RequestMapping("addCartMore")
@@ -378,6 +446,11 @@ public class MemberController {
 	public String cartList(Model model,Principal pri) {
 		service.getCartList(model, pri.getName());
 		return "member/cartList";
+	}
+	@RequestMapping("Rdelivery")
+	public String Rdelivery(Model model,Principal pri) {
+		service.getCartList(model, pri.getName());
+		return "member/Rdelivery";
 	}
 	@RequestMapping("updateCartQuantity")
 	public @ResponseBody String updateCartQuantity(Model model, Principal pri, int num, int quantity) {
@@ -475,6 +548,4 @@ public class MemberController {
 		model.addAttribute("myPoint",service.getPoint(pri.getName()));
 		return "member/myPoint";
 	}
-	
-	
 }
