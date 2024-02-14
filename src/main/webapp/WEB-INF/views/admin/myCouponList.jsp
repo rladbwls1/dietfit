@@ -35,7 +35,7 @@
 			    <c:forEach var="entry" items="${companyPrice}">
 			        <c:if test="${entry.key eq map.get('COMPANYID')}">
 			            <tr>
-			                <td><input type="radio" name="selectedCoupon" id="selectedCoupon" value="${map.get('COUPON')}" /> </td>
+			                <td><input type="radio" name="selectedCoupon" id="selectedCoupon" value="${map.get('COUPONID')}" /> </td>
 			                <td>${map.get('COUPON')}</td>
 			                <td>${map.get('COMPANYID') }</td>
 			                <td>${map.get('DISCOUNT') }</td>
@@ -62,15 +62,14 @@ function useCouponInfo(){
 	}else{
 		//라디오 버튼 체크
 		var selectedCoupon = $('#selectedCoupon:checked').val();
+		
 		var couponDiscount = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(3)').text();
 		var canuseCompany = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(2)').text();
-		
 		var companyPriceData = {
 				<c:forEach var="entry" items="${companyPrice}">
 					"${entry.key}": ${entry.value},
 				</c:forEach>
 		};
-		
 		var couponPrice = 0 ;
 		for(var companyId in companyPriceData){
 			if(companyPriceData.hasOwnProperty(companyId)){ //객체 있는지 확인
@@ -79,13 +78,24 @@ function useCouponInfo(){
 			}
 		}
 		
+		var couponid = $(":input[name=selectedCoupon]:checked").val();
+
+		
 		opener.document.getElementById("useCoupon").value=selectedCoupon;
 		opener.document.getElementById("coupon").value=couponPrice;
+		opener.document.getElementById("couponid").value=couponid;
 		
-		var amount = opener.document.getElementById("amount").value;
-		var coupon =  opener.document.getElementById("coupon").value;
-		var point = opener.document.getElementById("point").value;
+		var amount = parseInt(opener.document.getElementById("amount").value);
+		var coupon = parseInt(opener.document.getElementById("coupon").value);
+		var point = parseInt(opener.document.getElementById("point").value);
+		var discount = parseInt(coupon + point);
+		
+		opener.document.getElementById("point").value=point;
+		opener.document.getElementById("usepoint").value=point;
+		opener.document.getElementById("discount").value=discount;
+		
 		opener.document.getElementById("totalAmount").value=amount-coupon-point;
+		opener.document.getElementById("total_amount").value=amount-coupon-point;
 		window.close();
 	}
 }

@@ -26,7 +26,7 @@ ${dto.receiver } ${dto.phone }<br/>
 <c:forEach var="order" items="${list }">
 	<tr>
 	<td>${order.product }<br/>${order.price }원<br/><br/>
-	<button type="button" onclick="console.log('리뷰쓰기');" >리뷰 쓰기</button>
+	<button type="button" onclick="toReviewForm('${order.productid}')" >리뷰 쓰기</button>
 	<button type="button" onclick="toChatByOrderdateil('${order.product}','${order.productid.substring(0,2) }')" >문의하기</button>
 	</td>
 	<td>${order.quantity }</td>
