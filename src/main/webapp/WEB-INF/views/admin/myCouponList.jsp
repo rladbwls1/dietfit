@@ -83,19 +83,27 @@ function useCouponInfo(){
 		
 		opener.document.getElementById("useCoupon").value=selectedCoupon;
 		opener.document.getElementById("coupon").value=couponPrice;
+		opener.document.getElementById("coupondiscount").value=couponPrice;
 		opener.document.getElementById("couponid").value=couponid;
 		
 		var amount = parseInt(opener.document.getElementById("amount").value);
 		var coupon = parseInt(opener.document.getElementById("coupon").value);
 		var point = parseInt(opener.document.getElementById("point").value);
-		var discount = parseInt(coupon + point);
+		var totaldiscount = parseInt(coupon + point);
+		
+		console.log(amount);
+		console.log(coupon);
+		console.log(point);
+		console.log(totaldiscount);
 		
 		opener.document.getElementById("point").value=point;
 		opener.document.getElementById("usepoint").value=point;
-		opener.document.getElementById("discount").value=discount;
+		//opener.document.getElementById("coupondiscount").value=coupon;
 		
-		opener.document.getElementById("totalAmount").value=amount-coupon-point;
-		opener.document.getElementById("total_amount").value=amount-coupon-point;
+		opener.document.getElementById("totaldiscount").value=totaldiscount;
+		
+		opener.document.getElementById("totalAmount").value=amount-totaldiscount;
+		opener.document.getElementById("total_amount").value=amount-totaldiscount;
 		window.close();
 	}
 }
