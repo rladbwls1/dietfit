@@ -123,6 +123,16 @@ public class SellersaleController {
 		Integer todayFee = service.todayFee(companyid);
 		Integer weeklyFee = service.weeklyFee(companyid);
 		Integer monthlyFee = service.monthlyFee(companyid);
+		
+		List<OrderdetailDTO> dailySalesRank = service.dailySalesRank(companyid);
+		List<OrderdetailDTO> weeklySalesRank =service.weeklySalesRank(companyid);
+		List<OrderdetailDTO> monthlySalesRank =service.monthlySalesRank(companyid);
+		List<OrderdetailDTO> allSalesRank =service.allSalesRank(companyid);
+		
+	    model.addAttribute("dailySalesRank", dailySalesRank);
+	    model.addAttribute("weeklySalesRank", weeklySalesRank);
+	    model.addAttribute("monthlySalesRank", monthlySalesRank);
+	    model.addAttribute("allSalesRank", allSalesRank);
 
 	    model.addAttribute("todaySales", todaySales);
 	    model.addAttribute("weeklySales", weeklySales);
