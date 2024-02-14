@@ -180,17 +180,13 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-<<<<<<< HEAD
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
-			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
+			String nicaddr, String phone, String receiver, String address1, String address2, String postcode, int delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
 //		model.addAttribute("id", pri.getName());
 		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
 		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
-=======
-	public String order(String nums, Model model, Integer amout, Integer totalQuantity, int delivery) {
->>>>>>> refs/remotes/origin/rladbwls1
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
@@ -326,16 +322,16 @@ public class DietfitController {
 			
 			
 //			Delivery 테이블 저장
-			DeliveryDTO delivery = new DeliveryDTO();
-			delivery.setAddr1(address1);
-			delivery.setAddr2(address2);
-			delivery.setPhone(phone);
-			delivery.setNicaddr(nicaddr);
-			delivery.setPostnum(postcode);
-			delivery.setReceiver(receiver);
-			delivery.setOrderid(orderid);
-			System.out.println("DeliveryDTO 정보: " + delivery);
-			aservice.createDelivery(id, delivery);
+			DeliveryDTO delivery1 = new DeliveryDTO();
+			delivery1.setAddr1(address1);
+			delivery1.setAddr2(address2);
+			delivery1.setPhone(phone);
+			delivery1.setNicaddr(nicaddr);
+			delivery1.setPostnum(postcode);
+			delivery1.setReceiver(receiver);
+			delivery1.setOrderid(orderid);
+			System.out.println("DeliveryDTO 정보: " + delivery1);
+			aservice.createDelivery(id, delivery1);
 			
 //			카카오페이 결제 ==================================================
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");

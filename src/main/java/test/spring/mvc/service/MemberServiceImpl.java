@@ -414,11 +414,8 @@ public class MemberServiceImpl implements MemberService{
             	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
             }
 		}
-<<<<<<< HEAD
 		model.addAttribute("list",list);
-=======
 		model.addAttribute("dto", cart);
->>>>>>> refs/remotes/origin/rladbwls1
 		model.addAttribute("imgPaths",imgPaths);
 	}
 

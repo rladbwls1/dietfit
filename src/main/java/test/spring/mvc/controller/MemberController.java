@@ -517,7 +517,6 @@ public class MemberController {
 		model.addAttribute("list",service.getUserCoupon(pri.getName()));
 		return "member/myCoupon";
 	}
-<<<<<<< HEAD
 	//주문,배송
 	@RequestMapping("myOrder")
 	public String myOrder(Principal pri,Model model) {
@@ -549,8 +548,4 @@ public class MemberController {
 		model.addAttribute("myPoint",service.getPoint(pri.getName()));
 		return "member/myPoint";
 	}
-	
-	
-=======
->>>>>>> refs/remotes/origin/rladbwls1
 }
