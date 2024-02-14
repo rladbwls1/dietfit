@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -24,12 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.BuyproductDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
@@ -246,7 +250,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
+	public List<String> getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
 		mapper.countUp(companyid,category,category2);
 		
 		ProductDTO product = sel1mapper.findproductdetail(companyid, category, category2, flavor);
@@ -282,6 +286,7 @@ public class MemberServiceImpl implements MemberService{
         model.addAttribute("product", product);
         model.addAttribute("thumbnailPaths", thumbnailPaths);
         model.addAttribute("imagePaths", imagePaths);
+        return thumbnailPaths;
 	}
 
 	@Override
@@ -343,6 +348,8 @@ public class MemberServiceImpl implements MemberService{
 	                                   img.getFlavor() + "F" + img.getNum() +
 	                                   img.getExt();
 	               imgPaths.add(imagePath);
+	            }else {
+	            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
 	            }
 	        }
 	        model.addAttribute("wishList", dibs);
@@ -390,7 +397,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void getCartList(Model model, String id) {
 		List<CartDTO> list=mapper.getCartList(id);
-		model.addAttribute("list",list);
 		List<String> imgPaths=new ArrayList<>();
 		CartDTO cart = new CartDTO();
 		for(CartDTO dto:list) {
@@ -403,8 +409,12 @@ public class MemberServiceImpl implements MemberService{
                                    img.getFlavor() + "F" + img.getNum() +
                                    img.getExt();
                 imgPaths.add(imagePath);
+                
+            }else {
+            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
             }
 		}
+		model.addAttribute("list",list);
 		model.addAttribute("dto", cart);
 		model.addAttribute("imgPaths",imgPaths);
 	}
@@ -460,6 +470,142 @@ public class MemberServiceImpl implements MemberService{
 		mapper.checkUsableCoupon(id);
 		return mapper.getUserCoupon(id);
 	}
+
+	@Override
+	public void getUserOrder(String id,Model model) {
+		List<Map<String,Object>> list=mapper.getUserOrder(id);
+		ProductDTO dto=new ProductDTO();
+		for(Map<String,Object> map:list) {
+			String productid=map.get("PRODUCTID").toString();
+			dto.setCompanyid(productid.substring(0,2));
+			dto.setCategory(productid.substring(2,4));
+			dto.setCategory2(productid.substring(4,6));
+			dto.setFlavor(productid.substring(6,8));
+			map.put("PRODUCT", mapper.getProductnameByProductcode(dto));
+		}
+		model.addAttribute("list",list);
+	}
+
+	@Override
+	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
+		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
+		ProductDTO dto=new ProductDTO();
+		for(OrderdetailDTO odto:list) {
+			String productid=odto.getProductid();
+			dto.setCompanyid(productid.substring(0,2));
+			dto.setCategory(productid.substring(2,4));
+			dto.setCategory2(productid.substring(4,6));
+			dto.setFlavor(productid.substring(6,8));
+			odto.setProduct(mapper.getProductnameByProductcode(dto));
+		}
+		model.addAttribute("list",list);
+	}
+
+	@Override
+	@Transactional
+	public void defintePurchase(String id, String orderid, String productid,int price) {
+		//orderdetail 컬럼 변경
+		mapper.defintePurchase(id,orderid,productid);
+		
+		//적립금 추가
+		int point=getPoint(id);					//회원 보유 적립금 가져오기
+		double bonus=mapper.getBonus(id);		//회원 등급에 따른 적립 정도
+		int change=(int)(price*bonus);			//적립금
+		PointDTO dto=new PointDTO();
+		dto.setChange(change);
+		dto.setPoint(point+change);
+		dto.setOrderid(orderid);
+		mapper.addPoint(id, dto);
+
+		//buyproduct 에 레코드 추가 
+		BuyproductDTO bdto=new BuyproductDTO();
+		bdto.setCompanyid(productid.substring(0,2));
+		bdto.setCategory(productid.substring(2,4));
+		bdto.setCategory2(productid.substring(4,6));
+		bdto.setFlavor(productid.substring(6,8));
+		bdto.setId(id);
+		bdto.setOrderid(orderid);
+		OrderdetailDTO odto=mapper.getOrderDetailByOrderidAndProductid(id, orderid, productid);
+		bdto.setPrice(odto.getPrice());
+		bdto.setQuantity(odto.getQuantity());
+		mapper.addDefintePurchaseToBuyproduct(bdto);
+		
+	}
+	//회원 보유 적립금 가져오기
+	@Override
+	public int getPoint(String id) {
+		//소멸은 나중에 
+		//적립금 사용or 확인할 때 만료된 거 만료 처리
+//		List<PointDTO> dtos=mapper.getDuePointNum(id);
+//		if(dtos!=null) {
+//		for(PointDTO dto:dtos) {
+//			int point=mapper.getPoint(id);
+//			dto.setOpt(1);
+//			dto.setPoint(point-dto.getChange());
+//			mapper.deletePoint(id,dto);
+//		}}
+		
+		//보유 적립금 가져오기
+		int point=0;
+		if(mapper.isPoint(id)>1) {
+			point=mapper.getPoint(id);
+		}
+		return point;
+	}
+	
+	//적립금 사용
+	@Override
+	public void usePoint(String id,String orderid, int point) {
+		int expoint=getPoint(id);
+		PointDTO pdto=new PointDTO();
+		pdto.setChange(point);
+		pdto.setPoint(expoint-point);
+		pdto.setOrderid(orderid);
+		mapper.usePoint(id, pdto);
+	}
+	
+	//최근 본 상품
+	@Override
+	public void getProductByCookie(List<String> recentlyViewedProducts,Model model) {
+		List<ProductDTO> list=new ArrayList<>();
+		for(String ProductCode:recentlyViewedProducts) {
+			String companyid=ProductCode.substring(0,2);
+			String category=ProductCode.substring(2,4);
+			String category2=ProductCode.substring(4,6);
+			String flavor=ProductCode.substring(6,8);
+			
+			String product = sel1mapper.findproductdetail(companyid, category, category2, flavor).getProduct();
+			String price = sel1mapper.findproductdetail(companyid, category, category2, flavor).getPrice();
+			ProductimgDTO thumbnailPath = mapper.findlistthum(companyid, category, category2);
+			
+			// ProductDTO 객체 생성 및 정보 설정
+	        ProductDTO ProductDTO = new ProductDTO();
+	        ProductDTO.setCompanyid(companyid);
+	        ProductDTO.setCategory(category);
+	        ProductDTO.setCategory2(category2);
+	        ProductDTO.setFlavor(flavor);
+			ProductDTO.setProduct(product);
+			ProductDTO.setPrice(price);
+			// 이미지 경로 직접 조합하여 설정
+			if(thumbnailPath!=null) {
+			String imagePath = "/resources/p_img/" + thumbnailPath.getCompanyid() +
+					thumbnailPath.getCategory() + thumbnailPath.getCategory2() +
+					thumbnailPath.getFlavor() + "F" + thumbnailPath.getNum() +
+					thumbnailPath.getExt();
+			ProductDTO.setImagePath(imagePath);
+			}
+			
+			//썸네일, 이름, 가격 꺼내
+			//list.add(ProductDTO);
+			//product를 메퍼로 불러오고
+			//썸네일도 불러와서 이미지 패스 넣어라
+			list.add(ProductDTO);
+		}
+		
+		model.addAttribute("list",list);
+	}
+
+	
 	
 	
 	

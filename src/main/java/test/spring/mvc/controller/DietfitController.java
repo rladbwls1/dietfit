@@ -14,7 +14,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -25,14 +28,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.vertx.java.core.json.JsonObject;
 
+import test.spring.mvc.bean.CouponDTO;
+import test.spring.mvc.bean.DeliveryDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
+import test.spring.mvc.repository.AdminMapper;
+import test.spring.mvc.repository.MemberMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
+import test.spring.mvc.service.AdminService;
+import test.spring.mvc.service.MemberService;
 import test.spring.mvc.service.SurveyService;
 
 @Controller
@@ -43,7 +55,19 @@ public class DietfitController {
 	private SurveyService service;
 	
 	@Autowired
+	private AdminService aservice;
+	
+	@Autowired
 	private Admin1ServiceImpl aservice1;
+	
+	@Autowired
+	private MemberService mservice;
+	
+	@Autowired
+	private AdminMapper mapper;
+	
+	@Autowired
+	private MemberMapper mmapper;
 	
 	@RequestMapping("main")
 	public String main() {
@@ -156,19 +180,99 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(String nums, Model model, Integer amout, Integer totalQuantity, int delivery) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
+			String nicaddr, String phone, String receiver, String address1, String address2, String postcode, int delivery) {
+		
+		String orderid = aservice.generateOrderId(pri);
+//		model.addAttribute("id", pri.getName());
+		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
+		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
 		model.addAttribute("nums",nums);
+		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
 		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
-		System.out.println(taxfree);
 		model.addAttribute("taxfree", taxfree);
+		model.addAttribute("nicaddr", nicaddr);
+		model.addAttribute("phone", phone);
+		model.addAttribute("receiver", receiver);
+		model.addAttribute("address1", address1);
+		model.addAttribute("address2", address2);
+		model.addAttribute("postcode", postcode);
+		
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        List<Map<String,Object>> cartList=new ArrayList<>();
+        for (String num : numsArray) {
+             cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
+        }
+        model.addAttribute("cartList",cartList);
 		return "admin/order";
 	}
 	
+	@RequestMapping("orderDelivery")
+	public String orderDelivery(Principal pri, Model model) {
+		model.addAttribute("id",pri.getName());
+		model.addAttribute("list",mmapper.getUserDelivery(pri.getName()));
+		return "admin/orderDelivery";
+	}
+	
+	@RequestMapping("getDelivery")
+	public @ResponseBody DeliveryDTO getDelivery(String nicaddr,Principal pri) {
+		DeliveryDTO dto=mapper.getDeliveryByNicaddr(pri.getName(), nicaddr);
+		return dto;
+	}
+	
+	@RequestMapping("myCouponList")
+	public String myCouponList(Principal pri, Model model,String nums) {
+		model.addAttribute("list", mapper.getUserCoupon(pri.getName()));
+		
+		String[] numsArray = new String[0];
+		if(nums != null) {
+			numsArray = nums.split(",");
+		}
+        ArrayList<Map<String, Object>> cartList = new ArrayList<>();
+        for (String num : numsArray) {
+             cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
+        }
+        model.addAttribute("cartList",cartList);
+        
+        //companyid 와 그에 따른 총 가격
+        Map<String, Integer> companyPrice = new HashMap<String, Integer>();
+        for (Map<String, Object> cartItem : cartList) {
+            String companyId = (String) cartItem.get("COMPANYID");
+            int price = Integer.parseInt(cartItem.get("PRICE").toString()) * Integer.parseInt(cartItem.get("QUANTITY").toString());
+            if(companyPrice.containsKey(companyId)) {
+        		//해당 회사 ID가 있는 경우에는 더해줌
+            	
+        		if (companyId != null && price!=0) {
+        			companyPrice.put(companyId, companyPrice.get(companyId)+price);
+        		}
+            }else {
+            	// 추출된 값이 null이 아닌지 확인 후, 맵에 추가
+	            if (companyId != null && price!=0) {
+	                companyPrice.put(companyId, price);
+	            }
+            }
+        }
+        model.addAttribute("companyPrice", companyPrice);
+		return "admin/myCouponList";
+	}
+	
+//	@RequestMapping("getCoupon")
+//	public @ResponseBody String getCoupon(Principal pri, String coupon) {
+//		String couponid = mapper.getCouponIdByCoupon(pri.getName(), coupon);
+//		return couponid;
+//	}
+	
 	@RequestMapping("kakaopaygo")
-	public @ResponseBody String kakaopaygo(@RequestParam String partner_order_id,
+	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
+			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
+			String couponid, int usepoint, int discount,
+			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
@@ -178,7 +282,58 @@ public class DietfitController {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		
+		//orderdetail DTO 저장
+		String id = pri.getName();
+		String orderid = partner_order_id;
+		
 		try {
+			List<String> productIds = aservice.findproductId(id, nums);
+			System.out.println(productIds);
+			
+//			개인 orderdetail 테이블 저장
+			for(String productId: productIds) {
+				OrderdetailDTO orderdetail = new OrderdetailDTO();
+				orderdetail.setOrderid(orderid);
+				orderdetail.setPurdate(new Date());
+				orderdetail.setQuantity(quantity);
+				orderdetail.setPrice(aservice.findprice(productId));
+				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
+				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
+				orderdetail.setProductid(productId);
+				orderdetail.setMemberid(id);
+				
+				System.out.println("OrderdetailDTO 정보: " + orderdetail);
+				
+				aservice.createOrder(id, orderdetail);
+				aservice.changeCoupon(orderid, couponid);
+				mservice.usePoint(id, orderid, usepoint);
+			}
+			
+//			주문 요약본(전체 회원 테이블) 저장
+			OrdersumDTO ordersum = new OrdersumDTO();
+			ordersum.setId(id);
+			ordersum.setOrderid(orderid);
+			ordersum.setPoint(usepoint);
+			ordersum.setCouponid(couponid);
+			ordersum.setDiscount(discount);
+			ordersum.setTotalamount(total_amount);
+			System.out.println("OrdersumDTO 정보 :" + ordersum);
+			aservice.createOrderSum(ordersum);
+			
+			
+//			Delivery 테이블 저장
+			DeliveryDTO delivery1 = new DeliveryDTO();
+			delivery1.setAddr1(address1);
+			delivery1.setAddr2(address2);
+			delivery1.setPhone(phone);
+			delivery1.setNicaddr(nicaddr);
+			delivery1.setPostnum(postcode);
+			delivery1.setReceiver(receiver);
+			delivery1.setOrderid(orderid);
+			System.out.println("DeliveryDTO 정보: " + delivery1);
+			aservice.createDelivery(id, delivery1);
+			
+//			카카오페이 결제 ==================================================
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");
 			HttpURLConnection connection = (HttpURLConnection) address.openConnection();
 			connection.setDoOutput(true);
@@ -198,7 +353,8 @@ public class DietfitController {
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
 			
-			//주문번호, 회사ID, 멤버 ID, product, quantity, price, tax_free_amount는 계산으로 
+			model.addAttribute("total_amount", total_amount);
+			//주문번호, 회사ID(dietfit), product, quantity, price, tax_free_amount는 계산으로 
 			
 			 // 파라미터를 UTF-8로 인코딩하여 전송
             byte[] paramsBytes = paramsString.getBytes(StandardCharsets.UTF_8);

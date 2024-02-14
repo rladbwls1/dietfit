@@ -23,7 +23,7 @@ public interface SellerMapper {
 	public String findcompanyid(String id);
 	public String findcompanyidbyproductid(String companyid);
 	public List<ProductDTO> findcompanyproduct(@Param("companyid")String companyid);
-	public List<ChatDTO> findnotreadchat(int readcheck);
+	public List<ChatDTO> findnotreadchat(int readcheck,@Param("companyid")String companyid);
 	public Member_basicDTO sellermodifyselect(String id);
 	public void sellermodifyupdate(Member_basicDTO Member_basicDTO);
 	public void sellerwithdraw(String id);
@@ -37,4 +37,6 @@ public interface SellerMapper {
     public void endchat(int roomnum);
     public void chatreport(ChatreportDTO chatreportdto);
     public void chatreportdelete(int roomnum);
+    public List<ProductDTO> memberproductall();
+    public String findproductbycompanyid(String product);
 }

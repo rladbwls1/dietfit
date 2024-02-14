@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.Seller1Mapper;
+import test.spring.mvc.repository.SellerMapper;
 import test.spring.mvc.service.Seller1Service;
+import test.spring.mvc.service.SellerService;
 
 @Controller
 @RequestMapping("/seller/**")
@@ -31,10 +34,15 @@ public class Seller1Controller {
 	@Autowired
     private Seller1Service service;
 	@Autowired
+	private SellerService service2;
+	@Autowired
 	private Seller1Mapper mapper;
 	
 	@RequestMapping("store")
-	public String getProductsByCompanyId(@RequestParam("companyid") String companyid, Model model) {
+	public String getProductsByCompanyId(Principal pri, Model model) {
+		String id = pri.getName(); // 현재 사용자의 ID
+	    model.addAttribute("id", id);
+	    String companyid = service2.findcompanyid(id);
 	    List<ProductDTO> products = service.findallproductbycompanyid(companyid);
 	    if (products != null) {
 	        for (ProductDTO product : products) {
@@ -355,8 +363,158 @@ public class Seller1Controller {
 	    		service.deleteProductthumimg(imgnums);
         	}
         }
-	    service.updateProduct(productDTO);
+	    service.updateProduct(productDTO);  // 전체 수정
+	    
 	    model.addAttribute("companyid", companyid);
 	    return "redirect:/seller/store";
 	 }
+	 
+	 
+	 @RequestMapping("thumbnailUpdate")
+	 public String thumbnailUpdate(Model model, 
+			 @RequestParam("num") int num,
+			 @RequestParam("isfile") int isfile,
+             @RequestParam("companyid") String companyid, 
+             @RequestParam("category") String category, 
+             @RequestParam("category2") String category2, 
+             @RequestParam("flavor") String flavor,
+             HttpServletRequest request) {
+		 
+		 List<ProductimgDTO> thumimgList = service.updatethumimg(companyid, category, category2, flavor);
+		 model.addAttribute("num", num);
+		 model.addAttribute("isfile", isfile);
+		 model.addAttribute("companyid", companyid);
+	     model.addAttribute("category", category);
+	     model.addAttribute("category2", category2);
+	     model.addAttribute("flavor", flavor);
+		 model.addAttribute("thumimages", thumimgList);
+		 return "/seller/thumbnailUpdate";
+	 }
+	 
+	 @RequestMapping("thumbnailUpdatePro")
+	 public String thumbnailUpdatePro(Model model, ProductimgDTO dto , HttpServletRequest request, MultipartFile[] thumbnails) {
+		 String path = request.getServletContext().getRealPath("/resources/p_img/");
+		 int isfile=0;
+		 for (MultipartFile thumbnail : thumbnails) {
+			 String originalFilename = thumbnail.getOriginalFilename();
+	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+	            if (ext == null) ext = "";
+
+	            // 확장자와 기타 정보를 DB에 저장
+	            dto.setExt(ext);
+	            dto.setThum(1);
+	            service.insertProductimg(dto, dto.getCompanyid());
+
+	            // 파일 업로드
+	            service.fileUpload(dto.getCompanyid(), dto.getCategory(), dto.getCategory2(), dto.getFlavor(), thumbnail, path);
+	            isfile++;
+		 }
+		 dto.setIsfile(dto.getIsfile()+isfile);
+		    // 데이터베이스에 상품 isfile
+		 service.updateProductIsfile(dto);
+		 model.addAttribute("companyid", dto.getCompanyid());
+	     model.addAttribute("category", dto.getCategory());
+	     model.addAttribute("category2", dto.getCategory2());
+	     model.addAttribute("flavor", dto.getFlavor());
+		 return "/seller/thumbnailUpdatePro";
+	 }
+	 
+	 
+	 @RequestMapping("thumbnailDelete")
+	 public @ResponseBody String thumbnailDelete(int imgNum , int num,String fileName,HttpServletRequest request) {
+		 service.thumbnailDelete(imgNum);
+		 service.productIsfileDelete(num);
+		 String path = request.getServletContext().getRealPath("/resources/p_img/");
+		 File file = new File(path, fileName);
+	     if (file.exists()) {
+	    	 file.delete();
+	     }
+		 return "ok";
+	 }
+	 
+	 
+	 @RequestMapping("productImageUpdate")
+	 public String productImageUpdate(Model model, 
+			 @RequestParam("num") int num,
+			 @RequestParam("isfile") int isfile,
+             @RequestParam("companyid") String companyid, 
+             @RequestParam("category") String category, 
+             @RequestParam("category2") String category2, 
+             @RequestParam("flavor") String flavor,
+             HttpServletRequest request) {
+		 
+		 List<ProductimgDTO> imgList = service.updateimg(companyid, category, category2, flavor);
+		 model.addAttribute("num", num);
+		 model.addAttribute("isfile", isfile);
+		 model.addAttribute("companyid", companyid);
+	     model.addAttribute("category", category);
+	     model.addAttribute("category2", category2);
+	     model.addAttribute("flavor", flavor);
+		 model.addAttribute("images", imgList);
+	     
+		 return "/seller/productImageUpdate";
+	 }
+	 
+	 @RequestMapping("productImageUpdatePro")
+	 public String productImageUpdatePro(Model model, ProductimgDTO dto , HttpServletRequest request, MultipartFile[] attachments) {
+		 String path = request.getServletContext().getRealPath("/resources/p_img/");
+		 int isfile=0;
+		 // 새로운 파일 업로드 + DB 저장
+		 for (MultipartFile attachment : attachments) {
+			 String originalFilename = attachment.getOriginalFilename();
+	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+	            if (ext == null) ext = "";
+
+	            // 확장자와 기타 정보를 DB에 저장
+	            dto.setExt(ext);
+	            dto.setThum(0);
+	            service.insertProductimg(dto, dto.getCompanyid());
+
+	            // 파일 업로드
+	            service.fileUpload(dto.getCompanyid(), dto.getCategory(), dto.getCategory2(), dto.getFlavor(), attachment, path);
+	            isfile++;
+		 }
+		 dto.setIsfile(dto.getIsfile()+isfile);
+		 
+		 // 데이터베이스에 상품 isfile
+		 service.updateProductIsfile(dto);
+		 model.addAttribute("companyid", dto.getCompanyid());
+	     model.addAttribute("category", dto.getCategory());
+	     model.addAttribute("category2", dto.getCategory2());
+	     model.addAttribute("flavor", dto.getFlavor());
+		 return "/seller/productImageUpdatePro";
+	 }
+	 
+	 @RequestMapping("productImageDelete")
+	 public @ResponseBody String productImageDelete(int imgNum , int num,String fileName,HttpServletRequest request) {
+		 service.thumbnailDelete(imgNum);
+		 service.productIsfileDelete(num);
+		 String path = request.getServletContext().getRealPath("/resources/p_img/");
+		 File file = new File(path, fileName);
+	     if (file.exists()) {
+	    	 file.delete();
+	     }
+		 return "ok";
+	 }
+	 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

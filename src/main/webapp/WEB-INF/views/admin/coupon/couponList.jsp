@@ -28,6 +28,7 @@
 				</tr>
 				
 				<c:forEach var="coupon" items="${couponList}">
+					<tr>
 					<td>${coupon.coupon}</td>
 					<td><fmt:formatDate value="${coupon.createdate}" pattern="yyyy-MM-dd"/> ~ 
 						<fmt:formatDate value="${coupon.deletedate}" pattern="yyyy-MM-dd"/></td>
@@ -51,6 +52,7 @@
 						다운로드 완료
 						</c:if>
 					</td>
+					</tr>
 				</c:forEach>
 			</thead>
 		</table>

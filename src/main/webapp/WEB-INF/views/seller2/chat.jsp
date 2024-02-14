@@ -68,6 +68,9 @@
     </div>
 
     <script>
+<<<<<<< HEAD
+         
+=======
         var socket = io.connect("http://192.168.219.167:7777");
         var userId = "${id}";
         var sellercompany = "${sellercompany}";
@@ -75,6 +78,7 @@
         
         
         
+>>>>>>> refs/remotes/origin/rladbwls1
     var socket = io.connect("http://192.168.219.167:7777");
     var userId = "${id}";
     var sellercompany = "${sellercompany}";

@@ -49,7 +49,7 @@ public interface MemberService {
 	//상품 목록 가져오기 + 페이지
 	public void getallproduct(Model model,int currentPage);
 	//상품의 상세 설명 model로 넘김
-	public void getProductDetail(String companyid, String category,
+	public List<String> getProductDetail(String companyid, String category,
 			String category2,String flavor, Model model);
 	//상품목록에서 하트 아이콘 눌러서 관심상품에 추가하는 경우
 	public void addWishOne(String product,String id);
@@ -87,4 +87,20 @@ public interface MemberService {
 	public void downloadCoupon(String id,CouponDTO cdto);
 	//유저 쿠폰 불러오기 ( 기간 만료된 건 만료 처리해줌)
 	public List<CouponDTO> getUserCoupon(String id);
+	//유저 주문/배송 정보 가져오기 
+	public void getUserOrder(String id,Model model);
+	//유저의 주문번호로 주문상세 가져오기
+	public void getOrderDetailByOrderid(String id,String orderid,Model model);
+	
+	//적립금
+	//구매확정과 적립금 적립
+	public void defintePurchase(String id, String orderid, String productid,int price);
+	//보유 적립금 가져오기
+	public int getPoint(String id);
+	//적립금 사용
+	public void usePoint(String id,String orderid,int point);
+	//최근 본 상품
+	//쿠키로 상품 정보 꺼내기
+    public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
+    
 }

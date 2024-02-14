@@ -63,4 +63,18 @@ public interface Seller1Mapper {
     //allproduct에서 num으로 상품코드 받기
     public ProductDTO getProductCodeByNum(int num);
 
+    // 상풍 수정 증가
+    public void updateProductIsfile(ProductimgDTO dto);
+    // 해당 이미지 DB 삭제 
+    public void thumbnailDelete(int num);
+    // 상품 이미지 총 갯수 삭제 
+    public void productIsfileDelete(int num);
+    // 전체 회원 아이디
+    public List<String> allmember();
 }
+
+
+
+
+
+

@@ -4,46 +4,60 @@
 <script src="/resources/js/socket.io.js"></script>
 <head>
     <style>
+	    .chatBox {
+	        border: 1px solid #000000; /* Green border */
+	        background-color: #FFF; /* Light grey background */
+	        padding: 10px;
+	        height: 300px;
+	        border-radius: 5px;
+	        margin-top : 10px;
+	        overflow-y: scroll;
+	    }
+	
+	    .chatContainer {
+	        display: flex;
+	        align-items: center;
+	        padding: 10px;
+	        border-radius: 5px;
+	        background-color: #FFF; /* Dark background color */
+	    }
+	
+	    .chat {
+	        flex: 1;
+	        padding: 5px;
+	        border: 1px solid #ccc;
+	        border-radius: 5px;
+	        margin-right: 10px;
+	    }
+	
+	    .sendBtn {
+	        background-color: #355FAD; /* Green background color */
+	        color: white;
+	        border: none;
+	        padding: 8px 16px;
+	        border-radius: 5px;
+	        cursor: pointer;
+	    }
+	
+	    .userMessage {
+	        text-align: right;
+	        color: #2196F3; /* Blue text color */
+	    }
+	
+	    .otherMessage {
+	        text-align: left;
+	        color: #4CAF50; /* Green text color */
+	    }
+	
+	    .exitMessage {
+	        text-align: center;
+	        color: #FF0000; /* Red text color */
+	        font-weight: bold;
+	    }
+	</style>
 
-        .chatBox {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 300px;
-            overflow-y: scroll;
-        }
-        .chatContainer {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-
-        .chat {
-            flex: 1;
-            padding: 5px;
-        }
-
-        .sendBtn {
-            margin-left: 10px;
-        }
-
-        .userMessage {
-            text-align: right;
-            color: blue;
-        }
-
-        .otherMessage {
-            text-align: left;
-            color: green;
-        }
-        .exitMessage {
-        text-align: center;
-        color: red; /* 메시지 색상은 원하는 색상으로 변경 가능 */
-        font-weight: bold; /* 글자를 두껍게 만들 수 있습니다. */
-    	}
-    </style>
 </head>
 <body>
-	<input type="button" value="뒤로 가기" onclick="goBack()" />
 	<input type="text" id="product" name="product" value="${product}" readonly style="width: 400px;"><br>
     <div class="chatBox" id="chatBox">
         <div id="msgs" class="msgs">${chat}</div>
@@ -91,13 +105,6 @@
             window.location.href = path;
         }
 
-        // 뒤로 가기 버튼 클릭 시
-        function goBack() {
-            // 특정 경로로 이동
-            goToSpecificPath('/seller/sellerchatlist');
-        }
-        
-        
     </script>
 </body>
 </html>

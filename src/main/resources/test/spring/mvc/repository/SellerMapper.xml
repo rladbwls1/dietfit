@@ -21,7 +21,7 @@
 		select * from all_product where companyid=#{companyid}
 	</select>
 	<select id="findnotreadchat" resultType="test.spring.mvc.bean.ChatDTO">
-		select * from chat where readcheck=0
+		select * from chat where readcheck=0 and companyid=#{companyid}
 	</select>
     <select id="sellermodifyselect" parameterType="string" resultType="test.spring.mvc.bean.Member_basicDTO">
     	select * from member_basic where id=#{id}
@@ -66,7 +66,7 @@
 	    <selectKey keyProperty="roomnum" resultType="int" order="BEFORE">
 	        select chat_seq.nextval as roomnum from dual
 	    </selectKey>
-	    insert into chat (roomnum, id, product, readcheck) values (#{roomnum}, #{id}, #{product}, #{readcheck})
+	    insert into chat (roomnum, id, product, readcheck, companyid) values (#{roomnum}, #{id}, #{product}, #{readcheck}, #{companyid})
 	</insert>
 	<select id="countidchat">
 		select roomnum from chat where id=#{id} and product=#{product} and readcheck!=1
@@ -86,4 +86,5 @@
 	<update id="chatreportdelete">
 		update chat set readcheck = 9 where roomnum=#{roomnum}
 	</update>
+
 </mapper>

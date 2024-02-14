@@ -6,12 +6,15 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.BuyproductDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 
@@ -139,6 +142,7 @@ public interface MemberMapper {
 	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
 	
 	//쿠폰
+	//쿠폰개수
 	public int couponcount();
 	public List<AllcouponDTO> couponList();
 	//유저가 보유한 쿠폰번호 추출
@@ -149,4 +153,40 @@ public interface MemberMapper {
 	public void checkUsableCoupon(String id);
 	//유저 쿠폰 가져오기
 	public List<CouponDTO> getUserCoupon(String id);
+	//유저 주문 정보 가져오기
+	public List<Map<String,Object>> getUserOrder(String id);
+	//상품코드로 상품명 검색
+	public String getProductnameByProductcode(ProductDTO dto);
+	//주문번호로 사용자의 배송지 정보 가져오기
+	public DeliveryDTO getDeliveryByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호로 주문상세 가져오기
+	public List<OrderdetailDTO> getOrderDetailByOrderid(@Param("id")String id, @Param("orderid")String orderid);
+	//주문번호와 상품코드로 주문상세 가져오기
+	public OrderdetailDTO getOrderDetailByOrderidAndProductid(@Param("id")String id, 
+			@Param("orderid")String orderid,@Param("productid")String productid);
+	
+	//적립금
+	//구매확정 orderdetail 컬럼 수정
+	public void defintePurchase(@Param("id")String id, 
+			@Param("orderid")String orderid,@Param("productid")String productid);
+	//구매확정 buyproduct 레코드 추가
+	public void addDefintePurchaseToBuyproduct(BuyproductDTO dto);
+	//보유 적립금이 null이면 0, 아니면 1
+	public int isPoint(String id);
+	//회원의 현재 보유 적립금 가져오기
+	public int getPoint(String id);
+	//적립금 적립
+	public void addPoint(@Param("id")String id,@Param("point")PointDTO point);
+	//적립금 소멸
+	public void deletePoint(@Param("id")String id,@Param("point")PointDTO point);
+	//적립금 사용
+	public void usePoint(@Param("id")String id,@Param("point")PointDTO point);
+	//회원의 적립 % 가져오기
+	public double getBonus(String id);
+	//회원의 적립 내역 가져오기
+	public List<PointDTO> getPointList(String id);
+	//만료된 적립금 num 가져오기
+	public List<PointDTO> getDuePointNum(String id);
+	
+	
 }

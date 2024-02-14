@@ -31,7 +31,7 @@ public class SellerChatController {
 		chatdto.setId(id);
 		chatdto.setProduct(product);
 		String sellercompany = service.findcompanyidbyproductid(companyid);
-		int roomnum =service.chatroomnum(chatdto, model,id,product);
+		int roomnum =service.chatroomnum(chatdto, model,id,product,companyid);
 		
 		// 서버의 실제 경로를 얻습니다.
 	    ServletContext servletContext = request.getServletContext();
@@ -48,7 +48,7 @@ public class SellerChatController {
 	    	  }
 	    	  model.addAttribute("chat",chat);
 	      }
-		
+		model.addAttribute("companyid", companyid);
 		model.addAttribute("sellercompany",sellercompany);
 		model.addAttribute("id", id);
 		model.addAttribute("product", product);
