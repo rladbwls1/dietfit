@@ -27,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.BuyproductDTO;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
@@ -501,30 +502,59 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	@Transactional
 	public void defintePurchase(String id, String orderid, String productid,int price) {
+		//orderdetail 컬럼 변경
 		mapper.defintePurchase(id,orderid,productid);
+		
+		//적립금 추가
 		int point=getPoint(id);					//회원 보유 적립금 가져오기
 		double bonus=mapper.getBonus(id);		//회원 등급에 따른 적립 정도
 		int change=(int)(price*bonus);			//적립금
-
 		PointDTO dto=new PointDTO();
 		dto.setChange(change);
 		dto.setPoint(point+change);
 		dto.setOrderid(orderid);
-		
 		mapper.addPoint(id, dto);
-	
+
+		//buyproduct 에 레코드 추가 
+		BuyproductDTO bdto=new BuyproductDTO();
+		bdto.setCompanyid(productid.substring(0,2));
+		bdto.setCategory(productid.substring(2,4));
+		bdto.setCategory2(productid.substring(4,6));
+		bdto.setFlavor(productid.substring(6,8));
+		bdto.setId(id);
+		bdto.setOrderid(orderid);
+		OrderdetailDTO odto=mapper.getOrderDetailByOrderidAndProductid(id, orderid, productid);
+		bdto.setPrice(odto.getPrice());
+		bdto.setQuantity(odto.getQuantity());
+		mapper.addDefintePurchaseToBuyproduct(bdto);
+		
 	}
 	//회원 보유 적립금 가져오기
 	@Override
 	public int getPoint(String id) {
+		//소멸은 나중에 
+		//적립금 사용or 확인할 때 만료된 거 만료 처리
+//		List<PointDTO> dtos=mapper.getDuePointNum(id);
+//		if(dtos!=null) {
+//		for(PointDTO dto:dtos) {
+//			int point=mapper.getPoint(id);
+//			dto.setOpt(1);
+//			dto.setPoint(point-dto.getChange());
+//			mapper.deletePoint(id,dto);
+//		}}
+		
+		//보유 적립금 가져오기
 		int point=0;
-		if(mapper.isPoint(id)==1) {
+		if(mapper.isPoint(id)>1) {
 			point=mapper.getPoint(id);
 		}
 		return point;
 	}
+	
 	//적립금 사용
+	@Override
 	public void usePoint(String id,String orderid, int point) {
 		int expoint=getPoint(id);
 		PointDTO pdto=new PointDTO();
@@ -574,5 +604,11 @@ public class MemberServiceImpl implements MemberService{
 		
 		model.addAttribute("list",list);
 	}
+
+	
+	
+	
+	
+	
 	
 }

@@ -11,7 +11,7 @@ public class OrderdetailDTO {
 	private String orderid;		// 주문 번호
 	private int price;			// 주문 상품 금액
 	private int quantity;		// 주문 수량
-	private int discount;		// 할인율
+	private int delivery;		// 정기배송
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date purdate;		// 결제 날짜
 	private int pay;			// 결제 방법 
