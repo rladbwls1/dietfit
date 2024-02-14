@@ -4,10 +4,10 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
     <mapper namespace="test.spring.mvc.repository.Admin1Mapper">
-    	<select id="mem_info" resultType="member_detail">
+    	<select id="mem_info" resultType="test.spring.mvc.bean.Member_detailDTO">
     		select * from member_detail where id=#{id}
     	</select>
-    	<update id="up_mem_info" parameterType="member_detail">
+    	<update id="up_mem_info" parameterType="test.spring.mvc.bean.Member_detailDTO">
     		update member_detail
     		<set>
     			<if test="birth != null">birth=#{birth},</if>
@@ -27,7 +27,7 @@
 			]]>
     	</select>
     	-->
-    	<select id="allcoupon" resultType="allcoupon">
+    	<select id="allcoupon" resultType="test.spring.mvc.bean.AllcouponDTO">
     		<![CDATA[ 
     		select * from (select b.* , rownum r from
 			    (select * from allcoupon) b)
@@ -46,11 +46,11 @@
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
     	</select>
-    	<select id="coupon" resultType="allcoupon">
+    	<select id="coupon" resultType="test.spring.mvc.bean.AllcouponDTO">
     		select * from allcoupon where companyid =
    			 (select companyid from member_detail where id=#{id})
     	</select>
-    	<select id="best" resultType="product">
+    	<select id="best" resultType="test.spring.mvc.bean.ProductDTO">
     		SELECT ap.*
 				FROM all_product ap
 				JOIN (
@@ -64,7 +64,7 @@
 				    AND ap.flavor = bp.flavor
 				ORDER BY bp.total_amount DESC
     	</select>
-    	<select id="best2" resultType="product">
+    	<select id="best2" resultType="test.spring.mvc.bean.ProductDTO">
     		SELECT ap.*
 			FROM all_product ap
 			    JOIN (
@@ -78,7 +78,7 @@
 			    AND ap.flavor = bp.flavor
 			    ORDER BY total_amount DESC
     	</select>
-    	<select id="pro_img" resultType="pimg">
+    	<select id="pro_img" resultType="test.spring.mvc.bean.ProductimgDTO">
     		SELECT * FROM (
 			    	SELECT *
 			    FROM all_productimg
@@ -87,7 +87,7 @@
 			)
 			WHERE ROWNUM = 1
     	</select>
-    	<select id="discount" resultType="product">
+    	<select id="discount" resultType="test.spring.mvc.bean.ProductDTO">
     		SELECT all_product.*
 			FROM all_product
 			JOIN discount ON all_product.num = discount.num
@@ -97,12 +97,12 @@
     	<select id="sale">
     		select sale from discount where num=#{num}
     	</select>
-    	<select id="reco" resultType="product">
+    	<select id="reco" resultType="test.spring.mvc.bean.ProductDTO">
     		SELECT * FROM all_product
 			WHERE expiry BETWEEN SYSDATE AND ADD_MONTHS(SYSDATE, 2)
 			order by expiry asc
     	</select>
-    	<select id="food" resultType="productinfo">
+    	<select id="food" resultType="test.spring.mvc.bean.ProductinfoDTO">
 		    select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) IN 
 			     <foreach item="item" collection="category" open="(" separator="," close=")">
@@ -110,25 +110,25 @@
 			    </foreach>
 			    AND kcal between #{minkcal} and #{maxkcal}
     	</select>
-    	<select id="meal" resultType="productinfo">
+    	<select id="meal" resultType="test.spring.mvc.bean.ProductinfoDTO">
     		select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) 
                 IN ('11', '12', '13', '14', '15')
     	</select>
-    	<select id="meal_replace" resultType="productinfo">
+    	<select id="meal_replace" resultType="test.spring.mvc.bean.ProductinfoDTO">
     		select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) 
                 IN ('21', '22', '23', '24', '25', '26')
     	</select>
     	
-    	<resultMap type="product" id="product">
+    	<resultMap type="test.spring.mvc.bean.ProductDTO" id="product">
     		<result column="product" property="product"/>
     		<result column="price" property="price"/>
     		<collection property="pimg" resultMap="pimg"/>
     		<collection property="productinfo" resultMap="productinfo"/>
     	</resultMap>
     	
-    	<resultMap type="pimg" id="pimg">
+    	<resultMap type="test.spring.mvc.bean.ProductimgDTO" id="pimg">
     		<result column="companyid" property="companyid"/>
     		<result column="category" property="category"/>
     		<result column="category2" property="category2"/>
@@ -137,7 +137,7 @@
     		<result column="ext" property="ext"/>
     	</resultMap>
 
-    	<resultMap type="productinfo" id="productinfo">
+    	<resultMap type="test.spring.mvc.bean.ProductinfoDTO" id="productinfo">
     		<result column="onesize" property="onesize"/>
     		<result column="kcal" property="kcal"/>
     		<result column="protein" property="protein"/>
@@ -152,7 +152,7 @@
     		<result column="productid" property="productid"/>
     	</resultMap>
     	
-    	<select id="food_product" resultType="product" resultMap="product">
+    	<select id="food_product" resultType="test.spring.mvc.bean.ProductDTO" resultMap="product">
     		SELECT ap.product, ap.price, api.*, pi.*
 			FROM all_product ap
 			JOIN all_productimg api ON ap.companyid = api.companyid
