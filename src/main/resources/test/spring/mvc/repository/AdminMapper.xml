@@ -148,6 +148,9 @@
 	<select id="findproduct" resultType="String">
 		select product from ${id}_cart where num =#{num}
 	</select>
+	<select id="findquantity" resultType="int">
+		select quantity from ${id}_cart where num =#{num}
+	</select>
 	<select id="findPrice" resultType="int">
 		select price from all_product where companyid||category||category2||flavor=#{productid}
 	</select>

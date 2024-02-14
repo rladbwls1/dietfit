@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Dietfit - company</title>
+<link href="/resources/css/company.css" rel="stylesheet">
 </head>
 <body>
 	<c:if test="${companycount == 0}">

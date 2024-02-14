@@ -286,15 +286,19 @@ public class DietfitController {
 		String orderid = partner_order_id;
 		
 		try {
-			List<String> productIds = aservice.findproductId(id, nums);
-			System.out.println(productIds);
+			Map<String, Integer> productIdQuantity = aservice.findproductIdQuantity(id, nums);
+//			List<String> productIds = aservice.findproductId(id, nums);
+			System.out.println(productIdQuantity);
 			
 //			개인 orderdetail 테이블 저장
-			for(String productId: productIds) {
+			for(Map.Entry<String, Integer> entry : productIdQuantity.entrySet()) {
+	            String productId = entry.getKey();
+	            int productquantity = entry.getValue();
+//			for(String productId: productIds) {
 				OrderdetailDTO orderdetail = new OrderdetailDTO();
 				orderdetail.setOrderid(orderid);
 				orderdetail.setPurdate(new Date());
-				orderdetail.setQuantity(quantity);
+				orderdetail.setQuantity(productquantity);
 				orderdetail.setPrice(aservice.findprice(productId));
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
 				 if ("kakaopay".equals(chk_info)) {
