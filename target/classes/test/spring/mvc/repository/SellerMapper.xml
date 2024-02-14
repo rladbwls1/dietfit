@@ -86,5 +86,8 @@
 	<update id="chatreportdelete">
 		update chat set readcheck = 9 where roomnum=#{roomnum}
 	</update>
+	<select id="finddatebynum">
+		select * from discount where num=#{num}
+	</select>
 
 </mapper>

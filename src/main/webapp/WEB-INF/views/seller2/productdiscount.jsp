@@ -102,6 +102,7 @@
 							                <th>유통기한</th>
 							                <th>가격</th>
 							                <th>할인</th>
+							                <th>기간</th>
 							            </tr>
                                     </thead>
                                     <tbody>
@@ -188,6 +189,7 @@
 							                    </td>
 							                    <td>${product.price}</td>
 							                    <td><button onclick="openDiscountFormPopup('${product.num}')">할인율 설정</button></td>
+							                    <td></td>
 							                </tr>
 							            </c:forEach>
 							        </tbody>

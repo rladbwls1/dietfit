@@ -23,7 +23,10 @@
 		    flex: 1;
 		    margin-right: 10px; /* 각 차트 사이의 간격을 조절합니다. 필요에 따라 조정하세요. */
 		}
-		
+		table{
+			flex : 1;
+			display: flex;
+		}
 		
 		</style>
     </head>
@@ -103,7 +106,7 @@
 						                <td>${item.totalSold}</td>
 						            </tr>
 						        </c:forEach>
-						    </table>
+						    </table><br>
 						    <table>
 						    <h4>일주일 판매량 순위</h4>
 						    	<tr>
@@ -116,7 +119,7 @@
 						                <td>${item.totalSold}</td>
 						            </tr>
 						        </c:forEach>
-						    </table>
+						    </table><br>
 						    <table>
 						    <h4>한달 판매량 순위</h4>
 						    	<tr>
@@ -129,7 +132,7 @@
 						                <td>${item.totalSold}</td>
 						            </tr>
 						        </c:forEach>
-						    </table>
+						    </table><br>
 						    <table>
 						    <h4>전체 판매량 순위</h4>
 						    	<tr>
