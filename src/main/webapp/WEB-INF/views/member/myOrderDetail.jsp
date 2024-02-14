@@ -36,11 +36,18 @@ ${dto.receiver } ${dto.phone }<br/>
 </c:forEach>
 <tr><td><hr/></td></tr>
 <tr><td>총금액: </td><td>${amount }원</td></tr>
-<tr><td>쿠폰 사용: </td><td>사용 안 함</td></tr>
-<tr><td>적립금 사용: </td><td>0원</td></tr>
-<tr><td>할인된 금액: </td><td>0원</td></tr>
+<tr><td>쿠폰 사용: </td>
+<c:if test="${empty osdto.couponid }">
+<td>사용 안 함</td>
+</c:if>
+<c:if test="${!empty osdto.couponid }">
+<td>${osdto.couponid }</td>
+</c:if>
+</tr>
+<tr><td>적립금 사용: </td><td>${osdto.point }원</td></tr>
+<tr><td>할인된 금액: </td><td>${osdto.coupondiscount+osdto.point }원</td></tr>
 <tr><td><hr/></td></tr>
-<tr><td>결제금액: </td><td>${amount }원</td></tr>
+<tr><td>결제금액: </td><td>${osdto.totalamount }원</td></tr>
 
 </table>
 

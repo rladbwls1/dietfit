@@ -464,11 +464,13 @@ public class MemberController {
 		service.defintePurchase(pri.getName(),orderid,productid,price);
 		return "bye";
 	}
+	/*
 	@RequestMapping("testPoint")
 	public String testPoint(Principal pri,Model model) {
 		model.addAttribute("mypoint",service.getPoint(pri.getName()));
 		return "member/miniPoint";
 	}
+	*/
 	@RequestMapping("myPoint")
 	public String myPoint(Principal pri,Model model) {
 		model.addAttribute("list", mapper.getPointList(pri.getName()));

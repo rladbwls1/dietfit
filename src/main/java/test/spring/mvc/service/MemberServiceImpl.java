@@ -35,6 +35,7 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
+import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -488,6 +489,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
+		//주문상세
 		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
 		ProductDTO dto=new ProductDTO();
 		for(OrderdetailDTO odto:list) {
@@ -499,6 +501,12 @@ public class MemberServiceImpl implements MemberService{
 			odto.setProduct(mapper.getProductnameByProductcode(dto));
 		}
 		model.addAttribute("list",list);
+		//할인정보
+		OrdersumDTO osdto=mapper.getOrdersum(orderid);
+		if(osdto.getCouponid()!=null) {
+			osdto.setCouponid(mapper.getCouponByCouponid(osdto.getCouponid()));
+		}
+		model.addAttribute("osdto",osdto);
 	}
 
 	@Override
