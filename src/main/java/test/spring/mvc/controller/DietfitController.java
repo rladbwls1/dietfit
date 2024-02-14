@@ -180,6 +180,7 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
+<<<<<<< HEAD
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
 			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
 		
@@ -187,10 +188,14 @@ public class DietfitController {
 //		model.addAttribute("id", pri.getName());
 		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
 		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
+=======
+	public String order(String nums, Model model, Integer amout, Integer totalQuantity, int delivery) {
+>>>>>>> refs/remotes/origin/rladbwls1
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
+		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
 		model.addAttribute("nicaddr", nicaddr);
@@ -276,7 +281,8 @@ public class DietfitController {
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
-	        @RequestParam Integer tax_free_amount) {
+	        @RequestParam Integer tax_free_amount,
+	        @RequestParam Integer delivery) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		
