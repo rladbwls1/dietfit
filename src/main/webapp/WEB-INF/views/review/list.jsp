@@ -29,7 +29,35 @@
         .star-rating .empty {
             color: #ccc; 
         }
+        .love-icon {
+            float: right;
+        }
     </style>
+    <script>
+		function addWishList(product){
+			$.ajax({
+				url:'/member/addWishList',
+				type:'post',
+				data:{product:product},
+				success:function(a){
+					window.open("wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
+					window.location.reload();
+				}
+			});
+			
+		}
+		function removeWishList(product){
+			$.ajax({
+				url:'/member/removeWishList',
+				type:'post',
+				data:{product:product},
+				success:function(a){
+					window.location.reload();
+				}
+			});
+			
+		}
+</script>
 </head>
 <body>
     <c:forEach var="reviewImage" items="${reviewImages}">
