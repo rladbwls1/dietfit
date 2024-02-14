@@ -10,6 +10,6 @@ public class OrdersumDTO {
 	private String orderid; //주문번호
 	private int point; //사용 적립금
 	private String couponid; //사용 쿠폰 ID
-	private int discount; //총 할인 금액
+	private int coupondiscount; //총 할인 금액
 	private int totalamount; //총 결제 금액
 }
