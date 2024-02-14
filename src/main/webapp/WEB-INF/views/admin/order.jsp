@@ -88,7 +88,6 @@ ${nums }
 
 	<h2>주문/결제</h2>
         
-<<<<<<< HEAD
 		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery.nicaddr}"/> <br />
 		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery.receiver}"/> <br />
 		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery.phone}"/> <br />
@@ -107,7 +106,6 @@ ${nums }
 	주문번호 : ${orderid } <br />
 	${cartList } <br />
 	상품 수량 : 총 ${quantity }건
-=======
 	<p>배송지 - delivery 테이블</p>
 	<p>주문상품 - orderdetail 테이블</p>
 	상품명 : 
@@ -124,7 +122,6 @@ ${nums }
 	</div>
 	<div id="days"></div>
 	</c:if>
->>>>>>> refs/remotes/origin/rladbwls1
 	<h4>할인적용</h4>
 	쿠폰적용 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
 	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button> <br />
@@ -144,7 +141,6 @@ ${nums }
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
-<<<<<<< HEAD
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
 		
@@ -173,7 +169,6 @@ ${nums }
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
-=======
 	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이 <br />
 		<input type="text" name="partner_order_id" value="123"><br>
         <input type="text" name="partner_user_id" value="dietfit"><br>
@@ -187,7 +182,6 @@ ${nums }
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly">
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly">
->>>>>>> refs/remotes/origin/rladbwls1
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">
