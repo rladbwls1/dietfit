@@ -2,7 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="test.spring.mvc.repository.ReviewMapper">
-	
+	<!-- 리뷰 글 작성 -->
+	<select id ="writeproduct" parameterType="test.spring.mvc.bean.ReviewDTO">
+		select boardname from all_product where companyid = #{companyid} and category = #{category} and category2 =#{category2} and FLAVOR = #{flavor}
+	</select>
+	<!-- 리뷰 전체 목록 -->
 	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
 		SELECT r.*, a.*, ap.boardname
 			FROM review r

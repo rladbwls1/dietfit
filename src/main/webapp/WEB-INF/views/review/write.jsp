@@ -43,22 +43,22 @@
 	<style>
 	    /* 기본 별 스타일 */
 	    .rating {
-	        direction: rtl; /* 별을 오른쪽에서 왼쪽으로 표시 */
+	        direction: rtl;
 	    }
 	    .rating > .star {
-	        font-size: 30px; /* 별의 크기 */
-	        color: #ccc; /* 기본 별 색상 */
+	        font-size: 30px;/
+	        color: #ccc; 
 	        cursor: pointer;
 	    }
 	    .rating > .star:hover,
 	    .rating > .star:hover ~ .star {
-	        color: #f0ad4e; /* 호버 시 별 색상 */
+	        color: #f0ad4e; 
 	    }
 	    .rating > input:checked ~ .star {
-	        color: #f0ad4e; /* 선택된 별 색상 */
+	        color: #f0ad4e; 
 	    }
 	    .rating > input {
-        display: none; /* 라디오 버튼 숨기기 */
+        display: none; 
     	}
 	</style>
 	</head>
