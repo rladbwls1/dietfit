@@ -24,12 +24,25 @@
           </li>
 
           <li class="sidebar-nav-item">
-            <a href="#" class="sidebar-nav-link">
+            <a href="/admin/commList" class="sidebar-nav-link">
               <span class="sidebar-nav-icon">
                 <i data-feather="layout"></i>
               </span>
               <span class="sidebar-nav-name">
-                쿠폰 승인 요청
+                광고 요청
+              </span>
+              <span class="sidebar-nav-end">
+                <span class="badge badge-info">4</span>
+              </span>
+            </a>
+          </li>
+          <li class="sidebar-nav-item">
+            <a href="/admin/allcoupon" class="sidebar-nav-link">
+              <span class="sidebar-nav-icon">
+                <i data-feather="layout"></i>
+              </span>
+              <span class="sidebar-nav-name">
+                쿠폰 요청
               </span>
               <span class="sidebar-nav-end">
                 <span class="badge badge-info">4</span>

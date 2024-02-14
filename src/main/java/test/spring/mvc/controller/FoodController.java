@@ -41,6 +41,12 @@ public class FoodController {
 	public String food(Model model) {
 		return "/member/food/food";
 	}
+	// 일반배송 -> 정기배송 이동
+	@RequestMapping("RdCart")
+	public String RdCart(Model model, String nums, Principal pri) {
+		service.rdCart(pri.getName(), nums);
+		return "redirect:/member/Rdelivery";
+	}
 	
 	@RequestMapping("eat")
 	public String eat(int kcal, Model model, HttpServletRequest request) {
@@ -57,12 +63,8 @@ public class FoodController {
 			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
 			if(i < 3) {
 				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
-				System.out.println("11111111111111111");
 			}
-			System.out.println(menu[i]);
 			String me = menu[i];
-			System.out.println((int)(oper[i][0] * kcal));
-			System.out.println((int)(oper[i][1] * kcal));
 
 			List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
 			lists.addAll(food);
@@ -73,7 +75,6 @@ public class FoodController {
 			   result = service.food_product(f.getProductid());
 			   re.addAll(result);
 			}
-			System.out.println("0000000000000000000000000"+re);
 			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
 				Collections.shuffle(re);
 				ProductDTO pi = re.get(0);
@@ -89,9 +90,7 @@ public class FoodController {
 			model.addAttribute(me +"_re", aa);
 			model.addAttribute("list", lists);
 			model.addAttribute("kcal", boundsList);
-			System.out.println(me + "@@@@@@@@@@@@@@@@"+check);
 			model.addAttribute(me+"_chk", check);
-			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 		}
 		return "/member/food/eat";
 	}

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -139,6 +140,21 @@ public class Admin1Controller {
 		return result;
 	}
 	
+	@RequestMapping("adminChk")
+	public @ResponseBody Map<Integer, Integer> adminChk(int num, int chk) {
+		Map<Integer, Integer> result = new HashMap<>();
+		int check = service.commCheck(chk, num);
+		Integer alram = service.alram();
+		if(check == 1) {
+//			result.put("result", check);
+//			result.put("msg", alram);
+		}else {
+//			result.put("result", check);
+//			result.put("msg", 0);
+		}
+		return result;
+	}
+	
 	@RequestMapping("coupon")
 	public String coupon(String id, Model model) {
 		Member_basicDTO dto = service.info(id);
@@ -209,6 +225,13 @@ public class Admin1Controller {
 	@RequestMapping("food")
 	public String food(Model model) {
 		return "/admin/food";
+	}
+
+	@RequestMapping("commList")
+	public String commList(Model model) {
+		List <CommercailDTO> list = service.comm();
+		model.addAttribute("commlist", list);
+		return "/admin/commList";
 	}
 	
 //	@RequestMapping("foodPro")

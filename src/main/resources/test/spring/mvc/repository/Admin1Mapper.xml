@@ -4,10 +4,10 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
     <mapper namespace="test.spring.mvc.repository.Admin1Mapper">
-    	<select id="mem_info" resultType="test.spring.mvc.bean.Member_detailDTO">
+    	<select id="mem_info" resultType="member_detail">
     		select * from member_detail where id=#{id}
     	</select>
-    	<update id="up_mem_info" parameterType="test.spring.mvc.bean.Member_detailDTO">
+    	<update id="up_mem_info" parameterType="member_detail">
     		update member_detail
     		<set>
     			<if test="birth != null">birth=#{birth},</if>
@@ -27,7 +27,7 @@
 			]]>
     	</select>
     	-->
-    	<select id="allcoupon" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	<select id="allcoupon" resultType="allcoupon">
     		<![CDATA[ 
     		select * from (select b.* , rownum r from
 			    (select * from allcoupon) b)
@@ -46,15 +46,15 @@
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
     	</select>
-    	<select id="coupon" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	<select id="coupon" resultType="allcoupon">
     		select * from allcoupon where companyid =
    			 (select companyid from member_detail where id=#{id})
     	</select>
-    	<select id="best" resultType="test.spring.mvc.bean.ProductDTO">
+    	<select id="best" resultType="product">
     		SELECT ap.*
 				FROM all_product ap
 				JOIN (
-				  SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+				  SELECT companyid, category, category2, flavor, SUM(quantity) AS total_amount
 				  FROM buyproduct
 				  WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM')
 				  GROUP BY companyid, category, category2, flavor
@@ -64,11 +64,11 @@
 				    AND ap.flavor = bp.flavor
 				ORDER BY bp.total_amount DESC
     	</select>
-    	<select id="best2" resultType="test.spring.mvc.bean.ProductDTO">
+    	<select id="best2" resultType="product">
     		SELECT ap.*
 			FROM all_product ap
 			    JOIN (
-			    SELECT companyid, category, category2, flavor, SUM(amount) AS total_amount
+			    SELECT companyid, category, category2, flavor, SUM(quantity) AS total_amount
 			    FROM buyproduct
 			    WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - INTERVAL '7' DAY, 'YYYY-MM-DD')
 			    GROUP BY companyid, category, category2, flavor
@@ -78,7 +78,7 @@
 			    AND ap.flavor = bp.flavor
 			    ORDER BY total_amount DESC
     	</select>
-    	<select id="pro_img" resultType="test.spring.mvc.bean.ProductimgDTO">
+    	<select id="pro_img" resultType="pimg">
     		SELECT * FROM (
 			    	SELECT *
 			    FROM all_productimg
@@ -87,22 +87,23 @@
 			)
 			WHERE ROWNUM = 1
     	</select>
-    	<select id="discount" resultType="test.spring.mvc.bean.ProductDTO">
+    	<select id="discount" resultType="product">
     		SELECT all_product.*
-			FROM all_product
-			JOIN discount ON all_product.num = discount.num
-			WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
-			ORDER BY discount.sale DESC
+				FROM all_product
+				JOIN discount ON all_product.num = discount.num
+				WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
+				ORDER BY discount.sale DESC
+				FETCH FIRST 16 ROWS ONLY;
     	</select>
     	<select id="sale">
     		select sale from discount where num=#{num}
     	</select>
-    	<select id="reco" resultType="test.spring.mvc.bean.ProductDTO">
+    	<select id="reco" resultType="product">
     		SELECT * FROM all_product
 			WHERE expiry BETWEEN SYSDATE AND ADD_MONTHS(SYSDATE, 2)
 			order by expiry asc
     	</select>
-    	<select id="food" resultType="test.spring.mvc.bean.ProductinfoDTO">
+    	<select id="food" resultType="productinfo">
 		    select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) IN 
 			     <foreach item="item" collection="category" open="(" separator="," close=")">
@@ -110,12 +111,12 @@
 			    </foreach>
 			    AND kcal between #{minkcal} and #{maxkcal}
     	</select>
-    	<select id="meal" resultType="test.spring.mvc.bean.ProductinfoDTO">
+    	<select id="meal" resultType="productinfo">
     		select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) 
                 IN ('11', '12', '13', '14', '15')
     	</select>
-    	<select id="meal_replace" resultType="test.spring.mvc.bean.ProductinfoDTO">
+    	<select id="meal_replace" resultType="productinfo">
     		select * from productinfo
 			    WHERE SUBSTR(productid, 3, 2) 
                 IN ('21', '22', '23', '24', '25', '26')
@@ -152,7 +153,7 @@
     		<result column="productid" property="productid"/>
     	</resultMap>
     	
-    	<select id="food_product" resultType="test.spring.mvc.bean.ProductDTO" resultMap="product">
+    	<select id="food_product" resultType="product" resultMap="product">
     		SELECT ap.product, ap.price, api.*, pi.*
 			FROM all_product ap
 			JOIN all_productimg api ON ap.companyid = api.companyid
@@ -172,7 +173,19 @@
 		<insert id="addCartOne">
 			insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},${delivery})
 		</insert>
+		
 		<select id="Productid" resultType="product">
 			select * from all_product where companyid || category || category2 || flavor = #{productid}
 		</select>
+		
+		<update id="rdCart">
+			update ${id}_cart set delivery = #{delivery} where num = #{num} 
+		</update>
+		
+		<select id="comm" resultType="comm">
+			select * from commercials order by num asc
+		</select>
+		<update id="commCheck">
+    		update commercials set admincheck = #{admincheck} where num=#{num}
+    	</update>
     </mapper>

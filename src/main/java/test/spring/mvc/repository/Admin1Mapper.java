@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -36,4 +37,8 @@ public interface Admin1Mapper {
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
 				@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
 	public ProductDTO Productid(String productid);
+	public void rdCart(@Param("id")String id, @Param("delivery") int delivery, 
+			@Param("num")int num);
+	public List<CommercailDTO> comm();
+	public int commCheck(@Param("admincheck")int admincheck, @Param("num") int num);
 }

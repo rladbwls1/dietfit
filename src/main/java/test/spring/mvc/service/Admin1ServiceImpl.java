@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -229,7 +230,6 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 	
 	public void addCartMore(String id, String products, int delivery) {
-		System.out.println("35353535353535353"+delivery);
 		for(String productid:products.split(",")) {
 			ProductDTO pro = mapper.Productid(productid);
 			String product = pro.getProduct();
@@ -244,5 +244,22 @@ public class Admin1ServiceImpl implements Admin1Service{
 		if(check==0) {
 			mapper.addCartOne(id, product, quantity, price, delivery);
 		}
+	}
+
+	@Override
+	public void rdCart(String id, String num) {
+		for(String n : num.split(",")) {
+			mapper.rdCart(id, 1, Integer.parseInt(n));
+		}
+	}
+
+	@Override
+	public List<CommercailDTO> comm() {
+		return mapper.comm();
+	}
+
+	@Override
+	public int commCheck(int admincheck, int num) {
+		return mapper.commCheck(admincheck, num);
 	}
 }
