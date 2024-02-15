@@ -1,51 +1,3 @@
-let container = document.getElementById('container')
-
-toggle = () => {
-  container.classList.toggle('sign-in')
-  container.classList.toggle('sign-up')
-}
-
-setTimeout(() => {
-  container.classList.add('sign-in')
-}, 200)
-
-
-function loginWithKakao() {
-	  Kakao.Auth.login({
-    	success: function (authObj) {
-            console.log(authObj); //access토큰 값
-            Kakao.Auth.setAccessToken(authObj.access_token); //access 토큰 값 저장
-            getInfo(authObj.access_token);
-          },
-          fail: function (err) {
-            console.log(err);
-          }
-    });
-  }
-  function getInfo(tos) {  // 카카오 유저정보 확인 
-      Kakao.API.request({
-        url: "/v2/user/me",
-        success: function (res) {
-          $.ajax({
-        	  type: "POST",
-        	  url: "/member/check",
-        	  data : {email:res.kakao_account.email},
-        	  success : function(dto){
-     				$("#username").val(dto.id);
-     				$("#password").val(dto.id);
-     				$("#login").submit();				
-        	  }
-          });
-        },
-        fail: function (error) {
-          alert("카카오 로그인 실패" + JSON.stringify(error));
-        },
-      });
-    }
-    
-    
-    
-
 //아이디 중복 확인
 function checkId(){
 	var id=$('#id').val();
@@ -143,8 +95,7 @@ function verifiedEmail(){
 	});
 	
 }
-
-function register(){
+function register2(){
 	//회원가입 전, 아이디/이메일 중복확인, 이름/비밀번호 공란 확인
 	var result=true;
 	if($('#idd').val()=="false"){
@@ -180,12 +131,35 @@ function register(){
 		$('#name_check').text("");
 	}
 	
-	
+	if($('#phone').val()==""){
+		$('#phone_check').text("전화번호를 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#businessnum').val()==""){
+		$('#businessnum_check').text("사업자번호를 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#company').val()==""){
+		$('#company_check').text("회사명을 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#sample6_postcode').val()==""||$('#sample6_address').val()==""||$('#sample6_detailAddress').val()==""){
+		$('#post_check').text("주소를 입력해주세요.").css("color","red");
+		result=false;
+	}
+	if($('#phone').val()!=""){
+		$('#phone_check').text("");
+	}
+	if($('#businessnum').val()!=""){
+		$('#businessnum_check').text("");
+	}
+	if($('#company').val()!=""){
+		$('#company_check').text("");
+	}
+	if($('#sample6_postcode').val()!=""||$('#sample6_address').val()!=""||$('#sample6_detailAddress').val()!=""){
+		$('#post_check').text("");
+	}
+	console.log(result);
 	return result;
-	
 }
 
-
-function toSeller(){
-	window.location.href="signInUp2";
-}
