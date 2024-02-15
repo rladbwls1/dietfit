@@ -6,7 +6,7 @@
 <mapper namespace="test.spring.mvc.repository.MemberMapper">
 	<!-- 회원가입시 기본 정보 삽입 -->
 	<insert id="newMember" parameterType="test.spring.mvc.bean.Member_basicDTO">
-		insert into Member_basic (id,pw,name,nic,email) values(#{id},#{pw},#{name},#{nic},#{email})
+		insert into Member_basic (id,pw,name,nic,email,status) values(#{id},#{pw},#{name},#{nic},#{email},#{status})
 	</insert>
 	<!-- 회원가입시 authorities 테이블에 정보 삽입 -->
 	<insert id="newMemberstatus" >
@@ -97,7 +97,7 @@
 		select count(*) from all_product
 	</select>
 	<!-- 전체 상품,페이지 맞게 10개만 -->
-	<select id="findallproduct"  resultType="test.spring.mvc.bean.ProductDTO">
+	<select id="findallproduct"  resultType="Map">
 	<![CDATA[
         select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
 	]]>
@@ -110,6 +110,12 @@
     <update id="countUp">
     	update all_product set count=count+1 where companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2}
     </update>
+   	<!-- 상품 상세 내용 -->
+	<select id="findproductdetail" parameterType="string" resultType="Map">
+        SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
+    </select>
+    
+    
 	<!-- 관심상품에 상품 하나 추가하기 -->
 	<insert id="addWishOne">
 		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')

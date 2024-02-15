@@ -73,7 +73,7 @@ public interface MemberMapper {
 
 	public int countAllProduct();
 	//모든 상품 중, 페이지에 맞게 10개 가져오기
-	public List<ProductDTO> findallproduct(@Param("startRow") int startRow, 
+	public List<Map<String,Object>> findallproduct(@Param("startRow") int startRow, 
 										   @Param("endRow") int endRow);
 	//썸네일 가져오기
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
@@ -83,6 +83,11 @@ public interface MemberMapper {
 	public void countUp(@Param("companyid") String companyid, 
 	     	  			@Param("category") String category,
 	     	  			@Param("category2") String category2);
+    // 상품상세
+    public Map<String,Object> findproductdetail(@Param("companyid") String companyid, 
+                                @Param("category") String category, 
+                                @Param("category2") String category2, 
+                                @Param("flavor") String flavor);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
