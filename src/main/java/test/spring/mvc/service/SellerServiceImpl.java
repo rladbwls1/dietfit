@@ -1,4 +1,5 @@
 package test.spring.mvc.service;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -140,6 +141,29 @@ public class SellerServiceImpl implements SellerService{
 	public String findproductbycompanyid(String product) {
 		return mapper.findproductbycompanyid(product);
 	}
+
+	public List<DiscountDTO> findDiscountInfoByNum(int num) {
+	    return mapper.findDiscountInfoByNum(num);
+	}
+
+	@Override
+	public void deletediscount() {
+		mapper.deletediscount();
+	}
+
+	@Override
+	public void update2discount(DiscountDTO discountDTO) {
+		mapper.update2discount(discountDTO);
+		
+	}
+	@Override
+    public boolean checkDuplicateDiscount(String num) {
+        int count = mapper.countByNum(num);
+        return count > 0;
+    }
+
+	
+	
 
 
 }

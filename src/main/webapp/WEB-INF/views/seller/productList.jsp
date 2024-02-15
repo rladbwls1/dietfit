@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <<<<<<< HEAD
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+=======
+<<<<<<< HEAD
 <html>
 <head>
     <title>Product List</title>
@@ -73,6 +76,7 @@ function deleteProduct(companyid, category, category2, flavor) {
 
 </script>
 =======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -182,17 +186,10 @@ function deleteProduct(companyid, category, category2, flavor) {
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 상품목록
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="/seller/sales">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 정산
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/seller/sales">순매출현황</a>
-                                    <a class="nav-link" href="/seller/salesranking">판매량순위</a>
-                                </nav>
-                            </div>
                              <a class="nav-link" href="/seller/commercailhome">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 광고 신청
@@ -227,7 +224,7 @@ function deleteProduct(companyid, category, category2, flavor) {
 									                <img src="${product.imagePath}" alt="${product.product}">
 									            </td>
 									            <td><a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">${product.product}</a></td>
-									            <td>${product.price}</td>
+									            <td><fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원</td>
 									            <td>
 												   <button class="stockbutton" type="button" onclick="stockbutton('${product.companyid}${product.category}${product.category2}${product.flavor}');">${product.stock}</button>
 												<td>
@@ -241,7 +238,6 @@ function deleteProduct(companyid, category, category2, flavor) {
                         </div>
                     </div>
                 </main>
-                
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -273,5 +269,4 @@ function deleteProduct(companyid, category, category2, flavor) {
 	        }
 		</script>
     </body>
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 </html>
