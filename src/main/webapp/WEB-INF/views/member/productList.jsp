@@ -45,7 +45,7 @@
 		        <tr>
 		            <td><a href="javascript:void(0)" onclick="toDetail('${product.companyid}','${product.category}','${product.category2}','${product.flavor}')">${product.product}</a>
 		             <sec:authorize access="isAuthenticated()">
-		             <a href="javascript:void(0)" onclick="openCart('${product.companyid}','${product.category}','${product.category2}','${product.price}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		             <a href="javascript:void(0)" onclick="openCart('${product.num}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 		            </sec:authorize>
 		            </td>
 		            <td>${product.price}</td>

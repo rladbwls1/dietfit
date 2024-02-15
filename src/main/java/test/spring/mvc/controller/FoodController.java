@@ -43,8 +43,11 @@ public class FoodController {
 	}
 	// 일반배송 -> 정기배송 이동
 	@RequestMapping("RdCart")
-	public String RdCart(Model model, String nums, Principal pri) {
-		service.rdCart(pri.getName(), nums);
+	public String RdCart(Model model, String nums, int check, Principal pri) {
+		service.rdCart(pri.getName(), nums, check);
+		if(check == 0) {
+			return "redirect:/member/cartList";
+		}
 		return "redirect:/member/Rdelivery";
 	}
 	

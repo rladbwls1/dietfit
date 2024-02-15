@@ -25,30 +25,35 @@
 <table>
 <tr>
 	<td><input type="checkbox" name="chk_all" id="chk_all" onclick="cartCheckAll()" value="all"/></td>
-	<td>이미지</td><td>상품명</td><td>수량</td><td>가격</td><td></td>
+	<td>이미지</td><td>상품명</td><td>가격</td><td>구매수량</td><td>구매가격</td><td></td>
 </tr>
 <c:set var="i" value="0"/>
 <c:forEach var="cart" items="${list }" >
-<c:if test="${cart.delivery == 0}">
-<tr id="${cart.num }" >
-	<td><input type="checkbox" name="num" id="num" onclick="cartUpdateCheckAll()" value="${cart.num}"></td>
+<c:if test="${cart.DELIVERY == 0}">
+<tr id="${cart.NUM }" >
+	<td><input type="checkbox" name="num" id="num" onclick="cartUpdateCheckAll()" value="${cart.NUM }"></td>
 	<td>
 		<a href="javascript:void(0)" style="text-decoration-line : none; color:black;" 
-		onclick="getProductCodeANDtoDetail('${cart.product}')"><img src="${imgPaths[i]}" width="50"/></a>	
+		onclick="getProductCodeANDtoDetail('${cart.PRODUCT}')"><img src="${imgPaths[i]}" width="50"/></a>	
 	</td>
 	<td>
 		<a href="javascript:void(0)" style="text-decoration-line : none; color:black;" 
-		onclick="getProductCodeANDtoDetail('${cart.product}')">${cart.product }</a>
+		onclick="getProductCodeANDtoDetail('${cart.PRODUCT}')">${cart.PRODUCT }</a>
 	</td>
 	<td>
-		<button type="button" onclick="cartQuantityDown('${cart.num}')">-</button> 
-		<span id="${cart.num }_quantity" >${cart.quantity }</span>
-		<button type="button" onclick="cartQuantityUp('${cart.num}')">+</button>
+	<c:if test="${cart.SALE!=0}">
+	<span style="color:gray;text-decoration: line-through;">${cart.ORIPRICE}</span><br/><span style="color:red">${cart.SALE}%</span> 
+	</c:if>
+	${cart.PRICE }</td>
+	<td>
+		<button type="button" onclick="cartQuantityDown('${cart.NUM}')">-</button> 
+		<span id="${cart.NUM }_quantity" >${cart.QUANTITY }</span>
+		<button type="button" onclick="cartQuantityUp('${cart.NUM}')">+</button>
 	</td>
 	<td>
-		<span id="${cart.num }_price" >${cart.price*cart.quantity }</span>
+		<span id="${cart.NUM }_price" >${cart.PRICE*cart.QUANTITY }</span>
 	</td>
-	<td><a href="javascript:void(0);" onclick="deleteCart('${cart.num}')" ><img src="/resources/img/free-icon-x-mark-11147352.png" width=15 /></a> </td>
+	<td><a href="javascript:void(0);" onclick="deleteCart('${cart.NUM}')" ><img src="/resources/img/free-icon-x-mark-11147352.png" width=15 /></a> </td>
 </tr>
 </c:if>
 <c:set var="i" value="${i+1 }"/>
@@ -60,7 +65,7 @@
 <td colspan="1">총 가격 : <span id="amout">0</span></td>
 <td colspan="2"><button type="button" onclick="toOrder()">주문하기</button></td></tr>
 </table>
-<button type="button" onclick="Rdelivery()">정기배송 이동</button>
+<button type="button" onclick="Rdelivery(1)">정기배송 이동</button>
 </c:if>
 </body>
 </html>

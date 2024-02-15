@@ -278,7 +278,8 @@ public class DietfitController {
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
 	        @RequestParam Integer tax_free_amount,
-	        @RequestParam Integer delivery) {
+	        @RequestParam Integer delivery,
+	        @RequestParam String chk_info) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		
@@ -301,12 +302,38 @@ public class DietfitController {
 				orderdetail.setPurdate(new Date());
 				orderdetail.setQuantity(productquantity);
 				orderdetail.setPrice(aservice.findprice(productId));
+				orderdetail.setQuantity(quantity);
+				//할인 상품인 경우 할인율 계산해서 price에 넣어줌 
+				int oriprice=aservice.findprice(productId);
+				ProductDTO pdto=new ProductDTO();
+				pdto.setCompanyid(productId.substring(0, 2));
+				pdto.setCategory(productId.substring(2, 4));
+				pdto.setCategory2(productId.substring(4, 6));
+				pdto.setFlavor(productId.substring(6, 8));
+				String product=mmapper.getProductnameByProductcode(pdto);
+				int num=mmapper.getNumByProduct(product);
+				int sale=mmapper.isSale(num);
+				if(sale!=0) {
+					sale=mmapper.getSaleByNum(num);
+				}
+				int price=oriprice*(100-sale)/100;
+				orderdetail.setPrice(price);
+				
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
-				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
+				if ("kakaopay".equals(chk_info)) {
+	                orderdetail.setPay(10);
+	             }else if("easybank".equals(chk_info)) {
+	                orderdetail.setPay(20);
+	             }else if("creditcard".equals(chk_info)) {
+	                orderdetail.setPay(31);
+	             }else if("unaccount".equals(chk_info)) {
+	                orderdetail.setPay(32);
+	             }else if("phone".equals(chk_info)) {
+	                orderdetail.setPay(33);
+	             }
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
-				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				
 				aservice.createOrder(id, orderdetail);
 				aservice.changeCoupon(orderid, couponid);

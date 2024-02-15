@@ -29,9 +29,7 @@
     	-->
     	<select id="allcoupon" resultType="allcoupon">
     		<![CDATA[ 
-    		select * from (select b.* , rownum r from
-			    (select * from allcoupon) b)
-				where r >=#{start} and r <=#{end} 
+    		select * from allcoupon
 			]]>	
     	</select>
     	<select id="allcoupon_count">
@@ -93,10 +91,13 @@
 				JOIN discount ON all_product.num = discount.num
 				WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
 				ORDER BY discount.sale DESC
-				FETCH FIRST 16 ROWS ONLY;
+				FETCH FIRST 16 ROWS ONLY
     	</select>
     	<select id="sale">
     		select sale from discount where num=#{num}
+    	</select>
+    	<select id="discountNum" resultType="discount">
+    		select * from discount
     	</select>
     	<select id="reco" resultType="product">
     		SELECT * FROM all_product

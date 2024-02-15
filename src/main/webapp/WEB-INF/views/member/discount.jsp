@@ -86,6 +86,9 @@
     		.box{
     			margin-bottom: 20px;
     		}
+    		#hr{
+    			border: 1px solid #FFDB58 !important;
+    		}
     	</style>
     </head>
 
@@ -166,6 +169,7 @@
             <div class="container py-5" id="content">
                 <div class="row g-4" id="dis">
                 	<h2>오늘의 특가</h2>
+                	<hr id="hr">
 				    <c:if test="${not empty discount}">
 					<div class="container">
 					    <ul class="list-unstyled row">
