@@ -25,7 +25,7 @@
 <table>
 <tr>
 	<td><input type="checkbox" name="chk_all" id="chk_all" onclick="cartCheckAll()" value="all"/></td>
-	<td>이미지</td><td>상품명</td><td>수량</td><td>가격</td><td></td>
+	<td>이미지</td><td>상품명</td><td>가격</td><td>구매수량</td><td>구매가격</td><td></td>
 </tr>
 <c:set var="i" value="0"/>
 <c:forEach var="cart" items="${list }" >
@@ -40,6 +40,11 @@
 		<a href="javascript:void(0)" style="text-decoration-line : none; color:black;" 
 		onclick="getProductCodeANDtoDetail('${cart.PRODUCT}')">${cart.PRODUCT }</a>
 	</td>
+	<td>
+	<c:if test="${cart.SALE!=0}">
+	<span style="color:gray;text-decoration: line-through;">${cart.ORIPRICE}</span><br/><span style="color:red">${cart.SALE}%</span> 
+	</c:if>
+	${cart.PRICE }</td>
 	<td>
 		<button type="button" onclick="cartQuantityDown('${cart.NUM}')">-</button> 
 		<span id="${cart.NUM }_quantity" >${cart.QUANTITY }</span>
