@@ -65,7 +65,7 @@
 <td colspan="1">총 가격 : <span id="amout">0</span></td>
 <td colspan="2"><button type="button" onclick="toOrder()">주문하기</button></td></tr>
 </table>
-<button type="button" onclick="Rdelivery()">정기배송 이동</button>
+<button type="button" onclick="Rdelivery(1)">정기배송 이동</button>
 </c:if>
 </body>
 </html>

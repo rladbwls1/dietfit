@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -91,6 +92,7 @@ public class Admin1Controller {
 	@RequestMapping("best")
 	public String best(Model model) {
 		List<ProductDTO> dto = service.best();
+//		List<Integer> sale = service.discountNum();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
 				ProductimgDTO img = service.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
@@ -104,6 +106,7 @@ public class Admin1Controller {
 			}
 		}
 		model.addAttribute("best", dto);
+//		model.addAttribute("sale", sale);
 		return "admin/best";
 	}
 	
@@ -141,16 +144,16 @@ public class Admin1Controller {
 	}
 	
 	@RequestMapping("adminChk")
-	public @ResponseBody Map<Integer, Integer> adminChk(int num, int chk) {
-		Map<Integer, Integer> result = new HashMap<>();
-		int check = service.commCheck(chk, num);
-		Integer alram = service.alram();
+	public @ResponseBody Map<String, Integer> adminChk(int num, int admin) {
+		Map<String, Integer> result = new HashMap<>();
+		Integer check = service.commCheck(admin, num);
+//		Integer alram = service.alram();
 		if(check == 1) {
-//			result.put("result", check);
-//			result.put("msg", alram);
+			result.put("result", check);
+			result.put("msg", 0);
 		}else {
-//			result.put("result", check);
-//			result.put("msg", 0);
+			result.put("result", check);
+			result.put("msg", 0);
 		}
 		return result;
 	}

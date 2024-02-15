@@ -187,6 +187,13 @@
 		            					</div>
 							                <div class="boardname">${best.boardname}</div>
 							                <div><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+							                <c:forEach items="${sale}" var="sale">
+					                            <c:if test="${best.num eq sale.num}">
+					                            	${best.price}
+					                            	${sale.sale}
+					                                 <fmt:formatNumber value="${best.price - (best.price * (sale.sale / 100))}" type="number" pattern="#,###원"/>
+					                            </c:if>
+					                        </c:forEach>
 			                            </div>
 			                        </div>
 			                      </div>
