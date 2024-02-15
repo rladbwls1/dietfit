@@ -144,7 +144,9 @@
 	</select>
 	<!-- 상품명으로 가격 뽑기 -->
 	<select id="getPriceByProductName">
+	<![CDATA[
 		select price from all_product where product=#{product}
+	]]>
 	</select>
 	<!-- 찜 폴더명들 가져오기 -->
 	<select id="getWishFolderName">
@@ -158,6 +160,10 @@
 	<select id="getProductByCompanyidCateCate2">
 		select * from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2}
 	</select>
+	<!-- num으로 product 정보, 할인 정보 가져오기 -->
+	<select id="getMiniCartByNum">
+		select p.product,p.price,d.sale from all_product p left outer join discount d on p.num=d.num  where p.num=#{num}
+	</select>
 	<!-- 장바구니에 상품이 이미 있나 확인 -->
 	<select id="isCart">
 		select count(*) from ${id}_cart where product=#{product}
@@ -167,7 +173,7 @@
 		insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},#{delivery})
 	</insert>
 	<!-- 장바구니 목록 가져오기 -->
-	<select id="getCartList">
+	<select id="getCartList" resultType="Map">
 		select * from ${id}_cart order by num desc
 	</select>
 	<!-- 장바구니 개수 수정 -->
@@ -295,6 +301,32 @@
 		select * from ${id}_point where duedate < sysdate
 	]]>
 	</select>
+	<!-- 할인정보 가져오기 -->
+	<select id="getOrdersum">
+		select * from ordersum where orderid=#{orderid}
+	</select>
+	<!-- 쿠폰id로 쿠폰명 가져오기 -->
+	<select id="getCouponByCouponid">
+		select coupon from allcoupon where couponid=#{couponid}
+	</select>
+	<!-- 상품명으로 게시글 번호 가져오기 -->
+	<select id="getNumByProduct">
+	<![CDATA[	
+		select num from all_product where product=#{product} 
+	]]>
+	</select>
+	<!-- 게시글 번호로 할인율 가져오기 -->
+	<select id="isSale">
+	<![CDATA[	
+		select count(sale) from discount where num=#{num} and startr<sysdate and endr>sysdate
+	]]>
+	</select>
+	<select id="getSaleByNum">
+	<![CDATA[
+		select sale from discount where num=#{num} and startr<sysdate and endr>sysdate
+	]]>
+	</select>
+
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >

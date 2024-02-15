@@ -235,8 +235,8 @@ function changeNewFolder(products){
 }
 
 //-----------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@장바구니
-function openCart(companyid, category, category2,price){
-	window.open("miniCart?companyid="+companyid+"&category="+category+"&category2="+category2+"&price="+price,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
+function openCart(num){
+	window.open("miniCart?num="+num,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
 }
 //장바구니 버튼 눌러서, 상품 고르면 개수 변경할 수 있게.
 function showQuantityDiv(){
@@ -257,6 +257,9 @@ function quantityDown(){
 		$('#quantity').text(num-1);
 		$('#amout').text($('#price').val()*$('#quantity').val());
 	}
+}
+function quatityChange(){
+	$('#amout').text($('#price').val()*$('#quantity').val());
 }
 function addCartFromList(){
 	 var chk = $('#chk').is(':checked') ? 1 : 0;
