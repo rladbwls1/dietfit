@@ -43,14 +43,18 @@
         <tbody>
 		    <c:forEach var="product" items="${products}">
 		        <tr>
-		            <td><a href="javascript:void(0)" onclick="toDetail('${product.companyid}','${product.category}','${product.category2}','${product.flavor}')">${product.product}</a>
+		            <td><a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">${product.PRODUCT}</a>
 		             <sec:authorize access="isAuthenticated()">
-		             <a href="javascript:void(0)" onclick="openCart('${product.companyid}','${product.category}','${product.category2}','${product.price}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		             <a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 		            </sec:authorize>
 		            </td>
-		            <td>${product.price}</td>
+	            	<td>
+						<c:if test="${product.SALE!=0}">
+						<span style="color:gray;text-decoration: line-through;">${product.ORIPRICE}</span><br/><span style="color:red">${product.SALE}%</span> 
+						</c:if>
+						${product.PRICE }</td>
 		            <td>
-		               <img src="${product.imagePath}" alt="${product.product}">
+		               <img src="${product.IMAGEPATH}" alt="${product.PRODUCT}">
 		            </td>
 		            <!-- 찜 -->
 		            <td>
@@ -59,13 +63,13 @@
 		            </sec:authorize>
 		            <sec:authorize access="isAuthenticated()">
 		            	<c:choose>
-		            	<c:when test="${wishList.contains(product.product)}">
-				            <a href="javascript:void(0)" onclick="removeWishList('${product.product}')" >
+		            	<c:when test="${wishList.contains(product.PRODUCT)}">
+				            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
 				            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
 				            </a>
 		            	</c:when>
 		            	<c:otherwise>
-				            <a href="javascript:void(0)" onclick="addWishList('${product.product}')" >
+				            <a href="javascript:void(0)" onclick="addWishList('${product.PRODUCT}')" >
 		           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 				            </a>
 		            	</c:otherwise>

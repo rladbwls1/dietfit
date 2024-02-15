@@ -8,4 +8,5 @@ public class CartDTO {
 	private String product;
 	private int price;
 	private int quantity;
+	private int delivery;
 }

@@ -181,7 +181,7 @@ public class DietfitController {
 	
 	@RequestMapping("order")
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
-			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
+			String nicaddr, String phone, String receiver, String address1, String address2, String postcode, int delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
 //		model.addAttribute("id", pri.getName());
@@ -191,6 +191,7 @@ public class DietfitController {
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
+		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
 		model.addAttribute("nicaddr", nicaddr);
@@ -270,13 +271,14 @@ public class DietfitController {
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
 			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
-			String couponid, int usepoint, int coupondiscount,
+			String couponid, int usepoint, int discount,
 			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
 	        @RequestParam Integer tax_free_amount,
+	        @RequestParam Integer delivery,
 	        @RequestParam String chk_info) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
@@ -287,7 +289,6 @@ public class DietfitController {
 		
 		try {
 			List<String> productIds = aservice.findproductId(id, nums);
-			System.out.println(productIds);
 			
 //			개인 orderdetail 테이블 저장
 			for(String productId: productIds) {
@@ -295,53 +296,65 @@ public class DietfitController {
 				orderdetail.setOrderid(orderid);
 				orderdetail.setPurdate(new Date());
 				orderdetail.setQuantity(quantity);
-				orderdetail.setPrice(aservice.findprice(productId));
+				//할인 상품인 경우 할인율 계산해서 price에 넣어줌 
+				int oriprice=aservice.findprice(productId);
+				ProductDTO pdto=new ProductDTO();
+				pdto.setCompanyid(productId.substring(0, 2));
+				pdto.setCategory(productId.substring(2, 4));
+				pdto.setCategory2(productId.substring(4, 6));
+				pdto.setFlavor(productId.substring(6, 8));
+				String product=mmapper.getProductnameByProductcode(pdto);
+				int num=mmapper.getNumByProduct(product);
+				int sale=mmapper.isSale(num);
+				if(sale!=0) {
+					sale=mmapper.getSaleByNum(num);
+				}
+				int price=oriprice*(100-sale)/100;
+				orderdetail.setPrice(price);
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
-				 if ("kakaopay".equals(chk_info)) {
-					 orderdetail.setPay(10);
-				 }else if("easybank".equals(chk_info)) {
-					 orderdetail.setPay(20);
-				 }else if("creditcard".equals(chk_info)) {
-					 orderdetail.setPay(31);
-				 }else if("unaccount".equals(chk_info)) {
-					 orderdetail.setPay(32);
-				 }else if("phone".equals(chk_info)) {
-					 orderdetail.setPay(33);
-				 }
+				if ("kakaopay".equals(chk_info)) {
+	                orderdetail.setPay(10);
+	             }else if("easybank".equals(chk_info)) {
+	                orderdetail.setPay(20);
+	             }else if("creditcard".equals(chk_info)) {
+	                orderdetail.setPay(31);
+	             }else if("unaccount".equals(chk_info)) {
+	                orderdetail.setPay(32);
+	             }else if("phone".equals(chk_info)) {
+	                orderdetail.setPay(33);
+	             }
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
-				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				
 				aservice.createOrder(id, orderdetail);
-				aservice.changeCoupon(id, couponid);
+				aservice.changeCoupon(orderid, couponid);
 				mservice.usePoint(id, orderid, usepoint);
 			}
 			
 //			주문 요약본(전체 회원 테이블) 저장
 			OrdersumDTO ordersum = new OrdersumDTO();
 			ordersum.setId(id);
-			
 			ordersum.setOrderid(orderid);
 			ordersum.setPoint(usepoint);
 			ordersum.setCouponid(couponid);
-			ordersum.setCoupondiscount(coupondiscount);
+			ordersum.setDiscount(discount);
 			ordersum.setTotalamount(total_amount);
 			System.out.println("OrdersumDTO 정보 :" + ordersum);
 			aservice.createOrderSum(ordersum);
 			
 			
 //			Delivery 테이블 저장
-			DeliveryDTO delivery = new DeliveryDTO();
-			delivery.setAddr1(address1);
-			delivery.setAddr2(address2);
-			delivery.setPhone(phone);
-			delivery.setNicaddr(nicaddr);
-			delivery.setPostnum(postcode);
-			delivery.setReceiver(receiver);
-			delivery.setOrderid(orderid);
-			System.out.println("DeliveryDTO 정보: " + delivery);
-			aservice.createDelivery(id, delivery);
+			DeliveryDTO delivery1 = new DeliveryDTO();
+			delivery1.setAddr1(address1);
+			delivery1.setAddr2(address2);
+			delivery1.setPhone(phone);
+			delivery1.setNicaddr(nicaddr);
+			delivery1.setPostnum(postcode);
+			delivery1.setReceiver(receiver);
+			delivery1.setOrderid(orderid);
+			System.out.println("DeliveryDTO 정보: " + delivery1);
+			aservice.createDelivery(id, delivery1);
 			
 //			카카오페이 결제 ==================================================
 			URL address = new URL("https://kapi.kakao.com/v1/payment/ready");

@@ -22,5 +22,4 @@ public class OrderdetailDTO {
 	private String courier;		// 택배사 번호
 	private String memberid;    // 회원 아이디
 	private int totalSold;     // 판매량
-	private int discount; //상품 할인율
 }
