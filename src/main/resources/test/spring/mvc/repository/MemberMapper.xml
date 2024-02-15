@@ -301,7 +301,6 @@
 		select * from ${id}_point where duedate < sysdate
 	]]>
 	</select>
-<<<<<<< HEAD
 	<!-- 할인정보 가져오기 -->
 	<select id="getOrdersum">
 		select * from ordersum where orderid=#{orderid}
@@ -328,9 +327,7 @@
 	]]>
 	</select>
 
-=======
 	
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
 		create table ${id}_point(

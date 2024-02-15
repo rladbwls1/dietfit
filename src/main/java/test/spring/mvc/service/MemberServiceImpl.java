@@ -403,15 +403,9 @@ public class MemberServiceImpl implements MemberService{
 	public void getCartList(Model model, String id) {
 		List<Map<String,Object>> list=mapper.getCartList(id);
 		List<String> imgPaths=new ArrayList<>();
-<<<<<<< HEAD
 		for(Map<String,Object> map:list) {
 			//썸네일 처리
 			ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
-=======
-		CartDTO cart = new CartDTO();
-		for(CartDTO dto:list) {
-			ProductDTO pdto=mapper.getProductCodeByProductName(dto.getProduct());
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
             if (img != null) {
                 // 이미지 경로 직접 조합하여 설정
@@ -440,7 +434,6 @@ public class MemberServiceImpl implements MemberService{
             map.put("PRICE", price);
 		}
 		model.addAttribute("list",list);
-		model.addAttribute("dto", cart);
 		model.addAttribute("imgPaths",imgPaths);
 	}
 

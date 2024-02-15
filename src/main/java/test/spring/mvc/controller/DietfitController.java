@@ -278,7 +278,8 @@ public class DietfitController {
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
 	        @RequestParam Integer tax_free_amount,
-	        @RequestParam Integer delivery) {
+	        @RequestParam Integer delivery,
+	        @RequestParam String chk_info) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		
@@ -311,7 +312,17 @@ public class DietfitController {
 				int price=oriprice*(100-sale)/100;
 				orderdetail.setPrice(price);
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
-				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
+				if ("kakaopay".equals(chk_info)) {
+	                orderdetail.setPay(10);
+	             }else if("easybank".equals(chk_info)) {
+	                orderdetail.setPay(20);
+	             }else if("creditcard".equals(chk_info)) {
+	                orderdetail.setPay(31);
+	             }else if("unaccount".equals(chk_info)) {
+	                orderdetail.setPay(32);
+	             }else if("phone".equals(chk_info)) {
+	                orderdetail.setPay(33);
+	             }
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
