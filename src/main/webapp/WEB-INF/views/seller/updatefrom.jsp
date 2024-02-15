@@ -269,9 +269,9 @@
 						
 							        <div class="row">
 							            <div class="column">
-							                <label for="detail">설명</label>
-							                <textarea name="detail" required>${product.detail}</textarea>
-							            </div>
+										    <label for="detail">설명</label>
+										    <textarea name="detail" required>${product.companyid}${product.category}${product.category2}${product.flavor}${product.detail}</textarea>
+										</div>
 							        </div>
 						        
 							        <div class="row">
@@ -345,6 +345,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/resources/js/scripts.js"></script>
+        
         <script>
 		    $(document).ready(function() {
 		        // 이미지 삭제 버튼 클릭 이벤트
@@ -368,6 +369,7 @@
 		            });
 		        });
 		    });
+		    
 		</script>
 	     <script>
 	        function showSmallCategory() {

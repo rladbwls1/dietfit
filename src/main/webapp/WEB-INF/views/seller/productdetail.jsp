@@ -56,7 +56,6 @@
 			    margin-bottom: 10px; /* 이미지 아래 여백 */
 			}
 			
-			
 			.modifybutton button[type="submit"] {
 				padding: 5px 10px;
 			    background-color: #007bff; /* 파란색 배경색 */
@@ -161,7 +160,7 @@
 								            <td>상품이름: ${product.product}</td>
 								        </tr>
 								        <tr>
-								            <td>가격: ${product.price}</td>
+								            <td>가격: <fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원</td>
 								        </tr>
 								        
 								        <tr>
@@ -191,8 +190,6 @@
 							        <div class="description">
 								        <table>
 									        <tr>
-									            <td>상세설명:</td>
-									            <td>${product.detail}</td>
 									            <td>
 									            	<c:forEach var="imagePath" items="${imagePaths}">
 											            <div>

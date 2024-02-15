@@ -19,14 +19,14 @@
 		select sum(price * QUANTITY) as totalSales from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)
 	</select>
 	
-	<!-- 일주일 매출액 -->
+	<!-- 어제 매출액 -->
 	<select id = "getWeeklySales" resultType="int">
-		SELECT SUM(price * QUANTITY) AS totalSales FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1
+		SELECT SUM(price * QUANTITY) AS totalSales FROM buyproduct WHERE companyid = #{companyid}  AND TRUNC(SETDATE) = TRUNC(SYSDATE-1)
 	</select>
 	
-	<!-- 한달 매출액 -->
+	<!-- 그제 매출액 -->
 	<select id = "getMonthlySales" resultType="int">
-		SELECT SUM(price * QUANTITY) AS totalSales FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE) +1
+		SELECT SUM(price * QUANTITY) AS totalSales FROM buyproduct WHERE companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE-2)
 	</select>
 	
 	<!-- 오늘 순수익 -->
@@ -34,14 +34,14 @@
 		select sum(price * QUANTITY) - sum(price * QUANTITY * 0.1) as netSales from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)
 	</select>
 	
-	<!-- 일주일 순수익 -->
+	<!-- 어제 순수익 -->
 	<select id = "weeklyNetSales" resultType="int">
-		select sum(price * QUANTITY) - sum(price * QUANTITY * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1	
+		select sum(price * QUANTITY) - sum(price * QUANTITY * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid}  AND TRUNC(SETDATE) = TRUNC(SYSDATE-1)
 	</select>
 	
-	<!-- 한달 순수익 -->
+	<!-- 그제 순수익 -->
 	<select id = "monthlyNetSales" resultType="int">
-		select sum(price * QUANTITY) - sum(price * QUANTITY * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE) + 1
+		select sum(price * QUANTITY) - sum(price * QUANTITY * 0.1) as netSales FROM buyproduct WHERE companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE-2)
 	</select>
 	
 	<!-- 오늘 수수료 -->
@@ -49,14 +49,14 @@
 		select sum(price * QUANTITY * 0.1) as Fee from buyproduct where companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE)	
 	</select>
 	
-	<!-- 일주일 수수료 -->
+	<!-- 어제 수수료 -->
 	<select id = "weeklyFee">
-		select sum(price * QUANTITY * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid}  AND SETDATE BETWEEN TRUNC(SYSDATE) - 7 AND TRUNC(SYSDATE) + 1	
+		select sum(price * QUANTITY * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid}  AND TRUNC(SETDATE) = TRUNC(SYSDATE-1)
 	</select>
 	
-	<!-- 한달 수수료 -->
+	<!-- 그제 수수료 -->
 	<select id = "monthlyFee">
-		select sum(price * QUANTITY * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid} AND SETDATE BETWEEN ADD_MONTHS(TRUNC(SYSDATE), -1) AND TRUNC(SYSDATE) + 1 
+		select sum(price * QUANTITY * 0.1) as Fee FROM buyproduct WHERE companyid = #{companyid} AND TRUNC(SETDATE) = TRUNC(SYSDATE-2)
 	</select>
 	
 	<!-- 판매량 순위 하루 -->

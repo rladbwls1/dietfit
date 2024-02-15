@@ -119,7 +119,7 @@
 												<td>${order.orderid }</td>
 												<td><fmt:formatDate value="${order.purdate}" pattern="yyyy-MM-dd"/></td>
 												<td>${order.product}</td>
-												<td>${order.price }  원</td>
+												<td><fmt:formatNumber value="${order.price}" maxFractionDigits="0"/>원</td>
 												<td>${order.quantity }</td>
 												<td>${order.discount } 원</td>
 												<td>${order.pay }</td>

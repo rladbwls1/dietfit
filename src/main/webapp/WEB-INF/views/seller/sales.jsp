@@ -13,22 +13,51 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	    <style>
-
-		.chart-container-wrapper {
-		    display: flex;
-		    flex-direction: row;
-		}
+		    .chart-container-wrapper {
+		        display: flex;
+		        flex-wrap: wrap;
+		        justify-content: space-between;
+		        margin-bottom: 20px;
+		    }
 		
-		.chart-container {
-		    flex: 1;
-		    margin-right: 10px; /* 각 차트 사이의 간격을 조절합니다. 필요에 따라 조정하세요. */
-		}
-		table{
-			flex : 1;
-			display: flex;
-		}
+		    .chart-container {
+		        flex-basis: 30%;
+		        margin-bottom: 20px;
+		    }
 		
+		    .table-container {
+		        display: flex;
+		        flex-wrap: wrap;
+		        justify-content: space-between;
+		    }
+		
+		    .table-row {
+		        flex-basis: 48%; /* 두 개의 테이블을 한 줄에 배치 */
+		    }
+		
+		    .table-container table {
+		        width: 100%;
+		        border-collapse: collapse;
+		        margin-bottom: 20px;
+		    }
+		
+		    .table-container th,
+		    .table-container td {
+		        border: 1px solid #dddddd;
+		        text-align: left;
+		        padding: 8px;
+		    }
+		
+		    .table-container th {
+		        background-color: #f2f2f2;
+		    }
+		
+		    h4 {
+		        margin-top: 0;
+		        margin-bottom: 10px;
+		    }
 		</style>
+
     </head>
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -94,79 +123,84 @@
 						    </div>
 						</div><br>
 						<div class="table-container">
-							<table>
-							<h4>하루 판매량 순위</h4>
-								<tr>
-									<td>상품</td>
-									<td>수량</td>
-								</tr>
-						        <c:forEach var="item" items="${dailySalesRank}">
+						    <div class="table-row">
+						        <table>
+						            <h4>하루 판매량 순위</h4>
 						            <tr>
-						                <td>${item.product}</td>
-						                <td>${item.totalSold}</td>
+						                <td>상품</td>
+						                <td>수량</td>
 						            </tr>
-						        </c:forEach>
-						    </table><br>
-						    <table>
-						    <h4>일주일 판매량 순위</h4>
-						    	<tr>
-									<td>상품</td>
-									<td>수량</td>
-								</tr>
-						        <c:forEach var="item" items="${weeklySalesRank}">
+						            <c:forEach var="item" items="${dailySalesRank}">
+						                <tr>
+						                    <td>${item.product}</td>
+						                    <td>${item.totalSold}</td>
+						                </tr>
+						            </c:forEach>
+						        </table>
+						        <table>
+						            <h4>일주일 판매량 순위</h4>
 						            <tr>
-						                <td>${item.product}</td>
-						                <td>${item.totalSold}</td>
+						                <td>상품</td>
+						                <td>수량</td>
 						            </tr>
-						        </c:forEach>
-						    </table><br>
-						    <table>
-						    <h4>한달 판매량 순위</h4>
-						    	<tr>
-									<td>상품</td>
-									<td>수량</td>
-								</tr>
-						        <c:forEach var="item" items="${monthlySalesRank}">
+						            <c:forEach var="item" items="${weeklySalesRank}">
+						                <tr>
+						                    <td>${item.product}</td>
+						                    <td>${item.totalSold}</td>
+						                </tr>
+						            </c:forEach>
+						        </table>
+						    </div>
+						    <div class="table-row">
+						        <table>
+						            <h4>한달 판매량 순위</h4>
 						            <tr>
-						                <td>${item.product}</td>
-						                <td>${item.totalSold}</td>
+						                <td>상품</td>
+						                <td>수량</td>
 						            </tr>
-						        </c:forEach>
-						    </table><br>
-						    <table>
-						    <h4>전체 판매량 순위</h4>
-						    	<tr>
-									<td>상품</td>
-									<td>수량</td>
-								</tr>
-						        <c:forEach var="item" items="${allSalesRank}">
+						            <c:forEach var="item" items="${monthlySalesRank}">
+						                <tr>
+						                    <td>${item.product}</td>
+						                    <td>${item.totalSold}</td>
+						                </tr>
+						            </c:forEach>
+						        </table>
+						        <table>
+						            <h4>전체 판매량 순위</h4>
 						            <tr>
-						                <td>${item.product}</td>
-						                <td>${item.totalSold}</td>
+						                <td>상품</td>
+						                <td>수량</td>
 						            </tr>
-						        </c:forEach>
-						    </table>
-					    </div>
+						            <c:forEach var="item" items="${allSalesRank}">
+						                <tr>
+						                    <td>${item.product}</td>
+						                    <td>${item.totalSold}</td>
+						                </tr>
+						            </c:forEach>
+						        </table>
+						    </div>
+						</div>
+
 					    <script>
 					    document.addEventListener('DOMContentLoaded', (event) => {
 					        // 판매 매출액 그래프
 					        var ctxSales = document.getElementById('salesChart').getContext('2d');
 					        var salesChart = new Chart(ctxSales, {
-					            type: 'line',
+					            type: 'bar',
 					            data: {
-					                labels: ['오늘', '일주일', '한달'],
+					                labels: ['오늘', '어제', '그제'],
 					                datasets: [{
 					                    label: '총 매출액',
 					                    data: [${todaySales}, ${weeklySales}, ${monthlySales}],
 					                    backgroundColor: [
 					                        'rgba(255, 99, 132, 0.2)',
-					                        'rgba(54, 162, 235, 0.2)',
-					                        'rgba(255, 206, 86, 0.2)'
+					                        'rgba(255, 99, 132, 0.2)',
+					                        'rgba(255, 99, 132, 0.2)'
 					                    ],
 					                    borderColor: [
 					                        'rgba(255, 99, 132, 1)',
-					                        'rgba(54, 162, 235, 1)',
-					                        'rgba(255, 206, 86, 1)'
+					                        'rgba(255, 99, 132, 1)',
+					                        'rgba(255, 99, 132, 1)'
 					                    ],
 					                    borderWidth: 1
 					                }]
@@ -183,21 +217,21 @@
 					        // 순수 매출액 그래프
 					        var ctxNetSales = document.getElementById('netSalesChart').getContext('2d');
 					        var netSalesChart = new Chart(ctxNetSales, {
-					            type: 'line',
+					            type: 'bar',
 					            data: {
-					                labels: ['오늘', '일주일', '한달'],
+					                labels: ['오늘', '어제', '그제'],
 					                datasets: [{
 					                    label: '순수 매출액',
 					                    data: [${todayNetSales}, ${weeklyNetSales}, ${monthlyNetSales}],
 					                    backgroundColor: [
 					                        'rgba(153, 102, 255, 0.2)',
-					                        'rgba(255, 159, 64, 0.2)',
-					                        'rgba(75, 192, 192, 0.2)'
+					                        'rgba(153, 102, 255, 0.2)',
+					                        'rgba(153, 102, 255, 0.2)'
 					                    ],
 					                    borderColor: [
 					                        'rgba(153, 102, 255, 1)',
-					                        'rgba(255, 159, 64, 1)',
-					                        'rgba(75, 192, 192, 1)'
+					                        'rgba(153, 102, 255, 1)',
+					                        'rgba(153, 102, 255, 1)'
 					                    ],
 					                    borderWidth: 1
 					                }]
@@ -213,21 +247,21 @@
 					     // 수수료 그래프
 					        var ctxFee = document.getElementById('feeChart').getContext('2d');
 					        var feeChart = new Chart(ctxFee, {
-					            type: 'line',
+					            type: 'bar',
 					            data: {
-					                labels: ['오늘', '일주일', '한달'],
+					                labels: ['오늘', '어제', '그제'],
 					                datasets: [{
 					                    label: '수수료',
 					                    data: [${todayFee}, ${weeklyFee}, ${monthlyFee}],
 					                    backgroundColor: [
 					                        'rgba(255, 159, 64, 0.2)',
-					                        'rgba(75, 192, 192, 0.2)',
-					                        'rgba(153, 102, 255, 0.2)'
+					                        'rgba(255, 159, 64, 0.2)',
+					                        'rgba(255, 159, 64, 0.2)'
 					                    ],
 					                    borderColor: [
 					                        'rgba(255, 159, 64, 1)',
-					                        'rgba(75, 192, 192, 1)',
-					                        'rgba(153, 102, 255, 1)'
+					                        'rgba(255, 159, 64, 1)',
+					                        'rgba(255, 159, 64, 1)'
 					                    ],
 					                    borderWidth: 1
 					                }]

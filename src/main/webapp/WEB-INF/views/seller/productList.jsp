@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -147,7 +148,7 @@
 									                <img src="${product.imagePath}" alt="${product.product}">
 									            </td>
 									            <td><a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">${product.product}</a></td>
-									            <td>${product.price}</td>
+									            <td><fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원</td>
 									            <td>
 												   <button class="stockbutton" type="button" onclick="stockbutton('${product.companyid}${product.category}${product.category2}${product.flavor}');">${product.stock}</button>
 												<td>
@@ -161,7 +162,6 @@
                         </div>
                     </div>
                 </main>
-                
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -193,5 +193,4 @@
 	        }
 		</script>
     </body>
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 </html>
