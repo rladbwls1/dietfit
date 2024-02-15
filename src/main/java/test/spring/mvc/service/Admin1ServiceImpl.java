@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -247,9 +248,9 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public void rdCart(String id, String num) {
+	public void rdCart(String id, String num, int check) {
 		for(String n : num.split(",")) {
-			mapper.rdCart(id, 1, Integer.parseInt(n));
+			mapper.rdCart(id, check, Integer.parseInt(n));
 		}
 	}
 
@@ -262,4 +263,10 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public int commCheck(int admincheck, int num) {
 		return mapper.commCheck(admincheck, num);
 	}
+
+	@Override
+	public List<DiscountDTO> discountNum() {
+		return mapper.discountNum();
+	}
+	
 }

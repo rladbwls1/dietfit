@@ -425,7 +425,7 @@ function toOrder(){
     }
 }
 
-function Rdelivery(){
+function Rdelivery(check){
     const checkboxes = document.getElementsByName("num");
     const selectedItems = [];
 
@@ -442,6 +442,11 @@ function Rdelivery(){
 		obj.setAttribute('name','nums');
 		obj.setAttribute('value',selectedItems.join(","));
 		f.appendChild(obj);
+		obj2=document.createElement('input');
+		obj2.setAttribute('type','hidden');
+		obj2.setAttribute('name','check');
+		obj2.setAttribute('value', check);
+		f.appendChild(obj2);
 		f.setAttribute('method','post');
 		f.setAttribute('action','/member/RdCart');
 		document.body.appendChild(f);

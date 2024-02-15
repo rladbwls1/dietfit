@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
+import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -66,6 +67,7 @@ public class MemberController {
 	@RequestMapping("best")
 	public String best(Model model) {
 		List<ProductDTO> dto = admin.best();
+		List<DiscountDTO> sale = admin.discountNum();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
 				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
@@ -79,6 +81,7 @@ public class MemberController {
 			}
 		}
 		model.addAttribute("best", dto);
+		model.addAttribute("sale", sale);
 		return "member/best";
 	}
 	
