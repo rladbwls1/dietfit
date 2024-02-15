@@ -1,7 +1,6 @@
 package test.spring.mvc.service;
 
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.BuyproductDTO;
@@ -35,7 +33,6 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
-import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -381,10 +378,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void addCartOne(String id,String product, int quantity, int price) {
+	public void addCartOne(String id, String product, int quantity, int price, int delivery) {
 		int check=mapper.isCart(id, product);
 		if(check==0) {
-			mapper.addCartOne(id, product, quantity, price);
+			mapper.addCartOne(id, product, quantity, price, delivery);
 		}
 	}
 
@@ -393,7 +390,7 @@ public class MemberServiceImpl implements MemberService{
 		for(String num:products.split(",")) {
 			String product=mapper.getProductByNum(id, Integer.parseInt(num));
 			int price=mapper.getPriceByProductName(product);
-			addCartOne(id,product,1,price);
+			addCartOne(id,product,1,price,0);
 		}
 	}
 	
@@ -406,9 +403,15 @@ public class MemberServiceImpl implements MemberService{
 	public void getCartList(Model model, String id) {
 		List<Map<String,Object>> list=mapper.getCartList(id);
 		List<String> imgPaths=new ArrayList<>();
+<<<<<<< HEAD
 		for(Map<String,Object> map:list) {
 			//썸네일 처리
 			ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
+=======
+		CartDTO cart = new CartDTO();
+		for(CartDTO dto:list) {
+			ProductDTO pdto=mapper.getProductCodeByProductName(dto.getProduct());
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
             if (img != null) {
                 // 이미지 경로 직접 조합하여 설정
@@ -437,6 +440,7 @@ public class MemberServiceImpl implements MemberService{
             map.put("PRICE", price);
 		}
 		model.addAttribute("list",list);
+		model.addAttribute("dto", cart);
 		model.addAttribute("imgPaths",imgPaths);
 	}
 
@@ -509,7 +513,6 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
-		//주문상세
 		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
 		ProductDTO dto=new ProductDTO();
 		for(OrderdetailDTO odto:list) {
@@ -521,12 +524,6 @@ public class MemberServiceImpl implements MemberService{
 			odto.setProduct(mapper.getProductnameByProductcode(dto));
 		}
 		model.addAttribute("list",list);
-		//할인정보
-		OrdersumDTO osdto=mapper.getOrdersum(orderid);
-		if(osdto.getCouponid()!=null) {
-			osdto.setCouponid(mapper.getCouponByCouponid(osdto.getCouponid()));
-		}
-		model.addAttribute("osdto",osdto);
 	}
 
 	@Override

@@ -14,7 +14,6 @@ import test.spring.mvc.bean.DibsDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.OrderdetailDTO;
-import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -122,7 +121,7 @@ public interface MemberMapper {
 	public int isCart(@Param("id")String id, @Param("product") String product);
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
-			@Param("quantity")int quantity, @Param("price")int price);
+			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
 	//장바구니 목록 가져오기
 	public List<Map<String,Object>> getCartList(String id);
 	//장바구니 개수 수정
@@ -172,10 +171,6 @@ public interface MemberMapper {
 	//주문번호와 상품코드로 주문상세 가져오기
 	public OrderdetailDTO getOrderDetailByOrderidAndProductid(@Param("id")String id, 
 			@Param("orderid")String orderid,@Param("productid")String productid);
-	//할인정보 가져오기
-	public OrdersumDTO getOrdersum(String orderid);
-	//쿠폰id로 쿠폰명 가져오기
-	public String getCouponByCouponid(String orderid);
 	
 	//적립금
 	//구매확정 orderdetail 컬럼 수정

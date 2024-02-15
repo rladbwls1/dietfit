@@ -262,6 +262,7 @@ function quatityChange(){
 	$('#amout').text($('#price').val()*$('#quantity').val());
 }
 function addCartFromList(){
+	 var chk = $('#chk').is(':checked') ? 1 : 0;
 	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
 		alert("개수를 입력해주세요.");
 	}else{
@@ -269,7 +270,7 @@ function addCartFromList(){
     	url:'addCartOne',
     	type:'post',
     	async:false,
-    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val()},
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val(), chk:chk},
     	success:function(a){
     		window.opener.location.reload();
     		if(confirm("장바구니에 성공적으로 추가하였습니다. 장바구니로 가겠습니까?")){
@@ -412,6 +413,11 @@ function toOrder(){
 		obj3.setAttribute('name','totalQuantity');
 		obj3.setAttribute('value',$('#totalQuantity').text());
 		f.appendChild(obj3);
+		obj4=document.createElement('input');
+		obj4.setAttribute('type','hidden');
+		obj4.setAttribute('name','delivery');
+		obj4.setAttribute('value',$('#delivery').val());
+		f.appendChild(obj4);
 		f.setAttribute('method','post');
 		f.setAttribute('action','/dietfit/order');
 		document.body.appendChild(f);
@@ -420,7 +426,31 @@ function toOrder(){
     	if (confirm("상품을 선택해주세요.")) {
     	}
     }
-
 }
 
+function Rdelivery(){
+    const checkboxes = document.getElementsByName("num");
+    const selectedItems = [];
 
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+        	selectedItems.push(checkbox.value);
+        }
+    });
+    if (selectedItems.length > 0) {
+		let f=document.createElement('form');
+		let obj;
+		obj=document.createElement('input');
+		obj.setAttribute('type','hidden');
+		obj.setAttribute('name','nums');
+		obj.setAttribute('value',selectedItems.join(","));
+		f.appendChild(obj);
+		f.setAttribute('method','post');
+		f.setAttribute('action','/member/RdCart');
+		document.body.appendChild(f);
+		f.submit();
+    }else{
+    	if (confirm("상품을 선택해주세요.")) {
+    	}
+    }
+}

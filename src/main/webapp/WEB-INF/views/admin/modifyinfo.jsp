@@ -8,6 +8,47 @@
 <meta charset="UTF-8">
 <title>modify_info</title>
 <script src="/resources/js/jquery-3.7.1.min.js"></script> 
+<style>
+	body{
+		margin: 0 !important;
+	}
+	#user{
+		background-color: #007bff;
+		color: white;
+		padding: 5px 0 5px 10px;
+		margin: 0 0 20px 0;
+	}
+	#content{
+		padding: 0 15px;
+	}
+	#tb1, #tb2{
+		width: 100%;
+	}
+	#tb1 td, #tb2 td,
+	#tb1 th, #tb2 th{
+		border: 1px solid lightgray;
+		padding: 5px;
+	}
+	.btn1{
+		padding: 5px 15px;
+   		border: 1px solid #007bff;
+   		border-radius: 5px;
+   		background-color: #007bff;
+   		color: white;
+	}
+	.btn2{
+		padding: 5px 15px;
+   		border: 1px solid gray;
+   		border-radius: 5px;
+   		background-color: white;
+   		color: gray;
+	}
+	#btn_bg{
+		width: 100%;
+		text-align: center;
+		padding-top: 10px;
+	}
+</style>
 </head>
 <script>
 	$(function(){
@@ -36,11 +77,13 @@
 });
 </script>
 <body>
+	<div id="user">${info.id}(${info.name}) 님의 회원 정보 수정</div>
+		<div id="content">
 		<h2>회원 기본 정보</h2>
 		<form method="post" action="/admin/modify">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="hidden" id="id" name="id" value="${info.id}">
-		<table border="1" style="border-collapse:collapse;">
+		<table id="tb1" border="1" style="border-collapse:collapse;">
 			<tr> 
 				<th>아이디</th>
 				<td>${info.id}</td>
@@ -70,7 +113,7 @@
 			</tr>
 		</table>
 	<h2>사이트 가입 정보</h2>
-		<table border="1" style="border-collapse:collapse;">
+		<table id="tb2" border="1" style="border-collapse:collapse;">
 			<tr>
 				<th rowspan="2">주소</th>
 				<td>기본<input type="text" name="addr1" id="sample5_address" placeholder="주소" value="${mem_info.addr1}">
@@ -104,9 +147,12 @@
 				</td>
 			</tr>
 		</table>
-		<button id="subBtn" type="submit">등록</button>
-		<button type="button" onclick="his();">취소</button>
+		<div id="btn_bg">
+		<button class="btn1" id="subBtn" type="submit">등록</button>
+		<button class="btn2"type="button" onclick="his();">취소</button>
+		</div>
 	</form>
+	</div>
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9f913e82f349391b4ad71c6606ffa693&libraries=services"></script>

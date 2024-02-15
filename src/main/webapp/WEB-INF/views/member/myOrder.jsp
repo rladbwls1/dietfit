@@ -41,7 +41,7 @@
 <td>${map.ORDERID }</td>
 <td>${map.PRODUCT}</td><td>${map.PRICE}</td><td>${map.QUANTITY}</td><td>${map.QUANTITY* map.PRICE}</td>
 <td>
-<span id="${map.ORDERID }${map.PRODUCTID }afterClick">
+<span id="${map.get('ORDERID') }${map.get('PRODUCTID') }afterClick">
 <c:choose>
 <c:when test="${map.PURCHASE==0 }">입금 완료<br/><button type="button" onclick="defintePurchase('${map.ORDERID}','${map.PRODUCTID }','${map.QUANTITY*map.PRICE}')">구매확정</button></c:when>
 <c:when test="${map.PURCHASE==4 }">구매 취소</c:when>

@@ -116,19 +116,19 @@
     <!-- 결제.. 주문번호 생성 및 DB삽입 -->
     <insert id="memberOrderDetail" parameterType="test.spring.mvc.bean.OrderdetailDTO">
     	INSERT INTO ${id}_orderdetail (
-		    orderid, price, quantity, purdate,
+		    orderid, price, quantity, discount, purdate,
 		    pay, purchase, productid, memberid
 		) VALUES (
-		    #{orderdetail.orderid}, #{orderdetail.price}, #{orderdetail.quantity}, #{orderdetail.purdate},
+		    #{orderdetail.orderid}, #{orderdetail.price}, #{orderdetail.quantity}, #{orderdetail.discount}, #{orderdetail.purdate},
 		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
 		)
 	</insert>
 	<insert id="orderSummary" parameterType="test.spring.mvc.bean.OrdersumDTO">
     	INSERT INTO ordersum (
-    		id, orderid, point, couponid, coupondiscount, totalamount
+    		id, orderid, point, couponid, discount, totalamount
 		) VALUES (
 		    #{ordersum.id}, #{ordersum.orderid}, #{ordersum.point}, 
-		    #{ordersum.couponid}, #{ordersum.coupondiscount}, #{ordersum.totalamount}
+		    #{ordersum.couponid}, #{ordersum.discount}, #{ordersum.totalamount}
 		)
 	</insert>
 	<update id="changeCounpon" parameterType="String">
