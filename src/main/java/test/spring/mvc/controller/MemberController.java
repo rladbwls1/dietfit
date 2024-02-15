@@ -356,10 +356,8 @@ public class MemberController {
 		return "bye";
 	}
 	@RequestMapping("miniCart")
-	public String miniCart(Model model, String companyid,
-			String category,String category2, String price) {
-		model.addAttribute("price",price);
-		model.addAttribute("list",mapper.getProductByCompanyidCateCate2(companyid, category, category2));
+	public String miniCart(Model model, int num) {
+		service.miniCart(num, model);
 		return "member/miniCart";
 	}
 	

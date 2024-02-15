@@ -287,7 +287,6 @@ public class DietfitController {
 		
 		try {
 			List<String> productIds = aservice.findproductId(id, nums);
-			System.out.println(productIds);
 			
 //			개인 orderdetail 테이블 저장
 			for(String productId: productIds) {
@@ -295,7 +294,21 @@ public class DietfitController {
 				orderdetail.setOrderid(orderid);
 				orderdetail.setPurdate(new Date());
 				orderdetail.setQuantity(quantity);
-				orderdetail.setPrice(aservice.findprice(productId));
+				//할인 상품인 경우 할인율 계산해서 price에 넣어줌 
+				int oriprice=aservice.findprice(productId);
+				ProductDTO pdto=new ProductDTO();
+				pdto.setCompanyid(productId.substring(0, 2));
+				pdto.setCategory(productId.substring(2, 4));
+				pdto.setCategory2(productId.substring(4, 6));
+				pdto.setFlavor(productId.substring(6, 8));
+				String product=mmapper.getProductnameByProductcode(pdto);
+				int num=mmapper.getNumByProduct(product);
+				int sale=mmapper.isSale(num);
+				if(sale!=0) {
+					sale=mmapper.getSaleByNum(num);
+				}
+				int price=oriprice*(100-sale)/100;
+				orderdetail.setPrice(price);
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
 				 if ("kakaopay".equals(chk_info)) {
 					 orderdetail.setPay(10);
@@ -311,7 +324,6 @@ public class DietfitController {
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
-				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				
 				aservice.createOrder(id, orderdetail);
 				aservice.changeCoupon(id, couponid);

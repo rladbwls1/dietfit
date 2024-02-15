@@ -10,20 +10,30 @@
 <title>Insert title here</title>
 </head>
 <body>
-상품명, boardname <br/>
-<input type="hidden" id="price" value="${price}" />
-<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
-    <c:forEach var="productdto" items="${list }">
-    	<option value="${productdto.product}">${productdto.product}</option>
-    </c:forEach>
+
+<c:set var="a" value="${pmap.PRICE*100 }"/>
+<c:set var="b" value="${pmap.PRICE*pmap.SALE }"/>
+<c:set var="c" value="${a-b}"/>
+<c:set var="d" value="${c/100}"/>
+<input type="hidden" id="price" value="${d}" />
+상품: <select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
+    <option value="${pmap.PRODUCT}">${pmap.PRODUCT}</option>
 </select> <br/>
-<button type="button" onclick="quantityDown()">-</button>
-<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+수량: <button type="button" onclick="quantityDown()">-</button>
+<input type="text" id="quantity" value=1 size=3 maxlength=3 
+oninput="quatityChange()" 
+onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
 <button type="button" onclick="quantityUp()">+</button>
 <br/>
 <br/>
 <br/>
-가격 <span id="amout">${price }</span> <br/>
+-----------얘넨 지우면 됨--------<br/>
+할인전 가격: ${pmap.PRICE }<br/>
+할인%: ${pmap.SALE } <br/>
+-----------얘넨 지우면 됨--------<br/>
+<br/>
+<br/>
+가격 <span id="amout">${d}</span> <br/>
 <button type="button" onclick="">즉시구매</button>
 <button type="button" onclick="addCartFromList()">장바구니</button>
 
