@@ -78,6 +78,7 @@
     			font-size: 20px;
     			color: black;
     		}
+    		
     	</style>
     </head>
 
@@ -192,14 +193,12 @@
 		            					</div>
 							                <div class="boardname">${best.boardname}</div>
 							                <div class="price">
-							                <c:forEach items="${sale}" var="sale">
-					                            <c:if test="${best.num eq sale.num}">
+				                                 	<c:if test="${best.sale != 0}">
 					                                 <div class="sale">
-					                                 	<fmt:formatNumber value="${best.price - (best.price * (sale.sale / 100))}" type="number" pattern="#,###원"/>
+					                                 	<fmt:formatNumber value="${best.price - (best.price * (best.sale / 100))}" type="number" pattern="#,###원"/>
 					                            	</div>
-					                            </c:if>
-					                        </c:forEach>
-							                <div><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+				                            		</c:if>
+							               			<div class="dis_price" style="${best.sale != 0 ? 'text-decoration: line-through;' : ''}"><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
 					                        </div>
 			                            </div>
 			                        </div>
