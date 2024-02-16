@@ -45,11 +45,7 @@
         VALUES
         (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
     </insert>
-    <insert id="updatediscount" parameterType="test.spring.mvc.bean.DiscountDTO">
-    	insert into discount (num, startr, endr, sale)
-    	values
-    	(#{num}, #{startr}, #{endr}, #{sale})
-    </insert>
+    
    <select id="sellerstockselect" resultType="test.spring.mvc.bean.ProductDTO">
 	    SELECT *
 	    FROM all_product
@@ -86,5 +82,24 @@
 	<update id="chatreportdelete">
 		update chat set readcheck = 9 where roomnum=#{roomnum}
 	</update>
+	<select id="findDiscountInfoByNum" resultType="test.spring.mvc.bean.DiscountDTO">
+		select * from discount where num=#{num}
+	</select>
+	<delete id="deletediscount">
+		<![CDATA[
+	    DELETE FROM discount WHERE endr < TRUNC(sysdate)
+	    ]]>
+	</delete>
+	<insert id="updatediscount" parameterType="test.spring.mvc.bean.DiscountDTO">
+    	insert into discount (num, startr, endr, sale)
+    	values (#{num}, #{startr}, #{endr}, #{sale})
+    </insert>
+    <update id="update2discount" parameterType="test.spring.mvc.bean.DiscountDTO">
+    	update discount set startr=#{startr}, endr=#{endr}, sale=#{sale} where num=#{num}
+    </update>
+	<select id="countByNum" resultType="int" parameterType="java.lang.String">
+        SELECT COUNT(*) FROM discount WHERE num = #{num}
+    </select>
+	
 
 </mapper>

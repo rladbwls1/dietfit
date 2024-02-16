@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import test.spring.mvc.bean.AllimgDTO;
+import test.spring.mvc.bean.RecommendDTO;
 import test.spring.mvc.bean.ReviewDTO;
 import test.spring.mvc.repository.ReviewMapper;
 
@@ -55,4 +56,22 @@ public class ReviewServiceImpl implements ReviewService{
 	    return uuid; // 저장된 파일명 반환 (UUID + 확장자)
 	}
 
+	@Override
+	public ReviewDTO writeproduct(ReviewDTO rdto) {
+		return mapper.writeproduct(rdto);
+	}
+
+	@Override
+	public void good(RecommendDTO recdto) {
+		mapper.good(recdto);
+	}
+
+	@Override
+	public void goodreview(ReviewDTO rdto) {
+		mapper.goodreview(rdto);
+	}
+	@Override
+	public void bye(RecommendDTO rdto) {
+		mapper.bye(rdto);
+	}
 }

@@ -114,7 +114,7 @@
               </li>
 
               <li class="sidebar-nav-item">
-                <a href="./layouts/tables_data.html" class="sidebar-nav-link">
+                <a href="../admin/companylist" class="sidebar-nav-link">
                   <span class="sidebar-nav-abbr">
                     Da
                   </span>

@@ -35,11 +35,12 @@
 			    <c:forEach var="entry" items="${companyPrice}">
 			        <c:if test="${entry.key eq map.get('COMPANYID')}">
 			            <tr>
-			                <td><input type="radio" name="selectedCoupon" id="selectedCoupon" value="${map.get('COUPONID')}" /> </td>
+			                <td><input type="radio" name="selectedCoupon" id="selectedCoupon" value="${map.get('COUPON')}" /> </td>
 			                <td>${map.get('COUPON')}</td>
 			                <td>${map.get('COMPANYID') }</td>
 			                <td>${map.get('DISCOUNT') }</td>
 			                <td><fmt:formatDate value="${map.get('DELETEDATE')}" pattern="yyyy-MM-dd"/></td>
+			            	<td><input type="hidden" name="couponid" value="${map.get('COUPONID')}"></td>
 			            </tr>
 			        </c:if>
 			        <c:if test="${!entry.key eq map.get('COMPANYID') }">
@@ -62,9 +63,12 @@ function useCouponInfo(){
 	}else{
 		//라디오 버튼 체크
 		var selectedCoupon = $('#selectedCoupon:checked').val();
-		
+		//var coupon = $(":input[name=selectedCoupon]:checked").val();
 		var couponDiscount = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(3)').text();
 		var canuseCompany = $('input[name=selectedCoupon]:checked').closest('tr').find('td:eq(2)').text();
+		// 선택된 라디오 버튼의 couponid를 가져옴
+		var couponid = $('input[name="selectedCoupon"]:checked').closest('tr').find('input[name="couponid"]').val();
+
 		var companyPriceData = {
 				<c:forEach var="entry" items="${companyPrice}">
 					"${entry.key}": ${entry.value},
@@ -78,24 +82,29 @@ function useCouponInfo(){
 			}
 		}
 		
-		var couponid = $(":input[name=selectedCoupon]:checked").val();
+		//var couponid = $(":input[name=selectedCoupon]:checked").val();
 
-		
+		//사용한 쿠폰, 쿠폰 할인 금액, ordersum에 들어가는 쿠폰 할인 금액 및 아이디
 		opener.document.getElementById("useCoupon").value=selectedCoupon;
 		opener.document.getElementById("coupon").value=couponPrice;
+		opener.document.getElementById("coupondiscount").value=couponPrice;
 		opener.document.getElementById("couponid").value=couponid;
 		
+		//상품 원래 금액
 		var amount = parseInt(opener.document.getElementById("amount").value);
-		var coupon = parseInt(opener.document.getElementById("coupon").value);
+		
+		//사용한 쿠폰 할인금액, 적립금 / 할인금액 + 적립금  = totaldiscount
+		var coupondiscount = parseInt(opener.document.getElementById("coupondiscount").value);
 		var point = parseInt(opener.document.getElementById("point").value);
-		var discount = parseInt(coupon + point);
+		var totaldiscount = parseInt(coupondiscount + point);	
+		
+		opener.document.getElementById("totaldiscount").value=totaldiscount;
 		
 		opener.document.getElementById("point").value=point;
 		opener.document.getElementById("usepoint").value=point;
-		opener.document.getElementById("discount").value=discount;
 		
-		opener.document.getElementById("totalAmount").value=amount-coupon-point;
-		opener.document.getElementById("total_amount").value=amount-coupon-point;
+		opener.document.getElementById("totalAmount").value=amount-totaldiscount;
+		opener.document.getElementById("total_amount").value=amount-totaldiscount;
 		window.close();
 	}
 }

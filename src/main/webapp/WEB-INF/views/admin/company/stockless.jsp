@@ -8,14 +8,22 @@
 <meta charset="UTF-8">
 <script src="/resources/js/jquery-3.7.1.min.js"></script>
 <title>Insert title here</title>
+  <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  
 </head>
 <body>
 	<c:if test="${stocklesscount == 0}">
 		<h5> 재고수가 20개 미만인 상품이 없습니다. </h5>
 	</c:if>
 	<c:if test="${stocklesscount > 0}">
-	<button type="button" id="checkStock" onclick="checkstock()">✔상품재고✔</button>
-		<table>
+		<button type="button" class="btn btn-outline-primary btn-lg" onclick="window.location.href='/admin/allProduct'"> 
+			⬅
+		</button>
+
+	<button type="button" class="btn btn-outline-success" id="checkStock" onclick="checkstock()">✔상품재고✔</button>
+		<table class="table">
 	        <thead>
 	            <tr>
 	            	<th><input type="checkbox" name="allchk" id="allchk" onclick="allCheck()"/></th>
@@ -93,7 +101,5 @@ function checkstock(){
 	});
 	
 }
-
-
 </script>
 </html>
