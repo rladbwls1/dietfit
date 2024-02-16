@@ -13,6 +13,9 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link href="/resources/css/order.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
 <script>
 	function week(day){
@@ -78,107 +81,139 @@
 </script>
 <body>
 
-<hr/>
-${nums }
-<hr/>
-
-	<h2>주문/결제</h2>
-        
-		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery9.nicaddr}"/> <br />
-		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery9.receiver}"/> <br />
-		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery9.phone}"/> <br />
-	    우편번호 : <input type="text" name="postcode" id="sample6_postcode" value="${delivery9.postnum}" /><br />
-	    주소지 : <input type="text" name="address1" id="sample6_address" value="${delivery9.addr1}"/> <br />
-	    상세주소 : <input type="text" name="address2" id="sample6_detailAddress" value="${delivery9.addr2}"/> <br />
-
-	
-	<button type="button" onclick="toOrderDelivery()">배송지 변경</button>
-	
-	<div id="deliveryPopup" style="display: none;">
-    <!-- 배송지 목록 및 선택 기능을 포함한 코드를 넣어주세요 -->
-</div>
-	
-	<p>주문상품 </p>
-	주문번호 : ${orderid } <br />
-	${cartList } <br />
-	상품 수량 : 총 ${quantity }건
-	<p>배송지 - delivery 테이블</p>
-	<p>주문상품 - orderdetail 테이블</p>
-	상품명 : 
-	상품명 : 
-	상품 수량 : 
-	상품 비과세 금액 : 
-	<c:if test="${delivery == 1}">
-	<h4>정기배송일</h4>
-	<h5>배송주기</h5>
-	<div style="display:flex;">
-		<button onclick="bott_box(1)">1주에 1번</button>
-		<button onclick="bott_box(2)">2주에 1번</button>
-		<button onclick="bott_box(3)">3주에 1번</button>
+	<div class="d-grid gap-2 col-6 mx-auto">
+		<h2>주문/결제</h2>
+		<div>
+			<input type="text" name="nicaddr" id="nicaddr" value="${delivery9.nicaddr}" style="width: 60px;"/> 
+			<button type="button" onclick="toOrderDelivery()">배송지 변경</button> <br />
+			<input type="text" name="receiver" id="receiver" value="${delivery9.receiver}" style="width: 60px;"/> 
+			• <input type="text" name="phone" id="phone" value=" ${delivery9.phone}" style="width: 120px;"/> <br />
+			 <input type="text" name="address1" id="sample6_address" value="${delivery9.addr1}"  style="width: 300px;"/>, 
+			 <input type="text" name="address2" id="sample6_detailAddress" value="${delivery9.addr2}"/>
+			 우편번호 : <input type="text" name="postcode" id="sample6_postcode" value="${delivery9.postnum}"  style="width: 80px;" />
+		</div>
+		<hr />
 	</div>
-	<div id="days"></div>
-	</c:if>
-	<h4>할인적용</h4>
-	쿠폰적용 : <input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" />
-	<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button> <br />
-	보유 적립금: ${mypoint }
-	<button type="button" onclick="useAllPoint('${mypoint }')" >적립금 모두 사용하기</button>
 	
+	<div class="d-grid gap-2 col-6 mx-auto">
+		<h4 >주문상품 (총 ${quantity}건) </h4> 
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end"><button type="button" onclick="toggleTable()"> ▲</button></div>
+			<div id="orderTable">
+			<table>
+				<thead>
+					<tr>
+						<th>이미지</th>
+						<th>상품명</th>
+						<th>구매수량</th>
+						<th>구매가격</th>
+					</tr>
+				</thead>
+				
+				<c:set var="i" value="0"/>
+					<c:forEach var="cart" items="${list }" >
+						<c:if test="${nums.contains(cart.NUM.toString())}">
+							<tr id="${cart.NUM }" >
+								<td>
+									<img src="${imgPaths[i]}" width="50"/>
+								</td>
+								<td>
+									${cart.PRODUCT }
+								</td>
+								<td>
+									<span id="${cart.NUM }_quantity" >${cart.QUANTITY }</span>
+								</td>
+								<td>
+									<span id="${cart.NUM }_price" >${cart.PRICE*cart.QUANTITY }</span>
+								</td>
+							</tr>
+						</c:if>
+					<c:set var="i" value="${i+1 }"/>
+					<input type="hidden" id="delivery" value="0"/>
+				</c:forEach>
+			</table>
+		</div>
+	</div>
+	
+	<c:if test="${delivery == 1}">
+		<h4>정기배송일</h4>
+		<h5>배송주기</h5>
+		<div style="display:flex;">
+			<button onclick="bott_box(1)">1주에 1번</button>
+			<button onclick="bott_box(2)">2주에 1번</button>
+			<button onclick="bott_box(3)">3주에 1번</button>
+		</div>
+		<div id="days"></div>
+	</c:if>
+	
+	<div class="d-grid gap-2 col-6 mx-auto">
+	<hr />
+		<h4>할인적용</h4>
+		<div class="col-6 col-md-4">
+			<input type="text" name="useCoupon" id="useCoupon" value="쿠폰을 선택해주세요" readonly />
+			<button type="button" onclick="toMyCoupon('${nums}')">내 쿠폰함 </button> <br />
+			
+			보유 적립금: ${mypoint }
+			<button type="button" onclick="useAllPoint('${mypoint }')" >적립금 모두 사용하기</button>
+		</div>
+		<hr />
+	</div>
+	
+	<div class="d-grid gap-2 col-6 mx-auto">
+		<h4>결제금액</h4>
+		<p>상품금액: ${amount } 원 </p>
+		<p>배송비:      원</p>
+		<div >
+			<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" value="0" oninput="totalAmount()" readonly/>   원 </p>
+			<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');" /> 원</p>
+			<b>총 결제금액 <input type="text" id="totalAmount"  value="${amount }" readonly/> 원</b>
+		</div>
+	</div>
+	
+	<div class="d-grid gap-2 col-6 mx-auto">
 	<hr />
 	
-	<h4>결제금액</h4>
-	<p>총 상품 : ${quantity } 개 </p>
-	<p>상품금액: <input type="text" id="amount" value="${amount }" />원 </p>
-	<p>배송비:      원</p>
-	<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" value="0" oninput="totalAmount()"/>   원 </p>
-	<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');"/> 원</p>
-	<b>총 결제금액 <input type="text" id="totalAmount"  value="${amount }"/> 원</b>
+		<h4>결제방식</h4>
+		<form id="kakaoPayForm" class="payment-form" >
+			<input type="radio" name="chk_info" value="kakaopay" onclick="selectPayment('kakaopay')"> 카카오페이
+			<input type="hidden" name="nums" value="${nums }"/>
+		    <input type="hidden" name="address1" id="dbaddress" value="${delivery9.addr1}"/> 
+		    <input type="hidden" name="address2" id="dbaddress2" value="${delivery9.addr2}"/> 
+			<input type="hidden" name="phone" id="dbphone" value="${delivery9.phone}"/> 
+			<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery9.nicaddr}"/> 
+		    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery9.postnum}" /> 
+			<input type="hidden" name="receiver" id="dbreceiver" value="${delivery9.receiver}"/> 
 	
+			<input type="hidden" name="couponid" id="couponid" value="null" /> <!-- 사용한 쿠폰 ID -->
+			<input type="hidden" name="coupondiscount" id="coupondiscount" value="0"/> <!-- 쿠폰으로 할인된 금액 -->
+			<input type="hidden" name="usepoint" id="usepoint"  value="0"/> <!-- 사용한 적립금 -->
+			<input type="hidden"  id="totaldiscount" value="0" /> <!-- 총 할인 금액 -->
 	
-	<h4>결제방식</h4>
-	<form id="kakaoPayForm" >
-	    <input type="radio" name="chk_info" value="kakaopay" /> 카카오페이
-		<input type="hidden" name="nums" value="${nums }"/>
-
-	    <input type="hidden" name="address1" id="dbaddress" value="${delivery9.addr1}"/> 
-	    <input type="hidden" name="address2" id="dbaddress2" value="${delivery9.addr2}"/> 
-		<input type="hidden" name="phone" id="dbphone" value="${delivery9.phone}"/> 
-		<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery9.nicaddr}"/> 
-	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery9.postnum}" /> 
-		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery9.receiver}"/> 
-
+			<input type="hidden" name="partner_order_id"  value="${orderid }" />
+	        <input type="hidden" name="partner_user_id" value="dietfit" />
+	        <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
+	        <input type="hidden" name="quantity"  value="${quantity }" />
+	        <input type="hidden" name="total_amount" id="total_amount" value="${amount }" />
+	        <input type="hidden" name="tax_free_amount" value="${taxfree }" />
+	        
+	        <input type="hidden" name="command" value="ready" />
+	        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly" />
+	        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
+	        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
+	        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
+		</form>
+		
+		<form id="accountPaymentForm" class="payment-form">
+		    <input type="radio" name="chk_info" value="easybank" onclick="selectPayment('easybank')"> 계좌 간편결제
+		</form>
+		
+		<form id="normalPaymentForm" class="payment-form">
+		    <input type="radio" name="chk_info" value="normal" onchange="showPaymentOptions()" onclick="selectPayment('normal')"> 일반 결제
+		    <div id="paymentOptions"></div>
+		</form>
+		
 		<br />
-		쿠폰 아이디 <input type="text" name="couponid" id="couponid" value="null" />
-		쿠폰 할인 금액<input type="text" name="coupondiscount" id="coupondiscount" value="0"/>
-		적립금 사용 금액<input type="text" name="usepoint" id="usepoint"  value="0"/>
-		총 할인 금액 <input type="text"  id="totaldiscount" value="0" />
-
-
-		<input type="hidden" name="partner_order_id"  value="${orderid }" />
-        <input type="hidden" name="partner_user_id" value="dietfit" />
-        <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
-        <input type="hidden" name="quantity"  value="${quantity }" />
-        총 금액 <input type="text" name="total_amount" id="total_amount" value="${amount }" />
-        <input type="hidden" name="tax_free_amount" value="${taxfree }" />
-        
-        <input type="hidden" name="command" value="ready" />
-        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
-	</form>
-	
-	<form id="accountPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="easybank"> 계좌 간편결제
-	</form>
-	
-	<form id="normalPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="normal" onchange="showPaymentOptions()"> 일반 결제
-	    <div id="paymentOptions"></div>
-	</form>
-	
-	<br />
-	<button type="button" onclick="submitForm()">결제하기</button>
+		<button type="button" onclick="submitForm()">결제하기</button>
+	</div>
 </body>
 
 

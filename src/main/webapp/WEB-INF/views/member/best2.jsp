@@ -46,6 +46,39 @@
     		.wish{
     			text-align: right;
     		}
+    		#best_btn{
+    			display: flex;
+    			justify-content: center;
+    		}
+    		.b1{
+    			text-align: center;
+    			height: 40px;
+    			width: 300px;
+    			border: 1px solid lightgray;
+    			line-height: 40px;
+    		}
+    		.b2{
+    			border-width: 1px 1px 1px 0;
+    			width: 300px;
+    			height: 40px;
+    			background-color: #50AB89;
+    			border: 1px solid lightgray;
+    			text-align: center;
+    			line-height: 40px;
+    			color: white;
+    		}
+    		#content{
+    			padding-top: 0 !important;
+    		}
+    		.price{
+    			display: flex;
+   			    justify-content: center;
+    		}
+    		.sale{
+    			font-size: 20px;
+    			color: black;
+    		}
+    		
     	</style>
     </head>
 
@@ -121,43 +154,16 @@
             </div>
         </div>
         <!-- Hero End -->
-        <div class="container-fluid service py-5" style="padding-bottom: 0 !important;">
-            <div class="container py-5">
-                <div class="row g-4 justify-content-center">
-                    <div class="col-md-6 col-lg-4">
-                        <a href="#">
-                            <div class="service-item bg-secondary rounded border border-secondary">
-                                <img src="img/featur-1.jpg" class="img-fluid rounded-top w-100" alt="">
-                                <div class="px-4 rounded-bottom">
-                                    <div class="service-content bg-primary text-center p-4 rounded">
-                                        <h5 class="text-white">Best</h5>
-                                        <h3 class="mb-0">월간</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <a href="#">
-                            <div class="service-item bg-dark rounded border border-dark">
-                                <img src="img/featur-2.jpg" class="img-fluid rounded-top w-100" alt="">
-                                <div class="px-4 rounded-bottom">
-                                    <div class="service-content bg-light text-center p-4 rounded">
-                                        <h5 class="text-primary">Best</h5>
-                                        <h3 class="mb-0">주간</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div id="best_btn">
+        	<div onclick="window.location.href='/member/best'" class="b1">월간 베스트</div>
+        	<div onclick="window.location.href='/member/best2'" class="b2">주간 베스트</div>
         </div>
-        
         <!-- Featurs Section Start -->
-        <div class="container-fluid featurs py-5">
+        <div class="container-fluid featurs py-5" id="content">
             <div class="container py-5">
                 <div class="row g-4">
+                <hr>
+                <h4>주간 베스트</h4>
                 	<c:if test="${not empty best}">
 					        <c:forEach var="best" items="${best}">
 					              <div class="col-md-6 col-lg-3">
@@ -186,7 +192,14 @@
 								            </sec:authorize>
 		            					</div>
 							                <div class="boardname">${best.boardname}</div>
-							                <div><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+							                <div class="price">
+				                                 	<c:if test="${best.sale != 0}">
+					                                 <div class="sale">
+					                                 	<fmt:formatNumber value="${best.price - (best.price * (best.sale / 100))}" type="number" pattern="#,###원"/>
+					                            	</div>
+				                            		</c:if>
+							               			<div class="dis_price" style="${best.sale != 0 ? 'text-decoration: line-through;' : ''}"><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+					                        </div>
 			                            </div>
 			                        </div>
 			                      </div>
