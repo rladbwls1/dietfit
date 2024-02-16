@@ -3,8 +3,21 @@
     
 <mapper namespace="test.spring.mvc.repository.ReviewMapper">
 	<!-- 리뷰 글 작성 -->
-	<select id ="writeproduct" parameterType="test.spring.mvc.bean.ReviewDTO">
-		select boardname from all_product where companyid = #{companyid} and category = #{category} and category2 =#{category2} and FLAVOR = #{flavor}
+	<select id ="writeproduct" parameterType="test.spring.mvc.bean.ReviewDTO" resultType="test.spring.mvc.bean.ReviewDTO">
+		SELECT ap.boardname,
+	       api.companyid || api.category || api.category2 || api.flavor || 'F' || api.num || api.ext AS filename
+			FROM all_product ap
+			JOIN all_productimg api ON ap.companyid = api.companyid
+			                        AND ap.category = api.category
+			                        AND ap.category2 = api.category2
+			                        AND ap.flavor = api.flavor
+			WHERE ap.companyid = #{companyid}
+			      AND ap.category = #{category}
+			      AND ap.category2 = #{category2}
+			      AND ap.flavor = #{flavor}
+			      AND api.thum = 1
+			ORDER BY api.num ASC
+			FETCH FIRST ROW ONLY
 	</select>
 	<!-- 리뷰 전체 목록 -->
 	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
@@ -40,8 +53,38 @@
 		insert into allimg (num, id, type, notifynum, attatch) values(allimg_SEQ.nextval, #{id}, 4, #{notifynum}, #{attatch})
 	</insert>
 	<!-- 리뷰 글 수정 -->
-	<!-- 리뷰 이미지 수정 -->
+	<update id = "reviewupdate">
 	
+	</update>
+	<!-- 리뷰 이미지 수정 -->
+	<update id = "reviewupdateimg">
+		
+	</update>
 	<!-- 리뷰 글 삭제 -->
+	<delete id = "reviewdelete">
+		delete from review where num = #{num}
+	</delete>
 	<!-- 리뷰 이미지 삭제 -->
+	<delete id = "reviewimgdelete">
+		delete from allimg where notifynum = #{notifynum} 
+	</delete>
+
+	<!-- 리뷰 추천 아이디별로 찾기 -->
+	<select id = "recommend" parameterType="test.spring.mvc.bean.RecommendDTO">
+		select * from review_recommed where id = #{id}
+	</select>
+	
+	<!-- 리뷰 추천함 -->
+	<insert id = "good" parameterType="test.spring.mvc.bean.RecommendDTO">
+		insert into review_recommed (reviewnum, id) values(#{reviewnum},#{id})
+	</insert>
+	<!-- 리뷰 상세 추천함 추가 -->
+	<update id="goodreview">
+		UPDATE review set recommend = recommend + 1 WHERE num = #{num};
+	</update>
+	
+	<!-- 리뷰 추천 취소 -->
+	<delete id = "bye" parameterType="test.spring.mvc.bean.RecommendDTO">
+		delete from all_productimg where reviewnum=#{reviewnum} and id =#{id}
+	</delete>
 </mapper>

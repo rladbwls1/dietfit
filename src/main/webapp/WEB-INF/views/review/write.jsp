@@ -63,11 +63,8 @@
 	</style>
 	</head>
 	<body>
-		회사${rdto.companyid }<br>
-		카테${rdto.category }<br>
-		임의${rdto.category2 }<br>
-		맛${rdto.flavor }<br>
-		
+		${review.boardname}<br>
+		<img src="/resources/p_img/${review.filename }">
 		<form action="writepro" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<input type="hidden" name="companyid" value="${rdto.companyid}">
