@@ -64,7 +64,7 @@
     </table>
     
     <br />
-    <form action="/dietfit/eat" method="post">
+    <form action="/member/foodPro" method="post">
 		<input type="hidden" name="kcal"  value="${diettdee }"/>
 		<button type="submit">식단보기</button>
 	</form>

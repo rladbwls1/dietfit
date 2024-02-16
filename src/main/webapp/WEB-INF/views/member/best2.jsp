@@ -167,7 +167,7 @@
                 	<c:if test="${not empty best}">
 					        <c:forEach var="best" items="${best}">
 					              <div class="col-md-6 col-lg-3">
-			                        <div class="featurs-item text-center rounded bg-light p-4">
+			                        <div class="featurs-item text-center rounded bg-light p-4" onclick="toDetail('${best.companyid}','${best.category}','${best.category2}','${best.flavor}')">
 			                            <div class="featurs-content text-center">
             						        <div><img style="width: -webkit-fill-available;" src="${best.imagePath}"/></div>
             						        <div class="wish">
@@ -187,7 +187,7 @@
 										            </a>
 								            	</c:otherwise>
 								            	</c:choose>
-								            	 <a href="javascript:void(0)" onclick="openCart('${best.companyid}','${best.category}','${best.category2}','${best.price}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+								            	 <a href="javascript:void(0)" onclick="openCart('${best.num}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 								            	
 								            </sec:authorize>
 		            					</div>
@@ -198,7 +198,7 @@
 					                                 	<fmt:formatNumber value="${best.price - (best.price * (best.sale / 100))}" type="number" pattern="#,###원"/>
 					                            	</div>
 				                            		</c:if>
-							               			<div class="dis_price" style="${best.sale != 0 ? 'text-decoration: line-through;' : ''}"><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+							               			<div class="dis_price" style="${best.sale != 0 ? 'text-decoration: line-through;' : 'font-size: 20px; color: black;'}"><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
 					                        </div>
 			                            </div>
 			                        </div>

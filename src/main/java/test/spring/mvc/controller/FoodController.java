@@ -154,7 +154,7 @@ public class FoodController {
 		for(ProductinfoDTO f: food) {
 		   result = service.food_product(f.getProductid());
 		   for (ProductDTO product : result) {
-	            if (!mo.equals(product.getProductinfo().getProductid())) {
+	            if (!mo.equals(product.getProductid())) {
 	                re.add(product);
 	            }
 	        }
@@ -251,6 +251,7 @@ public class FoodController {
 				model.addAttribute(me + "_maxkcal", (int)(oper[i][1] * kcal));
 				model.addAttribute("kc", kcal);
 				model.addAttribute(me +"_re", aa);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+aa);
 				model.addAttribute("list", lists);
 				model.addAttribute("kcal", boundsList);
 				System.out.println(me + "@@@@@@@@@@@@@@@@"+check);

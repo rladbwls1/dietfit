@@ -67,7 +67,6 @@ public class MemberController {
 	@RequestMapping("best")
 	public String best(Model model) {
 		List<ProductDTO> dto = admin.best();
-		List<DiscountDTO> sale = admin.discountNum();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
 				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
@@ -81,7 +80,6 @@ public class MemberController {
 			}
 		}
 		model.addAttribute("best", dto);
-		model.addAttribute("sale", sale);
 		return "member/best";
 	}
 	
@@ -102,7 +100,6 @@ public class MemberController {
 			}
 		}
 		model.addAttribute("best", dto);
-		System.out.println("2222222222222222222222222_"+dto);
 		return "/member/best2";
 	}
 	
