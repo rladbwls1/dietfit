@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import test.spring.mvc.bean.AllimgDTO;
+import test.spring.mvc.bean.RecommendDTO;
 import test.spring.mvc.bean.ReviewDTO;
 import test.spring.mvc.service.ReviewService;
 
@@ -25,19 +26,17 @@ public class ReviewController {
 	
 	@RequestMapping("list")
     public String list(Model model) {
-        // 리뷰와 이미지 정보를 조회
-        List<ReviewDTO> reviewImages = service.listimg();
-        // 모델에 조회된 정보 추가
-        model.addAttribute("reviewImages", reviewImages);
-        // 뷰 이름 반환
+        List<ReviewDTO> review = service.listimg();
+        model.addAttribute("review", review);
+        System.out.println(review);
         return "review/list";
     }
-
-
+	
 	@RequestMapping("write")
 	public String write(Principal pri, ReviewDTO rdto,Model model) {
 		String id=pri.getName();
-		
+		ReviewDTO review = service.writeproduct(rdto);
+		model.addAttribute("review",review);
 		model.addAttribute("rdto",rdto);
 		model.addAttribute("id",id);
 		return "review/write";
@@ -58,7 +57,6 @@ public class ReviewController {
 		String path = request.getServletContext().getRealPath("/resources/review/");
 		// 파일 갯수 
 		int fileCount = (files != null) ? files.size() : 0;
-		System.out.println(fileCount);
 		rdto.setIsfile(fileCount);
 		service.write(rdto); // 리뷰 정보 저장
 		
@@ -77,6 +75,22 @@ public class ReviewController {
 	        }
 	    }
 		return "redirect:/member/myOrder"; 
+	}
+	
+	// 따봉 추가 
+	@RequestMapping("Good")
+	public String Good(Principal pri, ReviewDTO rdto, RecommendDTO redto1){
+		String id=pri.getName();
+		System.out.println("아이디 "+id);
+		service.good(redto1);
+///		service.goodreview(redto);
+		return "redirect:/review/list";
+	}
+	// 따봉 취소 
+	@RequestMapping("Bye")
+	public String Bye(){
+		
+		return "";
 	}
 
 }
