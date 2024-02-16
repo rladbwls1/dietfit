@@ -22,17 +22,27 @@ ${dto.postnum } ${dto.addr1 } ${dto.addr2 } <br/>
 ${dto.receiver } ${dto.phone }<br/>
 <hr/>
 <table >
-<tr><td>상품</td><td>구매수량</td><td>구매 금액</td></tr>
+<tr><td colspan="2">상품</td><td>구매수량</td><td>구매 금액</td></tr>
+<c:set var="i" value="0"/>
 <c:forEach var="order" items="${list }">
 	<tr>
+	<td><img src="${imgPaths.get(i) }" width="50"/></td>
 	<td>${order.product }<br/>${order.price }원<br/><br/>
-	<button type="button" onclick="toReviewForm('${order.productid}')" >리뷰 쓰기</button>
+	<c:choose>
+		<c:when test="${reviewable.get(i)==1}">
+			<span style="color:green">리뷰 작성 완료</span>
+		</c:when>
+		<c:otherwise>
+			<button type="button" onclick="toReviewForm('${order.productid}','${order.orderid }')" >리뷰 쓰기</button>
+		</c:otherwise>
+	</c:choose>
 	<button type="button" onclick="toChatByOrderdateil('${order.product}','${order.productid.substring(0,2) }')" >문의하기</button>
 	</td>
 	<td>${order.quantity }</td>
 	<td>${order.quantity*order.price }</td>
 	</tr>
 <c:set var="amount" value="${amount+order.quantity*order.price}"/>
+<c:set var="i" value="${i+1 }"/>
 </c:forEach>
 <tr><td><hr/></td></tr>
 <tr><td>총금액: </td><td>${amount }원</td></tr>
