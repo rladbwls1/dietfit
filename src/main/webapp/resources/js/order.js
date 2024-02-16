@@ -9,12 +9,12 @@ function showPaymentOptions() {
     var paymentOptions = document.getElementById('paymentOptions');
 
     // 결제 유형에 따라 옵션들을 동적으로 생성하고 보이게 함
-    if (paymentType === '일반결제') {
+    if (paymentType === 'normal') {
         paymentOptions.innerHTML = `
             <h5>일반결제 옵션</h5>
-            <label><input type="radio" name="normalPayment" value="신용/체크카드"> 신용/체크카드</label>
-            <label><input type="radio" name="normalPayment" value="무통장"> 무통장</label>
-            <label><input type="radio" name="normalPayment" value="휴대폰"> 휴대폰</label>
+            <label><input type="radio" name="normalPayment" value="creditcard"> 신용/체크카드</label>
+            <label><input type="radio" name="normalPayment" value="unaccount"> 무통장</label>
+            <label><input type="radio" name="normalPayment" value="phone"> 휴대폰</label>
         `;
         paymentOptions.style.display = 'block';
     } else {
@@ -28,7 +28,7 @@ function submitForm() {
     var paymentType = document.querySelector('input[name="chk_info"]:checked').value;
 
     // 결제 유형에 따라 동적으로 폼 제출 또는 카카오페이 API 호출
-    if (paymentType === '카카오페이') {
+    if (paymentType === 'kakaopay') {
         $.ajax({
             url: 'kakaopaygo',
             type: 'POST',
@@ -48,9 +48,9 @@ function submitForm() {
                 alert('카카오페이 요청 중 오류가 발생했습니다.');
             }
         });
-    } else if (paymentType === '계좌 간편결제') {
+    } else if (paymentType === 'easybank') {
         document.getElementById('accountPaymentForm').submit();
-    } else if (paymentType === '일반결제') {
+    } else if (paymentType === 'normal') {
         document.getElementById('normalPaymentForm').submit();
     }
 }
@@ -74,7 +74,10 @@ function useAllPoint(mypoint) {
     document.getElementById("point").value = point;
     document.getElementById("usepoint").value = point;
     
-    document.getElementById("discount").value=point;
+    //coupondiscount에 넣어둔 값 가져오기
+    var coupondiscount = parseInt(document.getElementById("coupondiscount").value);
+    document.getElementById("totaldiscount").value=point+coupondiscount;
+    
     var amount = parseInt(document.getElementById("amount").value);
     document.getElementById("totalAmount").value=amount-point;
 	document.getElementById("total_amount").value=amount-point;
@@ -99,11 +102,10 @@ function checkPoint(mypoint){
 	var amount = parseInt(document.getElementById("amount").value);
 	var couponValue = document.getElementById("coupon").value;
 	var coupon = couponValue ? parseInt(couponValue) : 0;
-	var discount = coupon + point;		
+	var totaldiscount = coupon + point;	
 	
+	document.getElementById("totaldiscount").value=totaldiscount;
 	
-	document.getElementById("discount").value=discount;
-	
-	document.getElementById("totalAmount").value=amount-coupon-point;
-	document.getElementById("total_amount").value=amount-coupon-point;
+	document.getElementById("totalAmount").value=amount-totaldiscount;
+	document.getElementById("total_amount").value=amount-totaldiscount;
 }

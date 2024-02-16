@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>   
-=======
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>     
->>>>>>> refs/remotes/origin/rladbwls1
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,12 +84,12 @@ ${nums }
 
 	<h2>주문/결제</h2>
         
-		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery.nicaddr}"/> <br />
-		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery.receiver}"/> <br />
-		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery.phone}"/> <br />
-	    우편번호 : <input type="text" name="postcode" id="sample6_postcode" value="${delivery.postnum}" /><br />
-	    주소지 : <input type="text" name="address1" id="sample6_address" value="${delivery.addr1}"/> <br />
-	    상세주소 : <input type="text" name="address2" id="sample6_detailAddress" value="${delivery.addr2}"/> <br />
+		배송지 명 : <input type="text" name="nicaddr" id="nicaddr" value="${delivery9.nicaddr}"/> <br />
+		수령인 : <input type="text" name="receiver" id="receiver" value="${delivery9.receiver}"/> <br />
+		휴대폰 : <input type="text" name="phone" id="phone" value="${delivery9.phone}"/> <br />
+	    우편번호 : <input type="text" name="postcode" id="sample6_postcode" value="${delivery9.postnum}" /><br />
+	    주소지 : <input type="text" name="address1" id="sample6_address" value="${delivery9.addr1}"/> <br />
+	    상세주소 : <input type="text" name="address2" id="sample6_detailAddress" value="${delivery9.addr2}"/> <br />
 
 	
 	<button type="button" onclick="toOrderDelivery()">배송지 변경</button>
@@ -134,29 +130,30 @@ ${nums }
 	<p>총 상품 : ${quantity } 개 </p>
 	<p>상품금액: <input type="text" id="amount" value="${amount }" />원 </p>
 	<p>배송비:      원</p>
-	<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" oninput="totalAmount()"/>   원 </p>
+	<p>쿠폰할인금액:(-) <input type="text" name="coupon" id="coupon" value="0" oninput="totalAmount()"/>   원 </p>
 	<p>적립금 사용 : (-) <input type="text" pattern="[0-9]+" id="point" name="point" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); checkPoint('${mypoint }');"/> 원</p>
 	<b>총 결제금액 <input type="text" id="totalAmount"  value="${amount }"/> 원</b>
 	
 	
 	<h4>결제방식</h4>
 	<form id="kakaoPayForm" >
-	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이
+	    <input type="radio" name="chk_info" value="kakaopay" /> 카카오페이
 		<input type="hidden" name="nums" value="${nums }"/>
-		
-	    <input type="hidden" name="address1" id="dbaddress" value="${delivery.addr1}"/> 
-	    <input type="hidden" name="address2" id="dbaddress2" value="${delivery.addr2}"/> 
-		<input type="hidden" name="phone" id="dbphone" value="${delivery.phone}"/> 
-		<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery.nicaddr}"/> 
-	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery.postnum}" /> 
-		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery.receiver}"/> 
-		
+
+	    <input type="hidden" name="address1" id="dbaddress" value="${delivery9.addr1}"/> 
+	    <input type="hidden" name="address2" id="dbaddress2" value="${delivery9.addr2}"/> 
+		<input type="hidden" name="phone" id="dbphone" value="${delivery9.phone}"/> 
+		<input type="hidden" name="nicaddr" id="dbnicaddr" value="${delivery9.nicaddr}"/> 
+	    <input type="hidden" name="postcode" id="dbpostcode" value="${delivery9.postnum}" /> 
+		<input type="hidden" name="receiver" id="dbreceiver" value="${delivery9.receiver}"/> 
+
 		<br />
 		쿠폰 아이디 <input type="text" name="couponid" id="couponid" value="null" />
+		쿠폰 할인 금액<input type="text" name="coupondiscount" id="coupondiscount" value="0"/>
 		적립금 사용 금액<input type="text" name="usepoint" id="usepoint"  value="0"/>
-		총 할인 금액<input type="text" name="discount" id="discount" value="0"/>
-		
-		
+		총 할인 금액 <input type="text"  id="totaldiscount" value="0" />
+
+
 		<input type="hidden" name="partner_order_id"  value="${orderid }" />
         <input type="hidden" name="partner_user_id" value="dietfit" />
         <input type="hidden" name="item_name" value="dietfit ${quantity }건" />
@@ -169,27 +166,14 @@ ${nums }
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success" name="approval_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel" name="cancel_url" readonly="readonly" />
         <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail" name="fail_url" readonly="readonly" />
-	    <input type="radio" name="chk_info" value="카카오페이" /> 카카오페이 <br />
-		<input type="text" name="partner_order_id" value="123"><br>
-        <input type="text" name="partner_user_id" value="dietfit"><br>
-        <input type="text" name="item_name" value="${quantity }"><br>
-        <input type="text" name="quantity" value="${quantity }"><br>
-        <input type="text" name="total_amount" value="${amount }"><br>
-        <input type="text" name="tax_free_amount" value="${taxfree }"><br>
-        <input type="text" name="delivery" value="${delivery}">
-        <input type="hidden" name="command" value="ready">
-        <input type="hidden" value="TC0ONETIME" name="cid" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/success.jsp" name="approval_url" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/cancel.jsp" name="cancel_url" readonly="readonly">
-        <input type="hidden" value="http://localhost:8080/dietfit/kakaoPay/fail.jsp" name="fail_url" readonly="readonly">
 	</form>
 	
 	<form id="accountPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="계좌 간편결제"> 계좌 간편결제
+	    <input type="radio" name="chk_info" value="easybank"> 계좌 간편결제
 	</form>
 	
 	<form id="normalPaymentForm" action="#" method="post">
-	    <input type="radio" name="chk_info" value="일반결제" onchange="showPaymentOptions()"> 일반 결제
+	    <input type="radio" name="chk_info" value="normal" onchange="showPaymentOptions()"> 일반 결제
 	    <div id="paymentOptions"></div>
 	</form>
 	
