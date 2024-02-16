@@ -63,18 +63,19 @@
 				ORDER BY bp.total_amount DESC
     	</select>
     	<select id="best2" resultType="product">
-    		SELECT ap.*
+    		SELECT ap.*, d.*
 			FROM all_product ap
-			    JOIN (
+			JOIN (
 			    SELECT companyid, category, category2, flavor, SUM(quantity) AS total_amount
 			    FROM buyproduct
 			    WHERE TO_CHAR(TO_DATE(setdate, 'YY/MM/DD'), 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - INTERVAL '7' DAY, 'YYYY-MM-DD')
 			    GROUP BY companyid, category, category2, flavor
-			    ) bp ON ap.companyid = bp.companyid
+			) bp ON ap.companyid = bp.companyid
 			    AND ap.category = bp.category
 			    AND ap.category2 = bp.category2
 			    AND ap.flavor = bp.flavor
-			    ORDER BY total_amount DESC
+			LEFT JOIN discount d ON ap.num = d.num
+			ORDER BY total_amount DESC
     	</select>
     	<select id="pro_img" resultType="pimg">
     		SELECT * FROM (
