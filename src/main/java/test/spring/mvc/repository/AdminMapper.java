@@ -63,6 +63,7 @@ public interface AdminMapper {
 	public void memberDelivery(@Param("id") String id, @Param("delivery") DeliveryDTO delivery);
 	public int findOrderId(@Param("id") String id, @Param("orderid") String orderid);
 	public String findproduct(@Param("id") String id, @Param("num") int num);
+	public int findquantity(@Param("id") String id, @Param("num") int num);
 	public int findPrice(String productid);
 	
 	public DeliveryDTO getUserDelivery9(String id);

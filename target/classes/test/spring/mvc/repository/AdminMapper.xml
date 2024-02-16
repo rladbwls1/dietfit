@@ -125,10 +125,10 @@
 	</insert>
 	<insert id="orderSummary" parameterType="test.spring.mvc.bean.OrdersumDTO">
     	INSERT INTO ordersum (
-    		id, orderid, point, couponid, discount, totalamount
+    		id, orderid, point, couponid, coupondiscount, totalamount
 		) VALUES (
 		    #{ordersum.id}, #{ordersum.orderid}, #{ordersum.point}, 
-		    #{ordersum.couponid}, #{ordersum.discount}, #{ordersum.totalamount}
+		    #{ordersum.couponid}, #{ordersum.coupondiscount}, #{ordersum.totalamount}
 		)
 	</insert>
 	<update id="changeCounpon" parameterType="String">
@@ -147,6 +147,9 @@
 	</select>
 	<select id="findproduct" resultType="String">
 		select product from ${id}_cart where num =#{num}
+	</select>
+	<select id="findquantity" resultType="int">
+		select quantity from ${id}_cart where num =#{num}
 	</select>
 	<select id="findPrice" resultType="int">
 		select price from all_product where companyid||category||category2||flavor=#{productid}

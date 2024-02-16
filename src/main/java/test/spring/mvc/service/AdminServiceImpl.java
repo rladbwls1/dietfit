@@ -230,25 +230,48 @@ public class AdminServiceImpl implements AdminService{
         return orderId;
     }
 
+	
 	@Override
-	public List<String> findproductId(String id, String nums) {
-		String[] numsArray = new String[0];
-		if(nums != null) {
-			numsArray = nums.split(",");
-		}
-        List<Integer> numsList = new ArrayList<>();
-        for (String num : numsArray) {
-            numsList.add(Integer.parseInt(num.trim()));
-        }
+	public Map<String, Integer> findproductIdQuantity(String id, String nums) {
+	    String[] numsArray = new String[0];
+	    if (nums != null) {
+	        numsArray = nums.split(",");
+	    }
+	    List<Integer> numsList = new ArrayList<>();
+	    for (String num : numsArray) {
+	        numsList.add(Integer.parseInt(num.trim()));
+	    }
 
-        List<String> productIds = new ArrayList<>();
-        for (int productNum : numsList) {
-            String product = mapper.findproduct(id, productNum);
-            String productId = mapper.getProductId(product);
-            productIds.add(productId);
-        }
-        return productIds;
-    }
+	    Map<String, Integer> productQuantities = new HashMap<>();
+	    for (int productNum : numsList) {
+	        String product = mapper.findproduct(id, productNum);
+	        String productId = mapper.getProductId(product);
+	        int quantity = mapper.findquantity(id, productNum); // 가정: getProductQuantity는 제품의 수량을 반환하는 메서드
+	        productQuantities.put(productId, quantity);
+	    }
+	    return productQuantities;
+	}
+
+	
+//	@Override
+//	public List<String> findproductId(String id, String nums) {
+//		String[] numsArray = new String[0];
+//		if(nums != null) {
+//			numsArray = nums.split(",");
+//		}
+//        List<Integer> numsList = new ArrayList<>();
+//        for (String num : numsArray) {
+//            numsList.add(Integer.parseInt(num.trim()));
+//        }
+//
+//        List<String> productIds = new ArrayList<>();
+//        for (int productNum : numsList) {
+//            String product = mapper.findproduct(id, productNum);
+//            String productId = mapper.getProductId(product);
+//            productIds.add(productId);
+//        }
+//        return productIds;
+//    }
 
 	@Override
 	public void createOrder(String id, OrderdetailDTO orderdetail) {
