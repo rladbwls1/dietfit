@@ -20,4 +20,5 @@ public class ReviewDTO {
 	private int recommend;			// 추천수
 	private String attatch;			// 파일명
 	private String boardname;		// 상품 이름 
+	private String filename;		// 상품 이미지
 }

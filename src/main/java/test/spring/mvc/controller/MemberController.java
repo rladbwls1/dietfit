@@ -102,6 +102,7 @@ public class MemberController {
 			}
 		}
 		model.addAttribute("best", dto);
+		System.out.println("2222222222222222222222222_"+dto);
 		return "/member/best2";
 	}
 	
