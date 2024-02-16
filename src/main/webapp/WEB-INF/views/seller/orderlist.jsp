@@ -268,7 +268,6 @@
 	                firstRow.find("td:eq(1), td:eq(8), td:eq(9), td:eq(10)").attr("rowspan", mergeCount + 1);
 	            }
 	        });
-	
 			</script>
     </body>
 </html>
