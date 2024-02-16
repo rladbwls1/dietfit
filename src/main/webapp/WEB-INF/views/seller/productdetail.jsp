@@ -56,7 +56,6 @@
 			    margin-bottom: 10px; /* 이미지 아래 여백 */
 			}
 			
-			
 			.modifybutton button[type="submit"] {
 				padding: 5px 10px;
 			    background-color: #007bff; /* 파란색 배경색 */
@@ -130,17 +129,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 상품목록
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="/seller/sales">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 정산
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/seller/sales">순매출현황</a>
-                                    <a class="nav-link" href="/seller/salesranking">판매량순위</a>
-                                </nav>
-                            </div>
                              <a class="nav-link" href="/seller/commercailhome">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 광고 신청
@@ -168,7 +160,7 @@
 								            <td>상품이름: ${product.product}</td>
 								        </tr>
 								        <tr>
-								            <td>가격: ${product.price}</td>
+								            <td>가격: <fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원</td>
 								        </tr>
 								        
 								        <tr>
@@ -198,8 +190,6 @@
 							        <div class="description">
 								        <table>
 									        <tr>
-									            <td>상세설명:</td>
-									            <td>${product.detail}</td>
 									            <td>
 									            	<c:forEach var="imagePath" items="${imagePaths}">
 											            <div>

@@ -54,6 +54,7 @@ public class MemberServiceImpl implements MemberService{
 	@Transactional
 	public void newMember(Member_basicDTO dto,int path) {
 		dto.setPw(encoder.encode(dto.getPw()));		//비밀번호 암호화
+		dto.setStatus(1);
 		mapper.newMember(dto);						//member_basic 테이블 레코드 추가 
 		mapper.newMemberstatus(dto.getId());		//authoroties 테이블 레코드 추가 
 		Member_detailDTO dto2=new Member_detailDTO();
@@ -77,6 +78,19 @@ public class MemberServiceImpl implements MemberService{
 		//배송정보 회원 테이블 생성
 		mapper.newDelivery(dto.getId());
 	}
+
+	@Override
+	public void newMember2(Member_basicDTO bdto, Member_detailDTO ddto, int path) {
+		bdto.setPw(encoder.encode(bdto.getPw()));		//비밀번호 암호화
+		bdto.setStatus(800);
+		mapper.newMember(bdto);							//member_basic 테이블 레코드 추가 
+		mapper.newMemberstatus(bdto.getId());			//authoroties 테이블 레코드 추가 
+		ddto.setId(bdto.getId());
+		ddto.setPath(path);
+		mapper.newMember2(ddto);
+	}
+
+
 
 	@Override
 	public int registerEmailCheck(String email) {
@@ -219,20 +233,35 @@ public class MemberServiceImpl implements MemberService{
 		int startRow=(currentPage-1)*pageSize+1;		//시작
 		int endRow=currentPage*pageSize;				//끝
 		int count=mapper.countAllProduct();
-		List<ProductDTO> products = mapper.findallproduct(startRow,endRow);
-	    if (products != null) {
-	        for (ProductDTO product : products) {
-	            ProductimgDTO img = mapper.findlistthum(product.getCompanyid(),product.getCategory(), product.getCategory2());
+		List<Map<String,Object>> list = mapper.findallproduct(startRow,endRow);
+	    if (list != null) {
+	        for (Map<String,Object> map : list) {
+	        	//썸네일
+	        	ProductimgDTO img = mapper.findlistthum(map.get("COMPANYID").toString(),map.get("CATEGORY").toString(), map.get("CATEGORY2").toString());
 	            if (img != null) {
 	                // 이미지 경로 직접 조합하여 설정
 	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
 	                                   img.getCategory() + img.getCategory2() +
 	                                   img.getFlavor() + "F" + img.getNum() +
 	                                   img.getExt();
-	               product.setImagePath(imagePath);
+	                map.put("IMAGEPATH",imagePath);
 	            }
+	            //기존 가격
+	            int oriprice=Integer.parseInt(map.get("PRICE").toString());
+	            //할인율
+	            int num=Integer.parseInt(map.get("NUM").toString());
+	            int sale=mapper.isSale(num);
+	            if(sale!=0) {
+	            	sale=mapper.getSaleByNum(num);
+	            }
+	            int price=oriprice*(100-sale)/100;
+	            map.put("SALE", sale);
+	            map.put("PRICE", price);
+	            map.put("ORIPRICE", oriprice);
 	        }
-	        model.addAttribute("products", products);
+	        
+	        
+	        model.addAttribute("products", list);
 	    }
 	    //페이지
 		int pageBlock=10;
@@ -253,7 +282,7 @@ public class MemberServiceImpl implements MemberService{
 	public List<String> getProductDetail(String companyid, String category, String category2, String flavor, Model model) {
 		mapper.countUp(companyid,category,category2);
 		
-		ProductDTO product = sel1mapper.findproductdetail(companyid, category, category2, flavor);
+		Map<String,Object> product = mapper.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
         List<ProductimgDTO> thumbnails = sel1mapper.findthumimg(companyid, category, category2);
@@ -281,7 +310,21 @@ public class MemberServiceImpl implements MemberService{
                           image.getExt();
             imagePaths.add(path);
         }
-
+        //기존 가격
+        int oriprice=Integer.parseInt(product.get("PRICE").toString());
+        //할인율
+        int num=Integer.parseInt(product.get("NUM").toString());
+        int sale=mapper.isSale(num);
+        if(sale!=0) {
+        	sale=mapper.getSaleByNum(num);
+        }
+        int price=oriprice*(100-sale)/100;
+        product.put("SALE", sale);
+        product.put("PRICE", price);
+        product.put("ORIPRICE", oriprice);
+        
+        
+        
         // 모델에 추가
         model.addAttribute("product", product);
         model.addAttribute("thumbnailPaths", thumbnailPaths);

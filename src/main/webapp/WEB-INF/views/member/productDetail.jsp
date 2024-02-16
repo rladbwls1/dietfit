@@ -17,15 +17,20 @@
     	</tr>	
         <tr>
             <td>상품이름:</td>
-            <td>${product.product}</td>
+            <td>${product.PRODUCT}</td>
         </tr>
         <tr>
             <td>가격:</td>
-            <td>${product.price}</td>
+           	<td>
+				<c:if test="${product.SALE!=0}">
+				<span style="color:gray;text-decoration: line-through;">${product.ORIPRICE}</span><br/><span style="color:red">${product.SALE}%</span> 
+				</c:if>
+				${product.PRICE }
+			</td>
         </tr>
         <tr>
             <td>상세설명:</td>
-            <td>${product.detail}</td>
+            <td>${product.DETAIL}</td>
             <td>
             	<c:forEach var="imagePath" items="${imagePaths}">
 		            <div>
@@ -38,10 +43,10 @@
             <td>배송정보:</td>
             <td>
 				<c:choose>
-			        <c:when test="${product.delivery == 0}">
+			        <c:when test="${product.DELIVERY == 0}">
 			            일반배송, 정기배송
 			        </c:when>
-			        <c:when test="${product.delivery == 1}">
+			        <c:when test="${product.DELIVERY == 1}">
 			            일반배송
 			        </c:when>
 			        <c:otherwise>
@@ -59,15 +64,15 @@
         <tr>
             <td>유통기한:</td>
             <td>
-            	<fmt:formatDate value="${product.expiry}" pattern="yyyy-MM-dd"/>
+            	<fmt:formatDate value="${product.EXPIRY}" pattern="yyyy-MM-dd"/>
             </td>
         </tr>
         <tr>
             <td colspan="2">
                 <form action="/sellerchat/chat" method="post">
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input type="hidden" name="product" value="${product.product}">
-                    <input type="hidden" name="companyid" value="${product.companyid}">
+                    <input type="hidden" name="product" value="${product.PRODUCT}">
+                    <input type="hidden" name="companyid" value="${product.COMPANYID}">
                     <button type="submit">상품 문의</button>
                 </form>
             </td>

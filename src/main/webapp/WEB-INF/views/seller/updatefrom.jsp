@@ -139,17 +139,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 상품목록
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="/seller/sales">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 정산
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/seller/sales">순매출현황</a>
-                                    <a class="nav-link" href="/seller/salesranking">판매량순위</a>
-                                </nav>
-                            </div>
                             <a class="nav-link" href="/seller/commercailhome">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 광고 신청
@@ -276,9 +269,9 @@
 						
 							        <div class="row">
 							            <div class="column">
-							                <label for="detail">설명</label>
-							                <textarea name="detail" required>${product.detail}</textarea>
-							            </div>
+										    <label for="detail">설명</label>
+										    <textarea name="detail" required>${product.companyid}${product.category}${product.category2}${product.flavor}${product.detail}</textarea>
+										</div>
 							        </div>
 						        
 							        <div class="row">
@@ -352,6 +345,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/resources/js/scripts.js"></script>
+        
         <script>
 		    $(document).ready(function() {
 		        // 이미지 삭제 버튼 클릭 이벤트
@@ -375,6 +369,7 @@
 		            });
 		        });
 		    });
+		    
 		</script>
 	     <script>
 	        function showSmallCategory() {

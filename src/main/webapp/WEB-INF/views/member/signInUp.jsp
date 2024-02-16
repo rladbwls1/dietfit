@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,7 +53,7 @@
 	            <div class="input-group">
 	              <i class='bx bx-mail-send'></i>
 	              <input type="email" name="email" id="email" oninput="checkEmail()" placeholder="Email">
-	              <button type="button" onclick="sendEmail()"> 인증번호 받기</button>
+	              <button type="button" onclick="return sendEmail()"> 인증번호 받기</button>
 	              <span style="display:none;" id="verifiedEmail">
 	              	<input type="text" name="emailkey" id="emailkey" placeholder="인증번호">
 	              	<button type="button" onclick="verifiedEmail()">인증하기</button>
@@ -72,6 +72,14 @@
               </span>
               <b onclick="toggle()" class="pointer">
                 로그인
+              </b>
+            </p>
+            <p>
+              <span>
+                판매자로 가입하고 싶으신가요?
+              </span>
+              <b onclick="toSeller()" class="pointer">
+                판매자로 가입하기
               </b>
             </p>
           </div>

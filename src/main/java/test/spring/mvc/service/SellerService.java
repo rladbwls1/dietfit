@@ -1,4 +1,5 @@
 package test.spring.mvc.service;
+import java.util.Date;
 import java.util.List;
 import org.springframework.ui.Model;
 import test.spring.mvc.bean.AllcouponDTO;
@@ -28,4 +29,8 @@ public interface SellerService {
     public void chatreport(ChatreportDTO chatreportdto);
     public void chatreportdelete(int roomnum);
     public String findproductbycompanyid(String product);
+    public List<DiscountDTO> findDiscountInfoByNum(int num);
+    public void deletediscount();
+    public void update2discount(DiscountDTO discountDTO);
+    boolean checkDuplicateDiscount(String num);
 }

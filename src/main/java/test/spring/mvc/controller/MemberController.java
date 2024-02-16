@@ -168,6 +168,13 @@ public class MemberController {
 		service.newMember(dto,path);
 		return "redirect:/member/customLogin";
 	}
+	//판매자 회원가입 
+	@RequestMapping("registerPro2")
+	public String registerPro2(Member_basicDTO bdto,Member_detailDTO ddto) {
+		int path=99;
+		service.newMember2(bdto,ddto,path);
+		return "redirect:/member/customLogin";
+	}
 	
 	@RequestMapping("idCheck")
 	public @ResponseBody boolean idCheck(String id) {
@@ -549,4 +556,9 @@ public class MemberController {
 		model.addAttribute("myPoint",service.getPoint(pri.getName()));
 		return "member/myPoint";
 	}
+	@RequestMapping("signInUp2")
+	public String signInUp2() {
+		return "member/signInUp2";
+	}
+	
 }

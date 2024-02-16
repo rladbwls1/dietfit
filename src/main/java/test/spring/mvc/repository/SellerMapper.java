@@ -1,5 +1,6 @@
 package test.spring.mvc.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -39,4 +40,8 @@ public interface SellerMapper {
     public void chatreportdelete(int roomnum);
     public List<ProductDTO> memberproductall();
     public String findproductbycompanyid(String product);
+    public List<DiscountDTO> findDiscountInfoByNum(int num);
+    public void deletediscount();
+    public void update2discount(DiscountDTO discountDTO);
+    public int countByNum(@Param("num") String num);
 }
