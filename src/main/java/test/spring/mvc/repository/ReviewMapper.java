@@ -7,12 +7,9 @@ import test.spring.mvc.bean.RecommendDTO;
 import test.spring.mvc.bean.ReviewDTO;
 
 public interface ReviewMapper {
-<<<<<<< HEAD
 	// 府轰 累己 惑前
 	public ReviewDTO writeproduct(ReviewDTO rdto);
 	// 府轰 府胶飘
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	public List<ReviewDTO> listimg();
 	
 	// 府轰 臂 历厘

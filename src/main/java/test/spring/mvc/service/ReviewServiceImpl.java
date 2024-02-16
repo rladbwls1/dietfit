@@ -56,7 +56,6 @@ public class ReviewServiceImpl implements ReviewService{
 	    return uuid; // 저장된 파일명 반환 (UUID + 확장자)
 	}
 
-<<<<<<< HEAD
 	@Override
 	public ReviewDTO writeproduct(ReviewDTO rdto) {
 		return mapper.writeproduct(rdto);
@@ -75,6 +74,4 @@ public class ReviewServiceImpl implements ReviewService{
 	public void bye(RecommendDTO rdto) {
 		mapper.bye(rdto);
 	}
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 }

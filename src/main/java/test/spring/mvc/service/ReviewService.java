@@ -10,11 +10,8 @@ import test.spring.mvc.bean.RecommendDTO;
 import test.spring.mvc.bean.ReviewDTO;
 
 public interface ReviewService {
-<<<<<<< HEAD
 	// 府轰 累己 惑前
 	public ReviewDTO writeproduct(ReviewDTO rdto);
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	// 府轰 府胶飘 
 	public List<ReviewDTO> listimg();
 	// 府轰 臂 累己

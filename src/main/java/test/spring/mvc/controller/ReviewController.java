@@ -35,12 +35,8 @@ public class ReviewController {
 	@RequestMapping("write")
 	public String write(Principal pri, ReviewDTO rdto,Model model) {
 		String id=pri.getName();
-<<<<<<< HEAD
 		ReviewDTO review = service.writeproduct(rdto);
 		model.addAttribute("review",review);
-=======
-		
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 		model.addAttribute("rdto",rdto);
 		model.addAttribute("id",id);
 		return "review/write";
@@ -80,7 +76,6 @@ public class ReviewController {
 	    }
 		return "redirect:/member/myOrder"; 
 	}
-<<<<<<< HEAD
 	
 	// µûºÀ Ãß°¡ 
 	@RequestMapping("Good")
@@ -97,7 +92,5 @@ public class ReviewController {
 		
 		return "";
 	}
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
 }
