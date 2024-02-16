@@ -86,6 +86,10 @@ function checkEmail(){
 //메일 전송
 function sendEmail(){
 	var email=$('#email').val();
+	if(email==null||email==""||email.indexOf('@') == -1){ 
+		$('#email_check').text("이메일을 입력해주세요.").css("color","red");
+		return false;
+	}
 	if($('#emaill').val()=="check"){
 		$('#email_check').text("인증 번호를 발송하였습니다. 인증을 완료해주세요.").css("color","red");
 		$.ajax({
@@ -179,4 +183,9 @@ function register(){
 	
 	return result;
 	
+}
+
+
+function toSeller(){
+	window.location.href="signInUp2";
 }

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="test.spring.mvc.repository.ReviewMapper">
+<<<<<<< HEAD
 	<!-- 리뷰 글 작성 -->
 	<select id ="writeproduct" parameterType="test.spring.mvc.bean.ReviewDTO" resultType="test.spring.mvc.bean.ReviewDTO">
 		SELECT ap.boardname,
@@ -20,6 +21,9 @@
 			FETCH FIRST ROW ONLY
 	</select>
 	<!-- 리뷰 전체 목록 -->
+=======
+	
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
 		SELECT r.*, a.*, ap.boardname
 			FROM review r

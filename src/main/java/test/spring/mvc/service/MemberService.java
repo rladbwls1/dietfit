@@ -16,6 +16,8 @@ import test.spring.mvc.bean.ProductDTO;
 public interface MemberService {
 	//회원가입
 	public void newMember(Member_basicDTO dto,int path);
+	//판매자 회원가입
+	public void newMember2(Member_basicDTO bdto,Member_detailDTO ddto ,int path);
 	//이미 가입된 이메일이면 1, 아니면 0
 	public int registerEmailCheck(String email);
 	//이미 가입된 아이디면 1, 아니면 0
@@ -64,9 +66,11 @@ public interface MemberService {
 	//관심상품에서 선택상품의 폴더 변경
 	public void changeFolder(String checkedFolder,String products,String id);
 	//장바구니에 하나의 상품 추가 
-	public void addCartOne(String id,String product,int quantity,int price);
+	public void addCartOne(String id,String product,int quantity,int price, int delivery);
 	//관심목록에서 여러 상품을 장바구니에 추가하는 경우
 	public void addCartMore(String id,String product);
+	//장바구니 담기
+	public void miniCart(int num,Model model);
 	//장바구니 목록 가져오기+썸네일
 	public void getCartList(Model model, String id);
 	//장바구니 수량 변경

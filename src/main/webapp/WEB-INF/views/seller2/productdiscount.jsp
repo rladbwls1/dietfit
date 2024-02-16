@@ -71,17 +71,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 상품목록
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="/seller/sales">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 정산
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/seller/sales">순매출현황</a>
-                                    <a class="nav-link" href="/seller/salesranking">판매량순위</a>
-                                </nav>
-                            </div>
                              <a class="nav-link" href="/seller/commercailhome">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 광고 신청
@@ -107,14 +100,17 @@
 							                <th>카테고리</th>
 							                <th>재고</th>
 							                <th>유통기한</th>
-							                <th>가격</th>
 							                <th>할인</th>
+							                <th>가격</th>
+							                <th>상세</th>
 							            </tr>
                                     </thead>
                                     <tbody>
 							            <c:forEach var="product" items="${companyProducts}">
 							                <tr>
-							                    <td>${product.product}</td>
+							                    <td>
+							                    	${product.product}
+							                    </td>
 							                    <c:choose>
 								                    <c:when test="${product.category == 11}">
 								                         <td>도시락</td>
@@ -189,12 +185,31 @@
 								                         <td>음료 기타</td>
 								                    </c:when>
 								                </c:choose>
-							                    <td>${product.stock}</td>
+							                    <td>
+							                    	${product.stock}
+							                    </td>
 							                    <td>
 							                        <fmt:formatDate value="${product.expiry}" pattern="yyyy-MM-dd"/>
 							                    </td>
-							                    <td>${product.price}</td>
 							                    <td><button onclick="openDiscountFormPopup('${product.num}')">할인율 설정</button></td>
+												<td><fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원</td>
+						                    	<td>
+												    <c:forEach var="discount" items="${discountInfoList}">
+												        <!-- 할인 정보의 num과 상품의 num이 일치하는 경우에만 출력 -->
+												        <c:if test="${discount.num eq product.num}">
+												            <c:set var="discountedPrice" value="${product.price - (product.price * discount.sale / 100)}" />
+												            <fmt:formatNumber value="${product.price}" maxFractionDigits="0"/>원 ➔
+												            <fmt:formatNumber value="${discountedPrice}" maxFractionDigits="0"/>원
+												            (${discount.sale}% 할인)
+												            <br>
+												            <!-- startr -->
+												            <fmt:formatDate value="${discount.startr}" pattern="yyyy-MM-dd"/>
+												            -
+												            <!-- endr -->
+												            <fmt:formatDate value="${discount.endr}" pattern="yyyy-MM-dd"/> 
+												        </c:if>
+												    </c:forEach>
+												</td>
 							                </tr>
 							            </c:forEach>
 							        </tbody>

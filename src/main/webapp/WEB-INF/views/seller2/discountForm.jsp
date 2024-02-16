@@ -73,8 +73,8 @@
         <label for="start">시작날짜</label>
         <input type="date" id="start" name="start" required>
 
-        <label for="end">마감날짜</label>
-        <input type="date" id="end" name="end" required>
+        <label for="endr">마감날짜</label>
+        <input type="date" id="endr" name="endr" required>
 
         <label for="sale">할인율(%)</label>
         <input type="number" id="sale" name="sale" min="0" max="100" required>

@@ -4,9 +4,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
+import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -33,4 +36,9 @@ public interface Admin1Service{
 	public List<ProductDTO> reco();
 	public List<ProductinfoDTO> food(int minkcal, int maxkcal, Model model, List<Integer> category, HttpServletRequest request);
 	public List<ProductDTO> food_product(String productid);
+	public void addCartOne(String id,String product,int quantity,int price, int delivery);
+	public void rdCart(String id, String num, int check);
+	public List<CommercailDTO> comm();
+	public int commCheck(int admincheck, int num);
+	public List<DiscountDTO> discountNum();
 }

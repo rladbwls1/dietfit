@@ -180,25 +180,25 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,
-			String nicaddr, String phone, String receiver, String address1, String address2, String postcode) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,int delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
 //		model.addAttribute("id", pri.getName());
-		model.addAttribute("delivery", mapper.getUserDelivery9(pri.getName()));
+		model.addAttribute("delivery9", mapper.getUserDelivery9(pri.getName()));
 		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
 		model.addAttribute("nums",nums);
 		model.addAttribute("orderid", orderid);
 		model.addAttribute("amount", amout);
 		model.addAttribute("quantity", totalQuantity);
+		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
-		model.addAttribute("nicaddr", nicaddr);
-		model.addAttribute("phone", phone);
-		model.addAttribute("receiver", receiver);
-		model.addAttribute("address1", address1);
-		model.addAttribute("address2", address2);
-		model.addAttribute("postcode", postcode);
+//		model.addAttribute("nicaddr", nicaddr);
+//		model.addAttribute("phone", phone);
+//		model.addAttribute("receiver", receiver);
+//		model.addAttribute("address1", address1);
+//		model.addAttribute("address2", address2);
+//		model.addAttribute("postcode", postcode);
 		
 		String[] numsArray = new String[0];
 		if(nums != null) {
@@ -209,6 +209,7 @@ public class DietfitController {
              cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
         }
         model.addAttribute("cartList",cartList);
+        System.out.println(mapper.getUserDelivery9(pri.getName()));
 		return "admin/order";
 	}
 	
@@ -270,13 +271,14 @@ public class DietfitController {
 	@RequestMapping("kakaopaygo")
 	public @ResponseBody String kakaopaygo(Principal pri, Model model, String nums,
 			String address1, String address2, String postcode, String phone, String nicaddr, String receiver,
-			String couponid, int usepoint, int discount,
+			String couponid, int usepoint, int coupondiscount,
 			@RequestParam String partner_order_id,
 	        @RequestParam String partner_user_id,
 	        @RequestParam String item_name,
 	        @RequestParam Integer quantity,
 	        @RequestParam Integer total_amount,
-	        @RequestParam Integer tax_free_amount) {
+	        @RequestParam Integer tax_free_amount,
+	        @RequestParam String chk_info) {
 		//결제과정에서 null인경우 결제가 이루어지면 안되기 때문에 int가 아니라 Integer,
 		//int는 null을 허용하지 않지만, Integer은 null을 허용함
 		
@@ -285,25 +287,59 @@ public class DietfitController {
 		String orderid = partner_order_id;
 		
 		try {
-			List<String> productIds = aservice.findproductId(id, nums);
-			System.out.println(productIds);
-			
-//			개인 orderdetail 테이블 저장
-			for(String productId: productIds) {
+			Map<String, Integer> productQuantities = aservice.findproductIdQuantity(id, nums);
+
+			// 맵에서 제품 ID를 가져와서 주문 상세를 생성
+			for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+			    String productId = entry.getKey();
+			    Integer productquantity = entry.getValue();
+			    
 				OrderdetailDTO orderdetail = new OrderdetailDTO();
 				orderdetail.setOrderid(orderid);
 				orderdetail.setPurdate(new Date());
-				orderdetail.setQuantity(quantity);
+				orderdetail.setQuantity(productquantity);
 				orderdetail.setPrice(aservice.findprice(productId));
 				orderdetail.setDelivery(0); //if문으로 정기배송일 시 1, 아닐시 0으로 수정
-				orderdetail.setPay(10); //카카오페이일시에만 10으로 수정
+				
+				//결제 정보
+				if ("kakaopay".equals(chk_info)) {
+	                orderdetail.setPay(10);
+	             }else if("easybank".equals(chk_info)) {
+	                orderdetail.setPay(20);
+	             }else if("creditcard".equals(chk_info)) {
+	                orderdetail.setPay(31);
+	             }else if("unaccount".equals(chk_info)) {
+	                orderdetail.setPay(32);
+	             }else if("phone".equals(chk_info)) {
+	                orderdetail.setPay(33);
+	             }
+				
 				orderdetail.setProductid(productId);
 				orderdetail.setMemberid(id);
 				
-				System.out.println("OrderdetailDTO 정보: " + orderdetail);
+				//discount는 할인된 가격
+//				int oriprice=aservice.findprice(productId); //12000
+				ProductDTO pdto=new ProductDTO();
+				pdto.setCompanyid(productId.substring(0, 2));
+				pdto.setCategory(productId.substring(2, 4));
+				pdto.setCategory2(productId.substring(4, 6));
+				pdto.setFlavor(productId.substring(6, 8));
+				String product=mmapper.getProductnameByProductcode(pdto);
+				int num=mmapper.getNumByProduct(product);
 				
+				int sale=mmapper.isSale(num);
+			    if(sale!=0) {
+					sale=mmapper.getSaleByNum(num);
+				}
+//				int price=oriprice*(100-sale)/100;
+//				orderdetail.setPrice(price); //8400
+				orderdetail.setDiscount(sale);
+				
+				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				aservice.createOrder(id, orderdetail);
-				aservice.changeCoupon(orderid, couponid);
+			}
+			aservice.changeCoupon(id, couponid);
+			if(usepoint != 0) {
 				mservice.usePoint(id, orderid, usepoint);
 			}
 			
@@ -313,7 +349,7 @@ public class DietfitController {
 			ordersum.setOrderid(orderid);
 			ordersum.setPoint(usepoint);
 			ordersum.setCouponid(couponid);
-			ordersum.setDiscount(discount);
+			ordersum.setCoupondiscount(coupondiscount);
 			ordersum.setTotalamount(total_amount);
 			System.out.println("OrdersumDTO 정보 :" + ordersum);
 			aservice.createOrderSum(ordersum);
@@ -379,6 +415,7 @@ public class DietfitController {
             return "admin/order";
         }
 	}
+	
 	
 	@RequestMapping("kakaopay/success")
 	public String success() {

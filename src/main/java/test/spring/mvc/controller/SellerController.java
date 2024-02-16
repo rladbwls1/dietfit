@@ -4,6 +4,7 @@ import java.io.File;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -27,9 +28,11 @@ import test.spring.mvc.bean.ChatDTO;
 import test.spring.mvc.bean.ChatreportDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
+import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.service.Seller1Service;
+import test.spring.mvc.service.SellerSaleServiceImpl;
 import test.spring.mvc.service.SellerService;
 
 
@@ -41,12 +44,51 @@ public class SellerController {
 	private SellerService service;
 	@Autowired
 	private Seller1Service service2;
+	@Autowired
+    private SellerSaleServiceImpl service3;
 	
 	@RequestMapping("/home")
 	public String home(Principal pri, Model model) {
 		String id = pri.getName(); // 현재 사용자의 ID
 	    model.addAttribute("id", id);
 	    String companyid = service.findcompanyid(id);
+	    
+		// 판매 매출액
+		Integer todaySales = service3.getTodaySales(companyid);
+		Integer weeklySales = service3.getWeeklySales(companyid);
+		Integer monthlySales = service3.getMonthlySales(companyid);
+		
+		// 순수 매출액
+		Integer todayNetSales = service3.todayNetSales(companyid);
+		Integer weeklyNetSales = service3.weeklyNetSales(companyid);
+		Integer monthlyNetSales = service3.monthlyNetSales(companyid);
+		
+		// 수수료 
+		Integer todayFee = service3.todayFee(companyid);
+		Integer weeklyFee = service3.weeklyFee(companyid);
+		Integer monthlyFee = service3.monthlyFee(companyid);
+	    
+		List<OrderdetailDTO> dailySalesRank = service3.dailySalesRank(companyid);
+		List<OrderdetailDTO> weeklySalesRank =service3.weeklySalesRank(companyid);
+		List<OrderdetailDTO> monthlySalesRank =service3.monthlySalesRank(companyid);
+		List<OrderdetailDTO> allSalesRank =service3.allSalesRank(companyid);
+		
+	    model.addAttribute("dailySalesRank", dailySalesRank);
+	    model.addAttribute("weeklySalesRank", weeklySalesRank);
+	    model.addAttribute("monthlySalesRank", monthlySalesRank);
+	    model.addAttribute("allSalesRank", allSalesRank);
+		
+	    model.addAttribute("todaySales", todaySales);
+	    model.addAttribute("weeklySales", weeklySales);
+	    model.addAttribute("monthlySales", monthlySales);
+	    
+	    model.addAttribute("todayNetSales", todayNetSales);
+	    model.addAttribute("weeklyNetSales", weeklyNetSales);
+	    model.addAttribute("monthlyNetSales", monthlyNetSales);
+	    
+	    model.addAttribute("todayFee", todayFee);
+	    model.addAttribute("weeklyFee", weeklyFee);
+	    model.addAttribute("monthlyFee", monthlyFee);
 	    model.addAttribute("companyid", companyid);
 		return "sellermain";
 	}
@@ -149,7 +191,16 @@ public class SellerController {
 	@RequestMapping("/productdiscount")
 	public String productdiscount(Model model,Principal pri) {
 		model.addAttribute("id", pri.getName());
-		model.addAttribute("companyProducts", service.getCompanyProduct(pri.getName()));
+		service.deletediscount();
+		List<ProductDTO> companyProducts = service.getCompanyProduct(pri.getName());
+	    model.addAttribute("companyProducts", companyProducts);
+	    
+	    List<DiscountDTO> discountInfoList = new ArrayList<>();
+	    for(ProductDTO product : companyProducts) {
+	    	List<DiscountDTO> discountInfo = service.findDiscountInfoByNum(product.getNum());
+	        discountInfoList.addAll(discountInfo);
+	    }
+	    model.addAttribute("discountInfoList", discountInfoList);
 		return "/seller2/productdiscount";
 	}
 	@RequestMapping("/discountForm")
@@ -161,7 +212,7 @@ public class SellerController {
 	
 	@PostMapping("/addDiscount")
     public String addDiscount(@RequestParam("start") String start,
-                              @RequestParam("end") String end,
+                              @RequestParam("endr") String endr,
                               @RequestParam("sale") int sale,
                               @RequestParam("num") String num,
                               Principal pri, Model model) {
@@ -171,7 +222,7 @@ public class SellerController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date startDate = dateFormat.parse(start);
-            Date endDate = dateFormat.parse(end);
+            Date endDate = dateFormat.parse(endr);
 
             discountDTO.setStartr(startDate);
             discountDTO.setEndr(endDate);
@@ -179,9 +230,13 @@ public class SellerController {
             e.printStackTrace(); // 또는 로그 등으로 기록
         }
         discountDTO.setSale(sale);
-
-        // 할인 정보를 데이터베이스에 추가
-        service.updatediscount(discountDTO);
+        
+     // 중복을 확인하여 적절한 메소드 호출
+        if (service.checkDuplicateDiscount(num)) {
+            service.update2discount(discountDTO); // 중복되면 업데이트
+        } else {
+            service.updatediscount(discountDTO); // 중복되지 않으면 추가
+        }
         String id = pri.getName();
 		model.addAttribute("id", id);
         return "/seller2/addDiscount";
@@ -227,7 +282,7 @@ public class SellerController {
 		String id = pri.getName();
 		model.addAttribute("id", id);
 		service.sellermodifyupdate(Member_basicDTO);
-		return "/seller2/mypage";
+		return "redirect:/seller/modify";
 	}
 	@RequestMapping("/addStock")
 	public String addStock(Principal pri, Model model, ProductDTO productdto) {

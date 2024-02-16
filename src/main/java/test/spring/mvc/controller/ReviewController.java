@@ -35,8 +35,12 @@ public class ReviewController {
 	@RequestMapping("write")
 	public String write(Principal pri, ReviewDTO rdto,Model model) {
 		String id=pri.getName();
+<<<<<<< HEAD
 		ReviewDTO review = service.writeproduct(rdto);
 		model.addAttribute("review",review);
+=======
+		
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 		model.addAttribute("rdto",rdto);
 		model.addAttribute("id",id);
 		return "review/write";
@@ -68,6 +72,7 @@ public class ReviewController {
 
 	            if (uuid != null) {
 	                adto.setAttatch(uuid); // 파일명(UUID) 설정
+	                System.out.println("파일이름========="+uuid);
 	                adto.setId(id);	
 	                service.writeimg(adto); // 이미지 정보 저장
 	            }
@@ -75,6 +80,7 @@ public class ReviewController {
 	    }
 		return "redirect:/member/myOrder"; 
 	}
+<<<<<<< HEAD
 	
 	// 따봉 추가 
 	@RequestMapping("Good")
@@ -91,5 +97,7 @@ public class ReviewController {
 		
 		return "";
 	}
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 
 }

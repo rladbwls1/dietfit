@@ -73,7 +73,7 @@ public interface MemberMapper {
 
 	public int countAllProduct();
 	//모든 상품 중, 페이지에 맞게 10개 가져오기
-	public List<ProductDTO> findallproduct(@Param("startRow") int startRow, 
+	public List<Map<String,Object>> findallproduct(@Param("startRow") int startRow, 
 										   @Param("endRow") int endRow);
 	//썸네일 가져오기
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
@@ -83,6 +83,11 @@ public interface MemberMapper {
 	public void countUp(@Param("companyid") String companyid, 
 	     	  			@Param("category") String category,
 	     	  			@Param("category2") String category2);
+    // 상품상세
+    public Map<String,Object> findproductdetail(@Param("companyid") String companyid, 
+                                @Param("category") String category, 
+                                @Param("category2") String category2, 
+                                @Param("flavor") String flavor);
 	//관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
@@ -115,13 +120,15 @@ public interface MemberMapper {
 	public List<ProductDTO> getProductByCompanyidCateCate2(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
 							     	  @Param("category2") String category2);
+	//num으로 product 정보, 할인 정보 가져오기
+	public Map<String,Object> getMiniCartByNum(int num);
 	//장바구니에 이미 있는 상품인지 확인
 	public int isCart(@Param("id")String id, @Param("product") String product);
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
-			@Param("quantity")int quantity, @Param("price")int price);
+			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
 	//장바구니 목록 가져오기
-	public List<CartDTO> getCartList(String id);
+	public List<Map<String,Object>> getCartList(String id);
 	//장바구니 개수 수정
 	public void updateCart(@Param("id")String id, @Param("quantity")int quantity, @Param("num")int num );
 	//장바구니 목록 삭제
@@ -140,6 +147,11 @@ public interface MemberMapper {
 	public void setDefaultDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
 	//사용자 배송지 삭제
 	public void deleteDelivery(@Param("id")String id, @Param("nicaddr")String nicaddr);
+	//상품명으로 게시글 번호 가져오기
+	public int getNumByProduct(String product);
+	//게시글 번호로 할인율 가져오기
+	public int isSale(int num);
+	public int getSaleByNum(int num);
 	
 	//쿠폰
 	//쿠폰개수
