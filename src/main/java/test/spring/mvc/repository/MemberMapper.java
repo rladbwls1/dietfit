@@ -22,6 +22,7 @@ public interface MemberMapper {
 	//회원가입시 basic, detail, 권한
 	public void newMember(Member_basicDTO dto);
 	public void newMember2(Member_detailDTO dto);
+	public void newMember3(Member_detailDTO dto);
 	public void newMemberstatus(String id);
 	
 	//회원가입시 중복 이메일, 아이디 
@@ -176,6 +177,8 @@ public interface MemberMapper {
 	//주문번호와 상품코드로 주문상세 가져오기
 	public OrderdetailDTO getOrderDetailByOrderidAndProductid(@Param("id")String id, 
 			@Param("orderid")String orderid,@Param("productid")String productid);
+	//주문상세 화면에서 구매한 상품의 리뷰 작성 여부 판단
+	public int isReviewByOrderidAndProductcode(ProductDTO odto);
 	
 	//적립금
 	//구매확정 orderdetail 컬럼 수정

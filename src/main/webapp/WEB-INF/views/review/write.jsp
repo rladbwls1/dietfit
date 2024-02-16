@@ -64,13 +64,14 @@
 	</head>
 	<body>
 		${review.boardname}<br>
-		<img src="/resources/p_img/${review.filename }">
+		<img src="/resources/p_img/${review.filename }" width="150" >
 		<form action="writepro" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<input type="hidden" name="companyid" value="${rdto.companyid}">
 			<input type="hidden" name="category" value="${rdto.category}">
 			<input type="hidden" name="category2" value="${rdto.category2}">
 			<input type="hidden" name="flavor" value="${rdto.flavor }">
+			<input type="hidden" name="orderid" value="${rdto.orderid }">
 			<table>
 				<tr>
 					<td>리뷰내용</td>
@@ -89,7 +90,7 @@
 					<td>별점</td>
 					<td>
 						<div class="rating">
-				            <input id="star5" name="starscore" type="radio" value="5" class="star"/>
+				            <input id="star5" name="starscore" type="radio" value="5" class="star" checked/>
 				            <label for="star5" class="star">&#9733;</label>
 				            <input id="star4" name="starscore" type="radio" value="4" class="star"/>
 				            <label for="star4" class="star">&#9733;</label>

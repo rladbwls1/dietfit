@@ -62,16 +62,13 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public void good(RecommendDTO recdto) {
-		mapper.good(recdto);
+	public void good(RecommendDTO dto) {
+		mapper.upRecommend(dto);
+		mapper.addRecommend(dto);
 	}
 
 	@Override
-	public void goodreview(ReviewDTO rdto) {
-		mapper.goodreview(rdto);
-	}
-	@Override
-	public void bye(RecommendDTO rdto) {
-		mapper.bye(rdto);
+	public void bye(RecommendDTO dto) {
+		mapper.removeRecommend(dto);
 	}
 }
