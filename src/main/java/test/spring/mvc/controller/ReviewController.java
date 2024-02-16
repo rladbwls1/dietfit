@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import test.spring.mvc.bean.AllimgDTO;
 import test.spring.mvc.bean.RecommendDTO;
 import test.spring.mvc.bean.ReviewDTO;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.service.ReviewService;
 
 @Controller
@@ -22,21 +23,32 @@ import test.spring.mvc.service.ReviewService;
 public class ReviewController {
 	
 	@Autowired
+	private ReviewMapper mapper;
+	@Autowired
     private ReviewService service;
 	
 	@RequestMapping("list")
-    public String list(Model model) {
+    public String list(Model model,Principal pri) {
+		if(pri!=null) {
+			model.addAttribute("recommendNums",mapper.getRecommend(pri.getName()));
+		}
         List<ReviewDTO> review = service.listimg();
         model.addAttribute("review", review);
-        System.out.println(review);
         return "review/list";
     }
+	@RequestMapping("myReview")
+	public String myReview(Model model,Principal pri) {
+		model.addAttribute("review", mapper.getListById(pri.getName()));
+		return "review/myReview";
+	}
 	
 	@RequestMapping("write")
 	public String write(Principal pri, ReviewDTO rdto,Model model) {
 		String id=pri.getName();
 		ReviewDTO review = service.writeproduct(rdto);
+		//상품명과 썸네일 이미지 이름
 		model.addAttribute("review",review);
+		//상품코드와 주문번호
 		model.addAttribute("rdto",rdto);
 		model.addAttribute("id",id);
 		return "review/write";
@@ -68,7 +80,7 @@ public class ReviewController {
 
 	            if (uuid != null) {
 	                adto.setAttatch(uuid); // 파일명(UUID) 설정
-	                System.out.println("파일이름========="+uuid);
+	                //System.out.println("파일이름========="+uuid);
 	                adto.setId(id);	
 	                service.writeimg(adto); // 이미지 정보 저장
 	            }
@@ -79,17 +91,22 @@ public class ReviewController {
 	
 	// 따봉 추가 
 	@RequestMapping("Good")
-	public String Good(Principal pri, ReviewDTO rdto, RecommendDTO redto1){
+	public String Good(Principal pri, int num){
 		String id=pri.getName();
-		System.out.println("아이디 "+id);
-		service.good(redto1);
-///		service.goodreview(redto);
+		RecommendDTO dto=new RecommendDTO();
+		dto.setId(id);
+		dto.setReviewnum(num);
+		service.good(dto);
 		return "redirect:/review/list";
 	}
 	// 따봉 취소 
 	@RequestMapping("Bye")
-	public String Bye(){
-		
+	public String Bye(Principal pri, int num){
+		String id=pri.getName();
+		RecommendDTO dto=new RecommendDTO();
+		dto.setId(id);
+		dto.setReviewnum(num);
+		service.bye(dto);
 		return "";
 	}
 

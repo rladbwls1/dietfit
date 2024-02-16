@@ -25,6 +25,7 @@
 <br/><button type="button" onclick="javascript:window.location='/member/coupondownload'">쿠폰 다운받기</button>
 <br/><button type="button" onclick="javascript:window.location='/member/myCoupon'">내 쿠폰함</button>
 <br/><button type="button" onclick="javascript:window.location='/member/myOrder'">주문 목록</button>
+<br/><button type="button" onclick="javascript:window.location='/review/myReview'">내 리뷰 목록</button>
 
 <hr/>
 

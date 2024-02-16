@@ -21,9 +21,8 @@ public interface ReviewService {
 	// 실제 파일 업로드 
 	public String fileupload(MultipartFile file, String path);
     // 리뷰 추천하기
-	public void good(RecommendDTO recdto);
-    // 리뷰 상세 추천수 증가
-    public void goodreview(ReviewDTO rdto);
+	public void good(RecommendDTO dto);
     // 리뷰 추천 취소하기
-    public void bye(RecommendDTO recdto);
+    public void bye(RecommendDTO dto);
+
 }

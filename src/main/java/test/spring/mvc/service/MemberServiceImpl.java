@@ -83,11 +83,12 @@ public class MemberServiceImpl implements MemberService{
 	public void newMember2(Member_basicDTO bdto, Member_detailDTO ddto, int path) {
 		bdto.setPw(encoder.encode(bdto.getPw()));		//비밀번호 암호화
 		bdto.setStatus(800);
+		ddto.setPath(path);
 		mapper.newMember(bdto);							//member_basic 테이블 레코드 추가 
 		mapper.newMemberstatus(bdto.getId());			//authoroties 테이블 레코드 추가 
 		ddto.setId(bdto.getId());
 		ddto.setPath(path);
-		mapper.newMember2(ddto);
+		mapper.newMember3(ddto);
 	}
 
 
@@ -550,6 +551,8 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
 		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
+		List<Integer> reviewable=new ArrayList<>(); 
+		List<String> imgPaths=new ArrayList<>();
 		ProductDTO dto=new ProductDTO();
 		for(OrderdetailDTO odto:list) {
 			String productid=odto.getProductid();
@@ -558,8 +561,30 @@ public class MemberServiceImpl implements MemberService{
 			dto.setCategory2(productid.substring(4,6));
 			dto.setFlavor(productid.substring(6,8));
 			odto.setProduct(mapper.getProductnameByProductcode(dto));
+			//리뷰 작성 여부 판단
+			dto.setBoardname(orderid);
+			reviewable.add(mapper.isReviewByOrderidAndProductcode(dto));
+			
+			//썸네일
+			ProductimgDTO img =mapper.findlistthum(dto.getCompanyid(), dto.getCategory(), dto.getCategory2());
+			if (img != null) {
+				// 이미지 경로 직접 조합하여 설정
+				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+						img.getCategory() + img.getCategory2() +
+						img.getFlavor() + "F" + img.getNum() +
+						img.getExt();
+				imgPaths.add(imagePath);
+				
+			}else {
+				imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+			}
+			
 		}
+		
+		
 		model.addAttribute("list",list);
+		model.addAttribute("reviewable",reviewable);
+		model.addAttribute("imgPaths",imgPaths);
 	}
 
 	@Override

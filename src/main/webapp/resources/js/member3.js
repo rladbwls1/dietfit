@@ -82,7 +82,7 @@ function toChatByOrderdateil(product,companyid){
 	document.body.appendChild(f);
 	f.submit();
 }
-function toReviewForm(productid){
+function toReviewForm(productid,orderid){
 	var companyid=productid.substring(0,2);
 	var category=productid.substring(2,4);
 	var category2=productid.substring(4,6);
@@ -92,6 +92,7 @@ function toReviewForm(productid){
 	let obdj2;
 	let obdj3;
 	let obdj4;
+	let obdj5;
 	obj=document.createElement('input');
 	obj.setAttribute('type','hidden');
 	obj.setAttribute('name','companyid');
@@ -108,10 +109,15 @@ function toReviewForm(productid){
 	obj4.setAttribute('type','hidden');
 	obj4.setAttribute('name','flavor');
 	obj4.setAttribute('value',flavor);
+	obj5=document.createElement('input');
+	obj5.setAttribute('type','hidden');
+	obj5.setAttribute('name','orderid');
+	obj5.setAttribute('value',orderid);
 	f.appendChild(obj);
 	f.appendChild(obj2);
 	f.appendChild(obj3);
 	f.appendChild(obj4);
+	f.appendChild(obj5);
 	f.setAttribute('method','post');
 	f.setAttribute('action','/review/write');
 	document.body.appendChild(f);
