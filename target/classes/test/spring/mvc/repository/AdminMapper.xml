@@ -125,10 +125,10 @@
 	</insert>
 	<insert id="orderSummary" parameterType="test.spring.mvc.bean.OrdersumDTO">
     	INSERT INTO ordersum (
-    		id, orderid, point, couponid, discount, totalamount
+    		id, orderid, point, couponid, coupondiscount, totalamount
 		) VALUES (
 		    #{ordersum.id}, #{ordersum.orderid}, #{ordersum.point}, 
-		    #{ordersum.couponid}, #{ordersum.discount}, #{ordersum.totalamount}
+		    #{ordersum.couponid}, #{ordersum.coupondiscount}, #{ordersum.totalamount}
 		)
 	</insert>
 	<update id="changeCounpon" parameterType="String">

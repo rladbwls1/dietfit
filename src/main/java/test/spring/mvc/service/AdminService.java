@@ -44,6 +44,7 @@ public interface AdminService {
 		//주문번호
 		public String generateOrderId(Principal pri);
 		public Map<String, Integer> findproductIdQuantity(String id, String nums);
+//		public List<String> findproductId(String id, String nums);
 		public void createOrder(String id, OrderdetailDTO orderdetail);
 		public void createOrderSum(OrdersumDTO ordersum);
 		public void changeCoupon(String id, String couponid);
