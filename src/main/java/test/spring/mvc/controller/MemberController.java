@@ -85,7 +85,7 @@ public class MemberController {
 	
 	// 베스트 상품 주간
 	@RequestMapping("best2")
-	public String best2(Model model) {
+	public String best2(Model model,Principal pri) {
 		List<ProductDTO> dto = admin.best2();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
@@ -98,6 +98,9 @@ public class MemberController {
 	               pd.setImagePath(imagePath);
 	            }
 			}
+		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
 		}
 		model.addAttribute("best", dto);
 		return "/member/best2";

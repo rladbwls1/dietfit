@@ -176,7 +176,7 @@
 					              <div class="col-md-6 col-lg-3">
 			                        <div class="featurs-item text-center rounded bg-light p-4" onclick="toDetail('${best.companyid}','${best.category}','${best.category2}','${best.flavor}')">
 			                            <div class="featurs-content text-center">
-            						        <div><img style="width: -webkit-fill-available;" src="${best.imagePath}"/></div>
+            						        <div><img style="width: -webkit-fill-available; height: 258px;" src="${best.imagePath}"/></div>
             						        <div class="wish">
 							                <sec:authorize access="isAnonymous()">
 								            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>

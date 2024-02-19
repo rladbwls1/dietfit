@@ -179,6 +179,22 @@
 				border: 1px solid #50AB89; 
 				margin-left: 8px;
 			}
+			#delivery{
+				float: right;
+			}
+			#deli_btn button{
+				width: 300px;
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58; 
+			}
+			#change_btn{
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58;
+				margin-left: 30px; 
+				margin-bottom: 30px;
+			}
     	</style>
     </head>
 
@@ -255,7 +271,7 @@
         	<div>
         	 <div class="container-fluid service py-5" style="padding-bottom: 0 !important;">
             	<div id="content" class="container py-5">
-            	<button onclick="window.location.href='/member/foodPro?kcal=${kc}'">전체 상품 변경</button>
+            	<button id="change_btn" onclick="window.location.href='/member/foodPro?kcal=${kc}'">전체 상품 변경</button>
             	<div id="box">
             	<div class="box_box">
 			    <h2 class="title">아침</h2>
@@ -364,8 +380,10 @@
 			        </div>
 			    </div>
 			</div>
-			<input type="checkbox" id="chk">정기배송으로 받아보시겠어요?
-			<button onclick="cartSelectedItems2();">전체 상품 장바구니 담기</button>
+			<div id="delivery">
+			<div><input type="checkbox" id="chk">정기배송으로 받아보시겠어요?</div>
+			<div id="deli_btn"><button onclick="cartSelectedItems2();">전체 상품 장바구니 담기</button></div>
+			</div>
 			</div>
 		  </div>	
         </div>
