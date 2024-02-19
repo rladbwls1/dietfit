@@ -1,13 +1,8 @@
 package test.spring.mvc.controller;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
@@ -19,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +30,7 @@ import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.MemberService;
 
@@ -46,6 +41,8 @@ public class MemberController {
 	private MemberService service;
 	@Autowired
 	private MemberMapper mapper;
+	@Autowired
+	private ReviewMapper rmapper;
 	@Autowired
 	private Admin1ServiceImpl admin;
 	
@@ -298,9 +295,16 @@ public class MemberController {
 		List<String> thumbnailPaths=service.getProductDetail(companyid,category,category2,flavor,model);
 		// 로그인 한 경우, 최근 본 상품 정보를 쿠키에 추가
         if(pri!=null) {
-		addRecentlyViewedProductToCookie(request, response, companyid + category + category2 + flavor, pri.getName(), 
+        	addRecentlyViewedProductToCookie(request, response, companyid + category + category2 + flavor, pri.getName(), 
         		model, "/details/" + companyid + "/" + category + "/" + category2 + "/" + flavor, thumbnailPaths);
+        	String id=pri.getName();
+			model.addAttribute("recommendNums",rmapper.getRecommend(id));
+        	model.addAttribute("id",id);
+        	if(mapper.getStatusById(id)==888) {
+        		model.addAttribute("companyid",mapper.getCompanyidById(id));
+        	}
         }
+        model.addAttribute("review",rmapper.getReview(companyid, category, category2, flavor));
 		return "member/productDetail";
 	}
 	

@@ -414,6 +414,8 @@ public class DietfitController {
 	
 	@RequestMapping("kakaopay/success")
 	public String success() {
+		
+		
 		return "admin/kakaopay/success";
 	}
 	
@@ -426,6 +428,7 @@ public class DietfitController {
 	public String cancel() {
 		return "admin/kakaopay/cancel";
 	}
+	
 	@RequestMapping("myPage")
 	public String myPage() {
 		return "member/myPage";

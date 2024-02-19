@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import test.spring.mvc.bean.AllimgDTO;
@@ -30,7 +31,9 @@ public class ReviewController {
 	@RequestMapping("list")
     public String list(Model model,Principal pri) {
 		if(pri!=null) {
-			model.addAttribute("recommendNums",mapper.getRecommend(pri.getName()));
+			String id=pri.getName();
+			model.addAttribute("recommendNums",mapper.getRecommend(id));
+			model.addAttribute("id",id);
 		}
         List<ReviewDTO> review = service.listimg();
         model.addAttribute("review", review);
@@ -38,7 +41,10 @@ public class ReviewController {
     }
 	@RequestMapping("myReview")
 	public String myReview(Model model,Principal pri) {
-		model.addAttribute("review", mapper.getListById(pri.getName()));
+		String id=pri.getName();
+		model.addAttribute("recommendNums",mapper.getRecommend(id));
+		model.addAttribute("id",id);
+		model.addAttribute("review", mapper.getListById(id));
 		return "review/myReview";
 	}
 	
@@ -91,23 +97,28 @@ public class ReviewController {
 	
 	// µûºÀ Ãß°¡ 
 	@RequestMapping("Good")
-	public String Good(Principal pri, int num){
-		String id=pri.getName();
+	public @ResponseBody String Good(String id, int reviewnum){
 		RecommendDTO dto=new RecommendDTO();
 		dto.setId(id);
-		dto.setReviewnum(num);
+		dto.setReviewnum(reviewnum);
 		service.good(dto);
-		return "redirect:/review/list";
+		return "good";
 	}
 	// µûºÀ Ãë¼Ò 
 	@RequestMapping("Bye")
-	public String Bye(Principal pri, int num){
-		String id=pri.getName();
+	public @ResponseBody String Bye(String id, int reviewnum){
 		RecommendDTO dto=new RecommendDTO();
 		dto.setId(id);
-		dto.setReviewnum(num);
+		dto.setReviewnum(reviewnum);
 		service.bye(dto);
-		return "";
+		return "bye";
 	}
+	// ¸®ºä »èÁ¦  
+	@RequestMapping("delete")
+	public @ResponseBody String delete(int reviewnum){
+		service.delete(reviewnum);
+		return "bye";
+	}
+	
 
 }

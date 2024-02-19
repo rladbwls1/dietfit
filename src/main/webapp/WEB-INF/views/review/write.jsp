@@ -5,40 +5,8 @@
 	<meta charset="UTF-8">
 	<title>글쓰기</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-	$(document).ready(function() {
-	    // 첨부 파일 추가 함수
-	    function fileAdd() {
-	        var fileCount = $('#file-section input[type="file"]').length; // 현재 파일 입력란의 개수
-	        if(fileCount < 3) { // 최대 3개까지만 추가 가능
-	            var fileInput = $('<input type="file" name="file" multiple>');
-	            $('#file-section').append(fileInput);
-	        }
-	        if(fileCount >= 2) { // 파일 입력란이 3개 있을 경우 "+" 버튼 비활성화
-	            $('.fileAdd').prop('disabled', true);
-	        }
-	    }
-	
-	    // 첨부 파일 제거 함수
-	    function fileRemove() {
-	        $('#file-section input[type="file"]:last').remove();
-	        var fileCount = $('#file-section input[type="file"]').length;
-	        if(fileCount < 3) { // 파일 입력란이 3개 미만일 경우 "+" 버튼 활성화
-	            $('.fileAdd').prop('disabled', false);
-	        }
-	    }
-	
-	    // 파일 추가 버튼 클릭 이벤트 연결
-	    $('.fileAdd').click(function() {
-	        fileAdd();
-	    });
-	
-	    // 파일 제거 버튼 클릭 이벤트 연결
-	    $('.fileRemove').click(function() {
-	        fileRemove();
-	    });
-	});
-	</script>
+	<script src="/resources/js/review.js"></script>
+
 
 	<style>
 	    /* 기본 별 스타일 */
@@ -61,11 +29,14 @@
         display: none; /* 라디오 버튼 숨기기 */
     	}
 	</style>
+	<script>
+	
+	</script>
 	</head>
 	<body>
 		${review.boardname}<br>
 		<img src="/resources/p_img/${review.filename }" width="150" >
-		<form action="writepro" method="post" enctype="multipart/form-data">
+		<form action="writepro" method="post" enctype="multipart/form-data" >
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<input type="hidden" name="companyid" value="${rdto.companyid}">
 			<input type="hidden" name="category" value="${rdto.category}">
@@ -106,7 +77,7 @@
 				<tr>
 				</tr>
 			</table>
-			<input type="submit" value="리뷰 등록">
+			<input type="submit" value="리뷰 등록" onclick="return check()">
 		</form>
 	</body>
 </html>

@@ -69,6 +69,15 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public void bye(RecommendDTO dto) {
+		mapper.downRecommend(dto);
 		mapper.removeRecommend(dto);
 	}
+
+	@Override
+	public void delete(int num) {
+		mapper.delete(num);
+	}
+	
+	
+	
 }
