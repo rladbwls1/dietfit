@@ -18,6 +18,7 @@
 	<input type="submit" value="로그아웃"/>
 </form>
 <br/><button type="button" onclick="javascript:window.location='/member/modifyForm'">정보수정</button>
+
 <br/><button type="button" onclick="javascript:window.location='/member/productList'">상품목록</button>
 <br/><button type="button" onclick="javascript:window.location='/member/RecentViewProduct'">최근본상품</button>
 <br/><button type="button" onclick="javascript:window.location='/member/wishList'">관심상품</button>
@@ -33,6 +34,7 @@
 	MemberDTO : <sec:authentication property="principal.dto"/> <br/>
 	id : <sec:authentication property="principal.dto.id"/> <br/>
 	name : <sec:authentication property="principal.dto.name"/> <br/>
+	name : <sec:authentication property="principal.dto.nic"/> <br/>
 	가입날짜 : <sec:authentication property="principal.dto.reg"/> <br/>
 	등급: <sec:authentication property="principal.dto.status"/><br/>
 </sec:authorize>

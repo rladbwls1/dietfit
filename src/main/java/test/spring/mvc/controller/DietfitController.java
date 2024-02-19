@@ -176,7 +176,7 @@ public class DietfitController {
 			model.addAttribute(me+"_chk", check);
 			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 		}
-		return "admin/eat";
+		return "member/food/eat";
 	}
 	
 	@RequestMapping("order")
@@ -425,6 +425,10 @@ public class DietfitController {
 	@RequestMapping("kakaopay/cancel")
 	public String cancel() {
 		return "admin/kakaopay/cancel";
+	}
+	@RequestMapping("myPage")
+	public String myPage() {
+		return "member/myPage";
 	}
 }
 	
