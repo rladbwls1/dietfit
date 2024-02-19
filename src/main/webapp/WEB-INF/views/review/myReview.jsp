@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/review.js"></script>
 <html>
 <head>
     <style>
@@ -33,45 +34,12 @@
             margin-left: 30px;
         }
     </style>
-    <script>
-    function addWishList(product){
-		$.ajax({
-			url:'/member/addWishList',
-			type:'post',
-			data:{product:product},
-			success:function(a){
-				window.open("wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
-				window.location.reload();
-			}
-		});
-		
-	}
-	function removeWishList(product){
-		$.ajax({
-			url:'/member/removeWishList',
-			type:'post',
-			data:{product:product},
-			success:function(a){
-				window.location.reload();
-			}
-		});
-		
-	}
-	window.onload = function() {
-	    var writerFullNameElements = document.querySelectorAll(".writerFullName");
-	    writerFullNameElements.forEach(function(writerFullNameElement) {
-	        var writerFullName = writerFullNameElement.textContent;
-	        if (writerFullName.length > 3) {
-	            var maskedName = writerFullName.substring(0, 3) + '*'.repeat(writerFullName.length - 3);
-	            writerFullNameElement.textContent = maskedName;
-	        }
-	    });
-	};
-    </script>
+    
 </head>
 <body>
+<input type="hidden" value="${id }" id="id" />
     <c:forEach var="review" items="${review}">
-        <div class="review-container">
+        <div class="review-container" id="review_${review.num}" >
             <div class="review-header">
                 <div class="review-image">
                     <c:choose>
@@ -101,13 +69,33 @@
                     </div>
                     <div>리뷰 내용: ${review.content}</div>
                     <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
-                    <div>❤   ${review.recommend} </div>
+                    <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
                 </div>
+                <div>
+                	<c:if test="${review.id eq id }">
+                		<button type="button" onclick="deleteReview('${review.num}')">삭제</button>
+                	</c:if>
+               	</div>
+               	<c:choose>
+               	<c:when test="${!recommendNums.contains(review.num) }">
                 <div class="review">
 				    <div class="love-icon">
-				        	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+				    	<a href="javascript:void(0)" onclick="good('${review.num}')" id="event_${review.num }">
+			        		<img src="/resources/img/free-icon-love-7476962.png" width="20px" id="review_${review.num }"/>
+	        			</a>
 				    </div>
 				</div>
+               	</c:when>
+               	<c:otherwise>
+                <div class="review">
+				    <div class="love-icon">
+				    	<a href="javascript:void(0)" onclick="bye('${review.num}')" id="event_${review.num }">
+				        	<img src="/resources/img/free-icon-love-4397571.png" width="20px" id="review_${review.num }"/>
+			        	</a>
+				    </div>
+				</div>
+               	</c:otherwise>
+               	</c:choose>
             </div>
             <div class="clear-fix"></div>
         </div>

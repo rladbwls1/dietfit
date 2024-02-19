@@ -24,5 +24,7 @@ public interface ReviewService {
 	public void good(RecommendDTO dto);
     // 리뷰 추천 취소하기
     public void bye(RecommendDTO dto);
+    // 리뷰 삭제
+    public void delete(int num);
 
 }

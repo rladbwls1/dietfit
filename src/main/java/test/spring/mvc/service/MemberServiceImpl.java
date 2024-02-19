@@ -26,7 +26,6 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.BuyproductDTO;
-import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
@@ -37,6 +36,7 @@ import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.repository.Seller1Mapper;
 
 @Service
@@ -45,6 +45,8 @@ public class MemberServiceImpl implements MemberService{
 	private MemberMapper mapper;
 	@Autowired
 	private Seller1Mapper sel1mapper;
+	@Autowired
+	private ReviewMapper rmapper;
 		
 	@Autowired
 	PasswordEncoder encoder;
@@ -324,8 +326,6 @@ public class MemberServiceImpl implements MemberService{
         product.put("PRICE", price);
         product.put("ORIPRICE", oriprice);
         
-        
-        
         // ¸ðµ¨¿¡ Ãß°¡
         model.addAttribute("product", product);
         model.addAttribute("thumbnailPaths", thumbnailPaths);
@@ -340,7 +340,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getWishListProduct(Model model, String id) {
-		model.addAttribute("wishList",mapper.getWishListProduct(id));
+		if(mapper.getStatusById(id)==1) {
+			model.addAttribute("wishList",mapper.getWishListProduct(id));
+		}
 	}
 
 	@Override

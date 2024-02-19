@@ -33,7 +33,10 @@ public interface MemberMapper {
 	
 	//회원 아이디로 basic 정보 가져오기
 	public List<Map<String,Object>> getUser(String id);
-	
+	//아이디로 등급 가져오기
+	public int getStatusById(String id);
+	//아이디로 회사id companyid 가져오기
+	public String getCompanyidById(String id);
 	//회원 아이디로 비밀번호 가져오기
 	public String getPwById(String id); 
 	//회원 탈퇴
