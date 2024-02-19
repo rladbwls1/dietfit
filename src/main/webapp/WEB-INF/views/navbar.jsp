@@ -24,7 +24,7 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="main" class="navbar-brand"><h1 class="text-primary display-6">Dietfit</h1></a>
+                    <a href="/dietfit/main" class="navbar-brand"><h1 class="text-primary display-6">Dietfit</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
@@ -35,17 +35,13 @@
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
                             <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
                              -->
-                            <a href="../member/best" class="nav-item nav-link">best</a>
+                            <a href="../member/best" class="nav-item nav-link">Best</a>
                             <a href="../member/discount" class="nav-item nav-link">오늘의 특가</a>
-                            <a href="survey" class="nav-item nav-link">나의식단</a>
+                            <a href="/dietfit/survey" class="nav-item nav-link">나의식단</a>
                             <a href="contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="/member/cartList" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                            </a>
                             <sec:authorize access="isAnonymous()">
 								<a href="/member/customLogin" class="my-auto">
 	                                <i class="fas fa-user fa-2x"></i>
@@ -53,6 +49,14 @@
 							</sec:authorize>
 							
 							<sec:authorize access="isAuthenticated()">
+								<a href="/member/cartList" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <!-- 
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
+                                
+                                </span>
+                                 -->
+                            </a>
 	                            <a href="/dietfit/myPage" class="my-auto">
 	                                <i class="fas fa-user fa-2x"></i>
 	                            </a>

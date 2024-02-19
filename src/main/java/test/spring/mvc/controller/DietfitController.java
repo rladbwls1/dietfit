@@ -414,12 +414,16 @@ public class DietfitController {
 	
 	
 	@RequestMapping("kakaopay/success")
+<<<<<<< HEAD
 	public String success(String nums) {
 		String[] list=nums.split(",");
 		String id=list[0];
 		for(int i=1;i<list.length;i++) {
 			mservice.deleteCart(id,Integer.parseInt(list[i]));
 		}
+=======
+	public String success() {
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 		return "admin/kakaopay/success";
 	}
 	
