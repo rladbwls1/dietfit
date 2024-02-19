@@ -39,11 +39,31 @@
 			                          AND r.flavor = ap.flavor
 			ORDER BY r.num ASC
 	</select>
+	<!-- 회원의 작성 리뷰 목록 -->
+	<select id = "getListById" resultType="test.spring.mvc.bean.ReviewDTO">
+		SELECT r.*, a.*, ap.boardname
+			FROM review r
+			LEFT JOIN (
+			    SELECT allimg.*, min_allimg.min_num
+			    FROM allimg
+			    JOIN (
+			        SELECT notifynum, MIN(num) AS min_num
+			        FROM allimg
+			        WHERE type = 4
+			        GROUP BY notifynum
+			    ) min_allimg ON allimg.notifynum = min_allimg.notifynum AND allimg.num = min_allimg.min_num
+			) a ON r.num = a.notifynum
+			LEFT JOIN all_product ap ON r.companyid = ap.companyid 
+			                          AND r.category = ap.category 
+			                          AND r.category2 = ap.category2 
+			                          AND r.flavor = ap.flavor
+			WHERE r.id=#{id} ORDER BY r.num ASC
+	</select>
 	
 	<!-- 리뷰 글 -->
 	<insert id = "write" parameterType="test.spring.mvc.bean.ReviewDTO">
-		insert into review (num, companyid, category, category2, flavor, id, writer, starscore,content,isfile,reg) 
-			values (review_seq.nextval, #{companyid}, #{category}, #{category2}, #{flavor}, #{id}, #{writer}, #{starscore}, #{content}, #{isfile}, sysdate)
+		insert into review (num, companyid, category, category2, flavor, id, writer, starscore,content,isfile,reg,orderid) 
+			values (review_seq.nextval, #{companyid}, #{category}, #{category2}, #{flavor}, #{id}, #{writer}, #{starscore}, #{content}, #{isfile}, sysdate,#{orderid})
 	</insert>
 	<!-- 리뷰 이미지 저장 -->
 	<insert id = "writeimg" parameterType="test.spring.mvc.bean.AllimgDTO">
@@ -69,22 +89,25 @@
 		delete from allimg where notifynum = #{notifynum} 
 	</delete>
 
-	<!-- 리뷰 추천 아이디별로 찾기 -->
-	<select id = "recommend" parameterType="test.spring.mvc.bean.RecommendDTO">
-		select * from review_recommed where id = #{id}
+	<!-- 유저의 추천 리뷰 -->
+	<select id = "getRecommend" >
+		select reviewnum from review_commend where id = #{id}
 	</select>
 	
 	<!-- 리뷰 추천함 -->
-	<insert id = "good" parameterType="test.spring.mvc.bean.RecommendDTO">
-		insert into review_recommed (reviewnum, id) values(#{reviewnum},#{id})
+	<insert id = "addRecommend" parameterType="test.spring.mvc.bean.RecommendDTO">
+		insert into review_commend (reviewnum, id) values(#{reviewnum},#{id})
 	</insert>
 	<!-- 리뷰 상세 추천함 추가 -->
-	<update id="goodreview">
-		UPDATE review set recommend = recommend + 1 WHERE num = #{num};
+	<update id="upRecommend">
+		UPDATE review set commend = recommend + 1 WHERE reviewnum = #{num};
 	</update>
 	
 	<!-- 리뷰 추천 취소 -->
-	<delete id = "bye" parameterType="test.spring.mvc.bean.RecommendDTO">
-		delete from all_productimg where reviewnum=#{reviewnum} and id =#{id}
+	<delete id = "removeRecommend" parameterType="test.spring.mvc.bean.RecommendDTO">
+		delete from review_commend where reviewnum=#{reviewnum} and id =#{id}
 	</delete>
+	
+	
+	
 </mapper>
