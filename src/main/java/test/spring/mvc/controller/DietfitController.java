@@ -176,7 +176,7 @@ public class DietfitController {
 			model.addAttribute(me+"_chk", check);
 			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 		}
-		return "admin/eat";
+		return "member/food/eat";
 	}
 	
 	@RequestMapping("order")
