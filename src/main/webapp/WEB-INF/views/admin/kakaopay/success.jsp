@@ -8,6 +8,6 @@
 <body>
 <h1>결제 승인</h1>
 
-<a href="/">홈으로</a>
+<a href="/dietfit/main">홈으로</a>
 </body>
 </html>

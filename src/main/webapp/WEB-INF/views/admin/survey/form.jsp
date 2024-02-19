@@ -5,10 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Dietfit - Survey</title>
-<link href="/resources/css/survey.css" rel="stylesheet">
+	<link href="/resources/css/survey.css" rel="stylesheet">
 </head>
 
 <body>
+	
 	<h2> 설문조사 </h2>
 	<form action="surveyResult" method="post">
 		<label for="gender">성별</label>
