@@ -82,11 +82,11 @@
 						  <td>
 							<c:if test="${companyList.status == 800}"> 승인대기 
 								 <button class="btn btn-sm btn-danger" onclick="openPopup('/admin/companyStatus?id=${companyList.id}')">변경</button>
-								 <button class="btn btn-sm btn-primary" type="button" onclick="location.href='/admin/companyDetail?id=${companyList.id}'">상세보기</button>
+								 <button class="btn btn-sm btn-primary" type="button" onclick="window.open('/admin/companyDetail?id=${companyList.id}', 'companydetail', 'width=700,height=400,location=no,status=no,scrollbars=yes') ">상세보기</button>
 							</c:if>
 							<c:if test="${companyList.status == 888}"> 승인 
 								 <button class="btn btn-sm btn-danger" onclick="openPopup('/admin/companyStatus?id=${companyList.id}')">변경</button>
-								 <button class="btn btn-sm btn-primary" type="button" onclick="location.href='/admin/companyDetail?id=${companyList.id}'">상세보기</button>
+								 <button class="btn btn-sm btn-primary" type="button" onclick="window.open('/admin/companyDetail?id=${companyList.id}', 'companydetail', 'width=700,height=400,location=no,status=no,scrollbars=yes') ">상세보기</button>
 							</c:if>
 						  </td>
                         </tr>
