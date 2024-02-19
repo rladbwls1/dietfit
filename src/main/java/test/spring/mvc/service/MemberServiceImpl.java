@@ -539,6 +539,7 @@ public class MemberServiceImpl implements MemberService{
 	public void getUserOrder(String id,Model model) {
 		List<Map<String,Object>> list=mapper.getUserOrder(id);
 		ProductDTO dto=new ProductDTO();
+		List<String> imgPaths=new ArrayList<>();
 		for(Map<String,Object> map:list) {
 			String productid=map.get("PRODUCTID").toString();
 			dto.setCompanyid(productid.substring(0,2));
@@ -546,7 +547,23 @@ public class MemberServiceImpl implements MemberService{
 			dto.setCategory2(productid.substring(4,6));
 			dto.setFlavor(productid.substring(6,8));
 			map.put("PRODUCT", mapper.getProductnameByProductcode(dto));
+			//썸네일
+			ProductimgDTO img =mapper.findlistthum(dto.getCompanyid(), dto.getCategory(), dto.getCategory2());
+			if (img != null) {
+				// 이미지 경로 직접 조합하여 설정
+				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+						img.getCategory() + img.getCategory2() +
+						img.getFlavor() + "F" + img.getNum() +
+						img.getExt();
+				imgPaths.add(imagePath);
+				
+			}else {
+				imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+			}
+			
 		}
+		
+		model.addAttribute("imgPaths",imgPaths);
 		model.addAttribute("list",list);
 	}
 
