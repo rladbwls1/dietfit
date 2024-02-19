@@ -414,8 +414,6 @@ public class DietfitController {
 	
 	@RequestMapping("kakaopay/success")
 	public String success() {
-		
-		
 		return "admin/kakaopay/success";
 	}
 	
