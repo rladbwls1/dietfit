@@ -21,4 +21,5 @@ public class ReviewDTO {
 	private String attatch;			// 파일명
 	private String boardname;		// 상품 이름 
 	private String filename;		// 상품 이미지
+	private String orderid;			// 주문번호 
 }

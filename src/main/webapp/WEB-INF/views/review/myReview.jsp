@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 <head>
@@ -71,10 +70,6 @@
     </script>
 </head>
 <body>
-<c:set var="id">
-	<sec:authentication property="principal.dto.id"/>
-</c:set>
-
     <c:forEach var="review" items="${review}">
         <div class="review-container">
             <div class="review-header">
@@ -108,31 +103,11 @@
                     <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
                     <div>❤   ${review.recommend} </div>
                 </div>
-                <div>
-                	<c:if test="${review.id eq id }">
-                		<button type="button" >삭제</button>
-                	</c:if>
-               	</div>
-               	<c:choose>
-               	<c:when test="${recommendNums.contains(review.num) }">
                 <div class="review">
 				    <div class="love-icon">
-				    	<a href="javascript:void(0)" onclick="" >
-			        		<img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
-	        			</a>
-				    </div>
-				</div>
-               	</c:when>
-               	<c:otherwise>
-                <div class="review">
-				    <div class="love-icon">
-				    	<a href="javascript:void(0)" onclick="console.log('good')" >
 				        	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
-			        	</a>
 				    </div>
 				</div>
-               	</c:otherwise>
-               	</c:choose>
             </div>
             <div class="clear-fix"></div>
         </div>
