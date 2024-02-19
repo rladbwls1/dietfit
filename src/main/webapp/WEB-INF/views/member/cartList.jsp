@@ -43,9 +43,9 @@
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 				<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
 				  <ol class="breadcrumb">
-				    <li class="breadcrumb-item"><h4>장바구니</h4></li>
+				    <li class="breadcrumb-item"><b style="color: #50AB89;">장바구니</b></li>
 				    <li class="breadcrumb-item">주문하기</li>
-				    <li class="breadcrumb-item active" aria-current="page">Data</li>
+				    <li class="breadcrumb-item active" aria-current="page">결제</li>
 				  </ol>
 				</nav>
 			</div>

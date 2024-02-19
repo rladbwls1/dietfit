@@ -124,7 +124,7 @@
 		    </h2>
 		    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
 		      <div class="accordion-body">
-		      	<button type="button" class="btn btn-outline-warning" onclick="javascript:window.location='/member/myOrder'">주문 목록</button>
+		      	<button type="button" class="btn btn-outline-warning" onclick="javascript:window.location='/review/myReview'">나의 리뷰</button>
 		      </div>
 		    </div>
 		  </div>
