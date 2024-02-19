@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <html>
 <head>
     <style>
@@ -35,23 +34,32 @@
         }
     </style>
     <script>
-    function addWishList(product){
-		$.ajax({
-			url:'/member/addWishList',
-			type:'post',
-			data:{product:product},
-			success:function(a){
-				window.open("wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
-				window.location.reload();
-			}
-		});
+
+	function good(reviewnum){
+		var id=$('#id').val();
+		if(id==""){
+			alert("로그인 후 이용하세요.");
+		}else{
+			
+			$.ajax({
+				url:'/review/Good',
+				type:'post',
+				data:{reviewnum:reviewnum,id:id},
+				async:false,
+				success:function(a){
+					window.location.reload();
+				}
+			});
 		
+		}
 	}
-	function removeWishList(product){
+	function bye(reviewnum){
+		var id=$('#id').val();
 		$.ajax({
-			url:'/member/removeWishList',
+			url:'/review/Bye',
 			type:'post',
-			data:{product:product},
+			data:{reviewnum:reviewnum,id:id},
+			async:false,
 			success:function(a){
 				window.location.reload();
 			}
@@ -71,10 +79,7 @@
     </script>
 </head>
 <body>
-<c:set var="id">
-	<sec:authentication property="principal.dto.id"/>
-</c:set>
-
+<input type="hidden" value="${id }" id="id" />
     <c:forEach var="review" items="${review}">
         <div class="review-container">
             <div class="review-header">
@@ -114,11 +119,11 @@
                 	</c:if>
                	</div>
                	<c:choose>
-               	<c:when test="${recommendNums.contains(review.num) }">
+               	<c:when test="${!recommendNums.contains(review.num) }">
                 <div class="review">
 				    <div class="love-icon">
-				    	<a href="javascript:void(0)" onclick="" >
-			        		<img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
+				    	<a href="javascript:void(0)" onclick="good('${review.num}')" >
+			        		<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 	        			</a>
 				    </div>
 				</div>
@@ -126,8 +131,8 @@
                	<c:otherwise>
                 <div class="review">
 				    <div class="love-icon">
-				    	<a href="javascript:void(0)" onclick="console.log('good')" >
-				        	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+				    	<a href="javascript:void(0)" onclick="bye('${review.num}')" >
+				        	<img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
 			        	</a>
 				    </div>
 				</div>
