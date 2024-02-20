@@ -413,10 +413,15 @@ public class MemberController {
 	}
 	@RequestMapping("wishList")
 	public String wishList(Model model, Principal pri,
-			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder) {
+			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder,
+			@RequestParam(value="pageNum", defaultValue="1") int pageNum) {
 		String id=pri.getName();
 		model.addAttribute("checkedFolder",checkedFolder);
-		service.getWishList(model, id);
+		if(checkedFolder.equals("전체")) {
+			service.getWishList(model, id,pageNum,checkedFolder);
+		}else {
+			service.getWishListWithFolder(model, id, pageNum, checkedFolder);
+		}
 		return "member/wishList";
 	}
 	@RequestMapping("getProductCode")
