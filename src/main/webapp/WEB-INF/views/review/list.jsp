@@ -29,14 +29,10 @@
         .star-rating .empty {
             color: #ccc;
         }
-<<<<<<< HEAD
         .love-icon {
             margin-left: 30px;
         }
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
     </style>
-<<<<<<< HEAD
     <script>
     function addWishList(product){
 		$.ajax({
@@ -72,8 +68,6 @@
 	    });
 	};
     </script>
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 </head>
 <body>
     <c:forEach var="review" items="${review}">
