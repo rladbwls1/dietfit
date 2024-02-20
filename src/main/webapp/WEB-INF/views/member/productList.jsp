@@ -52,8 +52,6 @@
         img {
             display: block;
             margin: 0 auto;
-            max-width: 100px;
-            max-height: 100px;
         }
         #content{
         	width: 60%;
@@ -61,6 +59,22 @@
         }
         .aa{
         	margin-top: 300px;
+        }
+        .product_img img{
+        	width: -webkit-fill-available !important;
+        	height: 215px !important;
+        }
+        #page{
+        	display: flex;
+        	justify-content: center;
+        	margin-top: 50px;
+        }
+        #page button{
+        	width: 35px;
+        	height: 35px;
+        	border: 1px solid lightgray;
+        	background-color: white;
+        	font-weight: 600;
         }
     </style>
 </head>
@@ -99,9 +113,9 @@
 	<br/>
 	<div class="container aa">
 	    <ul class="list-unstyled row">
-	         <c:forEach var="product" items="${products}">
+	         <c:forEach var="product" items="${products}" varStatus="loop">
 	            <li class="col-md-3">
-	            	<div><img src="${product.IMAGEPATH}" alt="${product.PRODUCT}"></div>
+	            	<div class="product_img"><img src="${product.IMAGEPATH}" alt="${product.PRODUCT}"></div>
 	                <div><a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">${product.PRODUCT}</a></div>
 	            	<div>
 	            		<sec:authorize access="isAuthenticated()">
@@ -134,34 +148,37 @@
 						</c:if>${product.PRICE }
 	            	</div>
 	            </li>
+	             <c:if test="${loop.count % 4 == 0 && loop.count != 0}">
+			        <hr>
+			    </c:if>
 	        </c:forEach>
 	    </ul>
 	</div>
 	<!-- 페이지 -->
-    <table>
+	<div id="page">
     <c:if test="${count>0 }">
 		<c:if test="${endPage > pageCount }">
 			<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
        	<c:if test="${startPage > 10 }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" >이전</a>
+                   <a href="javascript:window.location='/member/productList?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
        	</c:if>
        
        	<c:forEach var="i" begin="${startPage}" end="${endPage}">
        		<c:choose>
-       			<c:when test="${i==currentPage }">
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'" style="text-decoration-line : none; color:red;">${i}</a>
+       			<c:when test="${i==currentPage}">
+                        <a href="javascript:window.location='/member/productList?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
        			</c:when>
        			<c:otherwise>
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'" style="text-decoration-line : none; color:black;">${i}</a>
+                        <a href="javascript:window.location='/member/productList?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
        			</c:otherwise>
        		</c:choose>
        	</c:forEach>
       		<c:if test="${endPage < pageCount }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" >다음</a>
+                   <a href="javascript:window.location='/member/productList?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
       		</c:if>
     </c:if>
-    </table>
+    </div>
     </div>
     <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
