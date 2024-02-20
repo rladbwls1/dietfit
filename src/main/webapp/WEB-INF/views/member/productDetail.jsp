@@ -36,7 +36,6 @@
     </style>
 
     <title>Product Details</title>
-<<<<<<< HEAD
      <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -117,9 +116,7 @@
 				color: #e02020;
 			}
     </style>
-=======
     <script src="/resources/js/review.js"></script>
->>>>>>> refs/remotes/origin/main
 </head>
 <body>
 	 <!-- Spinner Start -->
@@ -170,21 +167,6 @@
 			</td>
         </tr>
         <tr>
-<<<<<<< HEAD
-=======
-            <td>상세설명:</td>
-            <td>${product.DETAIL}</td>
-            <td>
-            	<c:forEach var="imagePath" items="${imagePaths}">
-		            <div>
-		                <img src="${imagePath}" width="400"> 
-		            </div>
-		        </c:forEach>
-            </td>
-        </tr>
-        <tr>
-            <td>배송정보:</td>
->>>>>>> refs/remotes/origin/main
             <td>
 				<c:choose>
 			        <c:when test="${product.DELIVERY == 0}">
@@ -224,7 +206,6 @@
             </td>
         </tr>
     </table>
-<<<<<<< HEAD
     </div>
     	<hr id="hr">
          <div>${product.DETAIL}</div>
@@ -234,10 +215,6 @@
            </div>
    		</c:forEach>
     </div>
-     <!-- Footer Start -->
-        <jsp:include page="../footer.jsp"/>
-        <!-- Footer End -->
-=======
     <!-- 리뷰 -->
     <input type="hidden" value="${id }" id="id" />
     <table>
@@ -255,7 +232,7 @@
                     </c:choose>
                 </div>
                 <div class="review-details">
-                    <div>${review.boardname }</div>
+                    <div>${review.boardname}</div>
                     <div>평점:
                         <span class="star-rating">
                             <c:forEach begin="1" end="5" var="i">
@@ -308,8 +285,9 @@
         </div>
     </c:forEach>
     </table>
->>>>>>> refs/remotes/origin/main
-
+     <!-- Footer Start -->
+        <jsp:include page="../footer.jsp"/>
+        <!-- Footer End -->
         <!-- Copyright Start -->
         <div class="container-fluid copyright bg-dark py-4">
             <div class="container">
