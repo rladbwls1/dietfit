@@ -138,6 +138,8 @@ public interface MemberMapper {
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
 			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
+	//장바구니에 최근에 추가된 상품의 num 가져오기
+	public int getCartMaxNum(String id);
 	//전체 장바구니 목록 가져오기 + 페이지
 	public List<Map<String,Object>> getCartList(String id);
 	//장바구니 개수 수정
