@@ -16,6 +16,7 @@
 		<h3>쿠폰이 없습니다.</h3>
 	</c:if>
 	<c:if test="${!empty list }">
+		<h3> 쿠폰 다운로드</h3>
 		<table class="table">
 			<tr>
 				<td>사용</td>

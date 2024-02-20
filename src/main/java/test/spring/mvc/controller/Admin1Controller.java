@@ -46,10 +46,11 @@ public class Admin1Controller {
 	@Autowired
 	private Seller1Service service1;
 	
+	/*
 	@RequestMapping("main")
 	public String main() {
 		return "admin/adminMain";
-	}
+	}*/
 	
 	@RequestMapping("mList")
 	public String memberList(Model model, @RequestParam(value="pageNum", defaultValue="1") int pageNum) {
