@@ -25,10 +25,12 @@ public class ProductDTO {
 	private String price;		// 가격
 	private String imagePath;   // 이미지 경로 
 	private int sale; // 할인율
+	private String filename;
 	private List<ProductimgDTO> images; // 이미지 리스트
 	private List<String>thumimg;
 	private List<String>img;
-	
+	private int kcal;
 	private ProductimgDTO pimg;
 	private ProductinfoDTO productinfo;
+	private String productid;
 }

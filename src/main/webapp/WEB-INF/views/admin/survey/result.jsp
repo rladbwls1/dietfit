@@ -6,8 +6,34 @@
     <meta charset="UTF-8">
     <title>Dietfit - 설문 결과</title>
 <link href="/resources/css/survey.css" rel="stylesheet">  
+<!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="/resources/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <link href="/resources/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="/resources/css/style.css" rel="stylesheet">
+        
+        <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+      		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
+   
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/navbar.jsp"/>
+	
+	<div class="container-fluid py-5 mb-5 hero-header">
     <h2>설문 결과</h2>
     <div class="result-container">
     	 <b>👀회원님의 결과👀</b>
@@ -24,8 +50,8 @@
 
          
     </div>
-    
-    <br />
+    </div>
+    <div class="container-fluid featurs py-5">
     <table class="center-table">
         <thead>
             <tr>
@@ -64,10 +90,12 @@
     </table>
     
     <br />
-    <form action="/dietfit/eat" method="post">
+    <form action="/member/foodPro" method="post">
 		<input type="hidden" name="kcal"  value="${diettdee }"/>
 		<button type="submit">식단보기</button>
 	</form>
+	
+	</div>
 	
 </body>
 </html>

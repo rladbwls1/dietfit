@@ -39,6 +39,18 @@
     		background-color: #007bff;
     		color: white;
     	}
+    	#page{
+    		display: flex;
+    		justify-content: center;
+    		margin-top: 20px;
+    	}
+    	#page button{
+    		border: 1px solid lightgray;
+    		background-color: white;
+    		color: #007bff; 
+    		font-weight: 600;
+    		width: 28px;
+    	}
     </style>
 </head>
 <body style="background-color: #f6f9fa !important;">
@@ -104,37 +116,20 @@
 						</tr>
 					</c:forEach>
 				</table>
+				<div id="page">
 				<c:if test="${count > 0}">
 					<c:if test="${startPage > 10}">
-					<a href="/admin/mList?pageNum=${startPage-10}">[이전]</a>
+					<a href="/admin/mList?pageNum=${startPage-10}"><button>이전</button></a>
 					</c:if>
 					<c:forEach var="i" begin="${startPage}" end="${endPage}">
-						<a href="/admin/mList?pageNum=${i}">[${i}]</a>			
+						<a href="/admin/mList?pageNum=${i}"><button>${i}</button></a>			
 					</c:forEach>
 					<c:if test="${endPage > pageCount}">
-					<a href="/admin/mList?pageNum=${startPage+10}">[다음]</a>
+					<a href="/admin/mList?pageNum=${startPage+10}"><button>다음</button></a>
 					</c:if>
 				</c:if>
-              
+              	</div>
             </div>
-            <nav aria-label="Page navigation example">
-			  <ul class="pagination">
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-
             <div class="row">
             </div>
           </div>

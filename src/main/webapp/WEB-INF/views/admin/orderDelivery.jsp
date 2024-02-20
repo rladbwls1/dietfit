@@ -8,14 +8,16 @@
 <title>배송지 설정</title>
 <script src="/resources/js/member3.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </head>
 <body>
 	<c:if test="${list.size()<5 }">
-		<button type="button" onclick="window.location.href='/member/addDelivery'">배송지 추가하기</button>
+		<button type="button" class="btn btn-outline-dark" onclick="window.location.href='/member/userDelivery'">배송지 설정</button>
 	</c:if>
 	
 	<c:if test="${list.size()>=5 }">
-		<button type="button" onclick="alert('배송지는 최대 5개 저장 가능합니다.')">배송지 추가하기</button>
+		<button type="button" class="btn btn-outline-dark" onclick="alert('배송지는 최대 5개 저장 가능합니다.')">배송지 추가하기</button>
 	</c:if>
 	
 	<br/>
@@ -24,8 +26,7 @@
 		저장된 배송지가 없습니다.
 	</c:if>
 	<c:if test="${!empty list}">
-		기본 배송지를 설정하면 주문시 자동으로 입력됩니다. 
-			<table border="1">
+			<table class="table table-striped">
 				<c:forEach var="dto" items="${list}">
 					<tr>
 						<td><input type="radio" name="nicaddr" id="nicaddr" value="${dto.nicaddr }" ></td>
@@ -41,10 +42,8 @@
 						<td><a href="javascript:void(0);" onclick="deleteDelivery('${dto.nicaddr }')"><img src="/resources/img/free-icon-x-mark-11147352.png" width=15 /></a></td>
 					</tr>
 				</c:forEach>
-				<tr>
-					<td colspan="3"><button type="button" onclick="return updateDeliveryInfo()">확인</button></td>
-				</tr>
 			</table>
+			<button type="button" class="btn btn-outline-dark" onclick="return updateDeliveryInfo()">확인</button>
 	</c:if>
 </body>
 <script>

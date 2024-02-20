@@ -175,25 +175,25 @@
 					    <ul class="list-unstyled row">
 					        <c:forEach var="discount" items="${discount}">
 					            <li class="col-md-6 box">
-					                <div class="product_img"><img style="width:200px; height:200px;" src="${discount.imagePath}"/></div>
+					                <div class="product_img" onclick="toDetail('${discount.companyid}','${discount.category}','${discount.category2}','${discount.flavor}')"><img style="width:200px; height:200px;" src="${discount.imagePath}"/></div>
 					                <div class="wish">
 							                <sec:authorize access="isAnonymous()">
 								            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 								            </sec:authorize>
 								            <sec:authorize access="isAuthenticated()">
 								            	<c:choose>
-								            	<c:when test="${wishList.contains(best.boardname)}">
-										            <a href="javascript:void(0)" onclick="removeWishList('${best.boardname}')" >
+								            	<c:when test="${wishList.contains(discount.product)}">
+										            <a href="javascript:void(0)" onclick="removeWishList('${discount.product}')" >
 										            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
 										            </a>
 								            	</c:when>
 								            	<c:otherwise>
-										            <a href="javascript:void(0)" onclick="addWishList('${best.boardname}')" >
+										            <a href="javascript:void(0)" onclick="addWishList('${discount.product}')" >
 								           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 										            </a>
 								            	</c:otherwise>
 								            	</c:choose>
-								            	 <a href="javascript:void(0)" class="openCart" onclick="openCart('${best.companyid}','${best.category}','${best.category2}','${best.price}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+								            	 <a href="javascript:void(0)" class="openCart" onclick="openCart('${discount.num}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 								            	
 								            </sec:authorize>
 		            					</div>
@@ -243,9 +243,6 @@
             </div>
         </div>
         <!-- Copyright End -->
-
-
-
         <!-- Back to Top -->
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
 

@@ -26,7 +26,6 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.BuyproductDTO;
-import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
 import test.spring.mvc.bean.DibsDTO;
@@ -37,6 +36,7 @@ import test.spring.mvc.bean.PointDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.repository.Seller1Mapper;
 
 @Service
@@ -45,6 +45,8 @@ public class MemberServiceImpl implements MemberService{
 	private MemberMapper mapper;
 	@Autowired
 	private Seller1Mapper sel1mapper;
+	@Autowired
+	private ReviewMapper rmapper;
 		
 	@Autowired
 	PasswordEncoder encoder;
@@ -83,11 +85,12 @@ public class MemberServiceImpl implements MemberService{
 	public void newMember2(Member_basicDTO bdto, Member_detailDTO ddto, int path) {
 		bdto.setPw(encoder.encode(bdto.getPw()));		//비밀번호 암호화
 		bdto.setStatus(800);
+		ddto.setPath(path);
 		mapper.newMember(bdto);							//member_basic 테이블 레코드 추가 
 		mapper.newMemberstatus(bdto.getId());			//authoroties 테이블 레코드 추가 
 		ddto.setId(bdto.getId());
 		ddto.setPath(path);
-		mapper.newMember2(ddto);
+		mapper.newMember3(ddto);
 	}
 
 
@@ -323,8 +326,6 @@ public class MemberServiceImpl implements MemberService{
         product.put("PRICE", price);
         product.put("ORIPRICE", oriprice);
         
-        
-        
         // 모델에 추가
         model.addAttribute("product", product);
         model.addAttribute("thumbnailPaths", thumbnailPaths);
@@ -339,7 +340,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getWishListProduct(Model model, String id) {
-		model.addAttribute("wishList",mapper.getWishListProduct(id));
+		if(mapper.getStatusById(id)==1) {
+			model.addAttribute("wishList",mapper.getWishListProduct(id));
+		}
 	}
 
 	@Override
@@ -550,6 +553,8 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void getOrderDetailByOrderid(String id, String orderid, Model model) {
 		List<OrderdetailDTO> list=mapper.getOrderDetailByOrderid(id, orderid);
+		List<Integer> reviewable=new ArrayList<>(); 
+		List<String> imgPaths=new ArrayList<>();
 		ProductDTO dto=new ProductDTO();
 		for(OrderdetailDTO odto:list) {
 			String productid=odto.getProductid();
@@ -558,8 +563,30 @@ public class MemberServiceImpl implements MemberService{
 			dto.setCategory2(productid.substring(4,6));
 			dto.setFlavor(productid.substring(6,8));
 			odto.setProduct(mapper.getProductnameByProductcode(dto));
+			//리뷰 작성 여부 판단
+			dto.setBoardname(orderid);
+			reviewable.add(mapper.isReviewByOrderidAndProductcode(dto));
+			
+			//썸네일
+			ProductimgDTO img =mapper.findlistthum(dto.getCompanyid(), dto.getCategory(), dto.getCategory2());
+			if (img != null) {
+				// 이미지 경로 직접 조합하여 설정
+				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+						img.getCategory() + img.getCategory2() +
+						img.getFlavor() + "F" + img.getNum() +
+						img.getExt();
+				imgPaths.add(imagePath);
+				
+			}else {
+				imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+			}
+			
 		}
+		
+		
 		model.addAttribute("list",list);
+		model.addAttribute("reviewable",reviewable);
+		model.addAttribute("imgPaths",imgPaths);
 	}
 
 	@Override
