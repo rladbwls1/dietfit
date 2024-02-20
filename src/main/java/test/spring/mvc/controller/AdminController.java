@@ -13,6 +13,7 @@ import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
+import test.spring.mvc.service.Admin1Service;
 import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.EmailService;
 
@@ -23,8 +24,13 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
-	@Autowired
-	private EmailService eservice;
+	@RequestMapping("main")
+	public String main(Model model) {
+		service.companyList(model);
+		service.memberList(model);
+		service.discountCount();
+		return "admin/adminMain";
+	}
 	
 	@RequestMapping("companylist")
 	public String companyList(Model model) {
@@ -64,8 +70,11 @@ public class AdminController {
 	}
 	
 	@RequestMapping("companyStatusChange")
-	public String companyStatusChange(String id, String status, String companyid, Model model) {
+	public String companyStatusChange(String id, String status, String companyid,
+			String authority, Model model) {
 	    service.companyStatus(status, id);
+	    String username = id;
+	    service.companyStatusR(authority, username);
 
 	    //companyid가져오기
 	    String companyId = service.getCompanyId(id);

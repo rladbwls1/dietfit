@@ -28,66 +28,68 @@
             <!-- BreadCrumb -->
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb adminx-page-breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                <li class="breadcrumb-item"><a href="/dietfit/main" style="text-decoration: none; color: black;">다이어트핏(사용자)</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color:blue;">다이어트핏(관리자)</li>
               </ol>
             </nav>
 
             <div class="pb-3">
-              <h1>Dashboard</h1>
+              <h1>DIETFIT 다이어트 핏</h1>
             </div>
 
             <div class="row">
-              <div class="col-md-6 col-lg-3 d-flex">
-                <div class="card mb-grid w-100">
-                  <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between mb-3">
-                      <h5 class="card-title mb-0">
-                        Outstanding Invoices
-                      </h5>
-
-                      <div class="card-title-sub">
-                        $753.82
-                      </div>
-                    </div>
-
-                    <div class="progress mt-auto">
-                      <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">3/4</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <div class="col-md-6 col-lg-3 d-flex">
                 <div class="card mb-grid w-100">
                   <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between mb-3">
                       <h5 class="card-title mb-0">
-                        Open Tasks
+                        오늘의 특가
                       </h5>
 
                       <div class="card-title-sub">
-                        18/30
+                        
+                        <p id="currentDate"></p>
                       </div>
                     </div>
-
+                    	<a href="/member/discount" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
+                    	<!-- 
                     <div class="progress mt-auto">
                       <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
+                    	 -->
                   </div>
                 </div>
               </div>
+              
+				<div class="col-md-6 col-lg-3 d-flex">
+                <div class="card mb-grid w-100">
+                  <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between mb-3">
+                      <h5 class="card-title mb-0">
+                         대기중인 판매업체
+                      </h5>
 
+                      <div class="card-title-sub">
+                        ${companycount800}
+                      </div>
+                    </div>
+
+					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
+                  </div>
+                </div>
+              </div>
+              
               <div class="col-md-6 col-lg-3 d-flex">
                 <div class="card border-0 bg-primary text-white text-center mb-grid w-100">
                   <div class="d-flex flex-row align-items-center h-100">
                     <div class="card-icon d-flex align-items-center h-100 justify-content-center">
-                      <i data-feather="shopping-cart"></i>
+                      <i data-feather="users"></i>
                     </div>
                     <div class="card-body">
-                      <div class="card-info-title">Sales</div>
+                      <div class="card-info-title">판매업체</div>
                       <h3 class="card-title mb-0">
-                        768
+                        ${companycount888}
                       </h3>
                     </div>
                   </div>
@@ -101,9 +103,9 @@
                       <i data-feather="users"></i>
                     </div>
                     <div class="card-body">
-                      <div class="card-info-title">Sign Ups (this week)</div>
+                      <div class="card-info-title">회원</div>
                       <h3 class="card-title mb-0">
-                        1,258
+                        ${membercount}
                       </h3>
                     </div>
                   </div>
@@ -168,5 +170,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <script src="/resources/js/vendor.js"></script>
     <script src="/resources/js/adminx.js"></script>
+    <script>
+	    // 현재 날짜를 가져오는 JavaScript 코드
+	    var currentDate = new Date();
+	    var formattedDate = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
+	    document.getElementById('currentDate').innerHTML = formattedDate;
+	</script>
   </body>
 </html>
