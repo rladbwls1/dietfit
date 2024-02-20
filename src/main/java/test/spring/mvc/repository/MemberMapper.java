@@ -92,7 +92,9 @@ public interface MemberMapper {
                                 @Param("category") String category, 
                                 @Param("category2") String category2, 
                                 @Param("flavor") String flavor);
-	//관심상품에 상품 하나 추가하기
+	//관심상품에 이미 있는지 확인
+    public int isWish(String product);
+    //관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
 	//관심상품에 상품 하나 제거하기
@@ -103,8 +105,13 @@ public interface MemberMapper {
 	
 	//유저의 관심상품 목록에서 상품명만 가져오기
 	public List<String> getWishListProduct(String id);
-	//유저의 관심상품 목록 가져오기
-	public List<DibsDTO> getWishList(String id);
+	//유저의 관심상품 개수 가져오기
+	public int countWishList(String id);
+	//유저의 관심상품 목록 전체 가져오기
+	public List<DibsDTO> getWishList(@Param("id")String id, @Param("startRow") int startRow, 
+			   					@Param("endRow") int endRow);
+	//유저의 관심상품 목록 전체 가져오기
+	public List<DibsDTO> getWishListWithFolder(@Param("id")String id);
 	//상품명으로 상품코드 뽑기
 	public ProductDTO getProductCodeByProductName(String product);
 	//상품명으로 가격 뽑기

@@ -335,7 +335,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addWishOne(String product,String id) {
-		mapper.addWishOne(product,id);
+		if(mapper.isWish(product)==0) {
+			mapper.addWishOne(product,id);
+		}
 	}
 
 	@Override
@@ -378,8 +380,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void getWishList(Model model, String id) {
-		List<DibsDTO> dibs = mapper.getWishList(id);
+	public void getWishList(Model model, String id,int currentPage,String checkedFolder) {
+		int pageSize=5;
+		int startRow=(currentPage-1)*pageSize+1;		//시작
+		int endRow=currentPage*pageSize;				//끝
+		int count=mapper.countWishList(id);
+		List<DibsDTO> dibs=mapper.getWishList(id, startRow, endRow);
 		List<String> imgPaths=new ArrayList<>();
 	    if (dibs != null) {
 	        for (DibsDTO dib: dibs) {
@@ -412,6 +418,91 @@ public class MemberServiceImpl implements MemberService{
 	        }
 	        model.addAttribute("folder",folder2);
 	    }
+	    //페이지
+		int pageBlock=10;
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+		int endPage=startPage + pageBlock - 1;
+		
+		model.addAttribute("count",count);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageCount",pageCount);
+		model.addAttribute("startPage",startPage);
+		model.addAttribute("endPage",endPage);
+	}
+	
+
+	@Override
+	public void getWishListWithFolder(Model model, String id, int currentPage, String checkedFolder) {
+		int pageSize=5;
+		int startRow=(currentPage-1)*pageSize+1;		//시작
+		int endRow=currentPage*pageSize;				//끝
+		//int count=mapper.countWishList(id);
+		int count=0;
+		List<DibsDTO> oridibs=mapper.getWishListWithFolder(id);
+		List<DibsDTO> dibs=new ArrayList<>();
+		List<DibsDTO> dibs2=new ArrayList<>();
+		List<String> imgPaths=new ArrayList<>();
+	    if (oridibs != null) {
+	    	//폴더의 상품 개수
+    		for(DibsDTO dib:oridibs) {
+    			String folderName=dib.getFolder();
+    			for(String fName:folderName.split(",")) {
+    				if(fName.equals(checkedFolder)){
+    					dibs.add(dib);
+    					count++;
+    				}
+    			}
+    		}
+    		int startNum=pageSize*currentPage-pageSize;
+    		for(int i=0;i<pageSize;i++) {
+    			if((i+startNum)>=count) {break;}
+    			dibs2.add(dibs.get(i+startNum));
+    		}
+	        for (DibsDTO dib: dibs2) {
+	        	//상품명으로 기업아이디, 대분류, 소분류 찾아서 값 넣어주면 됨.
+	        	ProductDTO dto=mapper.getProductCodeByProductName(dib.getProduct());
+	            ProductimgDTO img = mapper.findlistthum(dto.getCompanyid(),
+	            		dto.getCategory(), dto.getCategory2());
+	            if (img != null) {
+	                // 이미지 경로 직접 조합하여 설정
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               imgPaths.add(imagePath);
+	            }else {
+	            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+	            }
+	        }
+	        model.addAttribute("wishList", dibs2);
+	        model.addAttribute("imgPaths", imgPaths);
+	        List<String> folder1=new ArrayList<>(mapper.getWishFolderName(id));
+	        List<String> folder2=new ArrayList<>();
+	        for(String folder:folder1) {
+	        	String[] names=folder.split(",");
+	        	for(String name:names) {
+	        		if(!folder2.contains(name)) {
+	        			folder2.add(name);
+	        		}
+	        	}
+	        }
+	        model.addAttribute("folder",folder2);
+	    }
+	    //페이지
+		int pageBlock=10;
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+		int endPage=startPage + pageBlock - 1;
+		
+		model.addAttribute("count",count);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageCount",pageCount);
+		model.addAttribute("startPage",startPage);
+		model.addAttribute("endPage",endPage);
+		
 	}
 
 	@Override
