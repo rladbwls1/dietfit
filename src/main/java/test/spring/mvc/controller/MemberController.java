@@ -289,6 +289,7 @@ public class MemberController {
 			service.getWishListProduct(model,pri.getName());
 		}
 		service.getallproduct(model,pageNum);
+		model.addAttribute("count", mapper.allproduct_count());
 	    return "member/productList";
 	}
 	@RequestMapping("productDetail")
