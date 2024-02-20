@@ -183,13 +183,13 @@
 								            </sec:authorize>
 								            <sec:authorize access="isAuthenticated()">
 								            	<c:choose>
-								            	<c:when test="${wishList.contains(best.boardname)}">
-										            <a href="javascript:void(0)" onclick="removeWishList('${best.boardname}')" >
+								            	<c:when test="${wishList.contains(best.product)}">
+										            <a href="javascript:void(0)" onclick="removeWishList('${best.product}')" >
 										            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
 										            </a>
 								            	</c:when>
 								            	<c:otherwise>
-										            <a href="javascript:void(0)" onclick="addWishList('${best.boardname}')" >
+										            <a href="javascript:void(0)" onclick="addWishList('${best.product}')" >
 								           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 										            </a>
 								            	</c:otherwise>

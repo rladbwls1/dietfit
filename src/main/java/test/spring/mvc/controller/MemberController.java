@@ -65,7 +65,7 @@ public class MemberController {
 	
 	// 베스트 상품 월간
 	@RequestMapping("best")
-	public String best(Model model) {
+	public String best(Model model,Principal pri) {
 		List<ProductDTO> dto = admin.best();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
@@ -78,6 +78,9 @@ public class MemberController {
 	               pd.setImagePath(imagePath);
 	            }
 			}
+		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
 		}
 		model.addAttribute("best", dto);
 		return "member/best";
@@ -108,7 +111,7 @@ public class MemberController {
 	
 	// 오늘의 특가 상품
 	@RequestMapping("discount")
-	public String discount(Model model) {
+	public String discount(Model model, Principal pri) {
 		List<ProductDTO> dto = admin.discount();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
@@ -123,6 +126,9 @@ public class MemberController {
 	               pd.setSale(sale);
 	            }
 			}
+		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
 		}
 		model.addAttribute("discount", dto);
 		return "/member/discount";
