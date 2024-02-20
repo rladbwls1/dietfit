@@ -4,25 +4,355 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="test.spring.mvc.repository.MemberMapper">
+	<!-- 회원가입시 기본 정보 삽입 -->
 	<insert id="newMember" parameterType="test.spring.mvc.bean.Member_basicDTO">
-		insert into Member_basic (id,pw,name,nic,email) values(#{id},#{pw},#{name},#{nic},#{email})
+		insert into Member_basic (id,pw,name,nic,email,status) values(#{id},#{pw},#{name},#{nic},#{email},#{status})
 	</insert>
+	<!-- 회원가입시 authorities 테이블에 정보 삽입 -->
 	<insert id="newMemberstatus" >
 		insert into authorities values(#{id}, 'ROLE_1')
 	</insert>
+	<!-- 회원 가입시 가입경로(카카오, 일반) 정보 삽입 -->
 	<insert id="newMember2" parameterType="test.spring.mvc.bean.Member_detailDTO">
 		insert into Member_detail (id,path) values(#{id},#{path})
 	</insert>
+	<!-- 판매자로 회원가입시 정보 삽입 -->
+	<insert id="newMember3" parameterType="test.spring.mvc.bean.Member_detailDTO">
+		insert into Member_detail (id,path,phone,addr1,addr2,company,businessnum,postnum) values
+					(#{id},#{path},#{phone},#{addr1},#{addr2},#{company},#{businessnum},#{postnum})
+	</insert>
+	<!-- id로 member_basic 가져옴 -->
+	<select id="getUserBasic" resultType="test.spring.mvc.bean.Member_basicDTO">
+		select * from member_basic where id=#{id}
+	</select>
+	<!-- 아이디로 등급 가져오기 -->
+	<select id="getStatusById">
+		select status from member_basic where id=#{id}
+	</select>
+	<!-- 아이디로 회사id companyid 가져오기 -->
+	<select id="getCompanyidById">
+		select companyid from member_detail where id=#{id}
+	</select>
+	<!-- id로 이메일 가져옴 -->
+	<select id="getEmailById" >
+		select email from member_basic where id=#{id}
+	</select>
+	<!-- id로 member_basic, member_detail 가져옴 -->
+	<select id="getUser" resultType="Map">
+		select * from member_basic b full outer join member_detail d on b.id = d.id where b.id=#{id}  
+	</select>
+	<!-- 정보 수정시 member_basic 부분 수정 -->
+	<update id="modifyMemberBasic" parameterType="test.spring.mvc.bean.Member_basicDTO">
+		update member_basic set NAME=#{name}, NIC=#{nic} where id=#{id}
+	</update>
+	<!-- 정보 수정시 member_detail 부분 수정 -->
+	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
+		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
+					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
+	</update>
+	<!-- 암호화된 비밀번호 가져오기(아이디로) -->	
+	<select id="getPwById">
+		select pw from member_basic where id=#{id}
+	</select>
+	<!-- 회원이 스스로 탈퇴한 경우 상태 변경 -->
+	<update id="deleteUserself">
+		update member_basic set status=99 where id=#{id}
+	</update>
+	<!-- 이메일 중복 확인, 0이면 생성가능 1이면 생성불가(이미 있음) -->
 	<select id="registerEmailCheck" resultType="int">
 		select count(*) from member_basic where email=#{email}
 	</select>
+	<!-- id 중복 확인, 0이면 생성가능 1이면 생성불가(이미 있음) -->
 	<select id="registerIdCheck" resultType="int">
 		select count(*) from member_basic where id=#{id}
 	</select>
+	<!-- 카카오로 로그인한 경우 id가져오기(pw안씀) -->
 	<select id="loginKakao" resultType="test.spring.mvc.bean.Member_basicDTO">
 		select id,pw from member_basic where email=#{email}
 	</select>
+	<!-- 이메일 인증번호 발급 -->
+	<insert id="newemailkey" >
+		insert into emailcheck (email, emailkey) values(#{email},#{emailkey})
+	</insert>
+	<!-- 인증번호 테이블에 이메일이 등록돼있는지 확인, 0이면 없음 1이면 있음 -->
+	<select id="isemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email}
+	</select>
+	<!-- 이미 인증번호 테이블에 등록됐을 경우 인증번호 발급 -->
+	<update id="updateemailkey">
+		update emailcheck set emailkey=#{emailkey}, emailauth=0 where email=#{email}
+	</update>
+	<!-- 이메일 인증번호 확인, 0이면 틀림 1이면 맞음 -->
+	<select id="verifiedemailkey" resultType="int">
+		select count(*) from emailcheck where email=#{email} and emailkey=#{emailkey}
+	</select>
+	<!-- 이메일 인증 권한을 줌 -->
+	<update id="emailAuth">
+		update emailcheck set emailauth=1 where email=#{email}
+	</update>
+	<!-- 인증 권한 가져옴, 1이면 인증됨 0이면 인증 안됨 -->
+	<select  id="isEmailAuth">
+		select emailauth from emailcheck where email=#{email}
+	</select>
+	<!-- member_basic테이블에서 이메일로 id 가져오기 -->
+	<select id="getIdByEmail">
+		select id from member_basic where email=#{email}
+	</select>
+	<!-- 비밀번호 변경 -->
+	<update id="changePwById">
+		update member_basic set pw=#{pw} where id=#{id}
+	</update>
+	<!-- 이메일 변경 -->
+	<update id="changeEmailById">
+		update member_basic set email=#{email} where id=#{id}
+	</update>
+	<select id="countAllProduct">
+		select count(*) from all_product
+	</select>
+	<!-- 전체 상품,페이지 맞게 10개만 -->
+	<select id="findallproduct"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+	<!-- 상품 리스트 썸네일 -->
+    <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
+    	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
+    </select>
+    <!-- 조회수 올리기 -->
+    <update id="countUp">
+    	update all_product set count=count+1 where companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2}
+    </update>
+   	<!-- 상품 상세 내용 -->
+	<select id="findproductdetail" parameterType="string" resultType="Map">
+        SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
+    </select>
+    
+    
+	<!-- 관심상품에 상품 하나 추가하기 -->
+	<insert id="addWishOne">
+		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')
+	</insert>
+	<!-- 관심상품에 상품 하나 제거하기 -->
+	<insert id="removeWishOne">
+		delete from ${id}_dibs where product=#{product}
+	</insert>
+	<!-- 관심상품에 상품 하나 제거하기 -->
+	<insert id="removeWishOneByNum">
+		delete from ${id}_dibs where num=#{num}
+	</insert>
+	<!-- 유저의 관심상품 목록 중 상품명만 가져오기 -->
+	<select id="getWishListProduct">
+		select product from ${id}_dibs
+	</select>
+	<!-- 유저의 관심상품 목록 가져오기 -->
+	<select id="getWishList">
+		select * from ${id}_dibs order by num desc
+	</select>
+	<!-- 유저 관심상품 폴더 변경하기 -->
+	<update id="changeFolder">
+		update ${id}_dibs set folder=#{checkedFolder} where num=#{num}
+	</update>
+	<!-- 유저의 관심상품의 폴더명 가져오기 -->
+	<select id="getFolderByNum">
+		select folder from ${id}_dibs where num=#{num}
+	</select>
+	<!-- 상품명으로 companyid, category, category2, flavor 뽑기 -->
+	<select id="getProductCodeByProductName">
+		select companyid, category, category2, flavor from all_product where product=#{product}
+	</select>
+	<!-- 상품명으로 가격 뽑기 -->
+	<select id="getPriceByProductName">
+	<![CDATA[
+		select price from all_product where product=#{product}
+	]]>
+	</select>
+	<!-- 찜 폴더명들 가져오기 -->
+	<select id="getWishFolderName">
+		select distinct folder from ${id}_dibs
+	</select>
+	<!-- 찜 num으로 product꺼내기 -->
+	<select id="getProductByNum">
+		select product from ${id}_dibs where num=#{num}
+	</select>
+	<!-- miniCart 장바구니, 상품 정보 가져오기 -->
+	<select id="getProductByCompanyidCateCate2">
+		select * from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2}
+	</select>
+	<!-- num으로 product 정보, 할인 정보 가져오기 -->
+	<select id="getMiniCartByNum">
+		select p.product,p.price,d.sale from all_product p left outer join discount d on p.num=d.num  where p.num=#{num}
+	</select>
+	<!-- 장바구니에 상품이 이미 있나 확인 -->
+	<select id="isCart">
+		select count(*) from ${id}_cart where product=#{product}
+	</select>
+	<!-- 장바구니에 하나의 상품 추가 -->
+	<insert id="addCartOne">
+		insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},#{delivery})
+	</insert>
+	<!-- 장바구니 목록 가져오기 -->
+	<select id="getCartList" resultType="Map">
+		select * from ${id}_cart order by num desc
+	</select>
+	<!-- 장바구니 개수 수정 -->
+	<update id="updateCart">
+		update ${id}_cart set quantity=#{quantity} where num=#{num}
+	</update>
+	<!-- 장바구니 목록 삭제 -->
+	<delete id="deleteCart">
+		delete from ${id}_cart where num=#{num}
+	</delete>
+	<!-- 장바구니에서 개수 수정한 목록만 가져오기 -->
+	<select id="getCartListByNum">
+		select * from ${id}_cart where num=#{num}
+	</select>
+	<!-- 유저 배송지에 새 배송지 추가 -->
+	<insert id="addDelivery">
+		insert into ${id}_delivery (addr1,addr2,phone,nicaddr,postnum,receiver) values
+			(#{dto.addr1},#{dto.addr2},#{dto.phone},#{dto.nicaddr},#{dto.postnum},#{dto.receiver})
+	</insert>
+	<!-- 유저 배송지 정보 가져오기 -->
+	<select id="getUserDelivery">
+		select * from ${id}_delivery where orderid is null order by DEFAULTADDR desc, NICADDR asc
+	</select>
+	<!-- 유저 배송지에서 동일 별명 유무 판단 -->
+	<select id="checkNicaddr">
+		select count(*) from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
+	</select>
+	<!-- 사용자 배송지, 기본 배송지 없앰 -->
+	<update id="removeDefaultDelivery">
+		update ${id}_delivery set defaultaddr=0 where orderid is null
+	</update>
+	<!-- 사용자 배송지, 기본 배송지 설정 -->
+	<update id="setDefaultDelivery">
+		update ${id}_delivery set defaultaddr=9 where nicaddr=#{nicaddr} and orderid is null
+	</update>
+	<!-- 사용자 배송지 삭제 -->
+	<delete id="deleteDelivery">
+		delete from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
+	</delete>
+ 	<!-- 쿠폰 -->
+    <select id="couponcount" resultType="int">
+    	select count(*) from allcoupon where deletedate > sysdate 
+    </select>
+    <select id="couponList" resultType="test.spring.mvc.bean.AllcouponDTO">
+    	select * from allcoupon where deletedate > sysdate and admincheck=1
+    </select>
+    <!-- 유저가 갖고있는 모든 쿠폰의 쿠폰번호 가져오기 -->
+    <select id="getUserCouponid">
+    	select couponid from ${id}_coupon
+    </select>
+    <!-- 쿠폰 다운로드 -->
+    <insert id="downloadCoupon">
+    	insert into ${id}_coupon (coupon,couponid,CREATEDATE,DELETEDATE,STATUS) values (#{cdto.coupon},#{cdto.couponid},#{cdto.createdate},#{cdto.deletedate},#{cdto.status})
+    </insert>
+	<!-- 만료된 쿠폰 만료처리 -->
+	<update id="checkUsableCoupon">
+	<![CDATA[	
+		update ${id}_coupon set status=99 where deletedate < sysdate
+	]]>
+	</update>
+	<!-- 사용하지 않은 유저 쿠폰 가져오기 -->
+	<select id="getUserCoupon" resultType="test.spring.mvc.bean.CouponDTO">
+		select * from ${id}_coupon where status=0
+	</select>
+	<!-- 유저 주문 정보 가져오기 -->
+	<select id="getUserOrder" resultType="Map">
+		select * from ${id}_orderdetail o left outer join courier c on o.courier=c.key order by purdate desc
+	</select>
+	<!-- 상품 코드로 상품명 검색 -->
+	<select id="getProductnameByProductcode" resultType="String">
+		select product from all_product where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor} 
+	</select>
+	<!-- 주문번호로 배송지 정보 가져오기 -->
+	<select id="getDeliveryByOrderid">
+		select * from ${id}_delivery where orderid =#{orderid}
+	</select>
+	<!-- 주문번호와 아이디로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderid">
+		select * from ${id}_orderdetail where orderid =#{orderid}
+	</select>
+	<!-- 주문번호와 상품코드로 주문상세 가져오기 -->
+	<select id="getOrderDetailByOrderidAndProductid">
+		select * from ${id}_orderdetail where orderid=#{orderid} and productid=#{productid}
+	</select>
+	<!-- 주문상세 화면에서 구매한 상품의 리뷰 작성 여부 판단 -->
+	<select id="isReviewByOrderidAndProductcode" parameterType="test.spring.mvc.bean.ProductDTO">
+		select count(*) from review where orderid=#{boardname} and companyid=#{companyid} and
+						category=#{category} and category2=#{category2} and flavor=#{flavor}
+	</select>
+	<!-- 구매확정 orderdetail 컬럼 수정 -->
+	<update id="defintePurchase">
+		update ${id}_orderdetail set purchase=9 where orderid=#{orderid} and productid=#{productid}
+	</update>
+	<!-- 구매확정 buyproduct 레코드 추가 -->
+	<insert id="addDefintePurchaseToBuyproduct">
+		insert into buyproduct (num, companyid,category,category2,flavor,id,orderid,quantity,price) values
+				(buyproduct_seq.nextval,#{companyid},#{category},#{category2},#{flavor},#{id},#{orderid},#{quantity},#{price})
+	</insert>
+	<!-- 보유 적립금이 null인지 판단, 1이면 null아님, 0이면 null임 -->
+	<select id="isPoint">
+		select count(*) from ${id}_point
+	</select>
+	<!-- 회원의 현재 보유 적립금 가져오기 -->
+	<select id="getPoint">
+		select point from ${id}_point where num=(select max(num) from ${id}_point)
+	</select>
+	<!-- 적립금 적립 -->
+	<insert id="addPoint">
+		insert into ${id}_point (opt,change,createdate,duedate,orderid,point) values (0, #{point.change}, sysdate, sysdate+365,#{point.orderid},#{point.point})
+	</insert>
+	<!-- 적립금 소멸 -->
+	<insert id="deletePoint">
+		insert into ${id}_point (opt,change,point,deletedate) values (1, #{point.change},#{point.point},sysdate)
+	</insert>
+	<!-- 적립금 사용 -->
+	<insert id="usePoint">
+		insert into ${id}_point (opt,change,orderid,point,deletedate) values (10, #{point.change},#{point.orderid},#{point.point},sysdate)
+	</insert>
+	<!-- 회원의 적립 % 가져오기 -->
+	<select id="getBonus">
+		select bonus from status s left outer join member_basic m on s.key=m.status where m.id=#{id}
+	</select>
+	<!-- 회원의 적립금 내역 가져오기 -->
+	<select id="getPointList">
+		select * from ${id}_point order by num desc
+	</select>
+	<!-- 만료된 적립금 가져오기 -->
+	<select id="getDuePointNum">
+	<![CDATA[	
+		select * from ${id}_point where duedate < sysdate
+	]]>
+	</select>
+	<!-- 할인정보 가져오기 -->
+	<select id="getOrdersum">
+		select * from ordersum where orderid=#{orderid}
+	</select>
+	<!-- 쿠폰id로 쿠폰명 가져오기 -->
+	<select id="getCouponByCouponid">
+		select coupon from allcoupon where couponid=#{couponid}
+	</select>
+	<!-- 상품명으로 게시글 번호 가져오기 -->
+	<select id="getNumByProduct">
+	<![CDATA[	
+		select num from all_product where product=#{product} 
+	]]>
+	</select>
+	<!-- 게시글 번호로 할인율 가져오기 -->
+	<select id="isSale">
+	<![CDATA[	
+		select count(sale) from discount where num=#{num} and startr<sysdate and endr>sysdate
+	]]>
+	</select>
+	<select id="getSaleByNum">
+	<![CDATA[
+		select sale from discount where num=#{num} and startr<sysdate and endr>sysdate
+	]]>
+	</select>
+
 	
+	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
 	<update id="newPoint" >
 		create table ${id}_point(
 			num number default ${id}_point_seq.nextval primary key,
@@ -43,6 +373,7 @@
 		create table ${id}_coupon(
 			num number default ${id}_coupon_seq.nextval primary key,
 			coupon varchar2(100) not null,
+			couponid varchar2(100) not null,
 			CREATEDATE date not null,
 			DELETEDATE date not null,
 			STATUS number not null
@@ -68,7 +399,8 @@
 			num number default ${id}_cart_seq.nextval primary key,
 			product varchar2(100) not null,
 			price number not null,
-			quantity number not null
+			quantity number not null,
+			delivery number default 0
 		)
 	</update>
 		<update id="newCartSeq">
@@ -80,10 +412,14 @@
 			ORDERID varchar2(100) not null,
 			PRICE number not null,
 			QUANTITY number not null,
-			DISCOUNT number,
+			DELIVERY number,
 			PURDATE date default sysdate not null,
-			PAY varchar2(100) not null,
-			PURCHASE number default 0 not null 
+			PAY number not null,
+			PURCHASE number default 0 not null,
+			PRODUCTID varchar2(100),
+			TRACKING varchar2(100),
+			COURIER varchar2(100),
+			MEMBERID varchar2(100) not null
 		)
 	</update>
 	
@@ -93,11 +429,19 @@
 			ADDR2 varchar2(100) not null,
 			PHONE varchar2(100) not null,
 			DEFAULTADDR number default 0,
-			NICADDR varchar2(100)
+			NICADDR varchar2(100),
+			POSTNUM varchar2(100) NOT NULL,
+			RECEIVER varchar2(20) NOT NULL,
+			ORDERID varchar2(100)
 		)
 	</update>
 	
+ 	<select id="findall">
+ 		select * from all_product
+ 	</select>
 	
+	
+
 
 	
 </mapper>

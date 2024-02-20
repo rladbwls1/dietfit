@@ -24,22 +24,75 @@
 		select * from member_detail where id=#{id}
 	</select>
 	
+	<!--  
+	<update id="companyStatus" parameterType="hashMap">
+		<script>
+        update member_basic set status=#{status} where id=#{id}
+        insert into member_detail (companyid) values (#{companyid}) where id=#{id}
+    	</script>
+	</update>
+	-->
+	
 	<update id="companyStatus" parameterType="String">
 		update member_basic set status=#{status} where id=#{id}
+	</update>	
+	<select id="getLastCompanyId" parameterType="String">
+	<![CDATA[
+		select companyid from
+		    (select companyid from member_detail where companyid is not null order by companyid desc)
+		     		where rownum <=1
+	]]>
+	</select>
+	<select id="getCompanyId" parameterType="String">
+		select companyid from member_detail where id=#{id}
+	</select>
+		
+	<update id="generateCompanyId" parameterType="String">
+		update member_detail set companyid =#{companyid} where id=#{id}
 	</update>
 	
 	<select id="allProductcount" resultType="int">
 		select count(*) from all_product 
 	</select>
 	<select id="allProduct" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from all_product
+		select * from all_product order by companyid asc
+	</select>
+	
+	<select id="stocklesscount" resultType="int">
+	<![CDATA[
+		select count(*) from all_product where stock < #{stock}
+	]]>
+	</select>
+	
+	<select id="stockless" resultType="test.spring.mvc.bean.ProductDTO">
+	<![CDATA[
+		select * from all_product where stock < #{stock} order by companyid asc
+	]]>
+	</select>
+	<select id ="getStock" resultType="int">
+		select stock from all_product where product =#{product}
+	</select>
+	
+	<select id="getCompanyid" resultType="String">
+		select companyid from all_product where product=#{productname}
+	</select>
+	<select id="getCategory" resultType="String">
+		select category from all_product where product=#{productname}
+	</select>
+	
+	<select id="getCategory2" resultType="String">
+		select category2 from all_product where product=#{productname}
+	</select>
+	
+	<select id="getFlavor" resultType="String">
+		select flavor from all_product where product=#{productname}
 	</select>
 	
 	<select id="productcount" resultType="int">
-		select count(*) from all_product companyid = #{companyid}
+		select count(*) from all_product where companyid = #{companyid}
 	</select>
 	<select id="productList" resultType="test.spring.mvc.bean.ProductDTO">
-		select * from all_product where companyid = #{companyid}
+		select * from all_product where companyid = #{companyid} order by num asc
 	</select>
 	
 	<select id="getCompanyName" resultType="String">
@@ -52,10 +105,7 @@
         		and category2 = #{category2} and flavor= #{flavor}
     </select>
     <select id="getProductId" resultType="String">
-    	select companyid||category||category2||stock from all_product where product=#{product}
-    </select>
-    <select id="getProductStock" resultType="int">
-    	select stock from all_product where product=#{product}
+    	select companyid||category||category2||flavor from all_product where product=#{product}
     </select>
 
     <select id="getCompanyEmail" parameterType="String" resultType="String">
@@ -63,4 +113,63 @@
    			where mb.id = md.id and companyid= #{companyid}
     </select>
     
+    <!-- 결제.. 주문번호 생성 및 DB삽입 -->
+    <insert id="memberOrderDetail" parameterType="test.spring.mvc.bean.OrderdetailDTO">
+    	INSERT INTO ${id}_orderdetail (
+		    orderid, price, quantity, discount, purdate,
+		    pay, purchase, productid, memberid
+		) VALUES (
+		    #{orderdetail.orderid}, #{orderdetail.price}, #{orderdetail.quantity}, #{orderdetail.discount}, #{orderdetail.purdate},
+		    #{orderdetail.pay}, #{orderdetail.purchase}, #{orderdetail.productid}, #{orderdetail.memberid}
+		)
+	</insert>
+	<insert id="orderSummary" parameterType="test.spring.mvc.bean.OrdersumDTO">
+    	INSERT INTO ordersum (
+    		id, orderid, point, couponid, coupondiscount, totalamount
+		) VALUES (
+		    #{ordersum.id}, #{ordersum.orderid}, #{ordersum.point}, 
+		    #{ordersum.couponid}, #{ordersum.coupondiscount}, #{ordersum.totalamount}
+		)
+	</insert>
+	<update id="changeCounpon" parameterType="String">
+		update ${id}_coupon set status = 1 where couponid=#{couponid}
+	</update>	
+	<insert id="memberDelivery" parameterType="test.spring.mvc.bean.DeliveryDTO">
+    	INSERT INTO ${id}_delivery (
+		    addr1, addr2, postnum, phone, nicaddr, receiver, orderid
+		) VALUES (
+		    #{delivery.addr1}, #{delivery.addr2}, #{delivery.postnum}, #{delivery.phone},
+		    #{delivery.nicaddr}, #{delivery.receiver}, #{delivery.orderid}
+		)
+	</insert>
+	<select id="findOrderId" resultType="int">
+		select count(*) from ${id}_orderdetail where orderid = #{orderid}
+	</select>
+	<select id="findproduct" resultType="String">
+		select product from ${id}_cart where num =#{num}
+	</select>
+	<select id="findquantity" resultType="int">
+		select quantity from ${id}_cart where num =#{num}
+	</select>
+	<select id="findPrice" resultType="int">
+		select price from all_product where companyid||category||category2||flavor=#{productid}
+	</select>
+	<select id="getUserDelivery9">
+		select * from ${id}_delivery where defaultaddr=9
+	</select>
+	<select id="getDeliveryByNicaddr">
+		select * from ${id}_delivery where nicaddr=#{nicaddr} and orderid is null
+	</select>
+	<select id="getUserCoupon" resultType="Map">
+		select m.couponid, m.coupon, m.deletedate, a.discount, a.companyid
+			from allcoupon a, ${id}_coupon m 
+				where m.couponid=a.couponid and m.deletedate > sysdate and m.status = 0
+	</select>
+
+	<select id="getMyCart" resultType="Map">
+        select a.companyid,a.product,a.price,m.quantity 
+	        from all_product a, ${id}_cart m 
+	        	where m.num=#{num} and m.product=a.product
+    </select>
+	
 </mapper>

@@ -8,32 +8,20 @@
     <select id="findallproductbycompanyid" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         select * from all_product
     </select>
-
-    <select id="findthumimg" parameterType="java.util.Map" resultType="test.spring.mvc.bean.ProductimgDTO">
-	    select * from all_productimg where
-	    companyid = #{companyid}
-	    AND category = #{category}
-	    AND category2 = #{category2}
-	    AND flavor = #{flavor}
-	    AND thum = 1
-	</select>
-	
-
     <select id="findproductdetail" parameterType="string" resultType="test.spring.mvc.bean.ProductDTO">
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
-    
-    <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
-        INSERT INTO allcoupon
-        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck, minprice, content)
-        VALUES
-        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
-    </insert>
-	<select id="findcompanyid">
+	<select id="findcompanyid" resultType="java.lang.String">
 		select companyid from member_detail where id=#{id}
 	</select>
-	<select id="findstatus">
-		select status from member_basic where id=#{id}	
+	<select id="findcompanyidbyproductid" resultType="java.lang.String">
+		select companyid from member_detail where companyid=#{companyid}
+	</select>
+	<select id="findcompanyproduct" resultType="test.spring.mvc.bean.ProductDTO">
+		select * from all_product where companyid=#{companyid}
+	</select>
+	<select id="findnotreadchat" resultType="test.spring.mvc.bean.ChatDTO">
+		select * from chat where readcheck=0 and companyid=#{companyid}
 	</select>
     <select id="sellermodifyselect" parameterType="string" resultType="test.spring.mvc.bean.Member_basicDTO">
     	select * from member_basic where id=#{id}
@@ -51,4 +39,67 @@
     <update id="sellerwithdraw">
     	update member_basic set STATUS = 99 where id=#{id}
     </update>
+    <insert id="addCoupon" parameterType="test.spring.mvc.bean.AllcouponDTO">
+        INSERT INTO allcoupon
+        (coupon, couponid, createdate, deletedate, companyid, download, discount, boardnums, admincheck, minprice, content)
+        VALUES
+        (#{coupon}, #{couponid}, #{createdate}, #{deletedate}, #{companyid}, #{download}, #{discount}, #{boardnums}, #{admincheck}, #{minprice}, #{content})
+    </insert>
+    
+   <select id="sellerstockselect" resultType="test.spring.mvc.bean.ProductDTO">
+	    SELECT *
+	    FROM all_product
+	    WHERE SUBSTR(companyid, 1, 2) || SUBSTR(category, 1, 2) || SUBSTR(category2, 1, 2) || SUBSTR(flavor, 1, 2) = #{productId}
+	</select>
+
+	<update id="sellerstockupdate" parameterType="test.spring.mvc.bean.ProductDTO">
+	    update all_product
+	    set stock=stock+#{stock}
+	    where companyid=#{companyid} and category=#{category} and category2=#{category2} and flavor=#{flavor}
+	</update>
+
+	<insert id="chatroomnum" parameterType="test.spring.mvc.bean.ChatDTO">
+	    <selectKey keyProperty="roomnum" resultType="int" order="BEFORE">
+	        select chat_seq.nextval as roomnum from dual
+	    </selectKey>
+	    insert into chat (roomnum, id, product, readcheck, companyid) values (#{roomnum}, #{id}, #{product}, #{readcheck}, #{companyid})
+	</insert>
+	<select id="countidchat">
+		select roomnum from chat where id=#{id} and product=#{product} and readcheck!=1
+	</select>
+	<select id = "findallbyroomnum">
+		select product from chat where roomnum=#{roomnum}
+	</select>
+	<select id = "findidbyroomnum">
+		select id from chat where roomnum=#{roomnum}
+	</select>
+	<update id="endchat">
+		update chat set readcheck = 1 where roomnum=#{roomnum}
+	</update>
+	<insert id="chatreport" parameterType="test.spring.mvc.bean.ChatreportDTO">
+		insert into chatreport (id,text) values (#{id},#{text})
+	</insert>
+	<update id="chatreportdelete">
+		update chat set readcheck = 9 where roomnum=#{roomnum}
+	</update>
+	<select id="findDiscountInfoByNum" resultType="test.spring.mvc.bean.DiscountDTO">
+		select * from discount where num=#{num}
+	</select>
+	<delete id="deletediscount">
+		<![CDATA[
+	    DELETE FROM discount WHERE endr < TRUNC(sysdate)
+	    ]]>
+	</delete>
+	<insert id="updatediscount" parameterType="test.spring.mvc.bean.DiscountDTO">
+    	insert into discount (num, startr, endr, sale)
+    	values (#{num}, #{startr}, #{endr}, #{sale})
+    </insert>
+    <update id="update2discount" parameterType="test.spring.mvc.bean.DiscountDTO">
+    	update discount set startr=#{startr}, endr=#{endr}, sale=#{sale} where num=#{num}
+    </update>
+	<select id="countByNum" resultType="int" parameterType="java.lang.String">
+        SELECT COUNT(*) FROM discount WHERE num = #{num}
+    </select>
+	
+
 </mapper>

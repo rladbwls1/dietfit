@@ -26,5 +26,9 @@ public class ProductDTO {
 	private String imagePath;   // 이미지 경로 
 	private int sale; // 할인율
 	private List<ProductimgDTO> images; // 이미지 리스트
+	private List<String>thumimg;
+	private List<String>img;
 	
+	private ProductimgDTO pimg;
+	private ProductinfoDTO productinfo;
 }

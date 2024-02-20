@@ -20,7 +20,8 @@
 		authentication-success-handler-ref="customLoginSuccess"
 		authentication-failure-handler-ref="customLoginFail"
 		/>
-		<security:intercept-url pattern="/seller/**" access="hasAnyRole('888,999')"/>
+		<!-- <security:intercept-url pattern="/seller/**" access="hasAnyRole('888,999')"/> -->
+		<security:intercept-url pattern="/admin/**" access="hasRole('999')"/>
 		<security:form-login login-page="/member/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
 		<!-- 로그아웃 -->
 		<security:logout invalidate-session="true" delete-cookies="remember-me"/>

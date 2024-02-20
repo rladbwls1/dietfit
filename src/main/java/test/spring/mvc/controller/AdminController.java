@@ -1,23 +1,18 @@
 package test.spring.mvc.controller;
 
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
+import test.spring.mvc.bean.ProductDTO;
+import test.spring.mvc.repository.AdminMapper;
 import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.EmailService;
 
@@ -32,8 +27,8 @@ public class AdminController {
 	private EmailService eservice;
 	
 	@RequestMapping("companylist")
-	public String companyList(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
-		service.companyList(pageNum, model); //결과는 model에
+	public String companyList(Model model) {
+		service.companyList(model); //결과는 model에
 		return "admin/company/list";
 	}
 	@RequestMapping("companyDetail")
@@ -43,15 +38,22 @@ public class AdminController {
         return "admin/company/detailList";
 	}
 	@RequestMapping("allProduct")
-	public String allProduct(Model model, @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
-		service.allProduct(pageNum, model);
+	public String allProduct(Model model
+			//, @RequestParam(value="pageNum", defaultValue = "1") int pageNum
+			) {
+		service.allProduct(model);
 		return "admin/company/allProduct";
 	}
 	
+	@RequestMapping("stockless")
+	public String stockless(Model model, int stock) {
+		service.stockless(model, stock);
+		return "admin/company/stockless";
+	}
+	
 	@RequestMapping("companyProduct")
-	public String companyProduct(String companyid, Model model,
-			 @RequestParam(value="pageNum", defaultValue = "1") int pageNum) {
-		service.productList(pageNum, model, companyid);
+	public String companyProduct(String companyid, Model model) {
+		service.productList(model, companyid);
 		return "admin/company/product";
 	}
 	@RequestMapping("companyStatus")
@@ -60,17 +62,44 @@ public class AdminController {
 		model.addAttribute("companyBasic", companyBasic);
 		return "admin/company/companyStatus";
 	}
+	
 	@RequestMapping("companyStatusChange")
-	public String companyStatusChange(String id, String status) {
-		service.companyStatus(id, status);
-		return "admin/company/statusChange";
+	public String companyStatusChange(String id, String status, String companyid, Model model) {
+	    service.companyStatus(status, id);
+
+	    //companyid가져오기
+	    String companyId = service.getCompanyId(id);
+	    
+	    System.out.println("기존" + id + "의 companyid : " + companyId);
+	    
+	    //새로운 companyid 생성
+	    String newCompanyId = service.generateCompanyId(companyid, id);
+	    
+	    System.out.println("새로운 CompanyId : " +newCompanyId);
+
+	    //newCompanyid를 companyid에 넣어줌 
+	    model.addAttribute("companyid", newCompanyId);
+	    
+	    System.out.println("=====================");
+	    System.out.println("최종 companyId ===" + newCompanyId);
+
+	    return "admin/company/statusChange";
 	}
 
+	
 	@RequestMapping("checkStock")
-	public @ResponseBody String checkStock() {
-		service.checkStock();
-		return "stock check, mail Send!";
+	public @ResponseBody String checkStock(String product) {
+		System.out.println(product);
+		service.checkstock(product);
+		return "stock check!!";
 	}
-
+	
+	@RequestMapping("adminChat")
+	public String adminChat() {
+		return "admin/adminChat";
+	}
+	
+		
+	
 	  
 }

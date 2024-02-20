@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -46,6 +48,8 @@
 		<beans:property name="uploadTempDir" value="file:/C:/upload/temp"/>
 	</beans:bean>
 	
-	<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat" />
+	<beans:bean id="chat" class="test.spring.mvc.controller.SellerChat">
+		<beans:property name="realPath" value="D:\spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\dietfit\resources\chat\" />
+	</beans:bean>
 	
 </beans:beans>

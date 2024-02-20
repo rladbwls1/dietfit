@@ -54,16 +54,27 @@ public interface Seller1Mapper {
     // 상품 정보 수정
     public void updateProduct(ProductDTO productDTO);
     
-    // 상품 이미지 수정
-    public void updateProductimg(@Param("companyid") String companyid, 
-							  	 @Param("category") String category,
-							  	 @Param("category2") String category2,
-							  	 @Param("flavor") String flavor);
+    // 상품 이미지 썸네일 삭제
+    public int deleteProductthumimg(@Param("thumnums")  List<Integer> thumnum);
+
+    // 상품 이미지 첨부파일 삭제
+    public int deleteProductimgnum(@Param("imgnums") List<Integer> imgnum);
     
-    // 상품 이미지 찾기 
-    public List<ProductimgDTO> imgfindupdate(@Param("companyid") String companyid, 
-					 		    			 @Param("category") String category,
-					 		    			 @Param("category2") String category2,
-					 		    			 @Param("flavor") String flavor);
-    
+    //allproduct에서 num으로 상품코드 받기
+    public ProductDTO getProductCodeByNum(int num);
+
+    // 상풍 수정 증가
+    public void updateProductIsfile(ProductimgDTO dto);
+    // 해당 이미지 DB 삭제 
+    public void thumbnailDelete(int num);
+    // 상품 이미지 총 갯수 삭제 
+    public void productIsfileDelete(int num);
+    // 전체 회원 아이디
+    public List<String> allmember();
 }
+
+
+
+
+
+
