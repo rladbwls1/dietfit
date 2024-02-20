@@ -190,3 +190,17 @@ function addCartFromList(){
     	});
 	}
 }
+
+function hot(condition){
+	let f=document.createElement('form');
+	let obj;
+	obj=document.createElement('input');
+	obj.setAttribute('type','hidden');
+	obj.setAttribute('name','condition');
+	obj.setAttribute('value',condition);
+	f.appendChild(obj);
+	f.setAttribute('method','post');
+	f.setAttribute('action','/member/productList');
+	document.body.appendChild(f);
+	f.submit();
+}

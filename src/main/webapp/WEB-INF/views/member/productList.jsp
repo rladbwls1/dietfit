@@ -4,6 +4,7 @@
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <script src="/resources/js/member2.js"></script>
+<script src="/resources/js/food.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <html>
@@ -110,12 +111,12 @@
    		#category{
    			display: flex;
    		}
-   		#category button{
+   		#category a button{
    			background-color: white;
    			border: none;
    			padding: 0 15px;
    		}
-   		#category button:not(:last-child){
+   		#category a button:not(:last-child){
    			border-right: 1px solid lightgray;
    		}
    		#cate2{
@@ -217,11 +218,10 @@
 		<div id="title">전체 상품 카테고리에 <i>${count}</i> 개의 상품이 등록되어 있습니다</div>
 		<hr>
 		<div id="category">
-			<button>인기순</button>
-			<button>신상품순</button>
-			<button>판매순</button>
-			<button>낮은가격순</button>
-			<button>높은가격순</button>
+			<a href ="/member/productList/popular"><button>인기순</button></a>
+			<a href ="/member/productList/recent"><button>신상품순</button></a>
+			<a href ="/member/productList/priceLow"><button>낮은가격순</button></a>
+			<a href ="/member/productList/priceHigh"><button>높은가격순</button></a>
 		</div>
 		<hr>
 	    <ul class="list-unstyled row">
@@ -277,21 +277,21 @@
 			<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
        	<c:if test="${startPage > 10 }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
        	</c:if>
        
        	<c:forEach var="i" begin="${startPage}" end="${endPage}">
        		<c:choose>
        			<c:when test="${i==currentPage}">
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
        			</c:when>
        			<c:otherwise>
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
        			</c:otherwise>
        		</c:choose>
        	</c:forEach>
       		<c:if test="${endPage < pageCount }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
       		</c:if>
     </c:if>
     </div>
