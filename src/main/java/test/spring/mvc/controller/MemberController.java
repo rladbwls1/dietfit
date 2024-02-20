@@ -102,7 +102,6 @@ public class MemberController {
 			}
 		}
 		model.addAttribute("best", dto);
-		System.out.println("2222222222222222222222222_"+dto);
 		return "/member/best2";
 	}
 	
@@ -150,7 +149,6 @@ public class MemberController {
 	//접근 제한 에러 
 	@RequestMapping("accessError")
 	public String accessError(Authentication auth) {
-		System.out.println("access Denied===>>"+auth);
 		return "member/accessError";
 	}
 	

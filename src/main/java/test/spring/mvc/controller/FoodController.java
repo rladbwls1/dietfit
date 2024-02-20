@@ -101,7 +101,6 @@ public class FoodController {
 	@RequestMapping("detail")
     public @ResponseBody ProductDTO detail(String companyid, String category, String category2, String flavor,
                          Model model,Principal pri) {
-    	System.out.println(companyid);
         ProductDTO product = service1.findproductdetail(companyid, category, category2, flavor);
 
         // 썸네일 이미지 정보를 가져옴
@@ -178,7 +177,6 @@ public class FoodController {
 	
 	@RequestMapping("addCartMore1")
 	public @ResponseBody String addCartMore(Principal pri ,String products, int delivery) {
-		System.out.println(delivery+"__34381570475180475897897");
 		service.addCartMore(pri.getName(),products, delivery);
 		return "hi";
 	}
@@ -221,12 +219,8 @@ public class FoodController {
 				category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
 				if(i < 3) {
 					category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
-					System.out.println("11111111111111111");
 				}
-				System.out.println(menu[i]);
 				String me = menu[i];
-				System.out.println((int)(oper[i][0] * kcal));
-				System.out.println((int)(oper[i][1] * kcal));
 
 				List<ProductinfoDTO> food = service.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
 				lists.addAll(food);
@@ -237,7 +231,6 @@ public class FoodController {
 				   result = service.food_product(f.getProductid());
 				   re.addAll(result);
 				}
-				System.out.println("0000000000000000000000000"+re);
 				if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
 					Collections.shuffle(re);
 					ProductDTO pi = re.get(0);
@@ -253,9 +246,7 @@ public class FoodController {
 				model.addAttribute(me +"_re", aa);
 				model.addAttribute("list", lists);
 				model.addAttribute("kcal", boundsList);
-				System.out.println(me + "@@@@@@@@@@@@@@@@"+check);
 				model.addAttribute(me+"_chk", check);
-				System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 			}
 		return "member/food/foodPro";
 	}

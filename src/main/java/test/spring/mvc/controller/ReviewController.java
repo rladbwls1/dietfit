@@ -28,7 +28,6 @@ public class ReviewController {
     public String list(Model model) {
         List<ReviewDTO> review = service.listimg();
         model.addAttribute("review", review);
-        System.out.println(review);
         return "review/list";
     }
 	
@@ -68,7 +67,6 @@ public class ReviewController {
 
 	            if (uuid != null) {
 	                adto.setAttatch(uuid); // 파일명(UUID) 설정
-	                System.out.println("파일이름========="+uuid);
 	                adto.setId(id);	
 	                service.writeimg(adto); // 이미지 정보 저장
 	            }
@@ -81,7 +79,6 @@ public class ReviewController {
 	@RequestMapping("Good")
 	public String Good(Principal pri, ReviewDTO rdto, RecommendDTO redto1){
 		String id=pri.getName();
-		System.out.println("아이디 "+id);
 		service.good(redto1);
 ///		service.goodreview(redto);
 		return "redirect:/review/list";
