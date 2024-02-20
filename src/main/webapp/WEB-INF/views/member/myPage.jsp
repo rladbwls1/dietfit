@@ -74,8 +74,9 @@
 				    <p class="card-text">
 				    	NEW(최초가입) | BRONZE(5만원이상) | SILVER(10만원 이상) | GOLD(20만원 이상)
 				    </p>
-				    <a href="/member/coupondownload" class="btn btn-warning">쿠폰 다운받기</a>
-				    <a href="/member/myCoupon" class="btn btn-warning" >쿠폰함</a>
+				    <button type="button" class="btn btn-warning" onclick="window.open('/member/coupondownload', '쿠폰 다운로드','width=800,height=400,location=no,status=no,scrollbars=yes')">쿠폰 다운받기</button>
+				    <button type="button" class="btn btn-warning" onclick="window.open('/member/myCoupon', '내 쿠폰','width=450,height=300,location=no,status=no,scrollbars=yes')">쿠폰함</button>
+				    <button type="button" class="btn btn-warning" onclick="window.open('/member/myPoint', '내 적립금','width=450,height=300,location=no,status=no,scrollbars=yes')">보유 적립금</button>
 				  </div>
 				  <div class="card-footer text-body-secondary">
 				    가입날짜 : <sec:authentication property="principal.dto.reg"/>

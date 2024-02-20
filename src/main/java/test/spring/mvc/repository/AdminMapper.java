@@ -17,11 +17,15 @@ import test.spring.mvc.bean.ProductinfoDTO;
 
 public interface AdminMapper {
 	public int companycount();
+	public int companycount800();
+	public int companycount888();
+	public int membercount1();
 	public List<Member_basicDTO> companyList();
 	public Member_basicDTO companyBasic(String id);
 	public Member_detailDTO companyDetail(String id);
 	
 	public void companyStatus (@Param("status") String status, @Param("id") String id);
+	public void companyStatusR (@Param("authority") String authority, @Param("username") String username);
 	public String getLastCompanyId();
 	public String getCompanyId(String id);
 	public void generateCompanyId(
@@ -74,4 +78,7 @@ public interface AdminMapper {
 //	public String findCoupon(@Param("id") String id, String couponid);
 //	public AllcouponDTO getUserCouponInfo(@Param("id") String id, @Param("couponid") String couponid);
 	public Map<String, Object> getMyCart(@Param("id") String id, @Param("num") int num);
+	
+	//adminMain
+	public int discountCount();
 }
