@@ -86,10 +86,6 @@ public class ReviewController {
 
 	            if (uuid != null) {
 	                adto.setAttatch(uuid); // 파일명(UUID) 설정
-<<<<<<< HEAD
-=======
-	                //System.out.println("파일이름========="+uuid);
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	                adto.setId(id);	
 	                service.writeimg(adto); // 이미지 정보 저장
 	            }
@@ -100,20 +96,18 @@ public class ReviewController {
 	
 	// 따봉 추가 
 	@RequestMapping("Good")
-<<<<<<< HEAD
 	public String Good(Principal pri, ReviewDTO rdto, RecommendDTO redto1){
 		String id=pri.getName();
 		service.good(redto1);
 ///		service.goodreview(redto);
 		return "redirect:/review/list";
-=======
+	}	
 	public @ResponseBody String Good(String id, int reviewnum){
 		RecommendDTO dto=new RecommendDTO();
 		dto.setId(id);
 		dto.setReviewnum(reviewnum);
 		service.good(dto);
 		return "good";
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	}
 	// 따봉 취소 
 	@RequestMapping("Bye")

@@ -195,12 +195,9 @@ public class DietfitController {
              cartList.add(mapper.getMyCart(pri.getName(), Integer.parseInt(num.trim())));
         }
         model.addAttribute("cartList",cartList);
-<<<<<<< HEAD
-=======
         System.out.println(mapper.getUserDelivery9(pri.getName()));
         
         mservice.getCartList(model, pri.getName());
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 		return "admin/order";
 	}
 	
