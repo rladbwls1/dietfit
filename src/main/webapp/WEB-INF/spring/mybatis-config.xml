@@ -12,5 +12,6 @@
 		<typeAlias type="test.spring.mvc.bean.ProductinfoDTO" alias="productinfo"/>
 		<typeAlias type="test.spring.mvc.bean.CommercailDTO" alias="comm"/>
 		<typeAlias type="test.spring.mvc.bean.DiscountDTO" alias="discount"/>
+		<typeAlias type="test.spring.mvc.bean.CouponDTO" alias="usercoupon"/>
 	</typeAliases>
 </configuration>

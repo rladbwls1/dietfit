@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/member2.js"></script>
+<script src="/resources/js/food.js"></script>
 <html>
 <head>
     <style>
@@ -33,6 +35,78 @@
         .love-icon {
             margin-left: 30px;
         }
+        #product_price{
+				font-size: 25px;
+				font-weight: 700;
+				color: #e02020;
+			}
+			#chooseProductCart{
+				margin: 15px 0 10px 0;
+				width: 100%;
+				height: 40px;
+			}
+			#clac{
+				display: flex;
+			}
+			#clac_bg{
+				background-color: rgba(0,0,0,.03);
+				width: 100%;
+				padding: 7px;
+			}
+			#clac button{
+				border: 1px solid lightgray;
+				width: 32px;
+			}
+			#product_title{
+				margin-bottom: 10px;
+			}
+			#am{
+				color: #e02020;
+				font-size: 18px;
+			}
+			#am_hr{
+				color: #e02020;
+				font-weight: 600;
+			}
+			#am_count{
+				display: flex;
+				justify-content: space-between;
+			}
+			#addcart, #deli_chk{
+				display: flex;
+			}
+			#addcart{
+				margin-top: 10px;
+			}
+			#cart{
+				color: white; 
+				background-color: #50AB89;
+				border: 1px solid #50AB89; 
+				padding: 5px 10px;
+			}
+			#buy{
+				padding: 7px 15px;
+				color: #50AB89; 
+				background-color: white;
+				border: 1px solid #50AB89; 
+				margin-left: 8px;
+			}
+			#delivery{
+				float: right;
+			}
+			#deli_btn button{
+				width: 300px;
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58; 
+			}
+			#change_btn{
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58;
+				margin-left: 30px; 
+				margin-bottom: 30px;
+			}
     </style>
 
     <title>Product Details</title>
@@ -184,6 +258,33 @@
 			    </c:choose>
             </td>
         </tr>
+        <tr>
+      		<td>
+      			<input type="hidden" id="price" value="${product.PRICE}" />
+					<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
+					    	<option value="${product.PRODUCT}">${product.PRODUCT}</option>
+					</select> <br/>
+					<div id="clac_bg">
+					<div id="product_title">${product.PRODUCT}</div>
+					<div id="clac">
+					<button type="button" onclick="quantityDown()">-</button>
+					<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+					<button type="button" onclick="quantityUp()">+</button>
+					</div>
+					</div>
+					<br/>
+					<div id="am_count">
+					<div id="am">상품금액 합계</div>
+					<div id="amout">${product.PRICE}원</div><br/>
+					</div>
+					<hr id="am_hr"/>
+					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
+					<div id="addcart">
+					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+					<button id="buy" type="button" onclick="">즉시구매</button>
+          			</div>
+          		</td>
+          	</tr>
         <!-- 
         <tr>
             <td>조회수:</td>

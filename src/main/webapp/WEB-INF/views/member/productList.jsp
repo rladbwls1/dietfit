@@ -4,7 +4,7 @@
   
 <script src="/resources/js/member2.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <html>
 <head>
     <title>Product List</title>
@@ -42,7 +42,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+           	margin-top: 200px;
         }
         th, td {
             border: 1px solid #dddddd;
@@ -54,6 +54,13 @@
             margin: 0 auto;
             max-width: 100px;
             max-height: 100px;
+        }
+        #content{
+        	width: 60%;
+        	margin: 0 auto;
+        }
+        .aa{
+        	margin-top: 300px;
         }
     </style>
 </head>
@@ -86,63 +93,50 @@
             </div>
         </div>
         <!-- Modal Search End -->
+    <div id="content">    
     <h2>Product List</h2>
     <br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기 </button>
 	<br/>
-    <table>
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Image</th>
-                <th>Wish</th>
-            </tr>
-        </thead>
-        <tbody>
-		    <c:forEach var="product" items="${products}">
-		        <tr>
-		            <td><a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">${product.PRODUCT}</a>
-		             <sec:authorize access="isAuthenticated()">
-		             <a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
-		            </sec:authorize>
-		            </td>
-	            	<td>
-						<c:if test="${product.SALE!=0}">
+	<div class="container aa">
+	    <ul class="list-unstyled row">
+	         <c:forEach var="product" items="${products}">
+	            <li class="col-md-3">
+	            	<div><img src="${product.IMAGEPATH}" alt="${product.PRODUCT}"></div>
+	                <div><a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">${product.PRODUCT}</a></div>
+	            	<div>
+	            		<sec:authorize access="isAuthenticated()">
+		             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		            	</sec:authorize>
+	            	</div>
+	            	<div>
+	            		<sec:authorize access="isAnonymous()">
+			            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+			            </sec:authorize>
+			            <sec:authorize access="isAuthenticated()">
+			            	<c:choose>
+			            	<c:when test="${wishList.contains(product.PRODUCT)}">
+					            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
+					            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
+					            </a>
+			            	</c:when>
+			            	<c:otherwise>
+					            <a href="javascript:void(0)" onclick="addWishList('${product.PRODUCT}')" >
+			           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+					            </a>
+			            	</c:otherwise>
+			            	</c:choose>
+			            	
+			            </sec:authorize>
+	            	</div>
+	            	<div>
+	            		<c:if test="${product.SALE!=0}">
 						<span style="color:gray;text-decoration: line-through;">${product.ORIPRICE}</span><br/><span style="color:red">${product.SALE}%</span> 
-						</c:if>
-						${product.PRICE }</td>
-		            <td>
-		               <img src="${product.IMAGEPATH}" alt="${product.PRODUCT}">
-		            </td>
-		            <!-- 찜 -->
-		            <td>
-		            <sec:authorize access="isAnonymous()">
-		            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
-		            </sec:authorize>
-		            <sec:authorize access="isAuthenticated()">
-		            	<c:choose>
-		            	<c:when test="${wishList.contains(product.PRODUCT)}">
-				            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
-				            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
-				            </a>
-		            	</c:when>
-		            	<c:otherwise>
-				            <a href="javascript:void(0)" onclick="addWishList('${product.PRODUCT}')" >
-		           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
-				            </a>
-		            	</c:otherwise>
-		            	</c:choose>
-		            	
-		            </sec:authorize>
-		            </td>
-		            <!-- 찜 -->
-		        </tr>
-		    </c:forEach>
-		    
-		    
-		</tbody>
-    </table>
-
+						</c:if>${product.PRICE }
+	            	</div>
+	            </li>
+	        </c:forEach>
+	    </ul>
+	</div>
 	<!-- 페이지 -->
     <table>
     <c:if test="${count>0 }">
@@ -168,6 +162,7 @@
       		</c:if>
     </c:if>
     </table>
+    </div>
     <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
         <!-- Footer End -->

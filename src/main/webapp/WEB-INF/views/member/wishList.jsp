@@ -73,7 +73,7 @@
 							<button type="button" class="btn btn-outline-primary" >전체</button>
 						</c:when>
 						<c:otherwise>
-							<button type="button" class="btn btn-primary" onclick="chooseFolder('전체')" style="color:gray">전체</button>
+							<button type="button" class="btn btn-outline-primary" onclick="chooseFolder('전체')" style="color:gray">전체</button>
 						</c:otherwise>
 					</c:choose>
 					<c:forEach var="folder" items="${folder }">
