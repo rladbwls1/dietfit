@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -41,4 +42,5 @@ public interface Admin1Service{
 	public List<CommercailDTO> comm();
 	public int commCheck(int admincheck, int num);
 	public List<DiscountDTO> discountNum();
+	public List<CouponDTO> Usercoupon(String id);
 }

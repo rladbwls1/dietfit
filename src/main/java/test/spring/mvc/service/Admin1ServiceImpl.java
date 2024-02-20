@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
@@ -267,6 +268,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 	@Override
 	public List<DiscountDTO> discountNum() {
 		return mapper.discountNum();
+	}
+
+	@Override
+	public List<CouponDTO> Usercoupon(String id) {
+		return mapper.Usercoupon(id);
 	}
 	
 }

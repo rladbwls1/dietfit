@@ -23,19 +23,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
-import test.spring.mvc.bean.DiscountDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.Seller1Service;
 
 @Controller
 @RequestMapping("/admin/*")
 public class Admin1Controller {
-
+	
+	@Autowired
+	private ReviewMapper mapper;
+	
 	@Autowired
 	private Admin1ServiceImpl service;
 	
@@ -158,6 +162,25 @@ public class Admin1Controller {
 		return result;
 	}
 	
+	@RequestMapping("Usercoupon")
+	public String Usercoupon(String id, Model model) {
+		Member_basicDTO dto = service.info(id);
+		List<CouponDTO> list = service.Usercoupon(id);
+		model.addAttribute("info", dto);
+		model.addAttribute("coupon", list);
+		return "/admin/Usercoupon";
+	}
+
+	@RequestMapping("Userreview")
+	public String Userreview(String id, Model model) {
+		Member_basicDTO dto = service.info(id);
+		model.addAttribute("info", dto);
+		model.addAttribute("recommendNums",mapper.getRecommend(id));
+		model.addAttribute("id",id);
+		model.addAttribute("review", mapper.getListById(id));
+		return "/admin/Userreview";
+	}
+
 	@RequestMapping("coupon")
 	public String coupon(String id, Model model) {
 		Member_basicDTO dto = service.info(id);
