@@ -16,10 +16,10 @@ function modify(minkcal, maxkcal, mo, type, catogory){
 			if(data.length > 0){
             for (var i = 0; i < data.length; i++) {
                 var food = data[i];
-                var img = food.pimg.companyid + food.pimg.category + food.pimg.category2 + food.pimg.flavor + "F" + food.pimg.num + food.pimg.ext;
-                var kcal = food.productinfo.kcal;
+                var img = food.filename;
+                var kcal = food.kcal;
                 var price = food.price;
-                var productid = food.productinfo.productid;
+                var productid = food.productid;
                 var product = food.product;
                 // 모달 내용에 추가
                 content += "<li class='col-md-3'><div class='thum' data-productid='"+productid+"' data-img='"+img+"' data-product='"+product+"' data-price='"+price+"'data-type='"+ type +"'data-kcal='"+kcal+"'"+
@@ -52,9 +52,9 @@ $(document).on('click', '.thum', function() {
 	$("#myModal").modal('hide');
 	console.log(kcal);
 	$("#"+type).html("");
-	$("#"+type).html("<div  class='" + product + "' id='" + productid + "' onclick=\"management('" + part1 + "', '" + part2 + "', '" + part3 + "', '" + part4 + "');\">" +
-            "<img style='width:50px;' src='/resources/p_img/" + img + "'/></div>" +
-            "<div>" + product + "</div>" +
+	$("#"+type).html("<div  class='product_bg' id='" + productid + "' onclick=\"management('" + part1 + "', '" + part2 + "', '" + part3 + "', '" + part4 + "');\">" +
+            "<img style='width:100px;' src='/resources/p_img/" + img + "'/></div>" +
+            "<div id='boardname'>" + product + "</div>" +
             "<div id='" + type + "_m'>" + kcal + "</div>" +
             "<div id='" + type + "_p'>" + price + "</div>" +
             "<input type='hidden' id='fonum' value='" + productid + "'/>"+
@@ -90,19 +90,19 @@ function management(companyid, category, category2, flavor){
         	content +=`</div>
                 <table id="modal_tb">
                     <tr>
-                        <td>`+product.product+`</td>
+                        <td id="product_name">`+product.product+`</td>
                     </tr>
                     <tr>
-                        <td>`+product.price+`</td>
+                        <td id="product_price">`+product.price+`원</td>
                     </tr>
                     <tr>
-                        <td>`;
+                        <td id="deli">`;
                         if (product.delivery == 0) {
-                        content += '일반배송, 정기배송';
+                        content += '<div class="dlfqks">일반배송</div><div class="wjdrl">정기배송</div>';
                     } else if (product.delivery == 1) {
-                        content += '일반배송';
+                        content += '<div class="dlfqks">일반배송<div>';
                     } else {
-                        content += '기타 배송 옵션';
+                        content += '<div>기타 배송 옵션<div>';
                     }
 				    content += `
 					    </td>
@@ -113,16 +113,25 @@ function management(companyid, category, category2, flavor){
 							<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
 							    	<option value="`+product.product+`">`+product.product+`</option>
 							</select> <br/>
+							<div id="clac_bg">
+							<div id="product_title">`+product.product+`</div>
+							<div id="clac">
 							<button type="button" onclick="quantityDown()">-</button>
 							<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
 							<button type="button" onclick="quantityUp()">+</button>
+							</div>
+							</div>
 							<br/>
-							<br/>
-							<br/>
-							가격 <span id="amout"><fmt:formatNumber value="`+product.price+`" type="number" pattern="#,###원"/></span><br/>
-							<button type="button" onclick="">즉시구매</button>
-							<input type="checkbox" id="chk">정기배송으로 받아보시겠어요?
-							<button type="button" onclick="addCartFromList()">장바구니</button>
+							<div id="am_count">
+							<div id="am">상품금액 합계</div>
+							<div id="amout">`+product.price+`원</div><br/>
+							</div>
+							<hr id="am_hr"/>
+							<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
+							<div id="addcart">
+							<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+							<button id="buy" type="button" onclick="">즉시구매</button>
+                			</div>
                 		</td>
                 	</tr>
                 </table>

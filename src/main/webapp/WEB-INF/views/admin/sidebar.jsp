@@ -45,7 +45,7 @@
                 쿠폰 요청
               </span>
               <span class="sidebar-nav-end">
-                <span class="badge badge-info">4</span>
+                <span class="badge badge-info">${alram}</span>
               </span>
             </a>
           </li>

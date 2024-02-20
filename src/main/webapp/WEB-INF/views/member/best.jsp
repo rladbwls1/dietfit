@@ -78,6 +78,14 @@
     		#content{
     			padding-top: 0 !important;
     		}
+    		.price{
+    			display: flex;
+   			    justify-content: center;
+    		}
+    		.sale{
+    			font-size: 20px;
+    			color: black;
+    		}
     	</style>
     </head>
 
@@ -166,40 +174,38 @@
                 	<c:if test="${not empty best}">
 					        <c:forEach var="best" items="${best}">
 					              <div class="col-md-6 col-lg-3">
-			                        <div class="featurs-item text-center rounded bg-light p-4">
+			                        <div class="featurs-item text-center rounded bg-light p-4" onclick="toDetail('${best.companyid}','${best.category}','${best.category2}','${best.flavor}')">
 			                            <div class="featurs-content text-center">
-            						        <div><img style="width: -webkit-fill-available;" src="${best.imagePath}"/></div>
+            						        <div><img style="width: -webkit-fill-available; height: 258px;" src="${best.imagePath}"/></div>
             						        <div class="wish">
 							                <sec:authorize access="isAnonymous()">
 								            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 								            </sec:authorize>
 								            <sec:authorize access="isAuthenticated()">
 								            	<c:choose>
-								            	<c:when test="${wishList.contains(best.boardname)}">
-										            <a href="javascript:void(0)" onclick="removeWishList('${best.boardname}')" >
+								            	<c:when test="${wishList.contains(best.product)}">
+										            <a href="javascript:void(0)" onclick="removeWishList('${best.product}')" >
 										            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
 										            </a>
 								            	</c:when>
 								            	<c:otherwise>
-										            <a href="javascript:void(0)" onclick="addWishList('${best.boardname}')" >
+										            <a href="javascript:void(0)" onclick="addWishList('${best.product}')" >
 								           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
 										            </a>
 								            	</c:otherwise>
 								            	</c:choose>
-								            	 <a href="javascript:void(0)" onclick="openCart('${best.companyid}','${best.category}','${best.category2}','${best.price}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+								            	 <a href="javascript:void(0)" onclick="openCart('${best.num}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 								            	
 								            </sec:authorize>
 		            					</div>
 							                <div class="boardname">${best.boardname}</div>
 							                <div class="price">
-							                <c:forEach items="${sale}" var="sale">
-					                            <c:if test="${best.num eq sale.num}">
+							                	<c:if test="${best.sale != 0}">
 					                                 <div class="sale">
-					                                 	<fmt:formatNumber value="${best.price - (best.price * (sale.sale / 100))}" type="number" pattern="#,###원"/>
+					                                 	<fmt:formatNumber value="${best.price - (best.price * (best.sale / 100))}" type="number" pattern="#,###원"/>
 					                            	</div>
-					                            </c:if>
-					                        </c:forEach>
-							                <div><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
+				                            		</c:if>
+							               			<div class="dis_price" style="${best.sale != 0 ? 'text-decoration: line-through;' : 'font-size: 20px; color: black;'}"><fmt:formatNumber value="${best.price}" type="number" pattern="#,###원"/></div>
 					                        </div>
 			                            </div>
 			                        </div>
