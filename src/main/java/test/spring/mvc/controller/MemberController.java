@@ -62,9 +62,8 @@ public class MemberController {
 	
 	// 베스트 상품 월간
 	@RequestMapping("best")
-	public String best(Model model) {
+	public String best(Model model,Principal pri) {
 		List<ProductDTO> dto = admin.best();
-		List<DiscountDTO> sale = admin.discountNum();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
 				ProductimgDTO img = admin.pro_img(pd.getCompanyid(), pd.getCategory(), pd.getCategory2());
@@ -77,14 +76,16 @@ public class MemberController {
 	            }
 			}
 		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
 		model.addAttribute("best", dto);
-		model.addAttribute("sale", sale);
 		return "member/best";
 	}
 	
 	// 베스트 상품 주간
 	@RequestMapping("best2")
-	public String best2(Model model) {
+	public String best2(Model model,Principal pri) {
 		List<ProductDTO> dto = admin.best2();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
@@ -98,14 +99,16 @@ public class MemberController {
 	            }
 			}
 		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
 		model.addAttribute("best", dto);
-		System.out.println("2222222222222222222222222_"+dto);
 		return "/member/best2";
 	}
 	
 	// 오늘의 특가 상품
 	@RequestMapping("discount")
-	public String discount(Model model) {
+	public String discount(Model model, Principal pri) {
 		List<ProductDTO> dto = admin.discount();
 		if(dto != null) {
 			for(ProductDTO pd : dto) {
@@ -120,6 +123,9 @@ public class MemberController {
 	               pd.setSale(sale);
 	            }
 			}
+		}
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
 		}
 		model.addAttribute("discount", dto);
 		return "/member/discount";
@@ -147,7 +153,6 @@ public class MemberController {
 	//접근 제한 에러 
 	@RequestMapping("accessError")
 	public String accessError(Authentication auth) {
-		System.out.println("access Denied===>>"+auth);
 		return "member/accessError";
 	}
 	
