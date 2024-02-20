@@ -70,18 +70,14 @@ public class AdminController {
 	    //companyid가져오기
 	    String companyId = service.getCompanyId(id);
 	    
-	    System.out.println("기존" + id + "의 companyid : " + companyId);
 	    
 	    //새로운 companyid 생성
 	    String newCompanyId = service.generateCompanyId(companyid, id);
 	    
-	    System.out.println("새로운 CompanyId : " +newCompanyId);
 
 	    //newCompanyid를 companyid에 넣어줌 
 	    model.addAttribute("companyid", newCompanyId);
 	    
-	    System.out.println("=====================");
-	    System.out.println("최종 companyId ===" + newCompanyId);
 
 	    return "admin/company/statusChange";
 	}
@@ -89,7 +85,6 @@ public class AdminController {
 	
 	@RequestMapping("checkStock")
 	public @ResponseBody String checkStock(String product) {
-		System.out.println(product);
 		service.checkstock(product);
 		return "stock check!!";
 	}
