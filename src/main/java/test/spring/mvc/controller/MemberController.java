@@ -459,6 +459,18 @@ public class MemberController {
 		service.addCartOne(pri.getName(),dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
 		return "hi";
 	}
+	@RequestMapping("addCartAndOrder")
+	public @ResponseBody CartDTO addCartAndOrder(Principal pri ,CartDTO dto, int chk) {
+		String id=pri.getName();
+		if(chk == 1) {
+			dto.setDelivery(1);
+		}else {
+			dto.setDelivery(0);
+		}
+		service.addCartOne(id,dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
+		dto.setNum(mapper.getCartMaxNum(id));
+		return dto;
+	}
 	@RequestMapping("addCartMore")
 	public @ResponseBody String addCartMore(Principal pri ,String products) {
 		service.addCartMore(pri.getName(),products);
