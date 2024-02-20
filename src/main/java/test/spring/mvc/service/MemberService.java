@@ -73,7 +73,7 @@ public interface MemberService {
 	public void addCartMore(String id,String product);
 	//장바구니 담기
 	public void miniCart(int num,Model model);
-	//장바구니 목록 가져오기+썸네일
+	//전체 장바구니 목록 가져오기+썸네일
 	public void getCartList(Model model, String id);
 	//장바구니 수량 변경
 	public void updateCartQuantity(String id, int num,int quantity);

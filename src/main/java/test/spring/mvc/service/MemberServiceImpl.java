@@ -540,38 +540,40 @@ public class MemberServiceImpl implements MemberService{
 	public void getCartList(Model model, String id) {
 		List<Map<String,Object>> list=mapper.getCartList(id);
 		List<String> imgPaths=new ArrayList<>();
-		for(Map<String,Object> map:list) {
-			//썸네일 처리
-			ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
-			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
-            if (img != null) {
-                // 이미지 경로 직접 조합하여 설정
-                String imagePath = "/resources/p_img/" + img.getCompanyid() +
-                                   img.getCategory() + img.getCategory2() +
-                                   img.getFlavor() + "F" + img.getNum() +
-                                   img.getExt();
-                imgPaths.add(imagePath);
-                
-            }else {
-            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
-            }
-            //가격
-            int oriPrice=mapper.getPriceByProductName(map.get("PRODUCT").toString());
-            map.put("ORIPRICE",oriPrice);
-            //할인율
-            int num=mapper.getNumByProduct(map.get("PRODUCT").toString());
-            int sale=mapper.isSale(num);
-            if(sale==1) {
-            	sale=mapper.getSaleByNum(num);
-            }
-            map.put("SALE",sale);
-            
-            //할인된 가격
-            int price=oriPrice*(100-sale)/100;
-            map.put("PRICE", price);
+		if(list!=null) {
+			for(Map<String,Object> map:list) {
+				//썸네일 처리
+				ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
+				ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
+				if (img != null) {
+					// 이미지 경로 직접 조합하여 설정
+					String imagePath = "/resources/p_img/" + img.getCompanyid() +
+							img.getCategory() + img.getCategory2() +
+							img.getFlavor() + "F" + img.getNum() +
+							img.getExt();
+					imgPaths.add(imagePath);
+					
+				}else {
+					imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+				}
+				//가격
+				int oriPrice=mapper.getPriceByProductName(map.get("PRODUCT").toString());
+				map.put("ORIPRICE",oriPrice);
+				//할인율
+				int num=mapper.getNumByProduct(map.get("PRODUCT").toString());
+				int sale=mapper.isSale(num);
+				if(sale==1) {
+					sale=mapper.getSaleByNum(num);
+				}
+				map.put("SALE",sale);
+				
+				//할인된 가격
+				int price=oriPrice*(100-sale)/100;
+				map.put("PRICE", price);
+			}
+			model.addAttribute("list",list);
+			model.addAttribute("imgPaths",imgPaths);
 		}
-		model.addAttribute("list",list);
-		model.addAttribute("imgPaths",imgPaths);
 	}
 
 	@Override
