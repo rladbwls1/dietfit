@@ -232,7 +232,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void getallproduct(Model model, int currentPage) {
-		int pageSize=10;
+		int pageSize=16;
 		int startRow=(currentPage-1)*pageSize+1;		//Ω√¿€
 		int endRow=currentPage*pageSize;				//≥°
 		int count=mapper.countAllProduct();

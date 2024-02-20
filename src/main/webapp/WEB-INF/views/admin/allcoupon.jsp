@@ -57,6 +57,7 @@
 			success: function(e){
 				if(e == '1'){
 					$("#"+couponId).text('승인 거부');
+					$("#alram").text(e.msg);
 					$("#" + couponId + "1").hide();
 	                $("#" + couponId + "2").hide();
 				}
@@ -105,7 +106,6 @@
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
                             </div>
-                            <h2>쿠폰 요청<i id="alram">(${alram})</i></h2>	
 							<h4>총 ${count} 쿠폰</h4>
                             <div class="card-body">
                                 <table id="datatablesSimple">

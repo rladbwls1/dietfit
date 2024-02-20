@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/member2.js"></script>
+<script src="/resources/js/food.js"></script>
 <html>
 <head>
     <style>
@@ -33,61 +35,256 @@
         .love-icon {
             margin-left: 30px;
         }
+        #product_price{
+				font-size: 25px;
+				font-weight: 700;
+				color: #e02020;
+			}
+			#chooseProductCart{
+				margin: 15px 0 10px 0;
+				width: 100%;
+				height: 40px;
+			}
+			#clac{
+				display: flex;
+			}
+			#clac_bg{
+				background-color: rgba(0,0,0,.03);
+				width: 100%;
+				padding: 7px;
+			}
+			#clac button{
+				border: 1px solid lightgray;
+				width: 32px;
+			}
+			#product_title{
+				margin-bottom: 10px;
+			}
+			#am{
+				color: #e02020;
+				font-size: 18px;
+			}
+			#am_hr{
+				color: #e02020;
+				font-weight: 600;
+			}
+			#am_count{
+				display: flex;
+				justify-content: space-between;
+			}
+			#addcart, #deli_chk{
+				display: flex;
+			}
+			#addcart{
+				margin-top: 10px;
+			}
+			#cart{
+				color: white; 
+				background-color: #50AB89;
+				border: 1px solid #50AB89; 
+				padding: 5px 10px;
+			}
+			#buy{
+				padding: 7px 15px;
+				color: #50AB89; 
+				background-color: white;
+				border: 1px solid #50AB89; 
+				margin-left: 8px;
+			}
+			#delivery{
+				float: right;
+			}
+			#deli_btn button{
+				width: 300px;
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58; 
+			}
+			#change_btn{
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58;
+				margin-left: 30px; 
+				margin-bottom: 30px;
+			}
     </style>
 
     <title>Product Details</title>
+     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="/resources/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <link href="/resources/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="/resources/css/style.css" rel="stylesheet">
+		<!-- Bootstrap JS 및 Popper.js -->
+		<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		        
+        <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+      		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+    	#deli{
+				display: flex;
+			}
+			.dlfqks{
+				background-color: #ff8942;
+				color: white;
+				padding: 3px 6px;
+				border-radius: 10px;
+			}
+			.wjdrl{
+				background-color: #f374b7;
+				color: white;
+				padding: 3px 6px;
+				border-radius: 10px;
+				margin-left: 5px;
+			}
+			#content{
+				width: 55%;
+				margin: 0 auto;
+				margin-top: 300px;
+			}
+			#thum{
+				display: flex;
+			}
+			.content_img{
+				text-align: center;
+			}
+			.content_img img{
+				width: 100%;
+			}
+			#hr{
+				border: 1px solid #50AB89;
+				margin: 50px 0;
+			}
+			.td1{
+				flex: 1;
+			}
+			#img1{
+				text-align: center;
+			}
+			#product_name{
+				font-size: 30px;
+			}
+			#product_price{
+				font-size: 25px;
+				font-weight: 700;
+				color: #e02020;
+			}
+    </style>
     <script src="/resources/js/review.js"></script>
 </head>
 <body>
-    <h2>Product Details</h2>
-    <table>
-    	<tr>
-    		<td>
+	 <!-- Spinner Start -->
+        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Navbar start -->
+        <jsp:include page="../navbar.jsp"/>
+        <!-- Navbar End -->
+
+        <!-- Modal Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Search End -->
+
+        <!-- Hero Start -->
+    <div id="content">
+    	<div id="thum">
     			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
-				    <img src="${thumbnailPath}" width="300"> 
+				  <div class="td1" id="img1"><img src="${thumbnailPath}" width="300"></div>
 				</c:forEach>
-    		</td>
-    	</tr>	
+	    <table class="td1">
         <tr>
-            <td>상품이름:</td>
-            <td>${product.PRODUCT}</td>
+            <td id="product_name">${product.PRODUCT}</td>
         </tr>
         <tr>
-            <td>가격:</td>
-           	<td>
+           	<td id="product_price">
 				<c:if test="${product.SALE!=0}">
 				<span style="color:gray;text-decoration: line-through;">${product.ORIPRICE}</span><br/><span style="color:red">${product.SALE}%</span> 
 				</c:if>
-				${product.PRICE }
+				<fmt:formatNumber value="${product.PRICE }" type="number" pattern="#,###원"/>
 			</td>
         </tr>
         <tr>
-            <td>상세설명:</td>
-            <td>${product.DETAIL}</td>
-            <td>
-            	<c:forEach var="imagePath" items="${imagePaths}">
-		            <div>
-		                <img src="${imagePath}" width="400"> 
-		            </div>
-		        </c:forEach>
-            </td>
-        </tr>
-        <tr>
-            <td>배송정보:</td>
             <td>
 				<c:choose>
 			        <c:when test="${product.DELIVERY == 0}">
-			            일반배송, 정기배송
+					<div id="deli">
+			            <div class="dlfqks">일반배송</div> 
+			            <div class="wjdrl">정기배송</div>
+			        </div>
 			        </c:when>
 			        <c:when test="${product.DELIVERY == 1}">
-			            일반배송
+			            <div class="dlfqks">일반배송</div>
 			        </c:when>
 			        <c:otherwise>
-			            기타 배송 옵션
+			            <div>기타 배송 옵션</div>
 			        </c:otherwise>
 			    </c:choose>
             </td>
         </tr>
+        <tr>
+      		<td>
+      			<input type="hidden" id="price" value="${product.PRICE}" />
+					<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
+					    	<option value="${product.PRODUCT}">${product.PRODUCT}</option>
+					</select> <br/>
+					<div id="clac_bg">
+					<div id="product_title">${product.PRODUCT}</div>
+					<div id="clac">
+					<button type="button" onclick="quantityDown()">-</button>
+					<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+					<button type="button" onclick="quantityUp()">+</button>
+					</div>
+					</div>
+					<br/>
+					<div id="am_count">
+					<div id="am">상품금액 합계</div>
+					<div id="amout">${product.PRICE}원</div><br/>
+					</div>
+					<hr id="am_hr"/>
+					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
+					<div id="addcart">
+					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+					<button id="buy" type="button" onclick="">즉시구매</button>
+          			</div>
+          		</td>
+          	</tr>
         <!-- 
         <tr>
             <td>조회수:</td>
@@ -95,7 +292,6 @@
         </tr>
          -->
         <tr>
-            <td>유통기한:</td>
             <td>
             	<fmt:formatDate value="${product.EXPIRY}" pattern="yyyy-MM-dd"/>
             </td>
@@ -111,6 +307,15 @@
             </td>
         </tr>
     </table>
+    </div>
+    	<hr id="hr">
+         <div>${product.DETAIL}</div>
+       	<c:forEach var="imagePath" items="${imagePaths}">
+           <div class="content_img">
+               <img src="${imagePath}"> 
+           </div>
+   		</c:forEach>
+    </div>
     <!-- 리뷰 -->
     <input type="hidden" value="${id }" id="id" />
     <table>
@@ -128,7 +333,7 @@
                     </c:choose>
                 </div>
                 <div class="review-details">
-                    <div>${review.boardname }</div>
+                    <div>${review.boardname}</div>
                     <div>평점:
                         <span class="star-rating">
                             <c:forEach begin="1" end="5" var="i">
@@ -181,6 +386,49 @@
         </div>
     </c:forEach>
     </table>
+     <!-- Footer Start -->
+        <jsp:include page="../footer.jsp"/>
+        <!-- Footer End -->
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-dark py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                    </div>
+                    <div class="col-md-6 my-auto text-center text-md-end text-white">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/resources/lib/easing/easing.min.js"></script>
+    <script src="/resources/lib/waypoints/waypoints.min.js"></script>
+    <script src="/resources/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="/resources/lib/owlcarousel/owl.carousel.min.js"></script>
 
+    <!-- Template Javascript -->
+    <script src="/resources/js/main.js"></script>
+    <script type="text/javascript">
+      // 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init('ce765a4e5047770d03e8b69f53f43139');
+      // 채널 추가하기 버튼을 생성합니다.
+      Kakao.Channel.createAddChannelButton({
+        container: '#kakao-talk-channel-add-button',
+        channelPublicId: '_GCliG',
+        size: 'small',
+        supportMultipleDensities: true,
+      });
+    </script>
 </body>
 </html>

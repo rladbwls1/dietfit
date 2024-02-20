@@ -31,9 +31,25 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="/dietfit/main" class="nav-item nav-link active">Home</a>
+                            <a href="/member/productList" class="nav-item nav-link">Shop</a>
                             <!-- 
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
+>>>>>>> refs/remotes/origin/main
                             <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+<<<<<<< HEAD
+                            <a href="/dietfit/survey" class="nav-item nav-link">나의식단</a>
+                            <a href="../member/best" class="nav-item nav-link">best</a>
+                            <a href="../member/discount" class="nav-item nav-link">오특</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item">Cart</a>
+                                    <a href="chackout.html" class="dropdown-item">Chackout</a>
+                                    <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                                    <a href="404.html" class="dropdown-item">404 Page</a>
+                                </div>
+                            </div>
+=======
                              -->
                             <a href="../member/best" class="nav-item nav-link">Best</a>
                             <a href="../member/discount" class="nav-item nav-link">오늘의 특가</a>

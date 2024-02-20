@@ -141,12 +141,8 @@ public class DietfitController {
 			category = Arrays.asList(31, 32, 33, 34, 35, 36, 39, 41, 42, 43, 44);
 			if(i < 3) {
 				category = Arrays.asList(11, 12, 13, 14, 15, 21, 22, 23, 24, 26);
-				System.out.println("11111111111111111");
 			}
-			System.out.println(menu[i]);
 			String me = menu[i];
-			System.out.println((int)(oper[i][0] * kcal));
-			System.out.println((int)(oper[i][1] * kcal));
 
 			List<ProductinfoDTO> food = aservice1.food((int)(oper[i][0] * kcal), (int)(oper[i][1] * kcal), model, category, request);
 			lists.addAll(food);
@@ -157,7 +153,6 @@ public class DietfitController {
 			   result = aservice1.food_product(f.getProductid());
 			   re.addAll(result);
 			}
-			System.out.println("0000000000000000000000000"+re);
 			if (!re.isEmpty()) { // 결과가 비어 있지 않을 때만 랜덤 선택 수행
 				Collections.shuffle(re);
 				ProductDTO pi = re.get(0);
@@ -172,9 +167,7 @@ public class DietfitController {
 			model.addAttribute(me +"_re", aa);
 			model.addAttribute("list", lists);
 			model.addAttribute("kcal", boundsList);
-			System.out.println(me + "@@@@@@@@@@@@@@@@"+check);
 			model.addAttribute(me+"_chk", check);
-			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 		}
 		return "member/food/eat";
 	}
@@ -330,7 +323,6 @@ public class DietfitController {
 //				orderdetail.setPrice(price); //8400
 				orderdetail.setDiscount(sale);
 				
-				System.out.println("OrderdetailDTO 정보: " + orderdetail);
 				aservice.createOrder(id, orderdetail);
 			}
 			aservice.changeCoupon(id, couponid);
@@ -346,7 +338,6 @@ public class DietfitController {
 			ordersum.setCouponid(couponid);
 			ordersum.setCoupondiscount(coupondiscount);
 			ordersum.setTotalamount(total_amount);
-			System.out.println("OrdersumDTO 정보 :" + ordersum);
 			aservice.createOrderSum(ordersum);
 			
 			
@@ -359,7 +350,6 @@ public class DietfitController {
 			delivery.setPostnum(postcode);
 			delivery.setReceiver(receiver);
 			delivery.setOrderid(orderid);
-			System.out.println("DeliveryDTO 정보: " + delivery);
 			aservice.createDelivery(id, delivery);
 			
 //			카카오페이 결제 ==================================================

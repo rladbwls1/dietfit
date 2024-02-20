@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
+import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -43,4 +44,5 @@ public interface Admin1Mapper {
 	public List<CommercailDTO> comm();
 	public int commCheck(@Param("admincheck")int admincheck, @Param("num") int num);
 	public List<DiscountDTO> discountNum();
+	public List<CouponDTO> Usercoupon(String id);
 }

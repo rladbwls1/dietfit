@@ -51,6 +51,16 @@
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="/admin/management?id=${info.id}">회원정보</a>
   </li>
+  <c:if test="${info.status!=999 && info.status!=888}">
+	  <li class="nav-item">
+	    <a class="nav-link" href="/admin/Usercoupon?id=${info.id}">쿠폰내역</a>
+	  </li>
+  </c:if>
+  <c:if test="${info.status!=999 && info.status!=888}">
+	  <li class="nav-item">
+	    <a class="nav-link" href="/admin/Userreview?id=${info.id}">리뷰목록</a>
+	  </li>
+  </c:if>
   <c:if test="${info.status==888}">
 	  <li class="nav-item">
 	    <a class="nav-link" href="/admin/coupon?id=${info.id}">쿠폰요청</a>
