@@ -23,6 +23,21 @@ function showPaymentOptions() {
     }
 }
 
+// 폼 내부의 라디오 버튼에 대한 클릭 이벤트 핸들러 추가
+document.querySelectorAll('.payment-form').forEach(function(form) {
+    form.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('click', function() {
+            // 해당 폼 내의 모든 라디오 버튼 해제
+            form.querySelectorAll('input[type="radio"]').forEach(function(innerRadio) {
+                innerRadio.checked = false;
+            });
+            // 현재 클릭한 라디오 버튼 선택
+            this.checked = true;
+        });
+    });
+});
+
+// 결제 폼 제출 함수
 function submitForm() {
     // 선택된 결제 유형 가져오기
     var paymentType = document.querySelector('input[name="chk_info"]:checked').value;
@@ -55,6 +70,18 @@ function submitForm() {
     }
 }
 
+function selectPayment(paymentType) {
+  // 선택된 결제 방식에 해당하는 'checked' 속성을 true로 설정
+  document.querySelector('input[name="chk_info"][value="' + paymentType + '"]').checked = true;
+
+  // 선택된 결제 방식을 제외한 다른 옵션 비활성화
+  for (var i = 0; i < document.querySelectorAll('input[name="chk_info"]').length; i++) {
+    var option = document.querySelectorAll('input[name="chk_info"]')[i];
+    if (option.value !== paymentType) {
+      option.disabled = true;
+    }
+  }
+}
 
 
 function toOrderDelivery() {
@@ -109,3 +136,16 @@ function checkPoint(mypoint){
 	document.getElementById("totalAmount").value=amount-totaldiscount;
 	document.getElementById("total_amount").value=amount-totaldiscount;
 }
+
+//주문상품에서 상품 볼때 접었다 폈다
+function toggleTable() {
+        var table = document.getElementById("orderTable");
+        if (table.style.display === "none") {
+            table.style.display = "block";
+        } else {
+            table.style.display = "none";
+        }
+    }
+    
+    
+ 

@@ -176,14 +176,13 @@ public class DietfitController {
 			model.addAttribute(me+"_chk", check);
 			System.out.println(me+"++++++++++++++++++++++++++++"+aa);
 		}
-		return "admin/eat";
+		return "member/food/eat";
 	}
 	
 	@RequestMapping("order")
 	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,int delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
-//		model.addAttribute("id", pri.getName());
 		model.addAttribute("delivery9", mapper.getUserDelivery9(pri.getName()));
 		model.addAttribute("mypoint", mservice.getPoint(pri.getName()));
 		model.addAttribute("nums",nums);
@@ -193,12 +192,6 @@ public class DietfitController {
 		model.addAttribute("delivery", delivery);
 		Integer taxfree = (int) ((Integer)amout*0.9);
 		model.addAttribute("taxfree", taxfree);
-//		model.addAttribute("nicaddr", nicaddr);
-//		model.addAttribute("phone", phone);
-//		model.addAttribute("receiver", receiver);
-//		model.addAttribute("address1", address1);
-//		model.addAttribute("address2", address2);
-//		model.addAttribute("postcode", postcode);
 		
 		String[] numsArray = new String[0];
 		if(nums != null) {
@@ -210,6 +203,8 @@ public class DietfitController {
         }
         model.addAttribute("cartList",cartList);
         System.out.println(mapper.getUserDelivery9(pri.getName()));
+        
+        mservice.getCartList(model, pri.getName());
 		return "admin/order";
 	}
 	
@@ -430,6 +425,11 @@ public class DietfitController {
 	@RequestMapping("kakaopay/cancel")
 	public String cancel() {
 		return "admin/kakaopay/cancel";
+	}
+	
+	@RequestMapping("myPage")
+	public String myPage() {
+		return "member/myPage";
 	}
 }
 	
