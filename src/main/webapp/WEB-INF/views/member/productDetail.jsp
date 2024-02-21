@@ -150,11 +150,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
-<<<<<<< HEAD
-				width: fit-content
-=======
 				width: fit-content;
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			}
 			.wjdrl{
 				background-color: #f374b7;
