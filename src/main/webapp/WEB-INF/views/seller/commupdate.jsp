@@ -78,7 +78,7 @@
 		    }
 		</style>
     </head>
-    <body>
+    <body onload="setMinDate()">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="/seller/home">판매자 관리 페이지</a>
@@ -147,11 +147,11 @@
 										</tr>
 										<tr>
 											<td>
-												<img id="imagePath" src="${imagePath}" alt="${cdto.comfile}"/>
+												<img id="imagePath" src="${imagePath}" alt="${cdto.comfile}" />
 							                    <button type="button" id = "delecte" onclick="removeImage()">❌</button>
 							                    <div id="imageUpload" style="display:none;">
-											        파일 <input type="file" name="comfile" onchange="previewImage(event)"/>
-											        <img id="imagePreview" style="display:none;"/>
+											        파일 <input type="file" name="comfile" onchange="previewImage(event)" />
+											        <img id="imagePreview" style="display:none; width:200px; height:200px; text-align: center;" />
 											    </div>
 											</td>
 										</tr>

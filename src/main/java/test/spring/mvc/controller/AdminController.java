@@ -28,7 +28,7 @@ public class AdminController {
 	public String main(Model model) {
 		service.companyList(model);
 		service.memberList(model);
-		service.discountCount();
+		service.commListC(model);
 		return "admin/adminMain";
 	}
 	

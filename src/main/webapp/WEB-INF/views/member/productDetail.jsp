@@ -149,6 +149,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+				width: fit-content
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -309,11 +310,13 @@
     </table>
     </div>
     	<hr id="hr">
-         <div>${product.DETAIL}</div>
-       	<c:forEach var="imagePath" items="${imagePaths}">
-           <div class="content_img">
-               <img src="${imagePath}"> 
-           </div>
+        <div>${product.DETAIL}</div>
+       	<c:forEach var="imagePath" items="${imagePaths}" varStatus="loop">
+           <c:if test ="${loop.index == 0 }">
+	           <div class="content_img">
+	               <img src="${imagePath}"> 
+	           </div>
+           </c:if>
    		</c:forEach>
     </div>
     <!-- 리뷰 -->

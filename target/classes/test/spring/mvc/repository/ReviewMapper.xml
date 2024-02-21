@@ -21,6 +21,7 @@
 	</select>
 	<!-- 리뷰 전체 목록 -->
 	<select id = "listimg" resultType="test.spring.mvc.bean.ReviewDTO">
+		<![CDATA[
 		SELECT r.*, a.*, ap.boardname
 			FROM review r
 			LEFT JOIN (
@@ -37,7 +38,8 @@
 			                          AND r.category = ap.category 
 			                          AND r.category2 = ap.category2 
 			                          AND r.flavor = ap.flavor
-			ORDER BY r.num ASC
+			ORDER BY r.num desc
+		]]>
 	</select>
 	<!-- 회원의 작성 리뷰 목록 -->
 	<select id = "getListById" resultType="test.spring.mvc.bean.ReviewDTO">

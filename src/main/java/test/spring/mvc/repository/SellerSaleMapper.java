@@ -55,4 +55,7 @@ public interface SellerSaleMapper {
 	
 	// 전체 회원
 	public List<String> allmember();
+	
+	// 관리자 승인 후 광고 리스트
+	public List<CommercailDTO> admincheckcom();
 }

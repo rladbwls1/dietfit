@@ -314,11 +314,13 @@ public class AdminServiceImpl implements AdminService{
 		return mapper.findPrice(productid);
 	}
 
+
 	
 	//adminMain
 	@Override
-	public int discountCount() {
-		return mapper.discountCount();
+	public void commListC(Model model) {
+		int commCount = mapper.commCount();
+		model.addAttribute("commCount", commCount);
 	}
 	
 

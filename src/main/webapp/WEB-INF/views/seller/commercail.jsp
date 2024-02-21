@@ -70,7 +70,7 @@
 		    }
 		</style>
     </head>
-    <body>
+    <body onload="setMinDate()">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="/seller/home">판매자 관리 페이지</a>
@@ -142,7 +142,7 @@
 									<tr>
 										<td>
 											파일 <input type="file" name="comfile" multiple onchange="previewImage(event)">
-											<img id="imagePreview" style="display:none;"/>
+											<img id="imagePreview" style="display:none; width:200px; height:200px; text-align: center;"/>
 										</td>
 									</tr>
 									<tr>
