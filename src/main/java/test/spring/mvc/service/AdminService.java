@@ -54,7 +54,7 @@ public interface AdminService {
 		public int findprice(String productid);
 		
 		//adminMain
-		public int discountCount();
+		public void commListC(Model model);
 		
 		
 }
