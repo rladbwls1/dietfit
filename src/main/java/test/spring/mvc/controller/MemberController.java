@@ -293,6 +293,18 @@ public class MemberController {
 		model.addAttribute("count", mapper.allproduct_count());
 	    return "member/productList";
 	}
+	@GetMapping("/productList/{orderBy}/{category}")
+	public String productList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+			Model model,Principal pri, @PathVariable String orderBy, @PathVariable String category) {
+		//int number=0;
+		//number=count-(currentPage-1)*pageSize;
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getcategoryproduct(model,pageNum, orderBy, category);
+		model.addAttribute("count", mapper.allproduct_count());
+		return "member/productList";
+	}
 	@RequestMapping("productDetail")
 	public String productDetail(Model model,Principal pri,
 							String companyid,String category,
