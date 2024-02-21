@@ -38,5 +38,7 @@ public interface ReviewMapper {
     public void delete(int num);
 	// 리뷰 이미지 삭제하기
 	
+    public int reviewCount(@Param("companyid")String companyid,@Param("category")String category,
+			@Param("category2")String category2,@Param("flavor")String flavor);
 	
 }
