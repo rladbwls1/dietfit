@@ -31,9 +31,11 @@
               <span class="sidebar-nav-name">
                 광고 요청
               </span>
+              <!-- 
               <span class="sidebar-nav-end">
                 <span class="badge badge-info">4</span>
               </span>
+               -->
             </a>
           </li>
           <li class="sidebar-nav-item">

@@ -188,28 +188,28 @@
                         <div class="big_cate">
                             <div id="cate2">
                                 <div>
-                                    <a href="/member/productList">
-                                        <div class="li1" style="width: 130px;">전체상품</div>
+                                    <a href="/member/productList/popular">
+                                        <div class="li1" style="width: 130px;${category == null ? 'background-color: #FFDB58; color:white;' : ''}">전체상품</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="/member/productList">
-                                        <div class="li1" style="width: 130px;">식사</div>
+                                    <a href="/member/productList/popular/1">
+                                        <div class="li1" style="width: 130px; ${category == 1 ? 'background-color: #FFDB58; color:white;' : ''}">식사</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-3">
-                                        <div class="li1" style="width: 130px;">식사대용</div>
+                                    <a href="/member/productList/popular/2">
+                                        <div class="li1" style="width: 130px; ${category == 2 ? 'background-color: #FFDB58; color:white;' : ''}">식사대용</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-4">
-                                        <div class="li1" style="width: 130px;">간식</div>
+                                    <a href="/member/productList/popular/3">
+                                        <div class="li1" style="width: 130px; ${category == 3 ? 'background-color: #FFDB58; color:white;' : ''}">간식</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-5">
-                                        <div class="li1" style="width: 130px;">음료</div>
+                                    <a href="/member/productList/popular/4">
+                                        <div class="li1" style="width: 130px; ${category == 4 ? 'background-color: #FFDB58; color:white;' : ''}">음료</div>
                                     </a>
                                 </div>
                             </div>
@@ -218,10 +218,10 @@
 		<div id="title">전체 상품 카테고리에 <i>${count}</i> 개의 상품이 등록되어 있습니다</div>
 		<hr>
 		<div id="category">
-			<a href ="/member/productList/popular"><button>인기순</button></a>
-			<a href ="/member/productList/recent"><button>신상품순</button></a>
-			<a href ="/member/productList/priceLow"><button>낮은가격순</button></a>
-			<a href ="/member/productList/priceHigh"><button>높은가격순</button></a>
+			<a href ="/member/productList/popular/${category}"><button>인기순</button></a>
+			<a href ="/member/productList/recent/${category}"><button>신상품순</button></a>
+			<a href ="/member/productList/priceLow/${category}"><button>낮은가격순</button></a>
+			<a href ="/member/productList/priceHigh/${category}"><button>높은가격순</button></a>
 		</div>
 		<hr>
 	    <ul class="list-unstyled row">
@@ -236,10 +236,15 @@
 		            		<sec:authorize access="isAuthenticated()">
 			             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 			            	</sec:authorize>
+		            		<sec:authorize access="isAnonymous()">
+			             	<a href="javascript:void(0)" onclick="gotologin()"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		            		</sec:authorize>
 		            	</div>
 		            	<div class="heart">
 		            		<sec:authorize access="isAnonymous()">
-				            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+					            <a href="javascript:void(0)" onclick="gotologin()" >
+				            		<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+		            			</a>
 				            </sec:authorize>
 				            <sec:authorize access="isAuthenticated()">
 				            	<c:choose>
@@ -277,21 +282,21 @@
 			<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
        	<c:if test="${startPage > 10 }">
-                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
        	</c:if>
        
        	<c:forEach var="i" begin="${startPage}" end="${endPage}">
        		<c:choose>
        			<c:when test="${i==currentPage}">
-                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
        			</c:when>
        			<c:otherwise>
-                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
        			</c:otherwise>
        		</c:choose>
        	</c:forEach>
       		<c:if test="${endPage < pageCount }">
-                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
       		</c:if>
     </c:if>
     </div>

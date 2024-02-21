@@ -79,13 +79,25 @@ public interface MemberMapper {
 	//모든 상품 중, 페이지에 맞게 10개 가져오기
 	public List<Map<String,Object>> findallproduct(@Param("startRow") int startRow, 
 										   @Param("endRow") int endRow);
+	public List<Map<String,Object>> categoryproduct(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
 	public List<Map<String,Object>> popular(@Param("startRow") int startRow, 
 			@Param("endRow") int endRow);
 	public List<Map<String,Object>> priceHigh(@Param("startRow") int startRow, 
 			@Param("endRow") int endRow);
 	public List<Map<String,Object>> priceLow(@Param("startRow") int startRow, 
 			@Param("endRow") int endRow);
+	public List<Map<String,Object>> cate_priceLow(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_priceHigh(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_num(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_popular(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
 	public int allproduct_count();
+	public int category_count(String category);
+	
 	//썸네일 가져오기
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
@@ -100,7 +112,8 @@ public interface MemberMapper {
                                 @Param("category2") String category2, 
                                 @Param("flavor") String flavor);
 	//관심상품에 이미 있는지 확인
-    public int isWish(String product);
+    public int isWish(@Param("product") String product,
+			   		@Param("id") String id);
     //관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);

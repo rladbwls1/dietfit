@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -6,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>404 Error - SB Admin</title>
+        <title>504 Error</title>
         <link href="/resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
@@ -18,12 +19,11 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 <div class="text-center mt-4">
-                                    <h1 class="display-1">401</h1>
-                                    <p class="lead">Unauthorized</p>
-                                    <p>Access to this resource is denied.</p>
-                                    <a href="index.html">
+                                    <img class="mb-4 img-error" src="/resources/img/504.jpg" />
+                                    <p class="lead">504 GATEWAY TIMEOUT</p>
+                                    <a href="/dietfit/main">
                                         <i class="fas fa-arrow-left me-1"></i>
-                                        Return to Dashboard
+                                        GO TO MAIN
                                     </a>
                                 </div>
                             </div>
@@ -31,20 +31,7 @@
                     </div>
                 </main>
             </div>
-            <div id="layoutError_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/resources/js/scripts.js"></script>

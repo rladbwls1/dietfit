@@ -236,7 +236,6 @@ public class MemberServiceImpl implements MemberService{
 		int startRow=(currentPage-1)*pageSize+1;		//시작
 		int endRow=currentPage*pageSize;				//끝
 		int count=mapper.countAllProduct();
-		System.out.println(orderBy);
 		List<Map<String,Object>> list = Collections.EMPTY_LIST;
 		if("popular".equals(orderBy)) {
 			list = mapper.popular(startRow,endRow);
@@ -278,12 +277,72 @@ public class MemberServiceImpl implements MemberService{
 	        model.addAttribute("products", list);
 	    }
 	    //페이지
+	  		int pageBlock=10;
+	  		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+	  		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+	  		int endPage=startPage + pageBlock - 1;
+
+	  		model.addAttribute("count",count);
+	  		model.addAttribute("currentPage",currentPage);
+	  		model.addAttribute("pageSize",pageSize);
+	  		model.addAttribute("pageCount",pageCount);
+	  		model.addAttribute("startPage",startPage);
+	  		model.addAttribute("endPage",endPage);
+	}
+	    @Override
+	    public void getcategoryproduct(Model model, int currentPage, String orderBy, String category) {
+	    	int pageSize=16;
+	    	int startRow=(currentPage-1)*pageSize+1;		//시작
+	    	int endRow=currentPage*pageSize;				//끝
+	    	int count=mapper.category_count(category + "%");
+	    	List<Map<String,Object>> list = Collections.EMPTY_LIST;
+	    	if("priceLow".equals(orderBy)) {
+	    		list = mapper.cate_priceLow(startRow,endRow,category+"%");
+	    	}else if("recent".equals(orderBy)) {
+	    		list = mapper.cate_num(startRow, endRow, category+"%");
+	    	}else if("priceHigh".equals(orderBy)) {
+	    		list = mapper.cate_priceHigh(startRow, endRow, category+"%");
+	    	}else if("popular".equals(orderBy)) {
+	    		list = mapper.cate_popular(startRow, endRow,category+"%");
+	    	}
+	    	if (list != null) {
+	    		for (Map<String,Object> map : list) {
+	    			//썸네일
+	    			ProductimgDTO img = mapper.findlistthum(map.get("COMPANYID").toString(),map.get("CATEGORY").toString(), map.get("CATEGORY2").toString());
+	    			if (img != null) {
+	    				// 이미지 경로 직접 조합하여 설정
+	    				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	    						img.getCategory() + img.getCategory2() +
+	    						img.getFlavor() + "F" + img.getNum() +
+	    						img.getExt();
+	    				map.put("IMAGEPATH",imagePath);
+	    			}
+	    			//기존 가격
+	    			int oriprice=Integer.parseInt(map.get("PRICE").toString());
+	    			//할인율
+	    			int num=Integer.parseInt(map.get("NUM").toString());
+	    			int sale=mapper.isSale(num);
+	    			if(sale!=0) {
+	    				sale=mapper.getSaleByNum(num);
+	    			}
+	    			int price=oriprice*(100-sale)/100;
+	    			map.put("SALE", sale);
+	    			map.put("PRICE", price);
+	    			map.put("ORIPRICE", oriprice);
+	    		}
+	    		
+	    		
+	    		model.addAttribute("category", category);
+	    		model.addAttribute("orderBy", orderBy);
+	    		model.addAttribute("products", list);
+	    		model.addAttribute("count",count);
+	    	}
+	    //페이지
 		int pageBlock=10;
 		int pageCount=count/pageSize+(count%pageSize==0?0:1);
 		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
 		int endPage=startPage + pageBlock - 1;
 
-		model.addAttribute("count",count);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("pageSize",pageSize);
 		model.addAttribute("pageCount",pageCount);
@@ -346,7 +405,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addWishOne(String product,String id) {
-		if(mapper.isWish(product)==0) {
+		if(mapper.isWish(product,id)==0) {
 			mapper.addWishOne(product,id);
 		}
 	}

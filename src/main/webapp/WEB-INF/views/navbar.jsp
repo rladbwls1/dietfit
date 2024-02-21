@@ -51,8 +51,8 @@
                             </div>
 =======
                              -->
-                            <a href="../member/best" class="nav-item nav-link">Best</a>
-                            <a href="../member/discount" class="nav-item nav-link">오늘의 특가</a>
+                            <a href="/member/best" class="nav-item nav-link">Best</a>
+                            <a href="/member/discount" class="nav-item nav-link">오늘의 특가</a>
                             <a href="/dietfit/survey" class="nav-item nav-link">나의식단</a>
                             <a href="/dietfit/contact" class="nav-item nav-link">Contact</a>
                         </div>

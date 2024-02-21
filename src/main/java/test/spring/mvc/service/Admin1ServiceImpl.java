@@ -274,5 +274,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<CouponDTO> Usercoupon(String id) {
 		return mapper.Usercoupon(id);
 	}
+
+	@Override
+	public List<Member_basicDTO> memberId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
