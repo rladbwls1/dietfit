@@ -405,7 +405,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addWishOne(String product,String id) {
-		if(mapper.isWish(product)==0) {
+		if(mapper.isWish(product,id)==0) {
 			mapper.addWishOne(product,id);
 		}
 	}

@@ -43,4 +43,5 @@ public interface Admin1Service{
 	public int commCheck(int admincheck, int num);
 	public List<DiscountDTO> discountNum();
 	public List<CouponDTO> Usercoupon(String id);
+	public List<Member_basicDTO> memberId();
 }

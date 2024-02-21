@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<script src="/resources/js/review.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
+
 <script src="/resources/js/food.js"></script>
 <html>
 <head>
@@ -139,7 +141,6 @@
 		        
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
     	#deli{
 				display: flex;
@@ -149,6 +150,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+				width: fit-content;
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -190,7 +192,6 @@
 				color: #e02020;
 			}
     </style>
-    <script src="/resources/js/review.js"></script>
 </head>
 <body>
 	 <!-- Spinner Start -->
@@ -225,7 +226,7 @@
         <!-- Hero Start -->
     <div id="content">
     	<div id="thum">
-    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
+    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}" varStatus="loop" end="0">
 				  <div class="td1" id="img1"><img src="${thumbnailPath}" width="300"></div>
 				</c:forEach>
 	    <table class="td1">
@@ -280,8 +281,18 @@
 					<hr id="am_hr"/>
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
+					<sec:authorize access="isAnonymous()">
+					<button id="cart" type="button" onclick="gotologin()">장바구니</button>
+					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+<<<<<<< HEAD
 					<button id="buy" type="button" onclick="">즉시구매</button>
+					</sec:authorize>
+=======
+					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+>>>>>>> refs/remotes/origin/rladbwls1
           			</div>
           		</td>
           	</tr>
@@ -302,7 +313,12 @@
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="product" value="${product.PRODUCT}">
                     <input type="hidden" name="companyid" value="${product.COMPANYID}">
-                    <button type="submit">상품 문의</button>
+                    <sec:authorize access="isAnonymous()">
+                    	<button type="button" onclick="gotologin()">상품 문의</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+                    	<button type="submit">상품 문의</button>
+                    </sec:authorize>
                 </form>
             </td>
         </tr>
@@ -374,9 +390,11 @@
                     <div>❤   ${review.recommend} </div>
                 </div>
                 <div>
+                	<sec:authorize access="isAuthenticated()">
                 	<c:set var="status">
                 		<sec:authentication property='principal.dto.status'/>
                 	</c:set>
+                	</sec:authorize>
                 
                 	<c:if test="${review.id eq id or status eq '999' or companyid eq product.COMPANYID}">
                 		<button type="button" class = "btn btn-outline-danger" onclick="deleteReview('${review.num}')" >삭제</button>
@@ -432,7 +450,6 @@
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
         
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/resources/lib/easing/easing.min.js"></script>
     <script src="/resources/lib/waypoints/waypoints.min.js"></script>

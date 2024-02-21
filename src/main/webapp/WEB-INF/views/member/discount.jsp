@@ -173,7 +173,12 @@
 					                <div class="product_img" onclick="toDetail('${discount.companyid}','${discount.category}','${discount.category2}','${discount.flavor}')"><img style="width:200px; height:200px;" src="${discount.imagePath}"/></div>
 					                <div class="wish">
 							                <sec:authorize access="isAnonymous()">
-								            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+								            	<a href="javascript:void(0)" class="openCart" onclick="gotologin()">
+								            		<img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" />
+							            		</a>
+									            <a href="javascript:void(0)" onclick="gotologin()" >
+										            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+												</a>
 								            </sec:authorize>
 								            <sec:authorize access="isAuthenticated()">
 								            	<c:choose>
