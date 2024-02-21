@@ -8,6 +8,7 @@ import test.spring.mvc.bean.AllcouponDTO;
 import test.spring.mvc.bean.CommercailDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DiscountDTO;
+import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductimgDTO;
@@ -45,4 +46,5 @@ public interface Admin1Mapper {
 	public int commCheck(@Param("admincheck")int admincheck, @Param("num") int num);
 	public List<DiscountDTO> discountNum();
 	public List<CouponDTO> Usercoupon(String id);
+	public List<Member_basicDTO> memberId();
 }

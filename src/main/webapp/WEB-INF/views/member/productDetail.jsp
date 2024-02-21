@@ -150,6 +150,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+				width: fit-content;
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -225,7 +226,7 @@
         <!-- Hero Start -->
     <div id="content">
     	<div id="thum">
-    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
+    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}" varStatus="loop" end="0">
 				  <div class="td1" id="img1"><img src="${thumbnailPath}" width="300"></div>
 				</c:forEach>
 	    <table class="td1">
@@ -286,8 +287,12 @@
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+<<<<<<< HEAD
 					<button id="buy" type="button" onclick="">즉시구매</button>
 					</sec:authorize>
+=======
+					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+>>>>>>> refs/remotes/origin/rladbwls1
           			</div>
           		</td>
           	</tr>
