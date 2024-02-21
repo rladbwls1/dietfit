@@ -46,8 +46,8 @@
         }
 
         .product-info a {
-            text-decoration: none; /* 링크에 밑줄 제거 */
-            color: #007bff; /* 링크 색상 설정 */
+            text-decoration: none;
+            color: #007bff; 
             font-weight: bold;
         }
 
@@ -60,11 +60,50 @@
             margin-top: 20px;
             color: #777;
         }
+        .recentcontainer{
+         	width :60%;
+            margin: 0 auto;
+			margin-bottom: 10px;
+        }
     </style>
+    <!-- template -->
+	<!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/resources/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="/resources/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/resources/css/style.css" rel="stylesheet">
+    
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+  		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
+
+	<!-- table -->
+	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h2>${id}님의 최근 본 상품</h2>
-
+<jsp:include page="/WEB-INF/views/navbar.jsp"/>
+	<div class="container-fluid py-5 mb-5 hero-header">
+		<div class="d-grid gap-2 col-6 mx-auto">
+			<h1>${id}님의 최근 본 상품</h1>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			</div>
+		</div>
+	</div>
+	<div class ="recentcontainer">
     <c:if test="${not empty recentlyViewedProducts}">
         <table>
             <tr>
@@ -75,15 +114,13 @@
             <c:forEach var="product" items="${list}">
                 <tr>
                     <td class="product-info">
-				    <a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">${product.product}</a>
-				</td>
+				    	${product.product}
+					</td>
 				<td>
 				    <p>${product.price}</p>
 				</td>
 				<td>
-				    <a href="<c:url value='/seller/product/details/${product.companyid}/${product.category}/${product.category2}/${product.flavor}'/>">
 				        <img src="${product.imagePath}" alt="${product.product} 이미지">
-				    </a>
 				</td>
 
                 </tr>
@@ -94,5 +131,6 @@
     <c:if test="${empty recentlyViewedProducts}">
         <p class="no-product">최근 본 상품이 없습니다.</p>
     </c:if>
+    </div>
 </body>
 </html>
