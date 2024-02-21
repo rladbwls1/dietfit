@@ -115,6 +115,24 @@
         select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
 	]]>
     </select>
+    <select id="popular"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by count desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="priceHigh"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by price desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="priceLow"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by price asc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="allproduct_count">
+    	select count(*) from all_product
+    </select>
 	<!-- 상품 리스트 썸네일 -->
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
     	select *from (SELECT * FROM all_productimg  WHERE companyid = #{companyid}  AND category = #{category}  AND category2 = #{category2} AND thum = 1 order by num asc ) where rownum=1
