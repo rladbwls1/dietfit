@@ -5,7 +5,6 @@
 <script src="/resources/js/review.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
-
 <script src="/resources/js/food.js"></script>
 <html>
 <head>
@@ -287,12 +286,9 @@
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-<<<<<<< HEAD
 					<button id="buy" type="button" onclick="">즉시구매</button>
 					</sec:authorize>
-=======
 					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
->>>>>>> refs/remotes/origin/rladbwls1
           			</div>
           		</td>
           	</tr>

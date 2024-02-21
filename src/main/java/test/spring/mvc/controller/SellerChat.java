@@ -97,7 +97,7 @@ public class SellerChat extends DefaultEmbeddableVerticle {
             }
         });
 
-        server.listen(7777);
+        server.listen(8888);
     }
 
     private String createRoomForUser(String userId, String userType) {
