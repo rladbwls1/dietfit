@@ -873,10 +873,59 @@ public class MemberServiceImpl implements MemberService{
 		model.addAttribute("list",list);
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public void getProductBySearch(Model model, int currentPage, String keyword) {
+		int pageSize=16;
+    	int startRow=(currentPage-1)*pageSize+1;		//시작
+    	int endRow=currentPage*pageSize;				//끝
+    	int count=mapper.countSearch("%"+keyword+"%");
+    	List<Map<String,Object>> list=mapper.getProductBySearch("%"+keyword+"%",startRow,endRow);
+    	
+    	if (list != null) {
+    		for (Map<String,Object> map : list) {
+    			//썸네일
+    			ProductimgDTO img = mapper.findlistthum(map.get("COMPANYID").toString(),map.get("CATEGORY").toString(), map.get("CATEGORY2").toString());
+    			if (img != null) {
+					// 이미지 경로 직접 조합하여 설정
+					String imagePath = "/resources/p_img/" + img.getCompanyid() +
+							img.getCategory() + img.getCategory2() +
+							img.getFlavor() + "F" + img.getNum() +
+							img.getExt();
+					map.put("IMAGEPATH",imagePath);
+					
+				}else {
+					map.put("IMAGEPATH","/resources/p_img/free-icon-image-10701484.png");
+				}
+    			//기존 가격
+    			int oriprice=Integer.parseInt(map.get("PRICE").toString());
+    			//할인율
+    			int num=Integer.parseInt(map.get("NUM").toString());
+    			int sale=mapper.isSale(num);
+    			if(sale!=0) {
+    				sale=mapper.getSaleByNum(num);
+    			}
+    			int price=oriprice*(100-sale)/100;
+    			map.put("SALE", sale);
+    			map.put("PRICE", price);
+    			map.put("ORIPRICE", oriprice);
+    			
+    			model.addAttribute("list",list);
+    		}
+    		
+    		int pageBlock=10;
+    		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+    		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+    		int endPage=startPage + pageBlock - 1;
+
+    		model.addAttribute("pageNum",currentPage);
+    		model.addAttribute("currentPage",currentPage);
+    		model.addAttribute("pageSize",pageSize);
+    		model.addAttribute("pageCount",pageCount);
+    		model.addAttribute("startPage",startPage);
+    		model.addAttribute("endPage",endPage);
+    	}
+    	model.addAttribute("count",count);
+    	model.addAttribute("keyword",keyword);
+	}
 	
 }

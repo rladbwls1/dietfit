@@ -235,5 +235,11 @@ public interface MemberMapper {
 	//만료된 적립금 num 가져오기
 	public List<PointDTO> getDuePointNum(String id);
 	
+	//검색어로 검색된 제품 수 
+	public int countSearch(String keyword);
+	//검색어로 제품 검색
+	public List<Map<String,Object>> getProductBySearch(@Param("keyword")String keyword,
+			@Param("startRow") int startRow, @Param("endRow") int endRow);
+	
 	
 }
