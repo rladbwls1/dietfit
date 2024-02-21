@@ -5,7 +5,6 @@
 <script src="/resources/js/review.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
-
 <script src="/resources/js/food.js"></script>
 <html>
 <head>
@@ -85,6 +84,7 @@
 				background-color: #50AB89;
 				border: 1px solid #50AB89; 
 				padding: 5px 10px;
+				width: 50%;
 			}
 			#buy{
 				padding: 7px 15px;
@@ -92,6 +92,7 @@
 				background-color: white;
 				border: 1px solid #50AB89; 
 				margin-left: 8px;
+				width: 50%;
 			}
 			#delivery{
 				float: right;
@@ -191,6 +192,14 @@
 				font-weight: 700;
 				color: #e02020;
 			}
+			#goto{
+				margin-top: 10px;
+				width: 100%;
+				height: 40px;
+				background-color: #FFDB58;
+				border: none;
+				color: white;
+			}
     </style>
 </head>
 <body>
@@ -282,14 +291,31 @@
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
 					<sec:authorize access="isAnonymous()">
-					<button id="cart" type="button" onclick="gotologin()">장바구니</button>
-					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
+						<button id="cart" type="button" onclick="gotologin()">장바구니</button>
+						<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
+<<<<<<< HEAD
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
 					<button id="buy" type="button" onclick="">즉시구매</button>
+=======
+						<c:set var="status">
+		            		<sec:authentication property="principal.dto.status"/>
+		            	</c:set>
+		            	<c:if test="${status==1 }">
+						<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+						<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+					</c:if>
+					<c:if test="${status!=1 }">
+						<button id="cart" type="button" onclick="notmember()">장바구니</button>
+						<button id="buy" type="button" onclick="notmember()">즉시구매</button>
+					</c:if>
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 					</sec:authorize>
+<<<<<<< HEAD
 					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
           			</div>
           		</td>
           	</tr>
@@ -300,11 +326,6 @@
         </tr>
          -->
         <tr>
-            <td>
-            	<fmt:formatDate value="${product.EXPIRY}" pattern="yyyy-MM-dd"/>
-            </td>
-        </tr>
-        <tr>
             <td colspan="2">
                 <form action="/sellerchat/chat" method="post">
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -314,7 +335,7 @@
                     	<button type="button" onclick="gotologin()">상품 문의</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-                    	<button type="submit">상품 문의</button>
+                    	<button id="goto" type="submit">상품 문의</button>
                     </sec:authorize>
                 </form>
             </td>

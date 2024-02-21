@@ -24,6 +24,7 @@ public interface Admin1Mapper {
 	public int adminCheck(String couponid);
 	public int adminCheck2(String couponid);
 	public int alram();
+	public int alram2();
 	public List<AllcouponDTO> coupon(String id);
 	public ProductimgDTO pro_img(@Param("companyid")String companyid, @Param("category")String category,
 			@Param("category2")String category2);
@@ -46,5 +47,6 @@ public interface Admin1Mapper {
 	public int commCheck(@Param("admincheck")int admincheck, @Param("num") int num);
 	public List<DiscountDTO> discountNum();
 	public List<CouponDTO> Usercoupon(String id);
-	public List<Member_basicDTO> memberId();
+	public List<String> memberId();
+	public String memberPrice(String id);
 }

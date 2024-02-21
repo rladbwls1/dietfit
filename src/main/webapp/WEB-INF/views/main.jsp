@@ -58,8 +58,8 @@
                     </div>
                     <div class="modal-body d-flex align-items-center">
                         <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                            <input type="search" class="form-control p-3" id="search" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><a href="javascript:void(0);"  onclick="searchKeyword()"><i class="fa fa-search"></i></a></span>
                         </div>
                     </div>
                 </div>
@@ -646,6 +646,7 @@
 
     <!-- Template Javascript -->
     <script src="/resources/js/main.js"></script>
+    <script src="/resources/js/member2.js"></script>
     <script type="text/javascript">
       // 사용할 앱의 JavaScript 키를 설정해 주세요.
       Kakao.init('ce765a4e5047770d03e8b69f53f43139');
