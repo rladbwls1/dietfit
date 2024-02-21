@@ -79,6 +79,31 @@ public class DietfitController {
 	@Autowired
 	private ReviewMapper rmapper;
 	
+	@RequestMapping("error400")
+	public String error400() {
+		return "error/400";
+	}
+	@RequestMapping("error401")
+	public String error401() {
+		return "error/401";
+	}
+	@RequestMapping("error404")
+	public String error404() {
+		return "error/404";
+	}
+	@RequestMapping("error500")
+	public String error500() {
+		return "error/500";
+	}
+	@RequestMapping("error503")
+	public String error503() {
+		return "error/503";
+	}
+	@RequestMapping("error504")
+	public String error504() {
+		return "error/504";
+	}
+	
 	@RequestMapping("main")
 	public String main() {
 		return "main";
