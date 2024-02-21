@@ -142,5 +142,27 @@
             <div class="clear-fix"></div>
         </div>
     </c:forEach>
+	        <c:if test="${count>0 }">
+		<c:if test="${endPage > pageCount }">
+			<c:set var="endPage" value="${pageCount}"/>
+		</c:if>
+       	<c:if test="${startPage > 10 }">
+                   <a href="javascript:window.location='/review/myReview?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" >이전</a>
+       	</c:if>
+       
+       	<c:forEach var="i" begin="${startPage}" end="${endPage}">
+       		<c:choose>
+       			<c:when test="${i==currentPage }">
+                        <a href="javascript:window.location='/review/myReview?pageNum=${i}'" style="text-decoration-line : none; color:red;">${i}</a>
+       			</c:when>
+       			<c:otherwise>
+                        <a href="javascript:window.location='/review/myReview?pageNum=${i}'" style="text-decoration-line : none; color:black;">${i}</a>
+       			</c:otherwise>
+       		</c:choose>
+       	</c:forEach>
+      		<c:if test="${endPage < pageCount }">
+                   <a href="javascript:window.location='/review/myReview?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" >다음</a>
+      		</c:if>
+    </c:if>
 </body>
 </html>

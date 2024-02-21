@@ -15,7 +15,6 @@ public interface ReviewMapper {
 	public List<ReviewDTO> listimg();
 	// 회원의 작성 리뷰 리스트
 	public List<ReviewDTO> getListById(String id);
-	
 	// 리뷰 글 저장
 	public void write(ReviewDTO rdto);
 	// 리뷰 이미지 저장 

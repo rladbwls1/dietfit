@@ -8,9 +8,11 @@
 	<title>나의 리뷰</title>
     <style>
         .review-container {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #50ab89;
             padding: 10px;
+            width :60%;
+            margin: 0 auto;
+			margin-bottom: 10px;            
         }
         .review-header {
             display: flex;
@@ -33,6 +35,9 @@
         }
         .love-icon {
             margin-left: 30px;
+        }
+        .delete{
+        	
         }
     </style>
  	<!-- template -->
@@ -82,7 +87,6 @@
                             <img src="/resources/review/${review.attatch}" style="width: 130px; height: 130px;"/>
                         </c:when>
                         <c:otherwise>
-                            이미지 없음
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -102,13 +106,16 @@
                             </c:forEach>
                         </span>
                     </div>
-                    <div>리뷰 내용: ${review.content}</div>
+                    <div>
+                    리뷰 내용:
+                    <br>
+                    ${review.content}</div>
                     <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
                     <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
                 </div>
                 <div>
                 	<c:if test="${review.id eq id }">
-                		<button type="button" onclick="deleteReview('${review.num}')">삭제</button>
+                		<button type="button" class ="delete btn btn-outline-primary" onclick="deleteReview('${review.num}')">삭제</button>
                 	</c:if>
                	</div>
                	<c:choose>
