@@ -50,6 +50,7 @@ public interface MemberService {
 	public void deleteUserself(String id);
 	//상품 목록 가져오기 + 페이지
 	public void getallproduct(Model model,int currentPage, String condition);
+	public void getcategoryproduct(Model model,int currentPage, String orderBy , String condition);
 	
 	//상품의 상세 설명 model로 넘김
 	public List<String> getProductDetail(String companyid, String category,
