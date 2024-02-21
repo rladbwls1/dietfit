@@ -160,4 +160,9 @@ public class SellerSaleServiceImpl implements SellerSaleService{
 	public List<OrderdetailDTO> allSalesRank(String companyid) {
 		return sellermapper.allSalesRank(companyid);
 	}
+
+	@Override
+	public List<CommercailDTO> admincheckcom() {
+		return sellermapper.admincheckcom();
+	}
 }
