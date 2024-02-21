@@ -44,7 +44,7 @@
 
 
         <!-- Navbar start -->
-        <jsp:include page="navbar.jsp"/>
+        <jsp:include page="/WEB-INF/views/navbar.jsp"/>
         <!-- Navbar End -->
 
 
@@ -67,6 +67,7 @@
         </div>
         <!-- Modal Search End -->
         <!-- Hero Start -->
+        <!-- 
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
@@ -97,6 +98,7 @@
                 </div>
             </div>
         </div>
+         -->
         <!-- Hero End -->
         <!-- Featurs Section Start -->
 		<!-- 
@@ -155,7 +157,7 @@
 		
 		<!-- 광고 시작 -->
         <div class="container-fluid vesitable py-5">
-		    <jsp:include page="/seller/maincomm.jsp" />
+		    <jsp:include page="/seller/maincomm" />
 		</div>
         <!-- 광고 끝 -->
 
