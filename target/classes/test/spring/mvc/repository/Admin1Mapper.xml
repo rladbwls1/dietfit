@@ -195,4 +195,7 @@
 		<update id="commCheck">
     		update commercials set admincheck = #{admincheck} where num=#{num}
     	</update>
+    	<select id="memberId">
+    		select id from member_basic where status not in('999','888','800')
+    	</select>
     </mapper>
