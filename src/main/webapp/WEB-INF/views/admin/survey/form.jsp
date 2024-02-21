@@ -28,7 +28,7 @@
         
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
-   
+
 </head>
 
 <body>
@@ -65,8 +65,8 @@
 		        <option value="1.9">매우 많은 활동 (매일 고강도 운동 )</option>
 		    </select>
 	    <br />
-    
-        <button type="submit">제출</button>
+    	<br />
+        <button type="submit" class="btn btn-outline-primary">제출</button>
 	</form>
 	<div class="container-fluid featurs py-5">
 	</div>

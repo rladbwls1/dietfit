@@ -26,5 +26,4 @@ public interface ReviewService {
     public void bye(RecommendDTO dto);
     // ∏Æ∫‰ ªË¡¶
     public void delete(int num);
-
 }

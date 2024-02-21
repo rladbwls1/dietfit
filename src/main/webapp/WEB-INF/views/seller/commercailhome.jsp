@@ -133,7 +133,6 @@
                                 <table id="datatablesSimple">
                                     <thead>
 							            <tr>
-							                <th>숫자</th>
 											<th>광고명</th>
 											<th>광고 시작일</th>
 											<th>광고 종료일</th>
@@ -144,7 +143,6 @@
 							        <tbody>
 									    <c:forEach var="commercail" items="${commercail}">
 											<tr>
-												<td>${commercail.num}</td>
 												<td>${commercail.comname}</td>
 												<td><fmt:formatDate value="${commercail.startdate}" pattern="yyyy-MM-dd"/></td>
 												<td><fmt:formatDate value="${commercail.enddate}" pattern="yyyy-MM-dd"/></td>
