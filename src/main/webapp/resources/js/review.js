@@ -1,3 +1,5 @@
+
+
 function good(reviewnum){
 	var id=$('#id').val();
 	if(id==""){
@@ -15,7 +17,7 @@ function good(reviewnum){
 				var a=parseInt($('#recommend_'+reviewnum).text())+1;
 				$('#recommend_'+reviewnum).text(a);
 				console.log("good");
-			}
+				}
 		});
 	
 	}
@@ -32,8 +34,8 @@ function bye(reviewnum){
 			$('#review_'+reviewnum).attr("src","/resources/img/free-icon-love-7476962.png");
 			var a=parseInt($('#recommend_'+reviewnum).text())-1;
 			$('#recommend_'+reviewnum).text(a);
-			console.log("bye");
-		}
+				console.log("bye");
+				}			
 	});
 }
 function deleteReview(reviewnum){

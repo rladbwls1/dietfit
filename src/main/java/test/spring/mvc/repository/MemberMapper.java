@@ -112,7 +112,8 @@ public interface MemberMapper {
                                 @Param("category2") String category2, 
                                 @Param("flavor") String flavor);
 	//관심상품에 이미 있는지 확인
-    public int isWish(String product);
+    public int isWish(@Param("product") String product,
+			   		@Param("id") String id);
     //관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);

@@ -4,7 +4,7 @@ function addWishList(product){
 		type:'post',
 		data:{product:product},
 		success:function(a){
-			window.open("wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
+			window.open("/member/wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
 			window.location.reload();
 		}
 	});
@@ -236,7 +236,7 @@ function changeNewFolder(products){
 
 //-----------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@장바구니
 function openCart(num){
-	window.open("miniCart?num="+num,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
+	window.open("/member/miniCart?num="+num,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
 }
 //장바구니 버튼 눌러서, 상품 고르면 개수 변경할 수 있게.
 function showQuantityDiv(){

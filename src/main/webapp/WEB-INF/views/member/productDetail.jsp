@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<script src="/resources/js/review.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
+
 <script src="/resources/js/food.js"></script>
 <html>
 <head>
@@ -139,7 +141,6 @@
 		        
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
     	#deli{
 				display: flex;
@@ -190,7 +191,6 @@
 				color: #e02020;
 			}
     </style>
-    <script src="/resources/js/review.js"></script>
 </head>
 <body>
 	 <!-- Spinner Start -->
@@ -374,9 +374,11 @@
                     <div>❤   ${review.recommend} </div>
                 </div>
                 <div>
+                	<sec:authorize access="isAuthenticated()">
                 	<c:set var="status">
                 		<sec:authentication property='principal.dto.status'/>
                 	</c:set>
+                	</sec:authorize>
                 
                 	<c:if test="${review.id eq id or status eq '999' or companyid eq product.COMPANYID}">
                 		<button type="button" class = "btn btn-outline-danger" onclick="deleteReview('${review.num}')" >삭제</button>
@@ -432,7 +434,6 @@
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
         
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/resources/lib/easing/easing.min.js"></script>
     <script src="/resources/lib/waypoints/waypoints.min.js"></script>
