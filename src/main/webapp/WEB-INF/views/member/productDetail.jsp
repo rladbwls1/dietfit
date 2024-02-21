@@ -149,7 +149,11 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+<<<<<<< HEAD
+				width: fit-content
+=======
 				width: fit-content;
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -285,10 +289,26 @@
 					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
+					<c:set var="status">
+	            		<sec:authentication property="principal.dto.status"/>
+	            	</c:set>
+	            	<c:if test="${status==1 }">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+<<<<<<< HEAD
 					<button id="buy" type="button" onclick="">즉시구매</button>
 					</sec:authorize>
+=======
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+<<<<<<< HEAD
+=======
+					</c:if>
+					<c:if test="${status!=1 }">
+					<button id="cart" type="button" onclick="notmember()">장바구니</button>
+					<button id="buy" type="button" onclick="notmember()">즉시구매</button>
+					</c:if>
+					</sec:authorize>
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
           			</div>
           		</td>
           	</tr>
@@ -321,11 +341,13 @@
     </table>
     </div>
     	<hr id="hr">
-         <div>${product.DETAIL}</div>
-       	<c:forEach var="imagePath" items="${imagePaths}">
-           <div class="content_img">
-               <img src="${imagePath}"> 
-           </div>
+        <div>${product.DETAIL}</div>
+       	<c:forEach var="imagePath" items="${imagePaths}" varStatus="loop">
+           <c:if test ="${loop.index == 0 }">
+	           <div class="content_img">
+	               <img src="${imagePath}"> 
+	           </div>
+           </c:if>
    		</c:forEach>
     </div>
     

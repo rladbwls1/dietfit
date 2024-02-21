@@ -55,7 +55,7 @@
 			url: "/admin/adminCheck2",
 			data: {couponId: couponId},
 			success: function(e){
-				if(e == '1'){
+				if(e.result == '1'){
 					$("#"+couponId).text('승인 거부');
 					$("#alram").text(e.msg);
 					$("#" + couponId + "1").hide();
@@ -88,7 +88,7 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb adminx-page-breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">사용자</li>
+                <li class="breadcrumb-item active" aria-current="page">쿠폰리스트</li>
               </ol>
             </nav>
 
@@ -96,17 +96,14 @@
   			<div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">쿠폰 요청<i id="alram">(${alram})</i></h1>
+                        <h1 class="mt-4">쿠폰 요청(<q id="alram">${alram}</q>)</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
                             </div>
-							<h4>총 ${count} 쿠폰</h4>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>

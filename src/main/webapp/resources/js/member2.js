@@ -26,6 +26,9 @@ function gotologin(){
 		window.location.href="/member/customLogin";
 	}
 }
+function notmember(){
+	alert("판매자/관리자는 사용할 수 없는 기능입니다.");
+}
 
 function toDetail(companyid,category,category2,flavor){
 	let f=document.createElement('form');
@@ -575,3 +578,22 @@ function addCartAndOrder2(){
 	}
 }
 
+function searchKeyword(){
+	var keyword=$('#search').val();
+	if (keyword==""){
+		alert("검색어를 입력하십시오.");
+		
+	}else{
+		let f=document.createElement('form');
+		let obj;
+		obj=document.createElement('input');
+		obj.setAttribute('type','hidden');
+		obj.setAttribute('name','keyword');
+		obj.setAttribute('value',keyword);
+		f.appendChild(obj);
+		f.setAttribute('method','post');
+		f.setAttribute('action','/member/search');
+		document.body.appendChild(f);
+		f.submit();
+	}
+}

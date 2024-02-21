@@ -413,6 +413,18 @@
 		select sale from discount where num=#{num} and startr<sysdate and endr>sysdate
 	]]>
 	</select>
+	
+	<!-- 검색어로 검색된 제품 수 -->
+	<select id="countSearch">
+		select count(*) from all_product where product like #{search}
+	</select>
+	<!-- 검색어로 제품 검색 -->
+	<select id="getProductBySearch">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where product like #{keyword} order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+	</select>
+	
 
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->
