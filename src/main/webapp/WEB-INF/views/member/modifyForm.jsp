@@ -83,7 +83,7 @@
 				    <tr>
 				        <td>생년월일</td>
 				        <td>
-				            <input type="date" name="birth" value="${member.get('BIRTH') }" class="form-control"/>
+				            <input type="date" name="birth" value=${member.get('BIRTH') } class="form-control"/>
 				        </td>
 				    </tr>
 				    <tr>
@@ -163,7 +163,6 @@
 	      });
 	  }
 	</script>
-<<<<<<< HEAD
 	<script>
 	//주소 api
 	function sample6_execDaumPostcode() {
@@ -205,6 +204,4 @@
 	}
 	</script>
 	</body>
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 	</html>
