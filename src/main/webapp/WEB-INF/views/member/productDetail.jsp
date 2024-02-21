@@ -150,11 +150,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
-<<<<<<< HEAD
-				width: fit-content
-=======
 				width: fit-content;
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -291,12 +287,9 @@
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-<<<<<<< HEAD
 					<button id="buy" type="button" onclick="">즉시구매</button>
 					</sec:authorize>
-=======
 					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
->>>>>>> refs/remotes/origin/rladbwls1
           			</div>
           		</td>
           	</tr>
