@@ -109,7 +109,6 @@
 </table>
 
 <!-- 부트스트랩 JS 및 기타 스크립트를 추가할 수 있습니다. -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
