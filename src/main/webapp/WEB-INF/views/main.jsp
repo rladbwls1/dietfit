@@ -67,7 +67,6 @@
         </div>
         <!-- Modal Search End -->
         <!-- Hero Start -->
-        <!-- 
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container py-5">
                 <div class="row g-5 align-items-center">
@@ -98,7 +97,6 @@
                 </div>
             </div>
         </div>
-         -->
         <!-- Hero End -->
         <!-- Featurs Section Start -->
 		<!-- 
@@ -162,6 +160,7 @@
         <!-- 광고 끝 -->
 
         <!-- Fruits Shop Start-->
+        <!--  
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
                 <div class="tab-class text-center">
@@ -516,6 +515,7 @@
                 </div>      
             </div>
         </div>
+        -->
         <!-- Fruits Shop End-->
 
 
