@@ -116,8 +116,8 @@
                     </div>
                     <div class="modal-body d-flex align-items-center">
                         <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" id="search">
+                            <span id="search-icon-1" class="input-group-text p-3"><a href="javascript:void(0);"  onclick="searchKeyword()"><i class="fa fa-search"></i></a></span>
                         </div>
                     </div>
                 </div>
@@ -181,6 +181,10 @@
 												</a>
 								            </sec:authorize>
 								            <sec:authorize access="isAuthenticated()">
+								            	<c:set var="status">
+								            		<sec:authentication property="principal.dto.status"/>
+								            	</c:set>
+								            	<c:if test="${status==1 }">
 								            	<c:choose>
 								            	<c:when test="${wishList.contains(discount.product)}">
 										            <a href="javascript:void(0)" onclick="removeWishList('${discount.product}')" >
@@ -194,7 +198,15 @@
 								            	</c:otherwise>
 								            	</c:choose>
 								            	 <a href="javascript:void(0)" class="openCart" onclick="openCart('${discount.num}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
-								            	
+								            	</c:if>
+								            	<c:if test="${status!=1 }">
+								            		<a href="javascript:void(0)" class="openCart" onclick="notmember()">
+								            			<img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" />
+							            			</a>
+									            	<a href="javascript:void(0)" onclick="notmember()" >
+										            	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+													</a>
+								            	</c:if>
 								            </sec:authorize>
 		            					</div>
 					                <div class="boardname">${discount.boardname}</div>

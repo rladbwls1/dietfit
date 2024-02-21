@@ -290,13 +290,18 @@
 					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
+					<c:set var="status">
+	            		<sec:authentication property="principal.dto.status"/>
+	            	</c:set>
+	            	<c:if test="${status==1 }">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-<<<<<<< HEAD
-					<button id="buy" type="button" onclick="">즉시구매</button>
-					</sec:authorize>
-=======
 					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
->>>>>>> refs/remotes/origin/rladbwls1
+					</c:if>
+					<c:if test="${status!=1 }">
+					<button id="cart" type="button" onclick="notmember()">장바구니</button>
+					<button id="buy" type="button" onclick="notmember()">즉시구매</button>
+					</c:if>
+					</sec:authorize>
           			</div>
           		</td>
           	</tr>

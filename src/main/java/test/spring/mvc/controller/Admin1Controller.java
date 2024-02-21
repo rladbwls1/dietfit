@@ -138,24 +138,28 @@ public class Admin1Controller {
 		return chk;
 	}
 	@RequestMapping("adminCheck2")
-	public @ResponseBody String adminCheck2(String couponId) {
+	public @ResponseBody Map<String, Object> adminCheck2(String couponId) {
+		Map<String, Object> chk = new HashMap<>();
 		int check = service.adminCheck2(couponId);
 		int alram = service.alram();
-		String result = "0";
 		if(check == 1) {
-			result = "1";
+			chk.put("result", check);
+			chk.put("msg", alram);
+		}else {
+			chk.put("result", check);
+			chk.put("msg", 0);
 		}
-		return result;
+		return chk;
 	}
 	
 	@RequestMapping("adminChk")
 	public @ResponseBody Map<String, Integer> adminChk(int num, int admin) {
 		Map<String, Integer> result = new HashMap<>();
 		Integer check = service.commCheck(admin, num);
-//		Integer alram = service.alram();
+		Integer alram = service.alram2();
 		if(check == 1) {
 			result.put("result", check);
-			result.put("msg", 0);
+			result.put("msg", alram);
 		}else {
 			result.put("result", check);
 			result.put("msg", 0);
@@ -256,7 +260,7 @@ public class Admin1Controller {
 
 	@RequestMapping("commList")
 	public String commList(Model model) {
-		List <CommercailDTO> list = service.comm();
+		List <CommercailDTO> list = service.comm(model);
 		model.addAttribute("commlist", list);
 		return "/admin/commList";
 	}

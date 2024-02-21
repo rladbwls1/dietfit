@@ -131,6 +131,16 @@ public class MemberController {
 		model.addAttribute("discount", dto);
 		return "/member/discount";
 	}
+	//검색결과
+	@RequestMapping("search")
+	public String search(Model model, Principal pri,@RequestParam(value="pageNum", defaultValue="1") int pageNum,String keyword) {
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getProductBySearch(model,pageNum, keyword);
+		return "/member/search";
+	}
+	
 	
 	
 	//카카오 로그인 

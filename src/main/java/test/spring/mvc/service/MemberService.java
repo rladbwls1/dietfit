@@ -111,4 +111,7 @@ public interface MemberService {
 	//쿠키로 상품 정보 꺼내기
     public void getProductByCookie(List<String> recentlyViewedProducts,Model model);
     
+    //검색어로 제품 검색
+    public void getProductBySearch(Model model,int currentPage,String keyword);
+    
 }
