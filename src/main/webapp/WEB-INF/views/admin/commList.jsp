@@ -30,6 +30,9 @@
 	#datatablesSimple{
 		text-align: center;
 	}
+	.comm_img{
+		width: 100px;
+	}
 </style>
 </head>
 <script>
@@ -43,8 +46,10 @@
                 $("#" + num + "2").hide();
                 if(check == 1){
 	                $("#"+num).text("승인 완료");
+	                $("#alram").text(chk.msg);
                 }else{
 	                $("#"+num).text("승인 거부");
+	                $("#alram").text(chk.msg);
                 }
 			}
 		});
@@ -71,7 +76,7 @@
             <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb adminx-page-breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">사용자</li>
+                <li class="breadcrumb-item active" aria-current="page">광고리스트</li>
               </ol>
             </nav>
 
@@ -79,18 +84,14 @@
   			<div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">광고 요청<i id="alram">(${alram})</i></h1>
+                        <h1 class="mt-4">광고 요청(<q id="alram">${alram}</q>)</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
                             </div>
-                            <h2>광고 요청<i id="alram">(${alram})</i></h2>	
-							<h4>총 ${count} 쿠폰</h4>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
@@ -110,7 +111,7 @@
 											<td>${comm.num}</td>
 											<td>${comm.comname}</td>
 											<td>${comm.companyid}</td>
-											<td><img src="/resources/comimg/${comm.comfile}"/></td>
+											<td><img class="comm_img" src="/resources/comimg/${comm.comfile}"/></td>
 											<td><fmt:formatDate value="${comm.startdate}" pattern="yyyy-MM-dd"/></td> 
 											<td><fmt:formatDate value="${comm.enddate}" pattern="yyyy-MM-dd"/></td>
 											<td>

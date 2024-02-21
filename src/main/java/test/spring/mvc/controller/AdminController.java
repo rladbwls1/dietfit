@@ -14,6 +14,7 @@ import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.repository.AdminMapper;
 import test.spring.mvc.service.Admin1Service;
+import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.EmailService;
 
@@ -24,11 +25,15 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
+	@Autowired
+	private Admin1ServiceImpl service1;
+	
 	@RequestMapping("main")
 	public String main(Model model) {
 		service.companyList(model);
 		service.memberList(model);
 		service.commListC(model);
+		model.addAttribute("price", service1.memberPrice());
 		return "admin/adminMain";
 	}
 	
