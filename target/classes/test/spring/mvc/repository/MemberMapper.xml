@@ -115,6 +115,21 @@
         select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
 	]]>
     </select>
+    <select id="popular"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by count desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="priceHigh"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by price desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="priceLow"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by price asc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
     <select id="allproduct_count">
     	select count(*) from all_product
     </select>

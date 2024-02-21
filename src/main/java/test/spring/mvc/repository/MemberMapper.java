@@ -79,6 +79,12 @@ public interface MemberMapper {
 	//모든 상품 중, 페이지에 맞게 10개 가져오기
 	public List<Map<String,Object>> findallproduct(@Param("startRow") int startRow, 
 										   @Param("endRow") int endRow);
+	public List<Map<String,Object>> popular(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
+	public List<Map<String,Object>> priceHigh(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
+	public List<Map<String,Object>> priceLow(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
 	public int allproduct_count();
 	//썸네일 가져오기
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 

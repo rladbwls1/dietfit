@@ -231,12 +231,22 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void getallproduct(Model model, int currentPage) {
+	public void getallproduct(Model model, int currentPage, String orderBy) {
 		int pageSize=16;
 		int startRow=(currentPage-1)*pageSize+1;		//시작
 		int endRow=currentPage*pageSize;				//끝
 		int count=mapper.countAllProduct();
-		List<Map<String,Object>> list = mapper.findallproduct(startRow,endRow);
+		System.out.println(orderBy);
+		List<Map<String,Object>> list = Collections.EMPTY_LIST;
+		if("popular".equals(orderBy)) {
+			list = mapper.popular(startRow,endRow);
+		}else if("recent".equals(orderBy)) {
+			list = mapper.findallproduct(startRow,endRow);
+		}else if("priceHigh".equals(orderBy)) {
+			list = mapper.priceHigh(startRow, endRow);
+		}else if("priceLow".equals(orderBy)) {
+			list = mapper.priceLow(startRow, endRow);
+		}
 	    if (list != null) {
 	        for (Map<String,Object> map : list) {
 	        	//썸네일
@@ -264,6 +274,7 @@ public class MemberServiceImpl implements MemberService{
 	        }
 	        
 	        
+	        model.addAttribute("orderBy", orderBy);
 	        model.addAttribute("products", list);
 	    }
 	    //페이지
