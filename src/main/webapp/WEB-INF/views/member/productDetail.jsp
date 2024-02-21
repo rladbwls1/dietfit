@@ -285,30 +285,22 @@
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
 					<sec:authorize access="isAnonymous()">
-					<button id="cart" type="button" onclick="gotologin()">장바구니</button>
-					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
+						<button id="cart" type="button" onclick="gotologin()">장바구니</button>
+						<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-					<c:set var="status">
-	            		<sec:authentication property="principal.dto.status"/>
-	            	</c:set>
-	            	<c:if test="${status==1 }">
-					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-<<<<<<< HEAD
-					<button id="buy" type="button" onclick="">즉시구매</button>
-					</sec:authorize>
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
-					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
-<<<<<<< HEAD
-=======
+						<c:set var="status">
+		            		<sec:authentication property="principal.dto.status"/>
+		            	</c:set>
+		            	<c:if test="${status==1 }">
+						<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+						<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
 					</c:if>
 					<c:if test="${status!=1 }">
-					<button id="cart" type="button" onclick="notmember()">장바구니</button>
-					<button id="buy" type="button" onclick="notmember()">즉시구매</button>
+						<button id="cart" type="button" onclick="notmember()">장바구니</button>
+						<button id="buy" type="button" onclick="notmember()">즉시구매</button>
 					</c:if>
 					</sec:authorize>
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
           			</div>
           		</td>
           	</tr>
