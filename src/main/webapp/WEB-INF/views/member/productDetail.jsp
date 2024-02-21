@@ -316,9 +316,25 @@
            </div>
    		</c:forEach>
     </div>
+    
+    
     <!-- 리뷰 -->
+    <hr />
+    
+    <div class="testimonial-header text-center">
+        <h4 class="text-primary">REVIEW</h4>
+        <h1 class="display-5 mb-5 text-dark">상품리뷰</h1>
+    </div>
+	
+	<c:if test="${reviewcount ==0 }">
+		<div class="testimonial-header text-center">
+			<p class="text-primary">리뷰가 없습니다.</p>
+		</div>
+	</c:if>
+	
+	<c:if test="${reviewcount !=0 }">
     <input type="hidden" value="${id }" id="id" />
-    <table>
+    <div class="d-grid gap-2 col-6 mx-auto">
     <c:forEach var="review" items="${review}">
         <div class="review-container" id="review_${review.num}">
             <div class="review-header">
@@ -333,10 +349,14 @@
                     </c:choose>
                 </div>
                 <div class="review-details">
-                    <div>${review.boardname}</div>
-                    <div>평점:
+                    <div> 
+                    	<h5>${review.boardname }</h5>
+                   	</div>
+                   	
+                    <div class="authorName">
+                   		<span class="writerFullName">${review.writer}</span>
                         <span class="star-rating">
-                            <c:forEach begin="1" end="5" var="i">
+                           <c:forEach begin="1" end="5" var="i">
                                 <c:choose>
                                     <c:when test="${i <= review.starscore}">
                                         <span class="filled">★</span>
@@ -348,9 +368,10 @@
                             </c:forEach>
                         </span>
                     </div>
-                    <div>리뷰 내용: ${review.content}</div>
-                    <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
-                    <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
+                    <div> 
+                    	<b>${review.content}</b>
+                    </div>
+                    <div>❤   ${review.recommend} </div>
                 </div>
                 <div>
                 	<c:set var="status">
@@ -358,7 +379,7 @@
                 	</c:set>
                 
                 	<c:if test="${review.id eq id or status eq '999' or companyid eq product.COMPANYID}">
-                		<button type="button" onclick="deleteReview('${review.num}')" >삭제</button>
+                		<button type="button" class = "btn btn-outline-danger" onclick="deleteReview('${review.num}')" >삭제</button>
                 	</c:if>
                	</div>
                	<c:choose>
@@ -385,7 +406,8 @@
             <div class="clear-fix"></div>
         </div>
     </c:forEach>
-    </table>
+    </div>
+    </c:if>
      <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
         <!-- Footer End -->

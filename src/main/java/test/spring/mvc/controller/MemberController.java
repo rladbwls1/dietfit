@@ -312,6 +312,8 @@ public class MemberController {
         	}
         }
         model.addAttribute("review",rmapper.getReview(companyid, category, category2, flavor));
+        model.addAttribute("reviewcount",rmapper.reviewCount(companyid, category, category2, flavor));
+        
 		return "member/productDetail";
 	}
 	
