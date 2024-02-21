@@ -39,6 +39,7 @@ public class ReviewController {
         model.addAttribute("review", review);
         return "review/list";
     }
+	
 	@RequestMapping("myReview")
 	public String myReview(Model model,Principal pri) {
 		String id=pri.getName();

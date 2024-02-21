@@ -7,6 +7,15 @@
 	<select id="companycount" resultType="int">
 		select count(*) from member_basic where status = 888 or status = 800
 	</select> 
+	<select id="companycount888" resultType="int">
+		select count(*) from member_basic where status = 888
+	</select> 
+	<select id="companycount800" resultType="int">
+		select count(*) from member_basic where status = 800
+	</select> 
+	<select id="membercount1" resultType="int">
+		select count(*) from member_basic where status = 1
+	</select> 
 	<select id="companyList" resultType="test.spring.mvc.bean.Member_basicDTO">
 		<!--  
 		<![CDATA[ 
@@ -35,7 +44,11 @@
 	
 	<update id="companyStatus" parameterType="String">
 		update member_basic set status=#{status} where id=#{id}
-	</update>	
+	</update>
+	<update id="companyStatusR" parameterType="String">
+		update AUTHORITIES set authority= 'ROLE_888' where username=#{username}
+	</update>
+		
 	<select id="getLastCompanyId" parameterType="String">
 	<![CDATA[
 		select companyid from
@@ -171,5 +184,16 @@
 	        from all_product a, ${id}_cart m 
 	        	where m.num=#{num} and m.product=a.product
     </select>
+
+	<!-- main에 채울 것 -->
+	<select id="discountCount"  resultType="int">
+	    SELECT COUNT(*)
+        FROM all_product
+        JOIN discount ON all_product.num = discount.num
+        WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
+	</select>
+	<select id="commCount" resultType="int">
+		select count(*) from commercials
+	</select>
 	
 </mapper>

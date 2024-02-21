@@ -17,11 +17,12 @@ public interface AdminService {
 	//ÆÇ¸ÅÀÚ
 		public int companycount();
 		public void companyList(Model model);
-		
+		public void memberList(Model model);
 		public Member_basicDTO companyBasic(String id);
 		public Member_detailDTO companyDetail(String id);
 		
 		public void companyStatus(String status, String id);
+		public void companyStatusR(String authority, String username);
 		public String getLastCompanyId();
 		public String getCompanyId(String id);
 		public String generateCompanyId(String companyid, String id);
@@ -52,6 +53,8 @@ public interface AdminService {
 		
 		public int findprice(String productid);
 		
+		//adminMain
+		public void commListC(Model model);
 		
 		
 }

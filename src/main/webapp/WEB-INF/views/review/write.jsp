@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>글쓰기</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="/resources/js/review.js"></script>
+	<script src="/resources/js/reviewWrite.js"></script>
 
 
 	<style>

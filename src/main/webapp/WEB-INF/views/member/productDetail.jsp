@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/member2.js"></script>
+<script src="/resources/js/food.js"></script>
 <html>
 <head>
     <style>
@@ -33,6 +35,78 @@
         .love-icon {
             margin-left: 30px;
         }
+        #product_price{
+				font-size: 25px;
+				font-weight: 700;
+				color: #e02020;
+			}
+			#chooseProductCart{
+				margin: 15px 0 10px 0;
+				width: 100%;
+				height: 40px;
+			}
+			#clac{
+				display: flex;
+			}
+			#clac_bg{
+				background-color: rgba(0,0,0,.03);
+				width: 100%;
+				padding: 7px;
+			}
+			#clac button{
+				border: 1px solid lightgray;
+				width: 32px;
+			}
+			#product_title{
+				margin-bottom: 10px;
+			}
+			#am{
+				color: #e02020;
+				font-size: 18px;
+			}
+			#am_hr{
+				color: #e02020;
+				font-weight: 600;
+			}
+			#am_count{
+				display: flex;
+				justify-content: space-between;
+			}
+			#addcart, #deli_chk{
+				display: flex;
+			}
+			#addcart{
+				margin-top: 10px;
+			}
+			#cart{
+				color: white; 
+				background-color: #50AB89;
+				border: 1px solid #50AB89; 
+				padding: 5px 10px;
+			}
+			#buy{
+				padding: 7px 15px;
+				color: #50AB89; 
+				background-color: white;
+				border: 1px solid #50AB89; 
+				margin-left: 8px;
+			}
+			#delivery{
+				float: right;
+			}
+			#deli_btn button{
+				width: 300px;
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58; 
+			}
+			#change_btn{
+				background-color: #50AB89;
+				color: white;
+				border: 2px solid #FFDB58;
+				margin-left: 30px; 
+				margin-bottom: 30px;
+			}
     </style>
 
     <title>Product Details</title>
@@ -184,6 +258,33 @@
 			    </c:choose>
             </td>
         </tr>
+        <tr>
+      		<td>
+      			<input type="hidden" id="price" value="${product.PRICE}" />
+					<select name="chooseProductCart" id="chooseProductCart" onchange="showQuantityDiv()">
+					    	<option value="${product.PRODUCT}">${product.PRODUCT}</option>
+					</select> <br/>
+					<div id="clac_bg">
+					<div id="product_title">${product.PRODUCT}</div>
+					<div id="clac">
+					<button type="button" onclick="quantityDown()">-</button>
+					<input type="text" id="quantity" value=1 size=3 maxlength=3 onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+					<button type="button" onclick="quantityUp()">+</button>
+					</div>
+					</div>
+					<br/>
+					<div id="am_count">
+					<div id="am">상품금액 합계</div>
+					<div id="amout">${product.PRICE}원</div><br/>
+					</div>
+					<hr id="am_hr"/>
+					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
+					<div id="addcart">
+					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+					<button id="buy" type="button" onclick="">즉시구매</button>
+          			</div>
+          		</td>
+          	</tr>
         <!-- 
         <tr>
             <td>조회수:</td>
@@ -215,9 +316,25 @@
            </div>
    		</c:forEach>
     </div>
+    
+    
     <!-- 리뷰 -->
+    <hr />
+    
+    <div class="testimonial-header text-center">
+        <h4 class="text-primary">REVIEW</h4>
+        <h1 class="display-5 mb-5 text-dark">상품리뷰</h1>
+    </div>
+	
+	<c:if test="${reviewcount ==0 }">
+		<div class="testimonial-header text-center">
+			<p class="text-primary">리뷰가 없습니다.</p>
+		</div>
+	</c:if>
+	
+	<c:if test="${reviewcount !=0 }">
     <input type="hidden" value="${id }" id="id" />
-    <table>
+    <div class="d-grid gap-2 col-6 mx-auto">
     <c:forEach var="review" items="${review}">
         <div class="review-container" id="review_${review.num}">
             <div class="review-header">
@@ -232,10 +349,14 @@
                     </c:choose>
                 </div>
                 <div class="review-details">
-                    <div>${review.boardname}</div>
-                    <div>평점:
+                    <div> 
+                    	<h5>${review.boardname }</h5>
+                   	</div>
+                   	
+                    <div class="authorName">
+                   		<span class="writerFullName">${review.writer}</span>
                         <span class="star-rating">
-                            <c:forEach begin="1" end="5" var="i">
+                           <c:forEach begin="1" end="5" var="i">
                                 <c:choose>
                                     <c:when test="${i <= review.starscore}">
                                         <span class="filled">★</span>
@@ -247,9 +368,10 @@
                             </c:forEach>
                         </span>
                     </div>
-                    <div>리뷰 내용: ${review.content}</div>
-                    <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
-                    <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
+                    <div> 
+                    	<b>${review.content}</b>
+                    </div>
+                    <div>❤   ${review.recommend} </div>
                 </div>
                 <div>
                 	<c:set var="status">
@@ -257,7 +379,7 @@
                 	</c:set>
                 
                 	<c:if test="${review.id eq id or status eq '999' or companyid eq product.COMPANYID}">
-                		<button type="button" onclick="deleteReview('${review.num}')" >삭제</button>
+                		<button type="button" class = "btn btn-outline-danger" onclick="deleteReview('${review.num}')" >삭제</button>
                 	</c:if>
                	</div>
                	<c:choose>
@@ -284,7 +406,8 @@
             <div class="clear-fix"></div>
         </div>
     </c:forEach>
-    </table>
+    </div>
+    </c:if>
      <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
         <!-- Footer End -->

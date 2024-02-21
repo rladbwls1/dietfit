@@ -79,6 +79,25 @@ public interface MemberMapper {
 	//모든 상품 중, 페이지에 맞게 10개 가져오기
 	public List<Map<String,Object>> findallproduct(@Param("startRow") int startRow, 
 										   @Param("endRow") int endRow);
+	public List<Map<String,Object>> categoryproduct(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> popular(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
+	public List<Map<String,Object>> priceHigh(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
+	public List<Map<String,Object>> priceLow(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow);
+	public List<Map<String,Object>> cate_priceLow(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_priceHigh(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_num(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public List<Map<String,Object>> cate_popular(@Param("startRow") int startRow, 
+			@Param("endRow") int endRow, @Param("category") String category);
+	public int allproduct_count();
+	public int category_count(String category);
+	
 	//썸네일 가져오기
 	public ProductimgDTO findlistthum(@Param("companyid") String companyid, 
 							     	  @Param("category") String category,
@@ -92,7 +111,9 @@ public interface MemberMapper {
                                 @Param("category") String category, 
                                 @Param("category2") String category2, 
                                 @Param("flavor") String flavor);
-	//관심상품에 상품 하나 추가하기
+	//관심상품에 이미 있는지 확인
+    public int isWish(String product);
+    //관심상품에 상품 하나 추가하기
 	public void addWishOne(@Param("product") String product,
 						   @Param("id") String id);
 	//관심상품에 상품 하나 제거하기
@@ -103,8 +124,13 @@ public interface MemberMapper {
 	
 	//유저의 관심상품 목록에서 상품명만 가져오기
 	public List<String> getWishListProduct(String id);
-	//유저의 관심상품 목록 가져오기
-	public List<DibsDTO> getWishList(String id);
+	//유저의 관심상품 개수 가져오기
+	public int countWishList(String id);
+	//유저의 관심상품 목록 전체 가져오기
+	public List<DibsDTO> getWishList(@Param("id")String id, @Param("startRow") int startRow, 
+			   					@Param("endRow") int endRow);
+	//유저의 관심상품 목록 전체 가져오기
+	public List<DibsDTO> getWishListWithFolder(@Param("id")String id);
 	//상품명으로 상품코드 뽑기
 	public ProductDTO getProductCodeByProductName(String product);
 	//상품명으로 가격 뽑기
@@ -131,7 +157,9 @@ public interface MemberMapper {
 	//장바구니에 하나의 상품 추가
 	public void addCartOne(@Param("id")String id, @Param("product") String product, 
 			@Param("quantity")int quantity, @Param("price")int price, @Param("delivery")int delivery);
-	//장바구니 목록 가져오기
+	//장바구니에 최근에 추가된 상품의 num 가져오기
+	public int getCartMaxNum(String id);
+	//전체 장바구니 목록 가져오기 + 페이지
 	public List<Map<String,Object>> getCartList(String id);
 	//장바구니 개수 수정
 	public void updateCart(@Param("id")String id, @Param("quantity")int quantity, @Param("num")int num );

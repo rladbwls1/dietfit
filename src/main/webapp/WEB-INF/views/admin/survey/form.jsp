@@ -68,7 +68,22 @@
     
         <button type="submit">제출</button>
 	</form>
-	
+	<div class="container-fluid featurs py-5">
+	</div>
+	<jsp:include page="/WEB-INF/views/footer.jsp"/>
 	</div>
 </body>
+<!-- Template Javascript -->
+    <script src="/resources/js/main.js"></script>
+    <script type="text/javascript">
+      // 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init('ce765a4e5047770d03e8b69f53f43139');
+      // 채널 추가하기 버튼을 생성합니다.
+      Kakao.Channel.createAddChannelButton({
+        container: '#kakao-talk-channel-add-button',
+        channelPublicId: '_GCliG',
+        size: 'small',
+        supportMultipleDensities: true,
+      });
+    </script>
 </html>
