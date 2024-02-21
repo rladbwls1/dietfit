@@ -236,10 +236,15 @@
 		            		<sec:authorize access="isAuthenticated()">
 			             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
 			            	</sec:authorize>
+		            		<sec:authorize access="isAnonymous()">
+			             	<a href="javascript:void(0)" onclick="gotologin()"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		            		</sec:authorize>
 		            	</div>
 		            	<div class="heart">
 		            		<sec:authorize access="isAnonymous()">
-				            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+					            <a href="javascript:void(0)" onclick="gotologin()" >
+				            		<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+		            			</a>
 				            </sec:authorize>
 				            <sec:authorize access="isAuthenticated()">
 				            	<c:choose>
