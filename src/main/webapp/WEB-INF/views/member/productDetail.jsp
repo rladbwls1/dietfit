@@ -150,7 +150,11 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+<<<<<<< HEAD
+				width: fit-content
+=======
 				width: fit-content;
+>>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -325,11 +329,13 @@
     </table>
     </div>
     	<hr id="hr">
-         <div>${product.DETAIL}</div>
-       	<c:forEach var="imagePath" items="${imagePaths}">
-           <div class="content_img">
-               <img src="${imagePath}"> 
-           </div>
+        <div>${product.DETAIL}</div>
+       	<c:forEach var="imagePath" items="${imagePaths}" varStatus="loop">
+           <c:if test ="${loop.index == 0 }">
+	           <div class="content_img">
+	               <img src="${imagePath}"> 
+	           </div>
+           </c:if>
    		</c:forEach>
     </div>
     

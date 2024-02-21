@@ -77,7 +77,4 @@ public class ReviewServiceImpl implements ReviewService{
 	public void delete(int num) {
 		mapper.delete(num);
 	}
-	
-	
-	
 }
