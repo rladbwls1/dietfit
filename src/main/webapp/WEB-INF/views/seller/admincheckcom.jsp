@@ -4,7 +4,7 @@
 <html>
 <body>
 <div class="container py-5">
-    <h1 class="mb-0">광고</h1>
+    <h1 class="mb-0">⭐Discover New Flavors⭐<h1>
     <div class="owl-carousel vegetable-carousel justify-content-center">
         <c:forEach items="${cdto}" var="cdto">
             <div class="border border-primary rounded position-relative vesitable-item">
