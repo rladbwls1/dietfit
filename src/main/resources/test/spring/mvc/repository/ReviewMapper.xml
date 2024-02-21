@@ -132,6 +132,29 @@
 			ORDER BY r.num ASC
 		
 	</select>
+	
+	<select id="reviewCount" resultType="int">
+		SELECT COUNT(*) AS count
+			FROM (
+			    SELECT r.*, a.*, ap.boardname
+			    FROM review r
+			    LEFT JOIN (
+			        SELECT allimg.*, min_allimg.min_num
+			        FROM allimg
+			        JOIN (
+			            SELECT notifynum, MIN(num) AS min_num
+			            FROM allimg
+			            WHERE type = 4
+			            GROUP BY notifynum
+			        ) min_allimg ON allimg.notifynum = min_allimg.notifynum AND allimg.num = min_allimg.min_num
+			    ) a ON r.num = a.notifynum
+			    LEFT JOIN all_product ap ON r.companyid = ap.companyid 
+			                              AND r.category = ap.category 
+			                              AND r.category2 = ap.category2 
+			                              AND r.flavor = ap.flavor
+			   where r.companyid=#{companyid} and r.category=#{category} and r.category2=#{category2} and r.flavor=#{flavor}
+			) 
+	</select>
 	<!-- 리뷰 삭제 -->
 	<delete id="delete">
 		delete from review where num=#{num}
