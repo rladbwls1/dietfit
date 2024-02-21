@@ -5,11 +5,14 @@
 <script src="/resources/js/review.js"></script>
 <html>
 <head>
+	<title>나의 리뷰</title>
     <style>
         .review-container {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #50ab89;
             padding: 10px;
+            width :60%;
+            margin: 0 auto;
+			margin-bottom: 10px;            
         }
         .review-header {
             display: flex;
@@ -33,11 +36,48 @@
         .love-icon {
             margin-left: 30px;
         }
+        .delete{
+        	
+        }
     </style>
+ 	<!-- template -->
+	<!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/resources/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="/resources/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/resources/css/style.css" rel="stylesheet">
     
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
+  		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
+
+	<!-- table -->
+	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<input type="hidden" value="${id }" id="id" />
+<jsp:include page="/WEB-INF/views/navbar.jsp"/>
+	<div class="container-fluid py-5 mb-5 hero-header">
+		<div class="d-grid gap-2 col-6 mx-auto">
+			<h1>나의 리뷰</h1>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="${id }" id="id" />
     <c:forEach var="review" items="${review}">
         <div class="review-container" id="review_${review.num}" >
             <div class="review-header">
@@ -47,7 +87,6 @@
                             <img src="/resources/review/${review.attatch}" style="width: 130px; height: 130px;"/>
                         </c:when>
                         <c:otherwise>
-                            이미지 없음
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -67,13 +106,16 @@
                             </c:forEach>
                         </span>
                     </div>
-                    <div>리뷰 내용: ${review.content}</div>
+                    <div>
+                    리뷰 내용:
+                    <br>
+                    ${review.content}</div>
                     <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
                     <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
                 </div>
                 <div>
                 	<c:if test="${review.id eq id }">
-                		<button type="button" onclick="deleteReview('${review.num}')">삭제</button>
+                		<button type="button" class ="delete btn btn-outline-primary" onclick="deleteReview('${review.num}')">삭제</button>
                 	</c:if>
                	</div>
                	<c:choose>
