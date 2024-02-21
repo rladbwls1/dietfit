@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import test.spring.mvc.bean.CartDTO;
 import test.spring.mvc.bean.CouponDTO;
 import test.spring.mvc.bean.DeliveryDTO;
-import test.spring.mvc.bean.DiscountDTO;
 import test.spring.mvc.bean.Member_basicDTO;
 import test.spring.mvc.bean.Member_detailDTO;
 import test.spring.mvc.bean.ProductDTO;
@@ -280,15 +281,16 @@ public class MemberController {
 		return "redirect:/dietfit/main";
 	}	
 	
-	@RequestMapping("productList")
+	@GetMapping("/productList/{orderBy}")
 	public String productList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
-					Model model,Principal pri) {
+					Model model,Principal pri, @PathVariable String orderBy) {
 		//int number=0;
 		//number=count-(currentPage-1)*pageSize;
 		if(pri!=null) {
 			service.getWishListProduct(model,pri.getName());
 		}
-		service.getallproduct(model,pageNum);
+		service.getallproduct(model,pageNum, orderBy);
+		model.addAttribute("count", mapper.allproduct_count());
 	    return "member/productList";
 	}
 	@RequestMapping("productDetail")

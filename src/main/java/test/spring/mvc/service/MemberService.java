@@ -49,7 +49,8 @@ public interface MemberService {
 	//회원 탈퇴(자의)
 	public void deleteUserself(String id);
 	//상품 목록 가져오기 + 페이지
-	public void getallproduct(Model model,int currentPage);
+	public void getallproduct(Model model,int currentPage, String condition);
+	
 	//상품의 상세 설명 model로 넘김
 	public List<String> getProductDetail(String companyid, String category,
 			String category2,String flavor, Model model);
