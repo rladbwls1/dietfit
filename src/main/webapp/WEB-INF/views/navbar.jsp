@@ -31,7 +31,7 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="/dietfit/main" class="nav-item nav-link active">Home</a>
-                            <a href="/member/productList" class="nav-item nav-link">Shop</a>
+                            <a href="/member/productList/popular" class="nav-item nav-link">Shop</a>
                             <!-- 
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
 >>>>>>> refs/remotes/origin/main

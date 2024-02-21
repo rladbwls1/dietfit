@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-  
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <script src="/resources/js/member2.js"></script>
+<script src="/resources/js/food.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <html>
@@ -52,16 +54,97 @@
         img {
             display: block;
             margin: 0 auto;
-            max-width: 100px;
-            max-height: 100px;
         }
         #content{
         	width: 60%;
         	margin: 0 auto;
         }
         .aa{
-        	margin-top: 300px;
+        	margin-top: 150px;
         }
+        .product_img img{
+        	width: -webkit-fill-available !important;
+        	height: 215px !important;
+        }
+        #page{
+        	display: flex;
+        	justify-content: center;
+        	margin-top: 30px;
+        }
+        #page button{
+        	width: 35px;
+        	height: 35px;
+        	border: 1px solid lightgray;
+        	background-color: white;
+        	font-weight: 600;
+        }
+        .cart_h{
+        	display: flex;
+        	justify-content: right;
+        }
+        .boardname{
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    text-align: center;
+		    text-decoration: none !important;
+			margin-top: 15px;	    
+   		}
+   		.heart{
+   			margin-left: 10px;
+   		}
+   		.hr{
+   			margin: 10px 0 30px 0;
+   		}
+   		.price{
+   			text-align: center;
+   		}
+   		#title{
+   			text-align: center;
+   			font-size: 25px;
+   			margin-bottom: 20px;
+   		}
+   		#title i{
+   			color: #50AB89;
+   			font-weight: 600; 
+   		}
+   		#category{
+   			display: flex;
+   		}
+   		#category a button{
+   			background-color: white;
+   			border: none;
+   			padding: 0 15px;
+   		}
+   		#category a button:not(:last-child){
+   			border-right: 1px solid lightgray;
+   		}
+   		#cate2{
+   			display: flex;
+   			list-style: none;
+   			padding-left: 15px !important;
+   		}
+   		.active2{
+   			background-color: #FFDB58 !important;
+   		}
+   		.active2 span{
+   			color: white !important;
+   		}
+   		.big_cate{
+   			
+   		}
+   		.li1{
+   			background-color: #F4F6F8;
+   			margin-right: 10px;
+   			width: 130px !important;
+   			height: 40px !important;
+   			border-radius: 20px;
+   			padding: 7px 12px;
+   			text-align: center;
+   		}
+   		.li1{
+   		
+   		}
     </style>
 </head>
 <body>
@@ -98,70 +181,120 @@
     <br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기 </button>
 	<br/>
 	<div class="container aa">
+		  <div>
+                        <div class="col-lg-4 text-start">
+                            <h1>Our Products</h1>
+                        </div>
+                        <div class="big_cate">
+                            <div id="cate2">
+                                <div>
+                                    <a href="/member/productList">
+                                        <div class="li1" style="width: 130px;">전체상품</div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="/member/productList">
+                                        <div class="li1" style="width: 130px;">식사</div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="#tab-3">
+                                        <div class="li1" style="width: 130px;">식사대용</div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="#tab-4">
+                                        <div class="li1" style="width: 130px;">간식</div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="#tab-5">
+                                        <div class="li1" style="width: 130px;">음료</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+		<div id="title">전체 상품 카테고리에 <i>${count}</i> 개의 상품이 등록되어 있습니다</div>
+		<hr>
+		<div id="category">
+			<a href ="/member/productList/popular"><button>인기순</button></a>
+			<a href ="/member/productList/recent"><button>신상품순</button></a>
+			<a href ="/member/productList/priceLow"><button>낮은가격순</button></a>
+			<a href ="/member/productList/priceHigh"><button>높은가격순</button></a>
+		</div>
+		<hr>
 	    <ul class="list-unstyled row">
-	         <c:forEach var="product" items="${products}">
+	         <c:forEach var="product" items="${products}" varStatus="loop">
 	            <li class="col-md-3">
-	            	<div><img src="${product.IMAGEPATH}" alt="${product.PRODUCT}"></div>
-	                <div><a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">${product.PRODUCT}</a></div>
-	            	<div>
-	            		<sec:authorize access="isAuthenticated()">
-		             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
-		            	</sec:authorize>
-	            	</div>
-	            	<div>
-	            		<sec:authorize access="isAnonymous()">
-			            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
-			            </sec:authorize>
-			            <sec:authorize access="isAuthenticated()">
-			            	<c:choose>
-			            	<c:when test="${wishList.contains(product.PRODUCT)}">
-					            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
-					            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
-					            </a>
-			            	</c:when>
-			            	<c:otherwise>
-					            <a href="javascript:void(0)" onclick="addWishList('${product.PRODUCT}')" >
-			           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
-					            </a>
-			            	</c:otherwise>
-			            	</c:choose>
-			            	
-			            </sec:authorize>
-	            	</div>
-	            	<div>
+	            	<a href="javascript:void(0)" onclick="toDetail('${product.COMPANYID}','${product.CATEGORY}','${product.CATEGORY2}','${product.FLAVOR}')">
+	            	<div class="product_img"><img src="${product.IMAGEPATH}" alt="${product.PRODUCT}"></div>
+	                <div class="boardname">${product.PRODUCT}</div>
+	                </a>
+	            	<div class="cart_h">
+		            	<div>
+		            		<sec:authorize access="isAuthenticated()">
+			             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+			            	</sec:authorize>
+		            	</div>
+		            	<div class="heart">
+		            		<sec:authorize access="isAnonymous()">
+				            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+				            </sec:authorize>
+				            <sec:authorize access="isAuthenticated()">
+				            	<c:choose>
+				            	<c:when test="${wishList.contains(product.PRODUCT)}">
+						            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
+						            <img src="/resources/img/free-icon-love-4397571.png" width="20px"/>
+						            </a>
+				            	</c:when>
+				            	<c:otherwise>
+						            <a href="javascript:void(0)" onclick="addWishList('${product.PRODUCT}')" >
+				           		 	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+						            </a>
+				            	</c:otherwise>
+				            	</c:choose>
+				            	
+				            </sec:authorize>
+		            	</div>
+		            </div>	
+	            	<div class="price">
 	            		<c:if test="${product.SALE!=0}">
-						<span style="color:gray;text-decoration: line-through;">${product.ORIPRICE}</span><br/><span style="color:red">${product.SALE}%</span> 
-						</c:if>${product.PRICE }
+						<span style="color:gray;text-decoration: line-through;"><fmt:formatNumber value="${product.ORIPRICE}" type="number" pattern="#,###원"/></span><br/><span style="color:red">${product.SALE}%</span> 
+						</c:if><fmt:formatNumber value="${product.PRICE }" type="number" pattern="#,###원"/>
 	            	</div>
 	            </li>
+	             <c:if test="${loop.count % 4 == 0 && loop.count != 0}">
+			        <hr class="hr">
+			    </c:if>
 	        </c:forEach>
 	    </ul>
 	</div>
 	<!-- 페이지 -->
-    <table>
+	<div id="page">
     <c:if test="${count>0 }">
 		<c:if test="${endPage > pageCount }">
 			<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
        	<c:if test="${startPage > 10 }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" >이전</a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
        	</c:if>
        
        	<c:forEach var="i" begin="${startPage}" end="${endPage}">
        		<c:choose>
-       			<c:when test="${i==currentPage }">
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'" style="text-decoration-line : none; color:red;">${i}</a>
+       			<c:when test="${i==currentPage}">
+                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
        			</c:when>
        			<c:otherwise>
-                        <a href="javascript:window.location='/member/productList?pageNum=${i}'" style="text-decoration-line : none; color:black;">${i}</a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
        			</c:otherwise>
        		</c:choose>
        	</c:forEach>
       		<c:if test="${endPage < pageCount }">
-                   <a href="javascript:window.location='/member/productList?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" >다음</a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
       		</c:if>
     </c:if>
-    </table>
+    </div>
     </div>
     <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
