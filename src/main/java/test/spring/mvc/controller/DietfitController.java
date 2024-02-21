@@ -195,7 +195,7 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,int delivery) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,Integer delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
 		model.addAttribute("delivery9", mapper.getUserDelivery9(pri.getName()));

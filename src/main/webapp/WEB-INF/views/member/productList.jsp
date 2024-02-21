@@ -189,27 +189,27 @@
                             <div id="cate2">
                                 <div>
                                     <a href="/member/productList/popular">
-                                        <div class="li1" style="width: 130px;">전체상품</div>
+                                        <div class="li1" style="width: 130px;${category == null ? 'background-color: #FFDB58; color:white;' : ''}">전체상품</div>
                                     </a>
                                 </div>
                                 <div>
                                     <a href="/member/productList/popular/1">
-                                        <div class="li1" style="width: 130px;">식사</div>
+                                        <div class="li1" style="width: 130px; ${category == 1 ? 'background-color: #FFDB58; color:white;' : ''}">식사</div>
                                     </a>
                                 </div>
                                 <div>
                                     <a href="/member/productList/popular/2">
-                                        <div class="li1" style="width: 130px;">식사대용</div>
+                                        <div class="li1" style="width: 130px; ${category == 2 ? 'background-color: #FFDB58; color:white;' : ''}">식사대용</div>
                                     </a>
                                 </div>
                                 <div>
                                     <a href="/member/productList/popular/3">
-                                        <div class="li1" style="width: 130px;">간식</div>
+                                        <div class="li1" style="width: 130px; ${category == 3 ? 'background-color: #FFDB58; color:white;' : ''}">간식</div>
                                     </a>
                                 </div>
                                 <div>
                                     <a href="/member/productList/popular/4">
-                                        <div class="li1" style="width: 130px;">음료</div>
+                                        <div class="li1" style="width: 130px; ${category == 4 ? 'background-color: #FFDB58; color:white;' : ''}">음료</div>
                                     </a>
                                 </div>
                             </div>

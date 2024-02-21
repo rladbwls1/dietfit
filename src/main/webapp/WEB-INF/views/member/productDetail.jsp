@@ -149,6 +149,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+				width: fit-content;
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -225,7 +226,7 @@
         <!-- Hero Start -->
     <div id="content">
     	<div id="thum">
-    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
+    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}" varStatus="loop" end="0">
 				  <div class="td1" id="img1"><img src="${thumbnailPath}" width="300"></div>
 				</c:forEach>
 	    <table class="td1">
@@ -281,7 +282,7 @@
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-					<button id="buy" type="button" onclick="">즉시구매</button>
+					<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
           			</div>
           		</td>
           	</tr>
