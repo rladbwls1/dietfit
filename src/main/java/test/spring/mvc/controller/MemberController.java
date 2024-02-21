@@ -248,7 +248,7 @@ public class MemberController {
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
 		service.modifyUser(basicDTO, detailDTO);
-		return "redirect:/member/modifyForm";
+		return "redirect:/dietfit/main";
 	}
 
 
