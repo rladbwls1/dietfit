@@ -54,7 +54,7 @@
                             <a href="../member/best" class="nav-item nav-link">Best</a>
                             <a href="../member/discount" class="nav-item nav-link">오늘의 특가</a>
                             <a href="/dietfit/survey" class="nav-item nav-link">나의식단</a>
-                            <a href="contact" class="nav-item nav-link">Contact</a>
+                            <a href="/dietfit/contact" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>

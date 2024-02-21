@@ -123,7 +123,7 @@
                 <div class="review">
 				    <div class="love-icon">
 				    	<a href="javascript:void(0)" onclick="good('${review.num}')" id="event_${review.num }">
-			        		<img src="/resources/img/free-icon-love-7476962.png" width="20px" id="review_${review.num }"/>
+			        		<img src="/resources/img/free-icon-love-7476962.png" width="20px" id="review_${review.num }" />
 	        			</a>
 				    </div>
 				</div>
@@ -132,7 +132,7 @@
                 <div class="review">
 				    <div class="love-icon">
 				    	<a href="javascript:void(0)" onclick="bye('${review.num}')" id="event_${review.num }">
-				        	<img src="/resources/img/free-icon-love-4397571.png" width="20px" id="review_${review.num }"/>
+				        	<img src="/resources/img/free-icon-love-4397571.png" width="20px" id="review_${review.num }" />
 			        	</a>
 				    </div>
 				</div>

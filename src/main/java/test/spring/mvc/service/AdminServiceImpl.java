@@ -41,10 +41,12 @@ public class AdminServiceImpl implements AdminService{
 	public int companycount() {
 		return mapper.companycount();
 	}
-
+	
 	@Override
 	public void companyList(Model model) {
 		int companycount = mapper.companycount();
+		int companycount800 = mapper.companycount800();
+		int companycount888 = mapper.companycount888();
 		List<Member_basicDTO> companyList = Collections.EMPTY_LIST;
 		companyList = mapper.companyList();
 		
@@ -64,6 +66,14 @@ public class AdminServiceImpl implements AdminService{
         
 		model.addAttribute("companyList", companyList);
 		model.addAttribute("companycount", companycount);
+		model.addAttribute("companycount800", companycount800);
+		model.addAttribute("companycount888", companycount888);
+	}
+
+	@Override
+	public void memberList(Model model) {
+		int membercount = mapper.membercount1();
+		model.addAttribute("membercount", membercount);
 	}
 
 	@Override
@@ -79,6 +89,10 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public void companyStatus(String status, String id) {
 		mapper.companyStatus(status, id);
+	}
+	@Override
+	public void companyStatusR(String authority, String username) {
+		mapper.companyStatusR(authority, username);
 	}
 
 	@Override
@@ -299,9 +313,14 @@ public class AdminServiceImpl implements AdminService{
 	public int findprice(String productid) {
 		return mapper.findPrice(productid);
 	}
-	
-	
 
+	
+	//adminMain
+	@Override
+	public int discountCount() {
+		return mapper.discountCount();
+	}
+	
 
 	
 

@@ -68,6 +68,7 @@ public class DietfitController {
 	
 	@Autowired
 	private MemberMapper mmapper;
+
 	
 	@RequestMapping("main")
 	public String main() {
@@ -368,7 +369,7 @@ public class DietfitController {
 			    "&quantity=" + quantity +
 			    "&total_amount=" + total_amount +
 			    "&tax_free_amount=" + tax_free_amount +
-			    "&approval_url=http://localhost:8080/dietfit/kakaopay/success" +
+			    "&approval_url=http://localhost:8080/dietfit/kakaopay/success?nums="+id+","+nums +
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
 			
@@ -403,7 +404,12 @@ public class DietfitController {
 	
 	
 	@RequestMapping("kakaopay/success")
-	public String success() {
+	public String success(String nums) {
+		String[] list=nums.split(",");
+		String id=list[0];
+		for(int i=1;i<list.length;i++) {
+			mservice.deleteCart(id,Integer.parseInt(list[i]));
+		}
 		return "admin/kakaopay/success";
 	}
 	

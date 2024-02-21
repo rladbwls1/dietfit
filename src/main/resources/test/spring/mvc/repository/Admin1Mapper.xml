@@ -173,6 +173,9 @@
 		<select id="isCart">
 			select count(*) from ${id}_cart where product=#{product}
 		</select>
+		<select id="Usercoupon" resultType="usercoupon">
+			select * from ${id}_coupon order by num asc
+		</select>
 		<!-- 장바구니에 하나의 상품 추가 -->
 		<insert id="addCartOne">
 			insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},${delivery})

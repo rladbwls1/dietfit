@@ -57,7 +57,7 @@
 				<div class="card-header">
 				    <ul class="nav nav-tabs card-header-tabs">
 				      <li class="nav-item">
-				        <a class="nav-link" href="/member/wishList">관심상품</a>
+				        <a class="nav-link" href="/member/cartList">일반배송</a>
 				      </li>
 				      <li class="nav-item">
 				        <a class="nav-link" href="/member/Rdelivery">정기배송</a>
@@ -73,7 +73,7 @@
 							<button type="button" class="btn btn-outline-primary" >전체</button>
 						</c:when>
 						<c:otherwise>
-							<button type="button" class="btn btn-primary" onclick="chooseFolder('전체')" style="color:gray">전체</button>
+							<button type="button" class="btn btn-outline-primary" onclick="chooseFolder('전체')" style="color:gray">전체</button>
 						</c:otherwise>
 					</c:choose>
 					<c:forEach var="folder" items="${folder }">
@@ -135,6 +135,34 @@
 						</c:forEach>
 					</tbody>
 				</table>
+					<!-- 페이지 -->
+			    <table>
+			    <c:if test="${count>0 }">
+					<c:if test="${endPage > pageCount }">
+						<c:set var="endPage" value="${pageCount}"/>
+					</c:if>
+					<tr><td>
+			       	<c:if test="${startPage > 10 }">
+			                   <a href="javascript:window.location='/member/wishList?pageNum=${i-pageSize}&checkedFolder=${checkedFolder}'" style="text-decoration-line : none; color:black;" >이전</a>
+			       	</c:if>
+			       
+			       	<c:forEach var="i" begin="${startPage}" end="${endPage}">
+			       		<c:choose>
+			       			<c:when test="${i==currentPage }">
+			                        <a href="javascript:window.location='/member/wishList?pageNum=${i}&checkedFolder=${checkedFolder}'" style="text-decoration-line : none; color:red;">${i}</a>
+			       			</c:when>
+			       			<c:otherwise>
+			                        <a href="javascript:window.location='/member/wishList?pageNum=${i}&checkedFolder=${checkedFolder}'" style="text-decoration-line : none; color:black;">${i}</a>
+			       			</c:otherwise>
+			       		</c:choose>
+			       	</c:forEach>
+			      		<c:if test="${endPage < pageCount }">
+			                   <a href="javascript:window.location='/member/wishList?pageNum=${i+pageSize}&checkedFolder=${checkedFolder}'" style="text-decoration-line : none; color:black;" >다음</a>
+			      		</c:if>
+			      	</td></tr>	
+			    </c:if>
+			    </table>
+					<!-- 페이지 -->
 				
 				<div class = "card-body">
 					<hr />

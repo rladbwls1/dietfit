@@ -61,8 +61,10 @@ public interface MemberService {
 	public void removeWishMore(String products,String id,String checkedFolder);
 	//유저의 관심상품 목록에서 상품명만 가져오기
 	public void getWishListProduct(Model model, String id);
+	//관심상품 전체 목록 dibsDTO + 썸네일 model로 넘김
+	public void getWishList(Model model, String id,int currentPage,String checkedFolder);
 	//관심상품 목록 dibsDTO + 썸네일 model로 넘김
-	public void getWishList(Model model, String id);
+	public void getWishListWithFolder(Model model, String id,int currentPage,String checkedFolder);
 	//관심상품에서 선택상품의 폴더 변경
 	public void changeFolder(String checkedFolder,String products,String id);
 	//장바구니에 하나의 상품 추가 
@@ -71,7 +73,7 @@ public interface MemberService {
 	public void addCartMore(String id,String product);
 	//장바구니 담기
 	public void miniCart(int num,Model model);
-	//장바구니 목록 가져오기+썸네일
+	//전체 장바구니 목록 가져오기+썸네일
 	public void getCartList(Model model, String id);
 	//장바구니 수량 변경
 	public void updateCartQuantity(String id, int num,int quantity);
