@@ -1,4 +1,4 @@
-sapackage test.spring.mvc.controller;
+package test.spring.mvc.controller;
 
 import java.io.FileWriter;
 import java.util.Map;

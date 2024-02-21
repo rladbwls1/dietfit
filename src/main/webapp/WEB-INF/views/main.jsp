@@ -155,7 +155,7 @@
 		
 		<!-- 광고 시작 -->
         <div class="container-fluid vesitable py-5">
-		    <jsp:include page="/seller/maincomm" />
+		    <jsp:include page="/seller/maincomm.jsp" />
 		</div>
         <!-- 광고 끝 -->
 
