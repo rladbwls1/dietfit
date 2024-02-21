@@ -280,8 +280,14 @@
 					<hr id="am_hr"/>
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
+					<sec:authorize access="isAnonymous()">
+					<button id="cart" type="button" onclick="gotologin()">장바구니</button>
+					<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
 					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
 					<button id="buy" type="button" onclick="">즉시구매</button>
+					</sec:authorize>
           			</div>
           		</td>
           	</tr>
@@ -302,7 +308,12 @@
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="product" value="${product.PRODUCT}">
                     <input type="hidden" name="companyid" value="${product.COMPANYID}">
-                    <button type="submit">상품 문의</button>
+                    <sec:authorize access="isAnonymous()">
+                    	<button type="button" onclick="gotologin()">상품 문의</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+                    	<button type="submit">상품 문의</button>
+                    </sec:authorize>
                 </form>
             </td>
         </tr>
