@@ -4,8 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+<script src="/resources/js/findIdPw.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <!-- template -->
 <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,13 +32,8 @@
         
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
-
-<!-- table -->
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+      		
 <title>정보수정</title>
-<script src="/resources/js/findIdPw.js"></script>
-<script src="/t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/navbar.jsp"/>
@@ -134,6 +132,9 @@
 			</form>
 		</div>
 	</div>	
+	
+	<jsp:include page="/WEB-INF/views/footer.jsp"/>
+	</body>
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
 	  integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
 	<script>
@@ -153,5 +154,4 @@
 	      });
 	  }
 	</script>
-	</body>
 	</html>

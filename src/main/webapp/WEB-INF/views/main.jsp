@@ -44,7 +44,7 @@
 
 
         <!-- Navbar start -->
-        <jsp:include page="navbar.jsp"/>
+        <jsp:include page="/WEB-INF/views/navbar.jsp"/>
         <!-- Navbar End -->
 
 
@@ -160,6 +160,7 @@
         <!-- 광고 끝 -->
 
         <!-- Fruits Shop Start-->
+        <!--  
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
                 <div class="tab-class text-center">
@@ -514,6 +515,7 @@
                 </div>      
             </div>
         </div>
+        -->
         <!-- Fruits Shop End-->
 
 
