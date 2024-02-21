@@ -192,5 +192,8 @@
         JOIN discount ON all_product.num = discount.num
         WHERE TRUNC(sysdate) BETWEEN discount.startr AND discount.endr
 	</select>
+	<select id="commCount" resultType="int">
+		select count(*) from commercials
+	</select>
 	
 </mapper>

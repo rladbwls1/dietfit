@@ -35,33 +35,29 @@
 
             <div class="pb-3">
               <h1>DIETFIT 다이어트 핏</h1>
+              <p id="currentDate"></p>
             </div>
 
             <div class="row">
 
-              <div class="col-md-6 col-lg-3 d-flex">
+			<div class="col-md-6 col-lg-3 d-flex">
                 <div class="card mb-grid w-100">
                   <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between mb-3">
                       <h5 class="card-title mb-0">
-                        오늘의 특가
+                         광고 요청
                       </h5>
 
                       <div class="card-title-sub">
-                        
-                        <p id="currentDate"></p>
+                        ${commCount}
                       </div>
                     </div>
-                    	<a href="/member/discount" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
-                    	<!-- 
-                    <div class="progress mt-auto">
-                      <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    	 -->
+
+					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">확인</a>
                   </div>
                 </div>
               </div>
-              
+                            
 				<div class="col-md-6 col-lg-3 d-flex">
                 <div class="card mb-grid w-100">
                   <div class="card-body d-flex flex-column">
@@ -75,7 +71,7 @@
                       </div>
                     </div>
 
-					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
+					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">확인</a>
                   </div>
                 </div>
               </div>
