@@ -85,6 +85,7 @@
 				background-color: #50AB89;
 				border: 1px solid #50AB89; 
 				padding: 5px 10px;
+				width: 50%;
 			}
 			#buy{
 				padding: 7px 15px;
@@ -92,6 +93,7 @@
 				background-color: white;
 				border: 1px solid #50AB89; 
 				margin-left: 8px;
+				width: 50%;
 			}
 			#delivery{
 				float: right;
@@ -150,11 +152,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
-<<<<<<< HEAD
-				width: fit-content
-=======
 				width: fit-content;
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -194,6 +192,14 @@
 				font-size: 25px;
 				font-weight: 700;
 				color: #e02020;
+			}
+			#goto{
+				margin-top: 10px;
+				width: 100%;
+				height: 40px;
+				background-color: #FFDB58;
+				border: none;
+				color: white;
 			}
     </style>
 </head>
@@ -312,11 +318,6 @@
         </tr>
          -->
         <tr>
-            <td>
-            	<fmt:formatDate value="${product.EXPIRY}" pattern="yyyy-MM-dd"/>
-            </td>
-        </tr>
-        <tr>
             <td colspan="2">
                 <form action="/sellerchat/chat" method="post">
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -326,7 +327,7 @@
                     	<button type="button" onclick="gotologin()">상품 문의</button>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
-                    	<button type="submit">상품 문의</button>
+                    	<button id="goto" type="submit">상품 문의</button>
                     </sec:authorize>
                 </form>
             </td>
