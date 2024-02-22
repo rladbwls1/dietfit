@@ -245,7 +245,7 @@
                             </div>
                         </div>
                     </div>
-		<div id="title">전체 상품 카테고리에 <i>${count}</i> 개의 상품이 등록되어 있습니다</div>
+		<div id="title"></div>
 		<hr>
 		<div id="category">
 			<a href ="/member/productList/popular/${category}"><button>인기순</button></a>

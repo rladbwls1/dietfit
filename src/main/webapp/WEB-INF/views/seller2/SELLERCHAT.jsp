@@ -69,7 +69,7 @@
     </div>
 
     <script>
-    var socket = io.connect("http://192.168.219.167:7777");
+    var socket = io.connect("http://192.168.219.108:8888");
     var sellerid = "${sellerid}";
     var product = "${product}";
     var roomnum = '${roomnum}';

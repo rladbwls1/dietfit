@@ -47,8 +47,12 @@
 	</update>
 	<!-- 정보 수정시 member_detail 부분 수정 -->
 	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
-		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
-					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
+		update member_detail 
+		set
+    		<![CDATA[birth = #{birth,jdbcType=TIMESTAMP},]]>
+		 	PHONE=#{phone}, GENDER=#{gender},
+			ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} 
+		 where id=#{id}
 	</update>
 	<!-- 암호화된 비밀번호 가져오기(아이디로) -->	
 	<select id="getPwById">
