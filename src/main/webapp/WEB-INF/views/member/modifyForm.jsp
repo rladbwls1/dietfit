@@ -4,11 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
 <script src="/resources/js/findIdPw.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
 <script src="/resources/js/findIdPw.js"></script>
@@ -39,10 +36,7 @@
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
       		
 <title>정보수정</title>
-<<<<<<< HEAD
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-=======
->>>>>>> branch 'main' of https://github.com/rladbwls1/dietfit.git
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/navbar.jsp"/>

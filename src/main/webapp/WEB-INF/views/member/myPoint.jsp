@@ -38,7 +38,7 @@
 				<c:if test="${dto.opt!=0 }">
 					<tr>
 						<td>
-							<fmt:formatDate value="${dto.createdate }" pattern="yyyy-MM-dd" />
+							<fmt:formatDate value="${dto.deletedate }" pattern="yyyy-MM-dd" />
 						</td>
 						<td>적립금 사용</td>
 						<td>
