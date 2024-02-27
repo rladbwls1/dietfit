@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<script src="/resources/js/review.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/member2.js"></script>
 <script src="/resources/js/food.js"></script>
@@ -83,6 +84,7 @@
 				background-color: #50AB89;
 				border: 1px solid #50AB89; 
 				padding: 5px 10px;
+				width: 50%;
 			}
 			#buy{
 				padding: 7px 15px;
@@ -90,6 +92,7 @@
 				background-color: white;
 				border: 1px solid #50AB89; 
 				margin-left: 8px;
+				width: 50%;
 			}
 			#delivery{
 				float: right;
@@ -139,7 +142,6 @@
 		        
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
       		integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
     	#deli{
 				display: flex;
@@ -149,6 +151,7 @@
 				color: white;
 				padding: 3px 6px;
 				border-radius: 10px;
+				width: fit-content;
 			}
 			.wjdrl{
 				background-color: #f374b7;
@@ -189,8 +192,15 @@
 				font-weight: 700;
 				color: #e02020;
 			}
+			#goto{
+				margin-top: 10px;
+				width: 100%;
+				height: 40px;
+				background-color: #FFDB58;
+				border: none;
+				color: white;
+			}
     </style>
-    <script src="/resources/js/review.js"></script>
 </head>
 <body>
 	 <!-- Spinner Start -->
@@ -225,7 +235,7 @@
         <!-- Hero Start -->
     <div id="content">
     	<div id="thum">
-    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}">
+    			<c:forEach var="thumbnailPath" items="${thumbnailPaths}" varStatus="loop" end="0">
 				  <div class="td1" id="img1"><img src="${thumbnailPath}" width="300"></div>
 				</c:forEach>
 	    <table class="td1">
@@ -280,8 +290,23 @@
 					<hr id="am_hr"/>
 					<div id="deli_chk"><input type="checkbox" id="chk"><div>정기배송으로 받아보시겠어요?</div></div>
 					<div id="addcart">
-					<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
-					<button id="buy" type="button" onclick="">즉시구매</button>
+					<sec:authorize access="isAnonymous()">
+						<button id="cart" type="button" onclick="gotologin()">장바구니</button>
+						<button id="buy" type="button" onclick="gotologin()">즉시구매</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<c:set var="status">
+		            		<sec:authentication property="principal.dto.status"/>
+		            	</c:set>
+		            	<c:if test="${status==1 }">
+						<button id="cart" type="button" onclick="addCartFromList()">장바구니</button>
+						<button id="buy" type="button" onclick="addCartAndOrder2()">즉시구매</button>
+					</c:if>
+					<c:if test="${status!=1 }">
+						<button id="cart" type="button" onclick="notmember()">장바구니</button>
+						<button id="buy" type="button" onclick="notmember()">즉시구매</button>
+					</c:if>
+					</sec:authorize>
           			</div>
           		</td>
           	</tr>
@@ -292,33 +317,51 @@
         </tr>
          -->
         <tr>
-            <td>
-            	<fmt:formatDate value="${product.EXPIRY}" pattern="yyyy-MM-dd"/>
-            </td>
-        </tr>
-        <tr>
             <td colspan="2">
                 <form action="/sellerchat/chat" method="post">
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="product" value="${product.PRODUCT}">
                     <input type="hidden" name="companyid" value="${product.COMPANYID}">
-                    <button type="submit">상품 문의</button>
+                    <sec:authorize access="isAnonymous()">
+                    	<button type="button" onclick="gotologin()">상품 문의</button>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+                    	<button id="goto" type="submit">상품 문의</button>
+                    </sec:authorize>
                 </form>
             </td>
         </tr>
     </table>
     </div>
     	<hr id="hr">
-         <div>${product.DETAIL}</div>
-       	<c:forEach var="imagePath" items="${imagePaths}">
-           <div class="content_img">
-               <img src="${imagePath}"> 
-           </div>
+        <div>${product.DETAIL}</div>
+       	<c:forEach var="imagePath" items="${imagePaths}" varStatus="loop">
+           <c:if test ="${loop.index == 0 }">
+	           <div class="content_img">
+	               <img src="${imagePath}"> 
+	           </div>
+           </c:if>
    		</c:forEach>
     </div>
+    
+    
     <!-- 리뷰 -->
+    <hr />
+    
+    <div class="testimonial-header text-center">
+        <h4 class="text-primary">REVIEW</h4>
+        <h1 class="display-5 mb-5 text-dark">상품리뷰</h1>
+    </div>
+	
+	<c:if test="${reviewcount ==0 }">
+		<div class="testimonial-header text-center">
+			<p class="text-primary">리뷰가 없습니다.</p>
+		</div>
+	</c:if>
+	
+	<c:if test="${reviewcount !=0 }">
     <input type="hidden" value="${id }" id="id" />
-    <table>
+    <div class="d-grid gap-2 col-6 mx-auto">
     <c:forEach var="review" items="${review}">
         <div class="review-container" id="review_${review.num}">
             <div class="review-header">
@@ -333,10 +376,14 @@
                     </c:choose>
                 </div>
                 <div class="review-details">
-                    <div>${review.boardname}</div>
-                    <div>평점:
+                    <div> 
+                    	<h5>${review.boardname }</h5>
+                   	</div>
+                   	
+                    <div class="authorName">
+                   		<span class="writerFullName">${review.writer}</span>
                         <span class="star-rating">
-                            <c:forEach begin="1" end="5" var="i">
+                           <c:forEach begin="1" end="5" var="i">
                                 <c:choose>
                                     <c:when test="${i <= review.starscore}">
                                         <span class="filled">★</span>
@@ -348,17 +395,20 @@
                             </c:forEach>
                         </span>
                     </div>
-                    <div>리뷰 내용: ${review.content}</div>
-                    <div class="authorName">작성자 : <span class="writerFullName">${review.writer}</span></div>
-                    <div>❤   <span id="recommend_${review.num}">${review.recommend}</span> </div>
+                    <div> 
+                    	<b>${review.content}</b>
+                    </div>
+                    <div>❤   ${review.recommend} </div>
                 </div>
                 <div>
+                	<sec:authorize access="isAuthenticated()">
                 	<c:set var="status">
                 		<sec:authentication property='principal.dto.status'/>
                 	</c:set>
+                	</sec:authorize>
                 
                 	<c:if test="${review.id eq id or status eq '999' or companyid eq product.COMPANYID}">
-                		<button type="button" onclick="deleteReview('${review.num}')" >삭제</button>
+                		<button type="button" class = "btn btn-outline-danger" onclick="deleteReview('${review.num}')" >삭제</button>
                 	</c:if>
                	</div>
                	<c:choose>
@@ -385,7 +435,8 @@
             <div class="clear-fix"></div>
         </div>
     </c:forEach>
-    </table>
+    </div>
+    </c:if>
      <!-- Footer Start -->
         <jsp:include page="../footer.jsp"/>
         <!-- Footer End -->
@@ -410,7 +461,6 @@
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
         
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/resources/lib/easing/easing.min.js"></script>
     <script src="/resources/lib/waypoints/waypoints.min.js"></script>

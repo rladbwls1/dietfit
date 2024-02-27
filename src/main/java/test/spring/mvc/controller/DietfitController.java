@@ -40,11 +40,14 @@ import test.spring.mvc.bean.OrderdetailDTO;
 import test.spring.mvc.bean.OrdersumDTO;
 import test.spring.mvc.bean.ProductDTO;
 import test.spring.mvc.bean.ProductinfoDTO;
+import test.spring.mvc.bean.ReviewDTO;
 import test.spring.mvc.repository.AdminMapper;
 import test.spring.mvc.repository.MemberMapper;
+import test.spring.mvc.repository.ReviewMapper;
 import test.spring.mvc.service.Admin1ServiceImpl;
 import test.spring.mvc.service.AdminService;
 import test.spring.mvc.service.MemberService;
+import test.spring.mvc.service.ReviewService;
 import test.spring.mvc.service.SurveyService;
 
 @Controller
@@ -64,14 +67,58 @@ public class DietfitController {
 	private MemberService mservice;
 	
 	@Autowired
+    private ReviewService rservice;
+	
+	@Autowired
 	private AdminMapper mapper;
 	
 	@Autowired
 	private MemberMapper mmapper;
+
+	
+	@Autowired
+	private ReviewMapper rmapper;
+	
+	@RequestMapping("error400")
+	public String error400() {
+		return "error/400";
+	}
+	@RequestMapping("error401")
+	public String error401() {
+		return "error/401";
+	}
+	@RequestMapping("error404")
+	public String error404() {
+		return "error/404";
+	}
+	@RequestMapping("error500")
+	public String error500() {
+		return "error/500";
+	}
+	@RequestMapping("error503")
+	public String error503() {
+		return "error/503";
+	}
+	@RequestMapping("error504")
+	public String error504() {
+		return "error/504";
+	}
 	
 	@RequestMapping("main")
 	public String main() {
 		return "main";
+	}
+	
+	@RequestMapping("Rlist")
+	public String Rlist(Model model,Principal pri) {
+		if(pri!=null) {
+			String id=pri.getName();
+			model.addAttribute("recommendNums", rmapper.getRecommend(id));
+			model.addAttribute("id",id);
+		}
+		List<ReviewDTO> review = rservice.listimg();
+		model.addAttribute("review", review);
+		return "reviewList";
 	}
 	
 	@RequestMapping("contact")
@@ -173,7 +220,7 @@ public class DietfitController {
 	}
 	
 	@RequestMapping("order")
-	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,int delivery) {
+	public String order(Principal pri, String nums, Model model, Integer amout, Integer totalQuantity, String product,Integer delivery) {
 		
 		String orderid = aservice.generateOrderId(pri);
 		model.addAttribute("delivery9", mapper.getUserDelivery9(pri.getName()));
@@ -368,7 +415,7 @@ public class DietfitController {
 			    "&quantity=" + quantity +
 			    "&total_amount=" + total_amount +
 			    "&tax_free_amount=" + tax_free_amount +
-			    "&approval_url=http://localhost:8080/dietfit/kakaopay/success" +
+			    "&approval_url=http://localhost:8080/dietfit/kakaopay/success?nums="+id+","+nums +
 			    "&cancel_url=http://localhost:8080/dietfit/kakaopay/cancel" +
 			    "&fail_url=http://localhost:8080/dietfit/kakaopay/fail";
 			
@@ -403,7 +450,12 @@ public class DietfitController {
 	
 	
 	@RequestMapping("kakaopay/success")
-	public String success() {
+	public String success(String nums) {
+		String[] list=nums.split(",");
+		String id=list[0];
+		for(int i=1;i<list.length;i++) {
+			mservice.deleteCart(id,Integer.parseInt(list[i]));
+		}
 		return "admin/kakaopay/success";
 	}
 	

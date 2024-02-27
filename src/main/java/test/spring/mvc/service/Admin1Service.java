@@ -39,8 +39,10 @@ public interface Admin1Service{
 	public List<ProductDTO> food_product(String productid);
 	public void addCartOne(String id,String product,int quantity,int price, int delivery);
 	public void rdCart(String id, String num, int check);
-	public List<CommercailDTO> comm();
+	public List<CommercailDTO> comm(Model model);
 	public int commCheck(int admincheck, int num);
 	public List<DiscountDTO> discountNum();
 	public List<CouponDTO> Usercoupon(String id);
+	public int memberPrice();
+	public int alram2();
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>    
 <!DOCTYPE html>
 <html>
   <head>
@@ -35,33 +36,29 @@
 
             <div class="pb-3">
               <h1>DIETFIT 다이어트 핏</h1>
+              <p id="currentDate"></p>
             </div>
 
             <div class="row">
 
-              <div class="col-md-6 col-lg-3 d-flex">
+			<div class="col-md-6 col-lg-3 d-flex">
                 <div class="card mb-grid w-100">
                   <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between mb-3">
                       <h5 class="card-title mb-0">
-                        오늘의 특가
+                         광고 요청
                       </h5>
 
                       <div class="card-title-sub">
-                        
-                        <p id="currentDate"></p>
+                        ${commCount}
                       </div>
                     </div>
-                    	<a href="/member/discount" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
-                    	<!-- 
-                    <div class="progress mt-auto">
-                      <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    	 -->
+
+					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">확인</a>
                   </div>
                 </div>
               </div>
-              
+                            
 				<div class="col-md-6 col-lg-3 d-flex">
                 <div class="card mb-grid w-100">
                   <div class="card-body d-flex flex-column">
@@ -75,7 +72,7 @@
                       </div>
                     </div>
 
-					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">today discount</a>
+					<a href="/admin/companyList" class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">확인</a>
                   </div>
                 </div>
               </div>
@@ -114,49 +111,13 @@
             </div>
 
             <div class="row">
-              <div class="col-lg-8">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="card-header-title">Featured</div>
-
-                    <nav class="card-header-actions">
-                      <a class="card-header-action" data-toggle="collapse" href="#card1" aria-expanded="false" aria-controls="card1">
-                        <i data-feather="minus-circle"></i>
-                      </a>
-                      
-                      <div class="dropdown">
-                        <a class="card-header-action" href="#" role="button" id="card1Settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i data-feather="settings"></i>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="card1Settings">
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                      </div>
-
-                      <a href="#" class="card-header-action">
-                        <i data-feather="x-circle"></i>
-                      </a>
-                    </nav>
-                  </div>
-                  <div class="card-body collapse show" id="card1">
-                    <h4 class="card-title">Special title treatment</h4>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
+             <div class="col-lg-4">
                 <div class="card">
                   <div class="card-header">
-                    Featured
+                    오늘 총 매출액
                   </div>
                   <div class="card-body">
-                    <h4 class="card-title">Special title treatment</h4>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <h4 class="card-title"><fmt:formatNumber value="${price}" type="number" pattern="#,###원"/></h4>
                   </div>
                 </div>
               </div>

@@ -236,7 +236,6 @@ public class MemberServiceImpl implements MemberService{
 		int startRow=(currentPage-1)*pageSize+1;		//시작
 		int endRow=currentPage*pageSize;				//끝
 		int count=mapper.countAllProduct();
-		System.out.println(orderBy);
 		List<Map<String,Object>> list = Collections.EMPTY_LIST;
 		if("popular".equals(orderBy)) {
 			list = mapper.popular(startRow,endRow);
@@ -278,12 +277,72 @@ public class MemberServiceImpl implements MemberService{
 	        model.addAttribute("products", list);
 	    }
 	    //페이지
+	  		int pageBlock=10;
+	  		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+	  		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+	  		int endPage=startPage + pageBlock - 1;
+
+	  		model.addAttribute("count",count);
+	  		model.addAttribute("currentPage",currentPage);
+	  		model.addAttribute("pageSize",pageSize);
+	  		model.addAttribute("pageCount",pageCount);
+	  		model.addAttribute("startPage",startPage);
+	  		model.addAttribute("endPage",endPage);
+	}
+	    @Override
+	    public void getcategoryproduct(Model model, int currentPage, String orderBy, String category) {
+	    	int pageSize=16;
+	    	int startRow=(currentPage-1)*pageSize+1;		//시작
+	    	int endRow=currentPage*pageSize;				//끝
+	    	int count=mapper.category_count(category + "%");
+	    	List<Map<String,Object>> list = Collections.EMPTY_LIST;
+	    	if("priceLow".equals(orderBy)) {
+	    		list = mapper.cate_priceLow(startRow,endRow,category+"%");
+	    	}else if("recent".equals(orderBy)) {
+	    		list = mapper.cate_num(startRow, endRow, category+"%");
+	    	}else if("priceHigh".equals(orderBy)) {
+	    		list = mapper.cate_priceHigh(startRow, endRow, category+"%");
+	    	}else if("popular".equals(orderBy)) {
+	    		list = mapper.cate_popular(startRow, endRow,category+"%");
+	    	}
+	    	if (list != null) {
+	    		for (Map<String,Object> map : list) {
+	    			//썸네일
+	    			ProductimgDTO img = mapper.findlistthum(map.get("COMPANYID").toString(),map.get("CATEGORY").toString(), map.get("CATEGORY2").toString());
+	    			if (img != null) {
+	    				// 이미지 경로 직접 조합하여 설정
+	    				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	    						img.getCategory() + img.getCategory2() +
+	    						img.getFlavor() + "F" + img.getNum() +
+	    						img.getExt();
+	    				map.put("IMAGEPATH",imagePath);
+	    			}
+	    			//기존 가격
+	    			int oriprice=Integer.parseInt(map.get("PRICE").toString());
+	    			//할인율
+	    			int num=Integer.parseInt(map.get("NUM").toString());
+	    			int sale=mapper.isSale(num);
+	    			if(sale!=0) {
+	    				sale=mapper.getSaleByNum(num);
+	    			}
+	    			int price=oriprice*(100-sale)/100;
+	    			map.put("SALE", sale);
+	    			map.put("PRICE", price);
+	    			map.put("ORIPRICE", oriprice);
+	    		}
+	    		
+	    		
+	    		model.addAttribute("category", category);
+	    		model.addAttribute("orderBy", orderBy);
+	    		model.addAttribute("products", list);
+	    		model.addAttribute("count",count);
+	    	}
+	    //페이지
 		int pageBlock=10;
 		int pageCount=count/pageSize+(count%pageSize==0?0:1);
 		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
 		int endPage=startPage + pageBlock - 1;
 
-		model.addAttribute("count",count);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("pageSize",pageSize);
 		model.addAttribute("pageCount",pageCount);
@@ -346,7 +405,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void addWishOne(String product,String id) {
-		mapper.addWishOne(product,id);
+		if(mapper.isWish(product,id)==0) {
+			mapper.addWishOne(product,id);
+		}
 	}
 
 	@Override
@@ -389,8 +450,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void getWishList(Model model, String id) {
-		List<DibsDTO> dibs = mapper.getWishList(id);
+	public void getWishList(Model model, String id,int currentPage,String checkedFolder) {
+		int pageSize=5;
+		int startRow=(currentPage-1)*pageSize+1;		//시작
+		int endRow=currentPage*pageSize;				//끝
+		int count=mapper.countWishList(id);
+		List<DibsDTO> dibs=mapper.getWishList(id, startRow, endRow);
 		List<String> imgPaths=new ArrayList<>();
 	    if (dibs != null) {
 	        for (DibsDTO dib: dibs) {
@@ -423,6 +488,91 @@ public class MemberServiceImpl implements MemberService{
 	        }
 	        model.addAttribute("folder",folder2);
 	    }
+	    //페이지
+		int pageBlock=10;
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+		int endPage=startPage + pageBlock - 1;
+		
+		model.addAttribute("count",count);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageCount",pageCount);
+		model.addAttribute("startPage",startPage);
+		model.addAttribute("endPage",endPage);
+	}
+	
+
+	@Override
+	public void getWishListWithFolder(Model model, String id, int currentPage, String checkedFolder) {
+		int pageSize=5;
+		int startRow=(currentPage-1)*pageSize+1;		//시작
+		int endRow=currentPage*pageSize;				//끝
+		//int count=mapper.countWishList(id);
+		int count=0;
+		List<DibsDTO> oridibs=mapper.getWishListWithFolder(id);
+		List<DibsDTO> dibs=new ArrayList<>();
+		List<DibsDTO> dibs2=new ArrayList<>();
+		List<String> imgPaths=new ArrayList<>();
+	    if (oridibs != null) {
+	    	//폴더의 상품 개수
+    		for(DibsDTO dib:oridibs) {
+    			String folderName=dib.getFolder();
+    			for(String fName:folderName.split(",")) {
+    				if(fName.equals(checkedFolder)){
+    					dibs.add(dib);
+    					count++;
+    				}
+    			}
+    		}
+    		int startNum=pageSize*currentPage-pageSize;
+    		for(int i=0;i<pageSize;i++) {
+    			if((i+startNum)>=count) {break;}
+    			dibs2.add(dibs.get(i+startNum));
+    		}
+	        for (DibsDTO dib: dibs2) {
+	        	//상품명으로 기업아이디, 대분류, 소분류 찾아서 값 넣어주면 됨.
+	        	ProductDTO dto=mapper.getProductCodeByProductName(dib.getProduct());
+	            ProductimgDTO img = mapper.findlistthum(dto.getCompanyid(),
+	            		dto.getCategory(), dto.getCategory2());
+	            if (img != null) {
+	                // 이미지 경로 직접 조합하여 설정
+	                String imagePath = "/resources/p_img/" + img.getCompanyid() +
+	                                   img.getCategory() + img.getCategory2() +
+	                                   img.getFlavor() + "F" + img.getNum() +
+	                                   img.getExt();
+	               imgPaths.add(imagePath);
+	            }else {
+	            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+	            }
+	        }
+	        model.addAttribute("wishList", dibs2);
+	        model.addAttribute("imgPaths", imgPaths);
+	        List<String> folder1=new ArrayList<>(mapper.getWishFolderName(id));
+	        List<String> folder2=new ArrayList<>();
+	        for(String folder:folder1) {
+	        	String[] names=folder.split(",");
+	        	for(String name:names) {
+	        		if(!folder2.contains(name)) {
+	        			folder2.add(name);
+	        		}
+	        	}
+	        }
+	        model.addAttribute("folder",folder2);
+	    }
+	    //페이지
+		int pageBlock=10;
+		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+		int endPage=startPage + pageBlock - 1;
+		
+		model.addAttribute("count",count);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pageCount",pageCount);
+		model.addAttribute("startPage",startPage);
+		model.addAttribute("endPage",endPage);
+		
 	}
 
 	@Override
@@ -460,38 +610,40 @@ public class MemberServiceImpl implements MemberService{
 	public void getCartList(Model model, String id) {
 		List<Map<String,Object>> list=mapper.getCartList(id);
 		List<String> imgPaths=new ArrayList<>();
-		for(Map<String,Object> map:list) {
-			//썸네일 처리
-			ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
-			ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
-            if (img != null) {
-                // 이미지 경로 직접 조합하여 설정
-                String imagePath = "/resources/p_img/" + img.getCompanyid() +
-                                   img.getCategory() + img.getCategory2() +
-                                   img.getFlavor() + "F" + img.getNum() +
-                                   img.getExt();
-                imgPaths.add(imagePath);
-                
-            }else {
-            	imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
-            }
-            //가격
-            int oriPrice=mapper.getPriceByProductName(map.get("PRODUCT").toString());
-            map.put("ORIPRICE",oriPrice);
-            //할인율
-            int num=mapper.getNumByProduct(map.get("PRODUCT").toString());
-            int sale=mapper.isSale(num);
-            if(sale==1) {
-            	sale=mapper.getSaleByNum(num);
-            }
-            map.put("SALE",sale);
-            
-            //할인된 가격
-            int price=oriPrice*(100-sale)/100;
-            map.put("PRICE", price);
+		if(list!=null) {
+			for(Map<String,Object> map:list) {
+				//썸네일 처리
+				ProductDTO pdto=mapper.getProductCodeByProductName(map.get("PRODUCT").toString());
+				ProductimgDTO img =mapper.findlistthum(pdto.getCompanyid(), pdto.getCategory(), pdto.getCategory2());
+				if (img != null) {
+					// 이미지 경로 직접 조합하여 설정
+					String imagePath = "/resources/p_img/" + img.getCompanyid() +
+							img.getCategory() + img.getCategory2() +
+							img.getFlavor() + "F" + img.getNum() +
+							img.getExt();
+					imgPaths.add(imagePath);
+					
+				}else {
+					imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+				}
+				//가격
+				int oriPrice=mapper.getPriceByProductName(map.get("PRODUCT").toString());
+				map.put("ORIPRICE",oriPrice);
+				//할인율
+				int num=mapper.getNumByProduct(map.get("PRODUCT").toString());
+				int sale=mapper.isSale(num);
+				if(sale==1) {
+					sale=mapper.getSaleByNum(num);
+				}
+				map.put("SALE",sale);
+				
+				//할인된 가격
+				int price=oriPrice*(100-sale)/100;
+				map.put("PRICE", price);
+			}
+			model.addAttribute("list",list);
+			model.addAttribute("imgPaths",imgPaths);
 		}
-		model.addAttribute("list",list);
-		model.addAttribute("imgPaths",imgPaths);
 	}
 
 	@Override
@@ -550,6 +702,7 @@ public class MemberServiceImpl implements MemberService{
 	public void getUserOrder(String id,Model model) {
 		List<Map<String,Object>> list=mapper.getUserOrder(id);
 		ProductDTO dto=new ProductDTO();
+		List<String> imgPaths=new ArrayList<>();
 		for(Map<String,Object> map:list) {
 			String productid=map.get("PRODUCTID").toString();
 			dto.setCompanyid(productid.substring(0,2));
@@ -557,7 +710,23 @@ public class MemberServiceImpl implements MemberService{
 			dto.setCategory2(productid.substring(4,6));
 			dto.setFlavor(productid.substring(6,8));
 			map.put("PRODUCT", mapper.getProductnameByProductcode(dto));
+			//썸네일
+			ProductimgDTO img =mapper.findlistthum(dto.getCompanyid(), dto.getCategory(), dto.getCategory2());
+			if (img != null) {
+				// 이미지 경로 직접 조합하여 설정
+				String imagePath = "/resources/p_img/" + img.getCompanyid() +
+						img.getCategory() + img.getCategory2() +
+						img.getFlavor() + "F" + img.getNum() +
+						img.getExt();
+				imgPaths.add(imagePath);
+				
+			}else {
+				imgPaths.add("/resources/p_img/free-icon-image-10701484.png");
+			}
+			
 		}
+		
+		model.addAttribute("imgPaths",imgPaths);
 		model.addAttribute("list",list);
 	}
 
@@ -704,10 +873,59 @@ public class MemberServiceImpl implements MemberService{
 		model.addAttribute("list",list);
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public void getProductBySearch(Model model, int currentPage, String keyword) {
+		int pageSize=16;
+    	int startRow=(currentPage-1)*pageSize+1;		//시작
+    	int endRow=currentPage*pageSize;				//끝
+    	int count=mapper.countSearch("%"+keyword+"%");
+    	List<Map<String,Object>> list=mapper.getProductBySearch("%"+keyword+"%",startRow,endRow);
+    	
+    	if (list != null) {
+    		for (Map<String,Object> map : list) {
+    			//썸네일
+    			ProductimgDTO img = mapper.findlistthum(map.get("COMPANYID").toString(),map.get("CATEGORY").toString(), map.get("CATEGORY2").toString());
+    			if (img != null) {
+					// 이미지 경로 직접 조합하여 설정
+					String imagePath = "/resources/p_img/" + img.getCompanyid() +
+							img.getCategory() + img.getCategory2() +
+							img.getFlavor() + "F" + img.getNum() +
+							img.getExt();
+					map.put("IMAGEPATH",imagePath);
+					
+				}else {
+					map.put("IMAGEPATH","/resources/p_img/free-icon-image-10701484.png");
+				}
+    			//기존 가격
+    			int oriprice=Integer.parseInt(map.get("PRICE").toString());
+    			//할인율
+    			int num=Integer.parseInt(map.get("NUM").toString());
+    			int sale=mapper.isSale(num);
+    			if(sale!=0) {
+    				sale=mapper.getSaleByNum(num);
+    			}
+    			int price=oriprice*(100-sale)/100;
+    			map.put("SALE", sale);
+    			map.put("PRICE", price);
+    			map.put("ORIPRICE", oriprice);
+    			
+    			model.addAttribute("list",list);
+    		}
+    		
+    		int pageBlock=10;
+    		int pageCount=count/pageSize+(count%pageSize==0?0:1);
+    		int startPage=(int)(currentPage%pageBlock==0?currentPage/pageBlock-1:currentPage/pageBlock)*pageBlock+1;
+    		int endPage=startPage + pageBlock - 1;
+
+    		model.addAttribute("pageNum",currentPage);
+    		model.addAttribute("currentPage",currentPage);
+    		model.addAttribute("pageSize",pageSize);
+    		model.addAttribute("pageCount",pageCount);
+    		model.addAttribute("startPage",startPage);
+    		model.addAttribute("endPage",endPage);
+    	}
+    	model.addAttribute("count",count);
+    	model.addAttribute("keyword",keyword);
+	}
 	
 }

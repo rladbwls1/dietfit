@@ -47,8 +47,12 @@
 	</update>
 	<!-- 정보 수정시 member_detail 부분 수정 -->
 	<update id="modifyMemberDetail" parameterType="test.spring.mvc.bean.Member_detailDTO">
-		update member_detail set BIRTH=#{birth}, PHONE=#{phone}, GENDER=#{gender},
-					 ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} where id=#{id}
+		update member_detail 
+		set
+    		<![CDATA[birth = #{birth,jdbcType=TIMESTAMP},]]>
+		 	PHONE=#{phone}, GENDER=#{gender},
+			ADDR1=#{addr1}, ADDR2=#{addr2}, POSTNUM=#{postnum} 
+		 where id=#{id}
 	</update>
 	<!-- 암호화된 비밀번호 가져오기(아이디로) -->	
 	<select id="getPwById">
@@ -115,6 +119,11 @@
         select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
 	]]>
     </select>
+	<select id="categoryproduct"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
     <select id="popular"  resultType="Map">
 	<![CDATA[
         select * from (select b.*, rownum r from (select * from all_product order by count desc) b) where r >= #{startRow} and r <= #{endRow}
@@ -130,8 +139,31 @@
         select * from (select b.*, rownum r from (select * from all_product order by price asc) b) where r >= #{startRow} and r <= #{endRow}
 	]]>
     </select>
+    <select id="cate_priceLow"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where category like #{category} order by price asc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="cate_priceHigh"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where category like #{category} order by price desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="cate_popular"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where category like #{category} order by count desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
+    <select id="cate_num"  resultType="Map">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where category like #{category} order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+    </select>
     <select id="allproduct_count">
     	select count(*) from all_product
+    </select>
+    <select id="category_count">
+    	select count(*) from all_product where category like #{category}
     </select>
 	<!-- 상품 리스트 썸네일 -->
     <select id ="findlistthum" resultType="test.spring.mvc.bean.ProductimgDTO">
@@ -146,7 +178,10 @@
         SELECT * FROM all_product WHERE companyid = #{companyid} AND category = #{category} AND category2 = #{category2} AND flavor = #{flavor}
     </select>
     
-    
+    <!-- 관심상품에 이미 있는지 확인 -->
+    <select id="isWish">
+    	select count(*) from ${id}_dibs where product=#{product}
+    </select>
 	<!-- 관심상품에 상품 하나 추가하기 -->
 	<insert id="addWishOne">
 		insert into ${id}_dibs (product,folder) values (#{product},'분류없음')
@@ -163,9 +198,19 @@
 	<select id="getWishListProduct">
 		select product from ${id}_dibs
 	</select>
-	<!-- 유저의 관심상품 목록 가져오기 -->
+	<!-- 유저의 관심상품 개수 가져오기 -->
+	<select id="countWishList">
+		select count(*) from ${id}_dibs
+	</select>
+	<!-- 유저의 관심상품 목록 전체 가져오기 -->
 	<select id="getWishList">
-		select * from ${id}_dibs order by num desc
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from ${id}_dibs order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+	</select>
+	<!-- 유저의 관심상품 목록 가져오기 -->
+	<select id="getWishListWithFolder">
+        select * from ${id}_dibs order by num desc
 	</select>
 	<!-- 유저 관심상품 폴더 변경하기 -->
 	<update id="changeFolder">
@@ -209,9 +254,13 @@
 	<insert id="addCartOne">
 		insert into ${id}_cart (product, price, quantity, delivery) values (#{product},#{price},#{quantity},#{delivery})
 	</insert>
-	<!-- 장바구니 목록 가져오기 -->
+	<!-- 장바구니에 최근에 추가된 상품의 num 가져오기 -->
+	<select id="getCartMaxNum">
+		select max(num) from ${id}_cart
+	</select>
+	<!-- 전체 장바구니 목록 가져오기 -->
 	<select id="getCartList" resultType="Map">
-		select * from ${id}_cart order by num desc
+		select * from ${id}_cart order by num desc 
 	</select>
 	<!-- 장바구니 개수 수정 -->
 	<update id="updateCart">
@@ -368,6 +417,18 @@
 		select sale from discount where num=#{num} and startr<sysdate and endr>sysdate
 	]]>
 	</select>
+	
+	<!-- 검색어로 검색된 제품 수 -->
+	<select id="countSearch">
+		select count(*) from all_product where product like #{search}
+	</select>
+	<!-- 검색어로 제품 검색 -->
+	<select id="getProductBySearch">
+	<![CDATA[
+        select * from (select b.*, rownum r from (select * from all_product where product like #{keyword} order by num desc) b) where r >= #{startRow} and r <= #{endRow}
+	]]>
+	</select>
+	
 
 	
 	<!-- 회원가입시 장바구니, 찜, 쿠폰 등 생성 -->

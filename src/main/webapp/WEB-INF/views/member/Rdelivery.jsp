@@ -76,7 +76,7 @@
 			  </div>
 			  <div class="card-body">
 			  	<div class="d-grid gap-2 d-md-block">
-					<button type="button" class = "btn btn-outline-dark" onclick="Rdelivery(1)">배송방법 변경 > 일반배송</button>
+					<button type="button" class = "btn btn-outline-dark" onclick="Rdelivery(0)">배송방법 변경 > 일반배송</button>
 				</div>
 			  	<table class="table table-borderless">
 			  		<thead>
@@ -94,7 +94,7 @@
 					<c:set var="i" value="0"/>
 					<c:forEach var="cart" items="${list }" >
 					
-					<c:if test="${cart.DELIVERY == 0}">
+					<c:if test="${cart.DELIVERY == 1}">
 						<tr id="${cart.NUM }" >
 							<td><input type="checkbox" name="num" id="num" onclick="cartUpdateCheckAll()" value="${cart.NUM }"></td>
 							<td>

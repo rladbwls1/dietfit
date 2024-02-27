@@ -168,18 +168,48 @@
                     </div>
                     <div class="modal-body d-flex align-items-center">
                         <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" id="search">
+                            <span id="search-icon-1" class="input-group-text p-3"><a href="javascript:void(0);"  onclick="searchKeyword()"><i class="fa fa-search"></i></a></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="container-fluid py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row g-5 align-items-center">
+                    <div class="col-md-12 col-lg-7">
+                        <h4 class="mb-3 text-secondary">DIETFIT</h4>
+                        <h1 class="mb-5 display-3 text-primary">전체상품</h1>
+                    </div>
+                    <div class="col-md-12 col-lg-5">
+                        <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active rounded">
+                                    <img src="/resources/img/dietfitmain1.jpg" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                                </div>
+                                <div class="carousel-item rounded">
+                                    <img src="/resources/img/dietfitmain2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
         <!-- Modal Search End -->
     <div id="content">    
-    <h2>Product List</h2>
-    <br/><button type="button" onclick="javascript:window.location='/member/all'">all로 가기 </button>
-	<br/>
 	<div class="container aa">
 		  <div>
                         <div class="col-lg-4 text-start">
@@ -188,40 +218,40 @@
                         <div class="big_cate">
                             <div id="cate2">
                                 <div>
-                                    <a href="/member/productList">
-                                        <div class="li1" style="width: 130px;">전체상품</div>
+                                    <a href="/member/productList/popular">
+                                        <div class="li1" style="width: 130px;${category == null ? 'background-color: #FFDB58; color:white;' : ''}">전체상품</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="/member/productList">
-                                        <div class="li1" style="width: 130px;">식사</div>
+                                    <a href="/member/productList/popular/1">
+                                        <div class="li1" style="width: 130px; ${category == 1 ? 'background-color: #FFDB58; color:white;' : ''}">식사</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-3">
-                                        <div class="li1" style="width: 130px;">식사대용</div>
+                                    <a href="/member/productList/popular/2">
+                                        <div class="li1" style="width: 130px; ${category == 2 ? 'background-color: #FFDB58; color:white;' : ''}">식사대용</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-4">
-                                        <div class="li1" style="width: 130px;">간식</div>
+                                    <a href="/member/productList/popular/3">
+                                        <div class="li1" style="width: 130px; ${category == 3 ? 'background-color: #FFDB58; color:white;' : ''}">간식</div>
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="#tab-5">
-                                        <div class="li1" style="width: 130px;">음료</div>
+                                    <a href="/member/productList/popular/4">
+                                        <div class="li1" style="width: 130px; ${category == 4 ? 'background-color: #FFDB58; color:white;' : ''}">음료</div>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-		<div id="title">전체 상품 카테고리에 <i>${count}</i> 개의 상품이 등록되어 있습니다</div>
+		<div id="title"></div>
 		<hr>
 		<div id="category">
-			<a href ="/member/productList/popular"><button>인기순</button></a>
-			<a href ="/member/productList/recent"><button>신상품순</button></a>
-			<a href ="/member/productList/priceLow"><button>낮은가격순</button></a>
-			<a href ="/member/productList/priceHigh"><button>높은가격순</button></a>
+			<a href ="/member/productList/popular/${category}"><button>인기순</button></a>
+			<a href ="/member/productList/recent/${category}"><button>신상품순</button></a>
+			<a href ="/member/productList/priceLow/${category}"><button>낮은가격순</button></a>
+			<a href ="/member/productList/priceHigh/${category}"><button>높은가격순</button></a>
 		</div>
 		<hr>
 	    <ul class="list-unstyled row">
@@ -234,14 +264,30 @@
 	            	<div class="cart_h">
 		            	<div>
 		            		<sec:authorize access="isAuthenticated()">
-			             	<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		            			<c:set var="status">
+				            		<sec:authentication property="principal.dto.status"/>
+				            	</c:set>
+				            	<c:if test="${status==1 }">
+			             		<a href="javascript:void(0)" onclick="openCart('${product.NUM}')"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+			             		</c:if>
+				            	<c:if test="${status!=1 }">
+				            		<a href="javascript:void(0)" class="openCart" onclick="notmember()">
+				            			<img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" />
+			            			</a>
+				            	</c:if>
 			            	</sec:authorize>
+		            		<sec:authorize access="isAnonymous()">
+			             	<a href="javascript:void(0)" onclick="gotologin()"><img src="/resources/img/free-icon-shopping-bag-7688439.png" width="20px" /></a>
+		            		</sec:authorize>
 		            	</div>
 		            	<div class="heart">
 		            		<sec:authorize access="isAnonymous()">
-				            <img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+					            <a href="javascript:void(0)" onclick="gotologin()" >
+				            		<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+		            			</a>
 				            </sec:authorize>
 				            <sec:authorize access="isAuthenticated()">
+				            <c:if test="${status==1 }">
 				            	<c:choose>
 				            	<c:when test="${wishList.contains(product.PRODUCT)}">
 						            <a href="javascript:void(0)" onclick="removeWishList('${product.PRODUCT}')" >
@@ -254,7 +300,12 @@
 						            </a>
 				            	</c:otherwise>
 				            	</c:choose>
-				            	
+			            	</c:if>
+				            <c:if test="${status!=1 }">
+				            	<a href="javascript:void(0)" onclick="notmember()" >
+					            	<img src="/resources/img/free-icon-love-7476962.png" width="20px"/>
+								</a>
+				            </c:if>
 				            </sec:authorize>
 		            	</div>
 		            </div>	
@@ -277,21 +328,21 @@
 			<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
        	<c:if test="${startPage > 10 }">
-                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${startPage - 10}'" style="text-decoration-line : none; color:black;" ><button>이전</button></a>
        	</c:if>
        
        	<c:forEach var="i" begin="${startPage}" end="${endPage}">
        		<c:choose>
        			<c:when test="${i==currentPage}">
-                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${i}'"><button style="text-decoration-line : none; color:#50AB89;">${i}</button></a>
        			</c:when>
        			<c:otherwise>
-                        <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
+                        <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${i}'"><button style="text-decoration-line : none; color:gray;">${i}</button></a>
        			</c:otherwise>
        		</c:choose>
        	</c:forEach>
       		<c:if test="${endPage < pageCount }">
-                   <a href="javascript:window.location='/member/productList/${orderBy}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
+                   <a href="javascript:window.location='/member/productList/${orderBy}/${category}?pageNum=${startPage + 10}'" style="text-decoration-line : none; color:black;" ><button>다음</button></a>
       		</c:if>
     </c:if>
     </div>

@@ -131,6 +131,16 @@ public class MemberController {
 		model.addAttribute("discount", dto);
 		return "/member/discount";
 	}
+	//검색결과
+	@RequestMapping("search")
+	public String search(Model model, Principal pri,@RequestParam(value="pageNum", defaultValue="1") int pageNum,String keyword) {
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getProductBySearch(model,pageNum, keyword);
+		return "/member/search";
+	}
+	
 	
 	
 	//카카오 로그인 
@@ -249,7 +259,7 @@ public class MemberController {
 	@RequestMapping("modifyPro")
 	public String modifyPro(Member_basicDTO basicDTO, Member_detailDTO detailDTO) {
 		service.modifyUser(basicDTO, detailDTO);
-		return "redirect:/member/modifyForm";
+		return "redirect:/dietfit/main";
 	}
 
 
@@ -293,6 +303,18 @@ public class MemberController {
 		model.addAttribute("count", mapper.allproduct_count());
 	    return "member/productList";
 	}
+	@GetMapping("/productList/{orderBy}/{category}")
+	public String productList(@RequestParam(value="pageNum", defaultValue="1") int pageNum,
+			Model model,Principal pri, @PathVariable String orderBy, @PathVariable String category) {
+		//int number=0;
+		//number=count-(currentPage-1)*pageSize;
+		if(pri!=null) {
+			service.getWishListProduct(model,pri.getName());
+		}
+		service.getcategoryproduct(model,pageNum, orderBy, category);
+		model.addAttribute("count", mapper.allproduct_count());
+		return "member/productList";
+	}
 	@RequestMapping("productDetail")
 	public String productDetail(Model model,Principal pri,
 							String companyid,String category,
@@ -312,6 +334,8 @@ public class MemberController {
         	}
         }
         model.addAttribute("review",rmapper.getReview(companyid, category, category2, flavor));
+        model.addAttribute("reviewcount",rmapper.reviewCount(companyid, category, category2, flavor));
+        
 		return "member/productDetail";
 	}
 	
@@ -415,10 +439,15 @@ public class MemberController {
 	}
 	@RequestMapping("wishList")
 	public String wishList(Model model, Principal pri,
-			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder) {
+			@RequestParam(value="checkedFolder", defaultValue="전체") String checkedFolder,
+			@RequestParam(value="pageNum", defaultValue="1") int pageNum) {
 		String id=pri.getName();
 		model.addAttribute("checkedFolder",checkedFolder);
-		service.getWishList(model, id);
+		if(checkedFolder.equals("전체")) {
+			service.getWishList(model, id,pageNum,checkedFolder);
+		}else {
+			service.getWishListWithFolder(model, id, pageNum, checkedFolder);
+		}
 		return "member/wishList";
 	}
 	@RequestMapping("getProductCode")
@@ -455,6 +484,18 @@ public class MemberController {
 		}
 		service.addCartOne(pri.getName(),dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
 		return "hi";
+	}
+	@RequestMapping("addCartAndOrder")
+	public @ResponseBody CartDTO addCartAndOrder(Principal pri ,CartDTO dto, int chk) {
+		String id=pri.getName();
+		if(chk == 1) {
+			dto.setDelivery(1);
+		}else {
+			dto.setDelivery(0);
+		}
+		service.addCartOne(id,dto.getProduct(),dto.getQuantity(),dto.getPrice(), dto.getDelivery());
+		dto.setNum(mapper.getCartMaxNum(id));
+		return dto;
 	}
 	@RequestMapping("addCartMore")
 	public @ResponseBody String addCartMore(Principal pri ,String products) {

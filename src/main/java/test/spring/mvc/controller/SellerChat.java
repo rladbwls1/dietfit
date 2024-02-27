@@ -69,7 +69,6 @@ public class SellerChat extends DefaultEmbeddableVerticle {
                 	    
                         String realPath = realPath2 + roomnum+".txt";
                         
-                        
                         FileWriter writer = null;
                         try {
                         	writer = new FileWriter(realPath, true);
@@ -88,7 +87,8 @@ public class SellerChat extends DefaultEmbeddableVerticle {
                         String userId = event.getString("userId");
                         String roomnum = event.getString("roomnum");
 
-                        io.sockets().in(roomnum).emit("chatClosed", new JsonObject().putString("message", "Chat closed by user."));
+                        io.sockets().in(roomnum).emit("chatClosed", 
+                        		new JsonObject().putString("message", "Chat closed by user."));
 
                         // 채팅방 상태 업데이트
                         service.endchat(Integer.parseInt(roomnum));
@@ -97,7 +97,7 @@ public class SellerChat extends DefaultEmbeddableVerticle {
             }
         });
 
-        server.listen(7777);
+        server.listen(8888);
     }
 
     private String createRoomForUser(String userId, String userType) {

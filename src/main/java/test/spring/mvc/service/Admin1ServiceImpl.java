@@ -152,6 +152,11 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
+	public int alram2() {
+		return mapper.alram2();
+	}
+
+	@Override
 	public List<AllcouponDTO> coupon(String id) {
 		return mapper.coupon(id);
 	}
@@ -256,12 +261,14 @@ public class Admin1ServiceImpl implements Admin1Service{
 	}
 
 	@Override
-	public List<CommercailDTO> comm() {
+	public List<CommercailDTO> comm(Model model) {
+		model.addAttribute("alram", mapper.alram2());
 		return mapper.comm();
 	}
 
 	@Override
 	public int commCheck(int admincheck, int num) {
+		
 		return mapper.commCheck(admincheck, num);
 	}
 
@@ -274,5 +281,20 @@ public class Admin1ServiceImpl implements Admin1Service{
 	public List<CouponDTO> Usercoupon(String id) {
 		return mapper.Usercoupon(id);
 	}
+
+	@Override
+	public int memberPrice() {
+		List<String> id = mapper.memberId();
+		String price = null;
+		int total_price = 0;
+		for(String i : id) {
+			price = mapper.memberPrice(i);
+			if(price != null) {
+				total_price += Integer.parseInt(price);
+			}
+		}
+		return total_price;
+	}
+
 	
 }

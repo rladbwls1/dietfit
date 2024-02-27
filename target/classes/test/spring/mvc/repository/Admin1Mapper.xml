@@ -44,6 +44,9 @@
     	<select id="alram">
     		select count(*) from allcoupon where admincheck = 0
     	</select>
+    	<select id="alram2">
+    		select count(*) from commercials where admincheck = 0
+    	</select>
     	<select id="coupon" resultType="allcoupon">
     		select * from allcoupon where companyid =
    			 (select companyid from member_detail where id=#{id})
@@ -195,4 +198,10 @@
 		<update id="commCheck">
     		update commercials set admincheck = #{admincheck} where num=#{num}
     	</update>
+    	<select id="memberId">
+    		select id from member_basic where status not in('999','888','800')
+    	</select>
+    	<select id="memberPrice">
+    		SELECT sum(price) FROM ${id}_orderdetail WHERE TRUNC(purdate) = TRUNC(SYSDATE)
+    	</select>
     </mapper>

@@ -4,7 +4,7 @@ function addWishList(product){
 		type:'post',
 		data:{product:product},
 		success:function(a){
-			window.open("wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
+			window.open("/member/wishConfirm","관심목록에 추가하기", "width = 400, height = 200, top = 100, left = 200, location = no");
 			window.location.reload();
 		}
 	});
@@ -21,6 +21,15 @@ function removeWishList(product){
 	});
 	
 }
+function gotologin(){
+	if(confirm("로그인 후 이용가능합니다. \n로그인 하시겠습니까?")==true){
+		window.location.href="/member/customLogin";
+	}
+}
+function notmember(){
+	alert("판매자/관리자는 사용할 수 없는 기능입니다.");
+}
+
 function toDetail(companyid,category,category2,flavor){
 	let f=document.createElement('form');
 	let obj;
@@ -236,7 +245,7 @@ function changeNewFolder(products){
 
 //-----------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@장바구니
 function openCart(num){
-	window.open("miniCart?num="+num,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
+	window.open("/member/miniCart?num="+num,"장바구니에 추가하기", "width = 600, height = 800, top = 100, left = 200, location = no");
 }
 //장바구니 버튼 눌러서, 상품 고르면 개수 변경할 수 있게.
 function showQuantityDiv(){
@@ -458,4 +467,133 @@ function Rdelivery(check){
     	if (confirm("상품을 선택해주세요.")) {
     	}
     }
+}
+
+function addCartAndOrder(){
+	 var chk = $('#chk').is(':checked') ? 1 : 0;
+	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
+		alert("개수를 입력해주세요.");
+	}else{
+	
+		console.log($('#chooseProductCart').val(),parseInt($('#quantity').val()),$('#price').val());
+	
+	    $.ajax({
+    	url:'addCartAndOrder',
+    	type:'post',
+    	async:false,
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val(), chk:chk},
+    	success:function(dto){
+    		let f=window.opener.document.createElement('form');
+			let obj;
+			let obj2;
+			let obj3;
+			let obj4;
+			let obj5;
+			obj=window.opener.document.createElement('input');
+			obj.setAttribute('type','hidden');
+			obj.setAttribute('name','nums');
+			obj.setAttribute('value',dto.num);
+			obj2=window.opener.document.createElement('input');
+			obj2.setAttribute('type','hidden');
+			obj2.setAttribute('name','amout');
+			obj2.setAttribute('value',dto.quantity*dto.price);
+			obj3=window.opener.document.createElement('input');
+			obj3.setAttribute('type','hidden');
+			obj3.setAttribute('name','totalQuantity');
+			obj3.setAttribute('value',dto.quantity);
+			obj4=window.opener.document.createElement('input');
+			obj4.setAttribute('type','hidden');
+			obj4.setAttribute('name','product');
+			obj4.setAttribute('value',dto.product);
+			obj5=window.opener.document.createElement('input');
+			obj5.setAttribute('type','hidden');
+			obj5.setAttribute('name','delivery');
+			obj5.setAttribute('value',dto.delivery);
+			f.appendChild(obj);
+			f.appendChild(obj2);
+			f.appendChild(obj3);
+			f.appendChild(obj4);
+			f.appendChild(obj5);
+			f.setAttribute('method','post');
+			f.setAttribute('action','/dietfit/order');
+			window.opener.document.body.appendChild(f);
+			f.submit();
+			window.close();
+		}
+    	});
+	}
+}
+function addCartAndOrder2(){
+	 var chk = $('#chk').is(':checked') ? 1 : 0;
+	if(!$('#quantity').val()||parseInt($('#quantity').val())==0){
+		alert("개수를 입력해주세요.");
+	}else{
+	
+		console.log($('#chooseProductCart').val(),parseInt($('#quantity').val()),$('#price').val());
+	
+	    $.ajax({
+    	url:'addCartAndOrder',
+    	type:'post',
+    	async:false,
+    	data:{product:$('#chooseProductCart').val(), quantity:parseInt($('#quantity').val()),price:$('#price').val(), chk:chk},
+    	success:function(dto){
+    		let f=document.createElement('form');
+			let obj;
+			let obj2;
+			let obj3;
+			let obj4;
+			let obj5;
+			obj=document.createElement('input');
+			obj.setAttribute('type','hidden');
+			obj.setAttribute('name','nums');
+			obj.setAttribute('value',dto.num);
+			obj2=document.createElement('input');
+			obj2.setAttribute('type','hidden');
+			obj2.setAttribute('name','amout');
+			obj2.setAttribute('value',dto.quantity*dto.price);
+			obj3=document.createElement('input');
+			obj3.setAttribute('type','hidden');
+			obj3.setAttribute('name','totalQuantity');
+			obj3.setAttribute('value',dto.quantity);
+			obj4=document.createElement('input');
+			obj4.setAttribute('type','hidden');
+			obj4.setAttribute('name','product');
+			obj4.setAttribute('value',dto.product);
+			obj5=document.createElement('input');
+			obj5.setAttribute('type','hidden');
+			obj5.setAttribute('name','delivery');
+			obj5.setAttribute('value',chk);
+			f.appendChild(obj);
+			f.appendChild(obj2);
+			f.appendChild(obj3);
+			f.appendChild(obj4);
+			f.appendChild(obj5);
+			f.setAttribute('method','post');
+			f.setAttribute('action','/dietfit/order');
+			document.body.appendChild(f);
+			f.submit();
+		
+		}
+    	});
+	}
+}
+
+function searchKeyword(){
+	var keyword=$('#search').val();
+	if (keyword==""){
+		alert("검색어를 입력하십시오.");
+		
+	}else{
+		let f=document.createElement('form');
+		let obj;
+		obj=document.createElement('input');
+		obj.setAttribute('type','hidden');
+		obj.setAttribute('name','keyword');
+		obj.setAttribute('value',keyword);
+		f.appendChild(obj);
+		f.setAttribute('method','post');
+		f.setAttribute('action','/member/search');
+		document.body.appendChild(f);
+		f.submit();
+	}
 }

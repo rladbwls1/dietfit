@@ -81,4 +81,5 @@ public interface AdminMapper {
 	
 	//adminMain
 	public int discountCount();
+	public int commCount();
 }

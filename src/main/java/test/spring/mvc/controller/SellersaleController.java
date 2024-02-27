@@ -239,7 +239,7 @@ public class SellersaleController {
 	    service.filedelete(comfile, path);
 	    redirectAttributes.addFlashAttribute("successMessage","광고를 성공적으로 삭제되었습니다.");
 	    model.addAttribute("companyid", companyid);
-	    return "redirect:/seller/commercailhome?companyid=" + companyid;
+	    return "redirect:/seller/commercailhome";
 	}
 	
 	@RequestMapping("commupdate")
@@ -296,7 +296,12 @@ public class SellersaleController {
 	    model.addAttribute("companyid", companyid);
 	    return "redirect:/seller/commercailhome";
 	}
-
-
+	
+	@RequestMapping("maincomm")
+	public String maincomm(Model model) {
+		List<CommercailDTO> cdto = service.admincheckcom();
+		model.addAttribute("cdto",cdto);
+		return "seller/admincheckcom";
+	}
 
 }
